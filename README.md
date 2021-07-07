@@ -1,2 +1,1 @@
-# equality-app
-The Equality app.
+# Equality app repository
