@@ -15,7 +15,7 @@
 
   <PropertyGroup>
     <!-- Tools like SonarQube require a unique project guid -->
-    <ProjectGuid>be2a3edb-e5f7-4957-b8b7-1a170eaddf0e</ProjectGuid>
+    <ProjectGuid>8f139347-553e-4837-a72c-aab012c4598c</ProjectGuid>
   </PropertyGroup>
 
   <PropertyGroup>
