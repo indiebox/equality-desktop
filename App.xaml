@@ -1,8 +1,20 @@
 ﻿<Application x:Class="Equality.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              StartupUri="/Views/MainWindow.xaml">
     <Application.Resources>
-        
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="#FF832A" SecondaryColor="#EDEDED" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Customize primary colors -->
+            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#FF832A" />
+            <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#FFB98C" />
+            <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#FD5A2E" />
+            <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="White" />
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
