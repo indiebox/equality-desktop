@@ -72,13 +72,13 @@
             If we would use AssemblyName, they would be compiled into the same directory
           -->
           <OverridableOutputPath>$(ProjectDir)..\output\$(Configuration)\$(MSBuildProjectName)\</OverridableOutputPath>
-          <OutputPath>$(OverridableOutputPath)</OutputPath>
+          <OutputPath>output\$(Configuration)</OutputPath>
           <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
         </PropertyGroup>
         
         <!-- CSharp language -->
         <PropertyGroup>
-          <LangVersion>7.3</LangVersion>
+          <LangVersion>9.0</LangVersion>
         </PropertyGroup>
 
         <!-- Enforce portable pdb format -->
