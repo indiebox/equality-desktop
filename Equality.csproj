@@ -20,9 +20,8 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <StartupObject />
     <NoWarn>$(NoWarn);SA1652</NoWarn>
-    <ApplicationIcon>EquaityLogo.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icons\Logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
