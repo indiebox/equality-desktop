@@ -1,0 +1,14 @@
+﻿<catel:DataWindow x:Class="Equality.Views.AuthorizationWindow"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:catel="http://schemas.catelproject.com" 
+                  TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+                  Background="{DynamicResource MaterialDesignPaper}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Frame Grid.Row="0" Source="{Binding ActievePage}"></Frame>
+    </Grid>
+    
+</catel:DataWindow>
