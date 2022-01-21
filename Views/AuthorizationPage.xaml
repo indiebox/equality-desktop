@@ -11,13 +11,26 @@
     xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
     xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
     <Page.Resources>
-        <ControlTemplate x:Key="ForgotPasswordButton" TargetType="{x:Type ButtonBase}">
-            <Border Background="Transparent"
-                    Width="Auto"
-                    Cursor="Hand">
-                <ContentControl Foreground="#fe8c6d" Content="Забыли пароль?"/>
-            </Border
-        </ControlTemplate>
+        <Style x:Key="LinkButton" TargetType="Button">
+            <Setter Property="Foreground" Value="#fe8c6d"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                     <ControlTemplate TargetType="{x:Type ButtonBase}">
+                         <Border Background="Transparent"
+                         Width="Auto"
+                         Cursor="Hand">
+                            <ContentControl Content="{TemplateBinding Content}"/>
+                         </Border>
+                     </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="TextBlock.TextDecorations" Value="Underline"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
     </Page.Resources>
     <Grid UseLayoutRounding="False" Width="350">
         <Grid.RowDefinitions>
@@ -48,7 +61,9 @@
         <StackPanel Grid.Row="2">
             <StackPanel Orientation="Horizontal" Margin="10,0,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Label Target="{Binding ElementName=Password}" FontSize="16">Пароль</Label>
-                <Button Template="{DynamicResource ForgotPasswordButton}" FontSize="16" Margin="144,0,0,0" ></Button>
+                <Button Style="{StaticResource LinkButton}" FontSize="16" Margin="144,0,0,0" VerticalAlignment="Center">
+                    <TextBlock>Забыли пароль?</TextBlock>
+                </Button>
             </StackPanel>
             <PasswordBox
                 Name="Password"
