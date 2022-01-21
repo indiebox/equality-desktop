@@ -6,10 +6,10 @@ namespace Equality.ViewModels
 {
     public class AuthorizationWindowViewModel : ViewModelBase
     {
-        public string ActievePage { get; set; }
+        public string ActivePage { get; set; }
         public AuthorizationWindowViewModel(/* dependency injection here */)
         {
-            ActievePage = "/Views/AuthorizationPage.xaml";
+            ActivePage = "/Views/AuthorizationPage.xaml";
         }
 
         // public override string Title { get { return "SUA"; } }

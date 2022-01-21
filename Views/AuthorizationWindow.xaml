@@ -8,7 +8,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Frame Grid.Row="0" Source="{Binding ActievePage}"></Frame>
+        <Frame Grid.Row="0" Source="{Binding ActivePage}"></Frame>
     </Grid>
     
 </catel:DataWindow>
