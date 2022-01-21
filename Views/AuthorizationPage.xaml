@@ -38,6 +38,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -74,6 +75,13 @@
                 Margin="10,0,10,25"
                 FontSize="16" />
         </StackPanel>
-        <Button Grid.Row="3" Margin="10,0,10,10" Grid.Column="0" Content="Войти" FontSize="16" Padding="10, 10, 10, 10" Cursor="Hand" Height="50"/>
+        
+        <CheckBox
+            FontSize="16"
+            Grid.Row="3"
+            Content="Запомнить меня"
+            Style="{StaticResource MaterialDesignCheckBox}"
+            Margin="10,0,10,25" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+        <Button Grid.Row="4" Margin="10,0,10,10" Grid.Column="0" Content="Войти" FontSize="16" Padding="10, 10, 10, 10" Cursor="Hand" Height="50"/>
     </Grid>
 </catel:Page>
