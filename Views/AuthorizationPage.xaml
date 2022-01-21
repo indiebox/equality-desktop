@@ -54,6 +54,7 @@
                 AcceptsReturn="True"
                 TextWrapping="Wrap"
                 materialDesign:HintAssist.Hint="Введите адрес эл. почты"
+                materialDesign:HintAssist.IsFloating="False"
                 Margin="10,0,10,25"
                 FontSize="16"
                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}" />
@@ -72,6 +73,7 @@
                 VerticalAlignment="Top"
                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledPasswordFieldPasswordBoxEnabledComboBox}"
                 materialDesign:HintAssist.Hint="Введите пароль"
+                materialDesign:HintAssist.IsFloating="False"
                 Margin="10,0,10,25"
                 FontSize="16" />
         </StackPanel>
