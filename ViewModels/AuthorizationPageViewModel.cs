@@ -1,15 +1,16 @@
-﻿using Catel.MVVM;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+
+using Catel.MVVM;
 
 namespace Equality.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class AuthorizationPageViewModel : ViewModelBase
     {
-        public MainWindowViewModel()
+        public AuthorizationPageViewModel(/* dependency injection here */)
         {
         }
 
-        public override string Title { get { return "Welcome to Equality"; } }
+        public override string Title { get { return "View model title"; } }
 
         // TODO: Register models with the vmpropmodel codesnippet
         // TODO: Register view model properties with the vmprop or vmpropviewmodeltomodel codesnippets
