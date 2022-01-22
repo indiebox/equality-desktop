@@ -1,17 +1,19 @@
-﻿<catel:DataWindow x:Class="Equality.Views.AuthorizationWindow"
+﻿<catel:Window x:Class="Equality.Views.AuthorizationWindow"
                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                   xmlns:catel="http://schemas.catelproject.com" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                   TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-                  Background="{DynamicResource MaterialDesignPaper}">
-    <Grid Width="900" Height="600px">
+                  Background="{DynamicResource MaterialDesignPaper}"
+              Width="900" Height="650"
+              ResizeMode="NoResize">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Frame Grid.Row="0" Grid.Column="0" Source="{Binding ActivePage}"></Frame>
+        <Frame VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="0" Source="{Binding ActivePage}"></Frame>
     </Grid>
-    
-</catel:DataWindow>
+
+</catel:Window>

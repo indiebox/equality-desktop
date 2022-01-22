@@ -1,8 +1,6 @@
-﻿using Catel.IoC;
+﻿using System.Windows;
+
 using Catel.Logging;
-using Catel.Reflection;
-using Catel.Windows;
-using System.Windows;
 
 namespace Equality
 {

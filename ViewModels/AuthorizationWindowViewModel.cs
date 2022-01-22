@@ -12,7 +12,7 @@ namespace Equality.ViewModels
             ActivePage = "/Views/AuthorizationPage.xaml";
         }
 
-        // public override string Title { get { return "SUA"; } }
+        public override string Title { get { return "Вход"; } }
 
         // TODO: Register models with the vmpropmodel codesnippet
         // TODO: Register view model properties with the vmprop or vmpropviewmodeltomodel codesnippets

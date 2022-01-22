@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 
+using Catel.IoC;
 using Catel.MVVM;
+using Catel.Services;
 
 namespace Equality.ViewModels
 {
@@ -14,12 +16,18 @@ namespace Equality.ViewModels
 
         // TODO: Register models with the vmpropmodel codesnippet
         // TODO: Register view model properties with the vmprop or vmpropviewmodeltomodel codesnippets
-        // TODO: Register commands with the vmcommand or vmcommandwithcanexecute codesnippets
+
+        public Command OpenForgotPasswordPage { get; set; }
+        private void OnOpenForgotPasswordPage()
+        {
+            IDependencyResolver dependencyResolver = this.GetDependencyResolver();
+            INavigationService navigationService = dependencyResolver.Resolve<INavigationService>();
+            navigationService.Navigate<ForgotPasswordPageViewModel>();
+        }
 
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-
             // TODO: subscribe to events here
         }
 
