@@ -13,7 +13,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Frame VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="0" Source="{Binding ActivePage}"></Frame>
+        <Frame KeyboardNavigation.IsTabStop="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="0" Source="{Binding ActivePage}"></Frame>
     </Grid>
 
 </catel:Window>

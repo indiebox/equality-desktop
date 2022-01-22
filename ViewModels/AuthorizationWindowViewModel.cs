@@ -1,15 +1,17 @@
 ﻿using System.Threading.Tasks;
 
+using Catel.IoC;
 using Catel.MVVM;
+using Catel.MVVM.Views;
 
 namespace Equality.ViewModels
 {
     public class AuthorizationWindowViewModel : ViewModelBase
     {
         public string ActivePage { get; set; }
-        public AuthorizationWindowViewModel(/* dependency injection here */)
+        public AuthorizationWindowViewModel(IUrlLocator urlLocator)
         {
-            ActivePage = "/Views/AuthorizationPage.xaml";
+            ActivePage = urlLocator.ResolveUrl(typeof(AuthorizationPageViewModel));
         }
 
         public override string Title { get { return "Вход"; } }
