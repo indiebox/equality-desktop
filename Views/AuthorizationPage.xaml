@@ -70,6 +70,7 @@
                 TextWrapping="Wrap"
                 MaxWidth="400"
                 materialDesign:HintAssist.Hint="Введите адрес эл. почты"
+                materialDesign:HintAssist.IsFloating="False"
                 Margin="10,0,10,25"
                 FontSize="16" />
         </StackPanel>
@@ -86,6 +87,7 @@
                 Style="{StaticResource MaterialDesignFilledPasswordBox}"
                 VerticalAlignment="Top"
                 materialDesign:HintAssist.Hint="Введите пароль"
+                materialDesign:HintAssist.IsFloating="False"
                 Margin="10,0,10,25"
                 FontSize="16" />
         </StackPanel>
