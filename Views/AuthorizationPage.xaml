@@ -76,12 +76,12 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2">
-            <StackPanel Orientation="Horizontal" Margin="10,0,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Label Target="{Binding ElementName=Password}" FontSize="16">Пароль</Label>
-                <Button Style="{StaticResource LinkButton}" FontSize="16" Margin="144,0,0,0" VerticalAlignment="Center">
+            <DockPanel LastChildFill="False" Margin="10,0,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Label DockPanel.Dock="Left" Target="{Binding ElementName=Password}" FontSize="16">Пароль</Label>
+                <Button Style="{StaticResource LinkButton}" FontSize="16" DockPanel.Dock="Right" VerticalAlignment="Center">
                     Забыли пароль?
                 </Button>
-            </StackPanel>
+            </DockPanel>
             <PasswordBox
                 Name="Password"
                 Style="{StaticResource MaterialDesignFilledPasswordBox}"
