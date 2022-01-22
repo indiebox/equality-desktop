@@ -6,25 +6,12 @@
                   Background="{DynamicResource MaterialDesignPaper}">
     <Grid Width="900" Height="600px">
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="Auto"/>
-            <RowDefinition />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Frame Grid.Row="1" Grid.Column="1" Source="{Binding ActivePage}"></Frame>
-        <materialDesign:Card Background="WhiteSmoke" Grid.Row="4" Grid.ColumnSpan="3" Height="100px" HorizontalAlignment="Stretch" VerticalAlignment="Center" FlowDirection="LeftToRight" ScrollViewer.HorizontalScrollBarVisibility="Disabled" UseLayoutRounding="False">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock
-                FontSize="16"
-                Text="Нет аккаунта?" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                <Button Grid.Row="3" Content="Зарегистрироваться" FontSize="16" Cursor="Hand" VerticalAlignment="Stretch" HorizontalAlignment="Center" BorderThickness="0,0,0,0" Margin="20,0,0,0"/>
-            </StackPanel>
-        </materialDesign:Card>
+        <Frame Grid.Row="0" Grid.Column="0" Source="{Binding ActivePage}"></Frame>
     </Grid>
     
 </catel:DataWindow>
