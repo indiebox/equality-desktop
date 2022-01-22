@@ -9,27 +9,6 @@
       Title="AuthorizationPage"
     xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
     xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
-    <Page.Resources>
-        <Style x:Key="LinkButton" TargetType="Button">
-            <Setter Property="Foreground" Value="#fe8c6d"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ButtonBase}">
-                        <Border Background="Transparent"
-                         Width="Auto"
-                         Cursor="Hand">
-                            <ContentControl Content="{TemplateBinding Content}"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="TextBlock.TextDecorations" Value="Underline"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Page.Resources>
     <StackPanel Height="600" Width="900">
         
     <Grid Height="500" Width="900">
