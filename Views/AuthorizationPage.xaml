@@ -1,4 +1,4 @@
-﻿<catel:Page xmlns:catel="http://schemas.microsoft.com/winfx/2006/xaml/presentation" x:Class="Equality.Views.AuthorizationPage"
+﻿<catel:Page xmlns:catel="http://schemas.catelproject.com" x:Class="Equality.Views.AuthorizationPage"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -52,16 +52,14 @@
                 <TextBlock Grid.Row="0" 
                            FontSize="27" 
                            HorizontalAlignment="Center" 
-                           Margin="0,0,0,52">Вход</TextBlock>
+                           Margin="0,0,0,52" Text="Вход"></TextBlock>
                 <StackPanel Grid.Row="1">
                     <Label Margin="10,0,10,0" 
                            Target="{Binding ElementName=Email}" 
-                           FontSize="16">Адрес эл. почты</Label>
+                           FontSize="16">_Адрес эл. почты</Label>
                     <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
-                           Name="Email"
-                           VerticalAlignment="Top"
-                           AcceptsReturn="True"
-                           TextWrapping="Wrap"
+                           x:Name="Email"
+                           AcceptsReturn="False"
                            materialDesign:HintAssist.Hint="Введите адрес эл. почты"
                            materialDesign:HintAssist.IsFloating="False"
                            Margin="10,0,10,25"
@@ -76,8 +74,9 @@
                         VerticalAlignment="Stretch">
                         <Label DockPanel.Dock="Left" 
                                Target="{Binding ElementName=Password}" 
-                               FontSize="16">Пароль</Label>
-                        <Button Style="{StaticResource LinkButton}" 
+                               FontSize="16">_Пароль</Label>
+                        <Button Command="{Binding OpenForgotPassword}"
+                                Style="{StaticResource LinkButton}" 
                                 FontSize="16" DockPanel.Dock="Right" 
                                 VerticalAlignment="Center">
                             Забыли пароль?

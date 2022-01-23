@@ -1,4 +1,4 @@
-﻿using System.Windows.Controls;
+﻿using Catel.Windows.Controls;
 
 namespace Equality.Views
 {

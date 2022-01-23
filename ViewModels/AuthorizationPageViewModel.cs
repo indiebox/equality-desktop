@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
 
 using Catel.IoC;
 using Catel.MVVM;
@@ -8,8 +9,20 @@ namespace Equality.ViewModels
 {
     public class AuthorizationPageViewModel : ViewModelBase
     {
-        public AuthorizationPageViewModel(/* dependency injection here */)
+        public AuthorizationPageViewModel(/*IViewModelManager viewModelManager*/)
         {
+            //System.Collections.Generic.IEnumerable<IViewModel> ViewModelsArray = viewModelManager.ActiveViewModels;
+            //AuthorizationWindowViewModel currentWindowViewModel;
+            //foreach (var item in ViewModelsArray)
+            //{
+            //    if(item is AuthorizationWindowViewModel vm)
+            //    {
+            //        currentWindowViewModel = vm;
+            //        var test = vm.ActivePage;
+            //        break;
+            //    }
+            //}
+            //OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
         }
 
         public override string Title { get { return "View model title"; } }
@@ -17,13 +30,12 @@ namespace Equality.ViewModels
         // TODO: Register models with the vmpropmodel codesnippet
         // TODO: Register view model properties with the vmprop or vmpropviewmodeltomodel codesnippets
 
-        public Command OpenForgotPasswordPage { get; set; }
-        private void OnOpenForgotPasswordPage()
-        {
-            IDependencyResolver dependencyResolver = this.GetDependencyResolver();
-            INavigationService navigationService = dependencyResolver.Resolve<INavigationService>();
-            navigationService.Navigate<ForgotPasswordPageViewModel>();
-        }
+        //public Command OpenForgotPassword { get; private set; }
+
+        //private void OnOpenForgotPasswordExecute()
+        //{
+        //    // TODO: Handle command logic here
+        //}
 
         protected override async Task InitializeAsync()
         {
