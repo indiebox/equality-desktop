@@ -6,11 +6,11 @@ namespace Equality.ViewModels
 {
     public class ForgotPasswordPageViewModel : ViewModelBase
     {
-        public ForgotPasswordPageViewModel(/* dependency injection here */)
+        public ForgotPasswordPageViewModel()
         {
         }
 
-        public override string Title { get { return "View model title"; } }
+        public override string Title => "Восстановление пароля";
 
         // TODO: Register models with the vmpropmodel codesnippet
         // TODO: Register view model properties with the vmprop or vmpropviewmodeltomodel codesnippets

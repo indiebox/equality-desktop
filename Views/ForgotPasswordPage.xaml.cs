@@ -1,11 +1,9 @@
-﻿using Catel.Windows.Controls;
-
-namespace Equality.Views
+﻿namespace Equality.Views
 {
     /// <summary>
     /// Логика взаимодействия для ForgotPasswordPage.xaml
     /// </summary>
-    public partial class ForgotPasswordPage : Page
+    public partial class ForgotPasswordPage
     {
         public ForgotPasswordPage()
         {

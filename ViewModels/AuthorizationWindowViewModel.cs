@@ -1,20 +1,22 @@
 ﻿using System.Threading.Tasks;
 
-using Catel.IoC;
 using Catel.MVVM;
-using Catel.MVVM.Views;
+using Catel.Services;
 
 namespace Equality.ViewModels
 {
     public class AuthorizationWindowViewModel : ViewModelBase
     {
-        public string ActivePage { get; set; }
-        public AuthorizationWindowViewModel(IUrlLocator urlLocator)
+        protected INavigationService NavigationService;
+
+        public AuthorizationWindowViewModel(INavigationService service)
         {
-            ActivePage = urlLocator.ResolveUrl(typeof(AuthorizationPageViewModel));
+            NavigationService = service;
+
+            NavigationService.Navigate<LoginPageViewModel>();
         }
 
-        public override string Title { get { return "Вход"; } }
+        public override string Title => "Авторизация";
 
         // TODO: Register models with the vmpropmodel codesnippet
         // TODO: Register view model properties with the vmprop or vmpropviewmodeltomodel codesnippets
