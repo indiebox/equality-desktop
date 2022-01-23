@@ -1,13 +1,25 @@
 ﻿using System.Threading.Tasks;
-
 using Catel.MVVM;
+using Catel.Services;
 
 namespace Equality.ViewModels
 {
     public class ForgotPasswordPageViewModel : ViewModelBase
     {
-        public ForgotPasswordPageViewModel()
+        protected INavigationService NavigationService;
+
+        public ForgotPasswordPageViewModel(INavigationService service)
         {
+            OpenLoginPage = new Command(OnOpenLoginPageExecute);
+            NavigationService = service;
+        }
+
+
+        public Command OpenLoginPage { get; private set; }
+
+        private void OnOpenLoginPageExecute()
+        {
+            NavigationService.Navigate<LoginPageViewModel>();
         }
 
         public override string Title => "Восстановление пароля";

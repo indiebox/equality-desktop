@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+
 using Catel.MVVM;
 using Catel.Services;
 
