@@ -16,7 +16,7 @@ namespace Equality.ViewModels
             NavigationService.Navigate<LoginPageViewModel>();
         }
 
-        public override string Title => "Авторизация";
+        public override string Title => "Equality";
 
         // TODO: Register models with the vmpropmodel codesnippet
         // TODO: Register view model properties with the vmprop or vmpropviewmodeltomodel codesnippets

@@ -6,7 +6,7 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
-            d:DesignHeight="500" d:DesignWidth="900"
+            d:DesignHeight="600" d:DesignWidth="900"
             d:Background="{StaticResource MaterialDesignPaper}"
             d:DataContext="{d:DesignInstance dvm:DesignLoginPageViewModel, IsDesignTimeCreatable=True}"
             mc:Ignorable="d">
