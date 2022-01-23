@@ -18,7 +18,7 @@
 
         <Frame Grid.Row="0" Grid.Column="0"
                KeyboardNavigation.IsTabStop="False" 
-               VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+               VerticalAlignment="Stretch" HorizontalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
     </Grid>
 
 </catel:Window>
