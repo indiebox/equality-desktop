@@ -202,7 +202,7 @@ dotnet_naming_symbols.interface.applicable_kinds = interface
 dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal
 dotnet_naming_symbols.interface.required_modifiers = 
 
-dotnet_naming_symbols.pascalcase.applicable_kinds = namespace, property, field, event, local, class, struct, interface, delegate, method, local_function
+dotnet_naming_symbols.pascalcase.applicable_kinds = namespace, property, field, event, class, struct, interface, delegate, method, local_function
 dotnet_naming_symbols.pascalcase.applicable_accessibilities = *
 dotnet_naming_symbols.pascalcase.required_modifiers = 
 
