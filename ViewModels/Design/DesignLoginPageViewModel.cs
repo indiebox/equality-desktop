@@ -4,9 +4,10 @@ namespace Equality.ViewModels.Design
 {
     public class DesignLoginPageViewModel : LoginPageViewModel
     {
-        public DesignLoginPageViewModel(INavigationService service) : base(service)
+        public DesignLoginPageViewModel() : base(null)
         {
             Title = "Вход";
         }
     }
 }
+
