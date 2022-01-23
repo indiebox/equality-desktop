@@ -30,8 +30,9 @@
     <PackageReference Include="Fody" Version="6.6.0" PrivateAssets="all" />
     <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
     <PackageReference Include="Obsolete.Fody" Version="5.2.1" PrivateAssets="all" />
-    <PackageReference Include="WpfAnalyzers" Version="4.0.1" PrivateAssets="all">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    <PackageReference Include="WpfAnalyzers" Version="3.5.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
