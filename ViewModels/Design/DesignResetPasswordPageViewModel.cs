@@ -6,8 +6,9 @@ namespace Equality.ViewModels.Design
 {
     public class DesignResetPasswordPageViewModel : ResetPasswordPageViewModel
     {
-        public DesignResetPasswordPageViewModel(/* dependency injection here */)
+        public DesignResetPasswordPageViewModel() : base(null)
         {
+            Title = "Изменить пароль";
         }
     }
 }

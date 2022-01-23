@@ -13,9 +13,17 @@ namespace Equality.ViewModels
         public ForgotPasswordPageViewModel(INavigationService service)
         {
             OpenLoginPage = new Command(OnOpenLoginPageExecute);
+            OpenResetPasswordPage = new Command(OnOpenResetPasswordPageExecute);
             NavigationService = service;
         }
 
+
+        public Command OpenResetPasswordPage { get; private set; }
+
+        private void OnOpenResetPasswordPageExecute()
+        {
+            NavigationService.Navigate<ResetPasswordPageViewModel>();
+        }
 
         public Command OpenLoginPage { get; private set; }
 
@@ -25,10 +33,6 @@ namespace Equality.ViewModels
         }
 
         public override string Title => "Восстановление пароля";
-
-        // TODO: Register models with the vmpropmodel codesnippet
-        // TODO: Register view model properties with the vmprop or vmpropviewmodeltomodel codesnippets
-        // TODO: Register commands with the vmcommand or vmcommandwithcanexecute codesnippets
 
         protected override async Task InitializeAsync()
         {

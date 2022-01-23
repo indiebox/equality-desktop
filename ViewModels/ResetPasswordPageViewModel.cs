@@ -1,20 +1,37 @@
 ﻿using System.Threading.Tasks;
 
 using Catel.MVVM;
+using Catel.Services;
 
-namespace Equality.ViewModels.Design
+namespace Equality.ViewModels
 {
     public class ResetPasswordPageViewModel : ViewModelBase
     {
-        public ResetPasswordPageViewModel(/* dependency injection here */)
+        protected INavigationService NavigationService;
+
+        public ResetPasswordPageViewModel(INavigationService service)
         {
+            NavigationService = service;
+            OpenForgotPasswordPage = new Command(OnOpenForgotPasswordPageExecute);
+            OpenLoginPage = new Command(OnOpenLoginPageExecute);
+        }
+
+        public Command OpenForgotPasswordPage { get; private set; }
+
+        private void OnOpenForgotPasswordPageExecute()
+        {
+            NavigationService.Navigate<ForgotPasswordPageViewModel>();
+        }
+
+
+        public Command OpenLoginPage { get; private set; }
+
+        private void OnOpenLoginPageExecute()
+        {
+            NavigationService.Navigate<LoginPageViewModel>();
         }
 
         public override string Title => "Изменение пароля";
-
-        // TODO: Register models with the vmpropmodel codesnippet
-        // TODO: Register view model properties with the vmprop or vmpropviewmodeltomodel codesnippets
-        // TODO: Register commands with the vmcommand or vmcommandwithcanexecute codesnippets
 
         protected override async Task InitializeAsync()
         {
