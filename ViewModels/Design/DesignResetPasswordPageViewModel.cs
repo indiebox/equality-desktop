@@ -8,7 +8,6 @@ namespace Equality.ViewModels.Design
     {
         public DesignResetPasswordPageViewModel() : base(null)
         {
-            Title = "Изменить пароль";
         }
     }
 }

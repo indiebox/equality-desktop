@@ -6,7 +6,6 @@ namespace Equality.ViewModels.Design
     {
         public DesignForgotPasswordPageViewModel() : base(null)
         {
-            Title = "Восстановление пароля";
         }
     }
 }

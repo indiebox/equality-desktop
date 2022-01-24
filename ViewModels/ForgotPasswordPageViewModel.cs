@@ -34,6 +34,9 @@ namespace Equality.ViewModels
 
         public override string Title => "Восстановление пароля";
 
+        public string ImagePath { get; set; } = "Resources/RestorePassword.png";
+
+
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();

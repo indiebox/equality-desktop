@@ -6,7 +6,6 @@ namespace Equality.ViewModels.Design
     {
         public DesignLoginPageViewModel() : base(null)
         {
-            Title = "Вход";
         }
     }
 }
