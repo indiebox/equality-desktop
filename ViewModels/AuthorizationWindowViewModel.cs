@@ -1,18 +1,22 @@
 ﻿using System.Threading.Tasks;
 
 using Catel.MVVM;
+using Catel.Services;
 
 namespace Equality.ViewModels
 {
     public class AuthorizationWindowViewModel : ViewModelBase
     {
-        public string ActivePage { get; set; }
-        public AuthorizationWindowViewModel(/* dependency injection here */)
+        protected INavigationService NavigationService;
+
+        public AuthorizationWindowViewModel(INavigationService service)
         {
-            ActivePage = "/Views/AuthorizationPage.xaml";
+            NavigationService = service;
+
+            NavigationService.Navigate<LoginPageViewModel>();
         }
 
-        // public override string Title { get { return "SUA"; } }
+        public override string Title => "Equality";
 
         // TODO: Register models with the vmpropmodel codesnippet
         // TODO: Register view model properties with the vmprop or vmpropviewmodeltomodel codesnippets
