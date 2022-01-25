@@ -18,10 +18,6 @@ namespace Equality.ViewModels
 
         public override string Title => "Equality";
 
-        // TODO: Register models with the vmpropmodel codesnippet
-        // TODO: Register view model properties with the vmprop or vmpropviewmodeltomodel codesnippets
-        // TODO: Register commands with the vmcommand or vmcommandwithcanexecute codesnippets
-
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();

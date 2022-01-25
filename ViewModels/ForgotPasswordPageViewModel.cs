@@ -12,11 +12,13 @@ namespace Equality.ViewModels
 
         public ForgotPasswordPageViewModel(INavigationService service)
         {
+            NavigationService = service;
+
             OpenLoginPage = new Command(OnOpenLoginPageExecute);
             OpenResetPasswordPage = new Command(OnOpenResetPasswordPageExecute);
-            NavigationService = service;
         }
 
+        public override string Title => "Восстановление пароля";
 
         public Command OpenResetPasswordPage { get; private set; }
 
@@ -31,11 +33,6 @@ namespace Equality.ViewModels
         {
             NavigationService.Navigate<LoginPageViewModel>();
         }
-
-        public override string Title => "Восстановление пароля";
-
-        public string ImagePath { get; set; } = "Resources/RestorePassword.png";
-
 
         protected override async Task InitializeAsync()
         {
