@@ -31,16 +31,17 @@ namespace Equality.Models
         public string Email { get; set; }
         public string Password { get; set; }
 
-        private static async Task<string> Request(string url, string method, Dictionary<string, string> Params, string accept = "application/json")
+        private static async Task<string> Request(string url, Dictionary<string, string> @params, string accept = "application/json")
         {
             HttpClient client = new();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(accept));
-            string result = "";
+            string result;
             try {
-                string strParams = JsonConvert.SerializeObject(Params);
+                string strParams = JsonConvert.SerializeObject(@params);
+                Debug.Print(strParams);
                 HttpContent content = new StringContent(strParams, Encoding.UTF8, accept);
 
-                var response = await client.PostAsync(url, content);
+                HttpResponseMessage response = await client.PostAsync(url, content);
                 result = await response.Content.ReadAsStringAsync();
 
             } catch (HttpRequestException e) {
@@ -55,7 +56,7 @@ namespace Equality.Models
             Params.Add("email", email);
             Params.Add("password", password.ToString());
             Params.Add("device_name", deviceName);
-            return await Request("http://equality/api/v1/login", "POST", Params, "application/json");
+            return await Request("http://equality/api/v1/login", Params, "application/json");
         }
     }
 }
