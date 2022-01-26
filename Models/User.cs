@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -30,7 +32,7 @@ namespace Equality.Models
         //    Console.Write(msg);
         //}
 
-        private static async Task<int> Request(string url, string method, string data, string headers = "Accept:application/json")
+        private static async Task<string> Request(string url, string method, Dictionary<string, string> Params, string accept = "application/json")
         {
             try {
                 //WebRequest request = WebRequest.Create(url);
@@ -51,23 +53,44 @@ namespace Equality.Models
                 //    }
                 //}
                 //response.Close();
-                int statusCode;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.Method = WebRequestMethods.Http.Head;
-                request.Accept = "application/json";
+                request.Method = method;
+                request.Accept = accept;
+                NameValueCollection outgoingQueryString = HttpUtility.ParseQueryString(String.Empty);
+                byte[] byteArray = Encoding.UTF8.GetBytes(HttpUtility.UrlEncode("email=test@mail.ru password=123456 device_name=Desktop-XXX"));
+                using (Stream dataStream = request.GetRequestStream()) {
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                }
+                request.ContentLength = byteArray.Length;
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                statusCode = (int)response.StatusCode;
+
+                string responseText;
+                var encoding = ASCIIEncoding.ASCII;
+                using (var reader = new System.IO.StreamReader(response.GetResponseStream(), encoding)) {
+                    responseText = reader.ReadToEnd();
+                }
                 response.Close();
-                return statusCode;
+                return responseText;
 
             } catch (WebException e) {
-                return (int)((HttpWebResponse)e.Response).StatusCode;
+                string responseText;
+
+                var encoding = ASCIIEncoding.ASCII;
+                HttpWebResponse response = (HttpWebResponse)e.Response;
+                using (var reader = new System.IO.StreamReader(response.GetResponseStream(), encoding)) {
+                    responseText = reader.ReadToEnd();
+                }
+                return responseText;
             }
         }
 
-        public static async Task<int> Login(string email, string password, string deviceName)
+        public static async Task<string> Login(string email, SecureString password, string deviceName)
         {
-            return await Request("http://equality/api/v1/login", "POST", string.Format("email={0} password={1} device_name={2}", email, password, deviceName), "Accept:application/json");
+            Dictionary<string, string> Params = new Dictionary<string, string>();
+            Params.Add("email", email);
+            Params.Add("password", password.ToString());
+            Params.Add("device_name", deviceName);
+            return await Request("http://equality/api/v1/login", "POST", Params, "Accept:application/json");
         }
     }
 }

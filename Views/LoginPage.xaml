@@ -94,16 +94,15 @@
                         </Button>
                     </DockPanel>
 
-                    <PasswordBox ff:PasswordHelper.Attach="True"
-                                 ff:PasswordHelper.Password="{Binding Path=Password}"
-                                 Name="Password"
+                    <PasswordBox Name="Password"
                                  Style="{StaticResource MaterialDesignFilledPasswordBox}"
                                  VerticalAlignment="Top"
                                  materialDesign:HintAssist.Hint="Введите пароль"
                                  materialDesign:HintAssist.IsFloating="False"
                                  Margin="10,0,10,25"
                                  FontSize="16"
-                                 Cursor="IBeam" />
+                                 Cursor="IBeam"
+                                 PasswordChanged="Password_PasswordChanged" />
                 </StackPanel>
 
                 <CheckBox FontSize="16"

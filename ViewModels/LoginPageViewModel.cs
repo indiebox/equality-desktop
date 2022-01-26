@@ -1,5 +1,8 @@
 ﻿using System.Diagnostics;
+using System.Security;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 
 using Catel.MVVM;
 using Catel.Services;
@@ -23,14 +26,13 @@ namespace Equality.ViewModels
         public override string Title => "Вход";
 
         public string Email { get; set; }
-        public string Password { get; set; }
-
+        public SecureString Password { private get; set; }
 
         public TaskCommand Login { get; private set; }
 
         private async Task OnLoginExecuteAsync()
         {
-            int statusCode = await User.Login(Email, Password, "");
+            string statusCode = await User.Login(Email, Password, System.Environment.MachineName);
             Debug.WriteLine(statusCode);
         }
 
