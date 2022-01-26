@@ -1,7 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
 
 using Catel.MVVM;
 using Catel.Services;
+
+using Equality.Models;
 
 namespace Equality.ViewModels
 {
@@ -14,9 +17,22 @@ namespace Equality.ViewModels
             NavigationService = service;
 
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
+            Login = new TaskCommand(OnLoginExecuteAsync);
         }
 
         public override string Title => "Вход";
+
+        public string Email { get; set; }
+        public string Password { get; set; }
+
+
+        public TaskCommand Login { get; private set; }
+
+        private async Task OnLoginExecuteAsync()
+        {
+            int statusCode = await User.Login(Email, Password, "");
+            Debug.WriteLine(statusCode);
+        }
 
         public Command OpenForgotPassword { get; private set; }
 

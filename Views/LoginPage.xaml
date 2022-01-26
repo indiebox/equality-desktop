@@ -73,7 +73,8 @@
                              materialDesign:HintAssist.Hint="Введите адрес эл. почты"
                              materialDesign:HintAssist.IsFloating="False"
                              Margin="10,0,10,25"
-                             FontSize="16" />
+                             FontSize="16"
+                             Text="{Binding Email}" />
                 </StackPanel>
 
                 <StackPanel Grid.Row="2">
@@ -93,13 +94,16 @@
                         </Button>
                     </DockPanel>
 
-                    <PasswordBox Name="Password"
+                    <PasswordBox ff:PasswordHelper.Attach="True"
+                                 ff:PasswordHelper.Password="{Binding Path=Password}"
+                                 Name="Password"
                                  Style="{StaticResource MaterialDesignFilledPasswordBox}"
                                  VerticalAlignment="Top"
                                  materialDesign:HintAssist.Hint="Введите пароль"
                                  materialDesign:HintAssist.IsFloating="False"
                                  Margin="10,0,10,25"
-                                 FontSize="16" />
+                                 FontSize="16"
+                                 Cursor="IBeam" />
                 </StackPanel>
 
                 <CheckBox FontSize="16"
@@ -110,7 +114,8 @@
                           Margin="10,0,10,25"
                           VerticalAlignment="Center"
                           HorizontalAlignment="Stretch" />
-                <Button Grid.Row="4"
+                <Button Command="{Binding Login}"
+                        Grid.Row="4"
                         Margin="10,0,10,10"
                         Grid.Column="0"
                         Content="Войти"
