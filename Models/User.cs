@@ -50,11 +50,11 @@ namespace Equality.Models
             return result;
         }
 
-        public static async Task<string> Login(string email, SecureString password, string deviceName)
+        public static async Task<string> Login(string email, string password, string deviceName)
         {
             Dictionary<string, string> Params = new Dictionary<string, string>();
             Params.Add("email", email);
-            Params.Add("password", password.ToString());
+            Params.Add("password", password);
             Params.Add("device_name", deviceName);
             return await Request("http://equality/api/v1/login", Params, "application/json");
         }

@@ -26,7 +26,7 @@ namespace Equality.ViewModels
         public override string Title => "Вход";
 
         public string Email { get; set; }
-        public SecureString Password { private get; set; }
+        public string Password { private get; set; }
 
         public TaskCommand Login { get; private set; }
 
