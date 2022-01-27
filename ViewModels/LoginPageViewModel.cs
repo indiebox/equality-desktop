@@ -39,7 +39,8 @@ namespace Equality.ViewModels
             if (statusTextJson.ContainsKey("data")) {
                 Debug.WriteLine("Succes");
             } else {
-                Debug.WriteLine(statusText);
+                string message = (string)statusTextJson.GetValue("message");
+                Debug.WriteLine(message);
             }
         }
 
