@@ -9,6 +9,8 @@ using Catel.Services;
 
 using Equality.Models;
 
+using Newtonsoft.Json.Linq;
+
 namespace Equality.ViewModels
 {
     public class LoginPageViewModel : ViewModelBase
@@ -32,8 +34,13 @@ namespace Equality.ViewModels
 
         private async Task OnLoginExecuteAsync()
         {
-            string statusCode = await User.Login(Email, Password, System.Environment.MachineName);
-            Debug.WriteLine(statusCode);
+            string statusText = await User.Login(Email, Password, System.Environment.MachineName);
+            JObject statusTextJson = JObject.Parse(statusText);
+            if (statusTextJson.ContainsKey("data")) {
+                Debug.WriteLine("Succes");
+            } else {
+                Debug.WriteLine(statusText);
+            }
         }
 
         public Command OpenForgotPassword { get; private set; }
