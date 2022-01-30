@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Net.Http;
 using System.Security;
 using System.Threading.Tasks;
 using System.Windows;
@@ -34,22 +35,20 @@ namespace Equality.ViewModels
 
         private async Task OnLoginExecuteAsync()
         {
-            string statusText = await User.Login(Email, Password, System.Environment.MachineName);
-            JObject statusTextJson = JObject.Parse(statusText);
-            if (statusTextJson.ContainsKey("data")) {
-                Debug.WriteLine("Succes");
-            } else {
-                string message = (string)statusTextJson.GetValue("message");
-                Debug.WriteLine(message);
+            string message = "";
+            try {
+                string statusText = await User.Login(Email, Password, System.Environment.MachineName);
+                JObject statusTextJson = JObject.Parse(statusText);
+                message = statusTextJson.ToString();
+            } catch (Models.ValidationError e) {
+                JObject errors = e.Errors;
+                Debug.WriteLine(errors["email"]);
             }
         }
 
         public Command OpenForgotPassword { get; private set; }
 
-        private void OnOpenForgotPasswordExecute()
-        {
-            NavigationService.Navigate<ForgotPasswordPageViewModel>();
-        }
+        private void OnOpenForgotPasswordExecute() => NavigationService.Navigate<ForgotPasswordPageViewModel>();
 
         protected override async Task InitializeAsync()
         {

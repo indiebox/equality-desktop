@@ -1,23 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
-using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
-using System.Web;
 
 using Catel.Data;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Equality.Models
 {
+    public class ValidationError : Exception
+    {
+        public readonly int StatusCode;
+        public readonly JObject Errors;
+        public ValidationError(int statusCode, string statusText) : base(statusText)
+        {
+            StatusCode = statusCode;
+            JObject statusTextJson = JObject.Parse(statusText);
+            Errors = statusTextJson["errors"] as JObject;
+        }
+    }
     class User : ModelBase
     {
         public User(string name, string email, string password)
@@ -36,18 +42,20 @@ namespace Equality.Models
             HttpClient client = new();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(accept));
             string result;
-            try {
-                string strParams = JsonConvert.SerializeObject(@params);
-                Debug.Print(strParams);
-                HttpContent content = new StringContent(strParams, Encoding.UTF8, accept);
+            string strParams = JsonConvert.SerializeObject(@params);
+            Debug.Print(strParams);
+            HttpContent content = new StringContent(strParams, Encoding.UTF8, accept);
 
-                HttpResponseMessage response = await client.PostAsync(url, content);
-                result = await response.Content.ReadAsStringAsync();
-
-            } catch (HttpRequestException e) {
-                result = e.Message.ToString();
+            HttpResponseMessage response = await client.PostAsync(url, content);
+            result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode) {
+                return result;
+            } else if ((int)response.StatusCode == 422) {
+                throw new ValidationError((int)response.StatusCode, result);
+            } else {
+                throw new Exception(result);
             }
-            return result;
+
         }
 
         public static async Task<string> Login(string email, string password, string deviceName)
