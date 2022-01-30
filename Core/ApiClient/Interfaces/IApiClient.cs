@@ -1,29 +1,106 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Equality.Core.ApiClient.Interfaces
 {
     public interface IApiClient
     {
+        /// <summary>
+        /// Get or sets the HttpClient which perform requests.
+        /// </summary>
+        public HttpClient Original { get; set; }
+
+        /// <inheritdoc cref="GetAsync(Uri)"/>
         public Task<ApiResponseMessage> GetAsync(string requestUri);
 
+        /// <summary>
+        /// Send a GET request to the specified Uri as an asynchronous operation.
+        /// </summary>
+        /// 
+        /// <param name="requestUri">The Uri the request is sent to.</param>
+        /// 
+        /// <inheritdoc cref="DeleteAsync(Uri)"/>
         public Task<ApiResponseMessage> GetAsync(Uri requestUri);
 
+        /// <inheritdoc cref="PostAsync(Uri, Dictionary{string, object})"/>
+        public Task<ApiResponseMessage> PostAsync(string requestUri);
+
+        /// <inheritdoc cref="PostAsync(Uri, Dictionary{string, object})"/>
+        public Task<ApiResponseMessage> PostAsync(Uri requestUri);
+
+        /// <inheritdoc cref="PostAsync(Uri, Dictionary{string, object})"></inheritdoc>
         public Task<ApiResponseMessage> PostAsync(string requestUri, Dictionary<string, object> content);
 
+        /// <summary>
+        /// Send a POST request to the specified Uri as an asynchronous operation.
+        /// </summary>
+        /// 
+        /// <param name="requestUri">The Uri the request is sent to.</param>
+        /// <param name="content">The Dictionary of HttpContent sent to the server.</param>
+        /// 
+        /// <inheritdoc cref="DeleteAsync(Uri)"/>
         public Task<ApiResponseMessage> PostAsync(Uri requestUri, Dictionary<string, object> content);
 
+        /// <inheritdoc cref="PatchAsync(Uri, Dictionary{string, object})"/>
+        public Task<ApiResponseMessage> PatchAsync(string requestUri);
+
+        /// <inheritdoc cref="PatchAsync(Uri, Dictionary{string, object})"></inheritdoc>
+        public Task<ApiResponseMessage> PatchAsync(Uri requestUri);
+
+        /// <inheritdoc cref="PatchAsync(Uri, Dictionary{string, object})"></inheritdoc>
         public Task<ApiResponseMessage> PatchAsync(string requestUri, Dictionary<string, object> content);
 
+        /// <summary>
+        /// Send a PATCH request to the specified Uri as an asynchronous operation.
+        /// </summary>
+        /// 
+        /// <param name="requestUri">The Uri the request is sent to.</param>
+        /// <param name="content">The Dictionary of HttpContent sent to the server.</param>
+        /// 
+        /// <inheritdoc cref="DeleteAsync(Uri)"/>
         public Task<ApiResponseMessage> PatchAsync(Uri requestUri, Dictionary<string, object> content);
 
+        /// <inheritdoc cref="PutAsync(Uri, Dictionary{string, object})"/>
+        public Task<ApiResponseMessage> PutAsync(string requestUri);
+
+        /// <inheritdoc cref="PutAsync(Uri, Dictionary{string, object})"/>
+        public Task<ApiResponseMessage> PutAsync(Uri requestUri);
+
+        /// <inheritdoc cref="PutAsync(Uri, Dictionary{string, object})"/>
         public Task<ApiResponseMessage> PutAsync(string requestUri, Dictionary<string, object> content);
 
+        /// <summary>
+        /// Send a PUT request to the specified Uri as an asynchronous operation.
+        /// </summary>
+        /// 
+        /// <param name="requestUri">The Uri the request is sent to.</param>
+        /// <param name="content">The Dictionary of HttpContent sent to the server.</param>
+        /// 
+        /// <inheritdoc cref="DeleteAsync(Uri)"/>
         public Task<ApiResponseMessage> PutAsync(Uri requestUri, Dictionary<string, object> content);
 
+        /// <inheritdoc cref="DeleteAsync(Uri)"/>
         public Task<ApiResponseMessage> DeleteAsync(string requestUri);
 
+        /// <summary>
+        /// Send a DELETE request to the specified Uri as an asynchronous operation.
+        /// </summary>
+        /// 
+        /// <param name="requestUri">The Uri the request is sent to.</param>
+        /// 
+        /// <returns>The task object representing the asynchronous operation.</returns>
+        /// 
+        /// <exception cref="System.ArgumentNullException">The requestUri is null.</exception>
+        /// <exception cref="System.Net.Http.HttpRequestException">
+        /// The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.
+        /// </exception>
+        /// <exception cref="Exceptions.NotFoundHttpException"></exception>
+        /// <exception cref="Exceptions.ForbiddenHttpException"></exception>
+        /// <exception cref="Exceptions.TooManyRequestsHttpException"></exception>
+        /// <exception cref="Exceptions.UnauthorizedHttpException"></exception>
+        /// <exception cref="Exceptions.UnprocessableEntityHttpException"></exception>
         public Task<ApiResponseMessage> DeleteAsync(Uri requestUri);
     }
 }

@@ -6,8 +6,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-using Catel;
-
 using Equality.Core.ApiClient.Exceptions;
 using Equality.Core.ApiClient.Interfaces;
 
@@ -16,90 +14,157 @@ using Newtonsoft.Json.Linq;
 
 namespace Equality.Core.ApiClient
 {
-    internal class ApiClient : HttpClient, IApiClient
+    public class ApiClient : IApiClient
     {
+        public HttpClient Original { get; set; }
+
         public ApiClient()
         {
-            BaseAddress = new Uri("http://equality/api/v1/");
-            DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            Original = new HttpClient
+            {
+                BaseAddress = new Uri("http://equality/api/v1/")
+            };
+            Original.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public new async Task<ApiResponseMessage> GetAsync(string requestUri)
+        public ApiClient WithToken(string token)
         {
-            HttpResponseMessage response = await base.GetAsync(requestUri);
+            Original.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            return await ProccessResponseAsync(response);
+            return this;
         }
 
-        public new async Task<ApiResponseMessage> GetAsync(Uri requestUri)
+        public ApiClient WithoutToken()
         {
-            HttpResponseMessage response = await base.GetAsync(requestUri);
+            Original.DefaultRequestHeaders.Authorization = null;
 
-            return await ProccessResponseAsync(response);
+            return this;
         }
+
+        public async Task<ApiResponseMessage> GetAsync(string requestUri)
+        {
+            var response = await Original.GetAsync(SanitizeUri(requestUri));
+
+            return await ProcessResponseAsync(response);
+        }
+
+        public async Task<ApiResponseMessage> GetAsync(Uri requestUri)
+        {
+            var response = await Original.GetAsync(requestUri);
+
+            return await ProcessResponseAsync(response);
+        }
+
+        public async Task<ApiResponseMessage> PostAsync(string requestUri) => await PostAsync(requestUri, new());
 
         public async Task<ApiResponseMessage> PostAsync(string requestUri, Dictionary<string, object> content)
         {
-            Argument.IsNotNullOrWhitespace(() => requestUri);
+            var response = await Original.PostAsync(SanitizeUri(requestUri), PrepareContent(content));
 
-            HttpResponseMessage response = await PostAsync(requestUri, PrepareContent(content));
-
-            return await ProccessResponseAsync(response);
+            return await ProcessResponseAsync(response);
         }
+
+        public async Task<ApiResponseMessage> PostAsync(Uri requestUri) => await PostAsync(requestUri, new());
 
         public async Task<ApiResponseMessage> PostAsync(Uri requestUri, Dictionary<string, object> content)
         {
-            HttpResponseMessage response = await PostAsync(requestUri, PrepareContent(content));
+            var response = await Original.PostAsync(requestUri, PrepareContent(content));
 
-            return await ProccessResponseAsync(response);
+            return await ProcessResponseAsync(response);
         }
+
+        public async Task<ApiResponseMessage> PatchAsync(string requestUri) => await PatchAsync(requestUri, new());
 
         public async Task<ApiResponseMessage> PatchAsync(string requestUri, Dictionary<string, object> content)
         {
-            HttpResponseMessage response = await PatchAsync(requestUri, PrepareContent(content));
+            var response = await Original.PatchAsync(SanitizeUri(requestUri), PrepareContent(content));
 
-            return await ProccessResponseAsync(response);
+            return await ProcessResponseAsync(response);
         }
+
+        public async Task<ApiResponseMessage> PatchAsync(Uri requestUri) => await PatchAsync(requestUri, new());
 
         public async Task<ApiResponseMessage> PatchAsync(Uri requestUri, Dictionary<string, object> content)
         {
-            HttpResponseMessage response = await PatchAsync(requestUri, PrepareContent(content));
+            var response = await Original.PatchAsync(requestUri, PrepareContent(content));
 
-            return await ProccessResponseAsync(response);
+            return await ProcessResponseAsync(response);
         }
+
+        public async Task<ApiResponseMessage> PutAsync(string requestUri) => await PutAsync(requestUri, new());
 
         public async Task<ApiResponseMessage> PutAsync(string requestUri, Dictionary<string, object> content)
         {
-            HttpResponseMessage response = await PutAsync(requestUri, PrepareContent(content));
+            var response = await Original.PutAsync(SanitizeUri(requestUri), PrepareContent(content));
 
-            return await ProccessResponseAsync(response);
+            return await ProcessResponseAsync(response);
         }
+
+        public async Task<ApiResponseMessage> PutAsync(Uri requestUri) => await PutAsync(requestUri, new());
 
         public async Task<ApiResponseMessage> PutAsync(Uri requestUri, Dictionary<string, object> content)
         {
-            HttpResponseMessage response = await PutAsync(requestUri, PrepareContent(content));
+            var response = await Original.PutAsync(requestUri, PrepareContent(content));
 
-            return await ProccessResponseAsync(response);
+            return await ProcessResponseAsync(response);
         }
 
-        public new async Task<ApiResponseMessage> DeleteAsync(string requestUri)
+        public async Task<ApiResponseMessage> DeleteAsync(string requestUri)
         {
-            HttpResponseMessage response = await base.DeleteAsync(requestUri);
+            var response = await Original.DeleteAsync(SanitizeUri(requestUri));
 
-            return await ProccessResponseAsync(response);
+            return await ProcessResponseAsync(response);
         }
 
-        public new async Task<ApiResponseMessage> DeleteAsync(Uri requestUri)
+        public async Task<ApiResponseMessage> DeleteAsync(Uri requestUri)
         {
-            HttpResponseMessage response = await base.DeleteAsync(requestUri);
+            var response = await Original.DeleteAsync(requestUri);
 
-            return await ProccessResponseAsync(response);
+            return await ProcessResponseAsync(response);
         }
 
-        protected async Task<ApiResponseMessage> ProccessResponseAsync(HttpResponseMessage response)
+        /// <summary>
+        /// Sanitize Uri before request.
+        /// </summary>
+        /// 
+        /// <param name="requestUri">The Uri the request is sent to.</param>
+        /// 
+        /// <returns>Returns sanitized Uri ready for performing request.</returns>
+        protected string SanitizeUri(string requestUri)
+        {
+            return requestUri.Trim(new[] { '/' });
+        }
+
+        /// <summary>
+        /// Process the given response.
+        /// </summary>
+        /// 
+        /// <param name="response">Response from request.</param>
+        /// 
+        /// <returns>The task object representing the asynchronous operation.</returns>
+        protected async Task<ApiResponseMessage> ProcessResponseAsync(HttpResponseMessage response)
         {
             JObject responseData = JObject.Parse(await response.Content.ReadAsStringAsync());
 
+            HandleStatusCode(response, responseData);
+
+            return new ApiResponseMessage(response, responseData);
+        }
+
+        /// <summary>
+        /// Handle a status code of the request and throw specified exceptions.
+        /// </summary>
+        /// 
+        /// <param name="response">Response from request.</param>
+        /// <param name="responseData">Parsed response data.</param>
+        /// 
+        /// <exception cref="UnauthorizedHttpException"></exception>
+        /// <exception cref="ForbiddenHttpException"></exception>
+        /// <exception cref="UnprocessableEntityHttpException"></exception>
+        /// <exception cref="NotFoundHttpException"></exception>
+        /// <exception cref="TooManyRequestsHttpException"></exception>
+        protected void HandleStatusCode(HttpResponseMessage response, JObject responseData)
+        {
             switch (response.StatusCode) {
                 case HttpStatusCode.Unauthorized: {
                     if (responseData.TryGetValue("message", out JToken message)) {
@@ -108,6 +173,7 @@ namespace Equality.Core.ApiClient
 
                     throw new UnauthorizedHttpException();
                 }
+
                 case HttpStatusCode.Forbidden: {
                     if (responseData.TryGetValue("message", out JToken message)) {
                         throw new ForbiddenHttpException(message.ToString());
@@ -115,9 +181,10 @@ namespace Equality.Core.ApiClient
 
                     throw new ForbiddenHttpException();
                 }
+
                 case HttpStatusCode.UnprocessableEntity: {
-                    Dictionary<string, string[]> errors = null;
-                    string message = "";
+                    string message = "The given data was invalid.";
+                    Dictionary<string, string[]> errors = new();
 
                     if (responseData.TryGetValue("errors", out JToken rawErrors)) {
                         errors = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(rawErrors.ToString());
@@ -127,23 +194,51 @@ namespace Equality.Core.ApiClient
                         message = rawMessage.ToString();
                     }
 
-                    throw new UnprocessableEntityHttpException(errors, message);
+                    throw new UnprocessableEntityHttpException(message, errors);
                 }
+
+                case HttpStatusCode.NotFound: {
+                    if (responseData.TryGetValue("message", out JToken message)) {
+                        throw new NotFoundHttpException(message.ToString());
+                    }
+
+                    throw new NotFoundHttpException();
+                }
+
+                case HttpStatusCode.TooManyRequests: {
+                    if (responseData.TryGetValue("message", out JToken message)) {
+                        throw new TooManyRequestsHttpException(message.ToString());
+                    }
+
+                    throw new TooManyRequestsHttpException();
+                }
+
                 default:
                     break;
             }
 
             response.EnsureSuccessStatusCode();
-
-            return new ApiResponseMessage(response, responseData);
         }
 
+        /// <summary>
+        /// Prepare content for request.
+        /// </summary>
+        /// 
+        /// <param name="data">The content the request will send with.</param>
+        /// 
+        /// <remarks>
+        /// If value of the Dictionary is a <see langword="string"/>, than it will be converted to <see cref="StringContent"/>.
+        /// <code></code>
+        /// If value of the Dictionary is any type of <see cref="HttpContent" />, than it will remain unchanged.
+        /// <code></code>
+        /// If value of the Dictionary is not a <see langword="string"/> or <see cref="HttpContent" />, than <c>ArgumentException</c> will be thrown.
+        /// </remarks>
+        /// 
+        /// <returns>Content with type of <see cref="MultipartFormDataContent"/> that ready for request.</returns>
+        /// 
+        /// <exception cref="ArgumentException"></exception>
         protected MultipartFormDataContent PrepareContent(Dictionary<string, object> data)
         {
-            if (data == null) {
-                return new MultipartFormDataContent();
-            }
-
             MultipartFormDataContent preparedContent = new();
 
             foreach (KeyValuePair<string, object> value in data) {

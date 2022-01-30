@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 
 namespace Equality.Core.ApiClient.Exceptions
 {
@@ -13,12 +12,12 @@ namespace Equality.Core.ApiClient.Exceptions
         {
         }
 
-        public UnprocessableEntityHttpException(Dictionary<string, string[]> errors, string message) : base(message)
+        public UnprocessableEntityHttpException(string message, Dictionary<string, string[]> errors) : base(message)
         {
             Errors = errors;
         }
 
-        public UnprocessableEntityHttpException(Dictionary<string, string[]> errors, string message, Exception inner) : base(message, inner)
+        public UnprocessableEntityHttpException(string message, Dictionary<string, string[]> errors, Exception inner) : base(message, inner)
         {
             Errors = errors;
         }
