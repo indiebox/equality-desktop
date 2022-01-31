@@ -119,6 +119,17 @@ namespace Equality.Core.ApiClient
             return await ProcessResponseAsync(response);
         }
 
+        public Uri BuildUri(string requestUri, Dictionary<string, string> query)
+        {
+            var queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
+
+            foreach (var item in query) {
+                queryString.Add(item.Key, item.Value);
+            }
+
+            return new Uri(HttpClient.BaseAddress.AbsoluteUri + SanitizeUri(requestUri) + "?" + queryString.ToString());
+        }
+
         protected async Task<ApiResponseMessage> SendPostRequest(string requestUri, Dictionary<string, object> content)
         {
             var response = await HttpClient.PostAsync(SanitizeUri(requestUri), PrepareContent(content));

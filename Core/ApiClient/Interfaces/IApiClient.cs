@@ -102,5 +102,23 @@ namespace Equality.Core.ApiClient.Interfaces
         /// <exception cref="Exceptions.UnauthorizedHttpException"></exception>
         /// <exception cref="Exceptions.UnprocessableEntityHttpException"></exception>
         public Task<ApiResponseMessage> DeleteAsync(Uri requestUri);
+
+        /// <summary>
+        /// Build the Uri to the API with query parameters.
+        /// </summary>
+        /// 
+        /// <param name="requestUri">Uri.</param>
+        /// <param name="query">Uri query parameters.</param>
+        /// 
+        /// <returns>Uri to the api with parsed query parameters.</returns>
+        /// 
+        /// <example>
+        /// For example:
+        /// <code>
+        /// // Lines below return URI with path: path.to.api/login?filter=accepted
+        /// var uri = ApiClient.BuildUri("login", new() { {"filter", "accepted" } });
+        /// </code>
+        /// </example>
+        public Uri BuildUri(string requestUri, Dictionary<string, string> query);
     }
 }
