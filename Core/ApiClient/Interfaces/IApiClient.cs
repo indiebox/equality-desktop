@@ -10,7 +10,7 @@ namespace Equality.Core.ApiClient.Interfaces
         /// <summary>
         /// Get or sets the HttpClient which perform requests.
         /// </summary>
-        public HttpClient Original { get; set; }
+        public HttpClient HttpClient { get; set; }
 
         /// <inheritdoc cref="GetAsync(Uri)"/>
         public Task<ApiResponseMessage> GetAsync(string requestUri);

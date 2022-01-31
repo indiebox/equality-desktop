@@ -16,41 +16,41 @@ namespace Equality.Core.ApiClient
 {
     public class ApiClient : IApiClient
     {
-        public HttpClient Original { get; set; }
+        public HttpClient HttpClient { get; set; }
 
         public ApiClient()
         {
-            Original = new HttpClient
+            HttpClient = new HttpClient
             {
                 BaseAddress = new Uri("http://equality/api/v1/")
             };
-            Original.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         public ApiClient WithToken(string token)
         {
-            Original.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             return this;
         }
 
         public ApiClient WithoutToken()
         {
-            Original.DefaultRequestHeaders.Authorization = null;
+            HttpClient.DefaultRequestHeaders.Authorization = null;
 
             return this;
         }
 
         public async Task<ApiResponseMessage> GetAsync(string requestUri)
         {
-            var response = await Original.GetAsync(SanitizeUri(requestUri));
+            var response = await HttpClient.GetAsync(SanitizeUri(requestUri));
 
             return await ProcessResponseAsync(response);
         }
 
         public async Task<ApiResponseMessage> GetAsync(Uri requestUri)
         {
-            var response = await Original.GetAsync(requestUri);
+            var response = await HttpClient.GetAsync(requestUri);
 
             return await ProcessResponseAsync(response);
         }
@@ -59,68 +59,94 @@ namespace Equality.Core.ApiClient
 
         public async Task<ApiResponseMessage> PostAsync(string requestUri, Dictionary<string, object> content)
         {
-            var response = await Original.PostAsync(SanitizeUri(requestUri), PrepareContent(content));
-
-            return await ProcessResponseAsync(response);
+            return await SendPostRequest(requestUri, content);
         }
 
         public async Task<ApiResponseMessage> PostAsync(Uri requestUri) => await PostAsync(requestUri, new());
 
         public async Task<ApiResponseMessage> PostAsync(Uri requestUri, Dictionary<string, object> content)
         {
-            var response = await Original.PostAsync(requestUri, PrepareContent(content));
-
-            return await ProcessResponseAsync(response);
+            return await SendPostRequest(requestUri, content);
         }
 
         public async Task<ApiResponseMessage> PatchAsync(string requestUri) => await PatchAsync(requestUri, new());
 
         public async Task<ApiResponseMessage> PatchAsync(string requestUri, Dictionary<string, object> content)
         {
-            var response = await Original.PatchAsync(SanitizeUri(requestUri), PrepareContent(content));
+            SpoofRequestMethod(content, HttpRequestMethod.Patch);
 
-            return await ProcessResponseAsync(response);
+            return await SendPostRequest(requestUri, content);
         }
 
         public async Task<ApiResponseMessage> PatchAsync(Uri requestUri) => await PatchAsync(requestUri, new());
 
         public async Task<ApiResponseMessage> PatchAsync(Uri requestUri, Dictionary<string, object> content)
         {
-            var response = await Original.PatchAsync(requestUri, PrepareContent(content));
+            SpoofRequestMethod(content, HttpRequestMethod.Patch);
 
-            return await ProcessResponseAsync(response);
+            return await SendPostRequest(requestUri, content);
         }
 
         public async Task<ApiResponseMessage> PutAsync(string requestUri) => await PutAsync(requestUri, new());
 
         public async Task<ApiResponseMessage> PutAsync(string requestUri, Dictionary<string, object> content)
         {
-            var response = await Original.PutAsync(SanitizeUri(requestUri), PrepareContent(content));
+            SpoofRequestMethod(content, HttpRequestMethod.Put);
 
-            return await ProcessResponseAsync(response);
+            return await SendPostRequest(requestUri, content);
         }
 
         public async Task<ApiResponseMessage> PutAsync(Uri requestUri) => await PutAsync(requestUri, new());
 
         public async Task<ApiResponseMessage> PutAsync(Uri requestUri, Dictionary<string, object> content)
         {
-            var response = await Original.PutAsync(requestUri, PrepareContent(content));
+            SpoofRequestMethod(content, HttpRequestMethod.Put);
 
-            return await ProcessResponseAsync(response);
+            return await SendPostRequest(requestUri, content);
         }
 
         public async Task<ApiResponseMessage> DeleteAsync(string requestUri)
         {
-            var response = await Original.DeleteAsync(SanitizeUri(requestUri));
+            var response = await HttpClient.DeleteAsync(SanitizeUri(requestUri));
 
             return await ProcessResponseAsync(response);
         }
 
         public async Task<ApiResponseMessage> DeleteAsync(Uri requestUri)
         {
-            var response = await Original.DeleteAsync(requestUri);
+            var response = await HttpClient.DeleteAsync(requestUri);
 
             return await ProcessResponseAsync(response);
+        }
+
+        protected async Task<ApiResponseMessage> SendPostRequest(string requestUri, Dictionary<string, object> content)
+        {
+            var response = await HttpClient.PostAsync(SanitizeUri(requestUri), PrepareContent(content));
+
+            return await ProcessResponseAsync(response);
+        }
+
+        protected async Task<ApiResponseMessage> SendPostRequest(Uri requestUri, Dictionary<string, object> content)
+        {
+            var response = await HttpClient.PostAsync(requestUri, PrepareContent(content));
+
+            return await ProcessResponseAsync(response);
+        }
+
+        /// <summary>
+        /// Spoof the request method to the specified.
+        /// </summary>
+        /// 
+        /// <param name="content">The Dictionary of HttpContent sent to the server.</param>
+        /// <param name="method">Request method.</param>
+        /// <remarks>
+        /// About method spoofing:
+        /// <see href="https://stackoverflow.com/questions/50691938/patch-and-put-request-does-not-working-with-form-data">Stack Overflow thread</see>
+        /// </remarks>
+        protected void SpoofRequestMethod(Dictionary<string, object> content, string method)
+        {
+            content.Remove("_method");
+            content.Add("_method", method);
         }
 
         /// <summary>
