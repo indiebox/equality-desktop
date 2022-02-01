@@ -32,11 +32,11 @@ namespace Equality.ViewModels
 
         public override string Title => "Вход";
 
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public string EmailErrorText { get; set; } = string.Empty;
-        public string PasswordErrorText { get; set; } = string.Empty;
-        public string CredintialsErrorText { get; set; } = string.Empty;
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string EmailErrorText { get; set; }
+        public string PasswordErrorText { get; set; }
+        public string CredintialsErrorText { get; set; }
 
         public TaskCommand Login { get; private set; }
 
