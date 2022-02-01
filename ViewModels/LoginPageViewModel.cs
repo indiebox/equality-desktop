@@ -52,14 +52,10 @@ namespace Equality.ViewModels
                 Debug.WriteLine(p.Content.ToString());
 
             } catch (UnprocessableEntityHttpException e) {
-                Dictionary<string, string[]> errors = e.Errors;
-                if (errors.ContainsKey("credentials")) {
-                    CredintialsErrorText = errors["credentials"][0];
-                } else if (errors.ContainsKey("email")) {
-                    EmailErrorText = errors["email"][0];
-                } else if (errors.ContainsKey("password")) {
-                    EmailErrorText = errors["password"][0];
-                }
+                var errors = e.Errors;
+                CredintialsErrorText = errors.ContainsKey("credentials") ? errors["credentials"][0] : "";
+                EmailErrorText = errors.ContainsKey("email") ? errors["email"][0] : "";
+                PasswordErrorText = errors.ContainsKey("password") ? errors["password"][0] : "";
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
