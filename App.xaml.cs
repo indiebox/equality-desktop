@@ -1,6 +1,10 @@
 ﻿using System.Windows;
 
+using Catel.IoC;
 using Catel.Logging;
+
+using Equality.Core.ApiClient;
+using Equality.Core.ApiClient.Interfaces;
 
 namespace Equality
 {
@@ -28,10 +32,23 @@ namespace Equality
             // Catel.Windows.Controls.UserControl.DefaultCreateWarningAndErrorValidatorForViewModelValue = false;
             // Catel.Windows.Controls.UserControl.DefaultSkipSearchingForInfoBarMessageControlValue = true;
 
-            // TODO: Register custom types in the ServiceLocator
-            //Log.Info("Registering custom types");
-            //var serviceLocator = ServiceLocator.Default;
-            //serviceLocator.RegisterType<IMyInterface, IMyClass>();
+            /*
+            |--------------------------------------------------------------------------
+            | Register types
+            |--------------------------------------------------------------------------
+            |
+            | Here we register custom types in the ServiceLocator for Dependency Injection.
+            | 
+            | For singleton registration we should use serviceLocator.RegisterInstance<>(instance);
+            |
+            */
+
+            Log.Info("Registering custom types");
+
+            var serviceLocator = ServiceLocator.Default;
+
+            var apiClient = new ApiClient();
+            serviceLocator.RegisterInstance<IApiClient>(apiClient);
 
             // To auto-forward styles, check out Orchestra (see https://github.com/wildgums/orchestra)
             // StyleHelper.CreateStyleForwardersForDefaultStyles();
