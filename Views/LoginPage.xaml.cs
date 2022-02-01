@@ -14,11 +14,11 @@ namespace Equality.Views
 
         private void Password_PasswordChanged(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (this.DataContext
+            if (DataContext
                 == null) {
                 return;
             }
-            ((dynamic)this.DataContext).Password = ((PasswordBox)sender).Password;
+            ((dynamic)DataContext).Password = ((PasswordBox)sender).Password;
         }
     }
 }

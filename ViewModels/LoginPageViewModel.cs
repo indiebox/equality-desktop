@@ -18,10 +18,12 @@ namespace Equality.ViewModels
     public class LoginPageViewModel : ViewModelBase
     {
         protected INavigationService NavigationService;
+        protected ApiClient ApiClient;
 
-        public LoginPageViewModel(INavigationService service)
+        public LoginPageViewModel(INavigationService service, ApiClient apiClient)
         {
             NavigationService = service;
+            ApiClient = apiClient;
 
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
             Login = new TaskCommand(OnLoginExecuteAsync);
@@ -47,8 +49,7 @@ namespace Equality.ViewModels
             };
 
             try {
-                ApiClient apiClient = new();
-                ApiResponseMessage p = await apiClient.PostAsync("login", data);
+                ApiResponseMessage p = await ApiClient.PostAsync("login", data);
                 Debug.WriteLine(p.Content.ToString());
 
             } catch (UnprocessableEntityHttpException e) {
