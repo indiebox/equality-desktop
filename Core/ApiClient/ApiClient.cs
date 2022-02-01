@@ -127,7 +127,12 @@ namespace Equality.Core.ApiClient
                 queryString.Add(item.Key, item.Value);
             }
 
-            return new Uri(HttpClient.BaseAddress.AbsoluteUri + SanitizeUri(requestUri) + "?" + queryString.ToString());
+            var uri = new StringBuilder(HttpClient.BaseAddress.AbsoluteUri);
+            uri.Append(SanitizeUri(requestUri))
+                .Append("?")
+                .Append(queryString.ToString());
+
+            return new Uri(uri.ToString());
         }
 
         protected async Task<ApiResponseMessage> SendPostRequest(string requestUri, Dictionary<string, object> content)
@@ -264,16 +269,18 @@ namespace Equality.Core.ApiClient
         /// <param name="data">The content the request will send with.</param>
         /// 
         /// <remarks>
+        /// If value of the Dictionary is a <see langword="null"/>, than it will not be added to request.
+        /// <code></code>
         /// If value of the Dictionary is a <see langword="string"/>, than it will be converted to <see cref="StringContent"/>.
         /// <code></code>
         /// If value of the Dictionary is any type of <see cref="HttpContent" />, than it will remain unchanged.
         /// <code></code>
-        /// If value of the Dictionary is not a <see langword="string"/> or <see cref="HttpContent" />, than <c>ArgumentException</c> will be thrown.
+        /// In other case <see cref="InvalidHttpContent" /> will be thrown.
         /// </remarks>
         /// 
         /// <returns>Content with type of <see cref="MultipartFormDataContent"/> that ready for request.</returns>
         /// 
-        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="InvalidHttpContent"></exception>
         protected MultipartFormDataContent PrepareContent(Dictionary<string, object> data)
         {
             MultipartFormDataContent preparedContent = new();
@@ -281,12 +288,14 @@ namespace Equality.Core.ApiClient
             foreach (KeyValuePair<string, object> value in data) {
                 HttpContent content;
 
-                if (value.Value is string stringValue) {
+                if (value.Value is null) {
+                    continue;
+                } else if (value.Value is string stringValue) {
                     content = new StringContent(stringValue, Encoding.UTF8);
                 } else if (value.Value is HttpContent contentValue) {
                     content = contentValue;
                 } else {
-                    throw new ArgumentException("One of the content values of request is not supported or not valid.");
+                    throw new InvalidHttpContent($"Value \"{value.Value}\" of type \"{value.Value.GetType()}\" is not supported to send with request.");
                 }
 
                 preparedContent.Add(content, value.Key);
