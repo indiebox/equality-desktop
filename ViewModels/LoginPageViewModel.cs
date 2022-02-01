@@ -54,7 +54,7 @@ namespace Equality.ViewModels
             } catch (UnprocessableEntityHttpException e) {
                 Dictionary<string, string[]> errors = e.Errors;
                 if (errors.ContainsKey("credentials")) {
-
+                    CredintialsErrorText = errors["credentials"][0];
                 } else if (errors.ContainsKey("email")) {
                     EmailErrorText = errors["email"][0];
                 } else if (errors.ContainsKey("password")) {

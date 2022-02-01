@@ -67,7 +67,12 @@
                 <TextBlock Height="52"
                            Padding="10,0,10,0"
                            Grid.Row="1"
-                           Text="{Binding CredintialsErrorText}" />
+                           Text="{Binding CredintialsErrorText}"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Center"
+                           Foreground="Red"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center" />
                 <StackPanel Grid.Row="2">
                     <Label Margin="10,0,10,0"
                            Target="{Binding ElementName=Email}"
