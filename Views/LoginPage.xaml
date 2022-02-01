@@ -86,9 +86,11 @@
                              FontSize="16"
                              Text="{Binding Email}">
                     </TextBox>
-                    <TextBlock Margin="10,2,10,23"
+                    <TextBlock Margin="10,2,10,0"
+                               Height="23"
                                Foreground="Red"
-                               Text="{Binding EmailErrorText}" />
+                               Text="{Binding EmailErrorText}"
+                               TextWrapping="Wrap" />
                 </StackPanel>
 
                 <StackPanel Grid.Row="3">
@@ -117,9 +119,11 @@
                                  FontSize="16"
                                  Cursor="IBeam"
                                  PasswordChanged="Password_PasswordChanged" />
-                    <TextBlock Margin="10,2,10,23"
+                    <TextBlock Margin="10,2,10,0"
+                               Height="23"
                                Foreground="Red"
-                               Text="{Binding PasswordErrorText}" />
+                               Text="{Binding PasswordErrorText}"
+                               TextWrapping="Wrap" />
                 </StackPanel>
 
                 <CheckBox FontSize="16"
