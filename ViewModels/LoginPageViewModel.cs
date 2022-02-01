@@ -48,7 +48,7 @@ namespace Equality.ViewModels
 
             try {
                 ApiClient apiClient = new();
-                ApiResponseMessage p = await apiClient.PostAsync("http://equality/api/v1/login", data);
+                ApiResponseMessage p = await apiClient.PostAsync("login", data);
                 Debug.WriteLine(p.Content.ToString());
 
             } catch (UnprocessableEntityHttpException e) {
