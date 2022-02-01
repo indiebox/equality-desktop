@@ -44,7 +44,8 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="1"
-                  UseLayoutRounding="False">
+                  UseLayoutRounding="False"
+                  Cursor="IBeam">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -73,8 +74,16 @@
                              materialDesign:HintAssist.Hint="Введите адрес эл. почты"
                              materialDesign:HintAssist.IsFloating="False"
                              Margin="10,0,10,25"
-                             FontSize="16"
-                             Text="{Binding Email}" />
+                             FontSize="16">
+                        <TextBox.Text>
+                            <Binding Path="Email"
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <ExceptionValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
                 </StackPanel>
 
                 <StackPanel Grid.Row="2">

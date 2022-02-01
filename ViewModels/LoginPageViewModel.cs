@@ -1,9 +1,6 @@
-﻿using System.Diagnostics;
-using System.Net.Http;
-using System.Security;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 
 using Catel.MVVM;
 using Catel.Services;
@@ -40,9 +37,17 @@ namespace Equality.ViewModels
                 string statusText = await User.Login(Email, Password, System.Environment.MachineName);
                 JObject statusTextJson = JObject.Parse(statusText);
                 message = statusTextJson.ToString();
-            } catch (Models.ValidationError e) {
+            } catch (ValidationError e) {
                 JObject errors = e.Errors;
-                Debug.WriteLine(errors["email"]);
+                if (errors.ContainsKey("credentials")) {
+
+                }
+                if (errors.ContainsKey("email")) {
+
+                }
+                if (errors.ContainsKey("password")) {
+
+                }
             }
         }
 
