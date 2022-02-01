@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.MVVM;
 using Catel.Services;
 
+using Equality.Core.ApiClient;
+using Equality.Core.ApiClient.Exceptions;
 using Equality.Models;
 
 using Newtonsoft.Json.Linq;
@@ -32,22 +36,23 @@ namespace Equality.ViewModels
 
         private async Task OnLoginExecuteAsync()
         {
-            string message = "";
+            Dictionary<string, object> data = new()
+            {
+                { "email", Email },
+                { "password", Password },
+                { "device_name", Environment.MachineName },
+            };
+
             try {
-                string statusText = await User.Login(Email, Password, System.Environment.MachineName);
-                JObject statusTextJson = JObject.Parse(statusText);
-                message = statusTextJson.ToString();
-            } catch (ValidationError e) {
-                JObject errors = e.Errors;
-                if (errors.ContainsKey("credentials")) {
+                ApiClient apiClient = new();
+                ApiResponseMessage p = await apiClient.PostAsync("http://equality/api/v1/login", data);
+                Debug.WriteLine(p.Content.ToString());
 
-                }
-                if (errors.ContainsKey("email")) {
-
-                }
-                if (errors.ContainsKey("password")) {
-
-                }
+            } catch (UnprocessableEntityHttpException e) {
+                Dictionary<string, string[]> errors = e.Errors;
+                Debug.WriteLine(errors.ToString());
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
             }
         }
 
