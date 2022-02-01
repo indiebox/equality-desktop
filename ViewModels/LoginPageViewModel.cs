@@ -9,6 +9,7 @@ using Catel.Services;
 
 using Equality.Core.ApiClient;
 using Equality.Core.ApiClient.Exceptions;
+using Equality.Core.ApiClient.Interfaces;
 using Equality.Models;
 
 using Newtonsoft.Json.Linq;
@@ -18,9 +19,9 @@ namespace Equality.ViewModels
     public class LoginPageViewModel : ViewModelBase
     {
         protected INavigationService NavigationService;
-        protected ApiClient ApiClient;
+        protected IApiClient ApiClient;
 
-        public LoginPageViewModel(INavigationService service, ApiClient apiClient)
+        public LoginPageViewModel(INavigationService service, IApiClient apiClient)
         {
             NavigationService = service;
             ApiClient = apiClient;
