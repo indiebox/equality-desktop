@@ -30,6 +30,10 @@ public static class ModuleInitializer
         */
         string[] excludeTypeCacheAssemblies = new string[] {
             "Windows.UI",
+
+            // Without this assembly "CefSharp.Core.Runtime" could not load correctly
+            // and exception were thrown.
+            "CefSharp.Core",
         };
         TypeCacheEvaluator.AssemblyEvaluators.Add((assembly) => excludeTypeCacheAssemblies.Contains<string>(assembly.GetName().Name));
 
