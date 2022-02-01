@@ -84,7 +84,8 @@
                              materialDesign:HintAssist.IsFloating="False"
                              Margin="10,0,10,0"
                              FontSize="16"
-                             Text="{Binding Email}">
+                             Text="{Binding User.Email}"
+                             Cursor="IBeam">
                     </TextBox>
                     <TextBlock Margin="10,2,10,0"
                                Height="23"

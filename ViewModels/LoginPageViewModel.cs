@@ -4,15 +4,14 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Catel.Fody;
 using Catel.MVVM;
 using Catel.Services;
 
-using Equality.Core.ApiClient;
 using Equality.Core.ApiClient.Exceptions;
 using Equality.Core.ApiClient.Interfaces;
 using Equality.Models;
-
-using Newtonsoft.Json.Linq;
+using Equality.Models.Interfaces;
 
 namespace Equality.ViewModels
 {
@@ -21,19 +20,23 @@ namespace Equality.ViewModels
         protected INavigationService NavigationService;
         protected IApiClient ApiClient;
 
-        public LoginPageViewModel(INavigationService service, IApiClient apiClient)
+        [Model]
+        [Expose("Name")]
+        [Expose("Email")]
+        [Expose("Password")]
+        public User User { get; set; }
+
+        public LoginPageViewModel(INavigationService service, IApiClient apiClient, IUser user)
         {
             NavigationService = service;
             ApiClient = apiClient;
+            User = (User)user;
 
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
             Login = new TaskCommand(OnLoginExecuteAsync);
         }
 
         public override string Title => "Вход";
-
-        public string Email { get; set; }
-        public string Password { get; set; }
         public string EmailErrorText { get; set; }
         public string PasswordErrorText { get; set; }
         public string CredintialsErrorText { get; set; }
@@ -44,13 +47,13 @@ namespace Equality.ViewModels
         {
             Dictionary<string, object> data = new()
             {
-                { "email", Email },
-                { "password", Password },
+                { "email", User.Email },
+                { "password", User.Password },
                 { "device_name", Environment.MachineName },
             };
 
             try {
-                ApiResponseMessage p = await ApiClient.PostAsync("login", data);
+                var p = await ApiClient.PostAsync("login", data);
                 Debug.WriteLine(p.Content.ToString());
 
             } catch (UnprocessableEntityHttpException e) {

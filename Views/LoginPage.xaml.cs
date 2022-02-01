@@ -18,7 +18,7 @@ namespace Equality.Views
                 == null) {
                 return;
             }
-            ((dynamic)DataContext).Password = ((PasswordBox)sender).Password;
+            ((dynamic)DataContext).User.Password = ((PasswordBox)sender).Password;
         }
     }
 }
