@@ -74,15 +74,8 @@
                              materialDesign:HintAssist.Hint="Введите адрес эл. почты"
                              materialDesign:HintAssist.IsFloating="False"
                              Margin="10,0,10,25"
-                             FontSize="16">
-                        <TextBox.Text>
-                            <Binding Path="Email"
-                                     UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <ExceptionValidationRule />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
+                             FontSize="16"
+                             Text="{Binding Email}">
                     </TextBox>
                 </StackPanel>
 
