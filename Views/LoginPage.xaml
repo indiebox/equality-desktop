@@ -126,7 +126,7 @@
                           VerticalAlignment="Center"
                           HorizontalAlignment="Stretch" />
                 <Button Command="{Binding Login}"
-                        Grid.Row="4"
+                        Grid.Row="5"
                         Margin="10,0,10,10"
                         Grid.Column="0"
                         Content="Войти"
