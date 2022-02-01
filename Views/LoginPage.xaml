@@ -52,6 +52,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -61,10 +62,13 @@
                 <TextBlock Grid.Row="0"
                            FontSize="27"
                            HorizontalAlignment="Center"
-                           Margin="0,0,0,52"
+                           Margin="0,0,0,0"
                            Text="{Binding Title}" />
-
-                <StackPanel Grid.Row="1">
+                <TextBlock Height="52"
+                           Padding="10,0,10,0"
+                           Grid.Row="1"
+                           Text="{Binding CredintialsErrorText}" />
+                <StackPanel Grid.Row="2">
                     <Label Margin="10,0,10,0"
                            Target="{Binding ElementName=Email}"
                            FontSize="16">_Адрес эл. почты</Label>
@@ -73,13 +77,16 @@
                              AcceptsReturn="False"
                              materialDesign:HintAssist.Hint="Введите адрес эл. почты"
                              materialDesign:HintAssist.IsFloating="False"
-                             Margin="10,0,10,25"
+                             Margin="10,0,10,0"
                              FontSize="16"
                              Text="{Binding Email}">
                     </TextBox>
+                    <TextBlock Margin="10,2,10,23"
+                               Foreground="Red"
+                               Text="{Binding EmailErrorText}" />
                 </StackPanel>
 
-                <StackPanel Grid.Row="2">
+                <StackPanel Grid.Row="3">
                     <DockPanel LastChildFill="False"
                                Margin="10,0,10,0"
                                HorizontalAlignment="Stretch"
@@ -101,14 +108,17 @@
                                  VerticalAlignment="Top"
                                  materialDesign:HintAssist.Hint="Введите пароль"
                                  materialDesign:HintAssist.IsFloating="False"
-                                 Margin="10,0,10,25"
+                                 Margin="10,0,10,0"
                                  FontSize="16"
                                  Cursor="IBeam"
                                  PasswordChanged="Password_PasswordChanged" />
+                    <TextBlock Margin="10,2,10,23"
+                               Foreground="Red"
+                               Text="{Binding PasswordErrorText}" />
                 </StackPanel>
 
                 <CheckBox FontSize="16"
-                          Grid.Row="3"
+                          Grid.Row="4"
                           Content="Запомнить меня"
                           Style="{StaticResource MaterialDesignCheckBox}"
                           materialDesign:CheckBoxAssist.CheckBoxSize="25"

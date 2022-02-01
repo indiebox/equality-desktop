@@ -29,8 +29,11 @@ namespace Equality.ViewModels
 
         public override string Title => "Вход";
 
-        public string Email { get; set; }
+        public string Email { private get; set; }
         public string Password { private get; set; }
+        public string EmailErrorText { private get; set; }
+        public string PasswordErrorText { private get; set; }
+        public string CredintialsErrorText { private get; set; }
 
         public TaskCommand Login { get; private set; }
 
@@ -50,7 +53,13 @@ namespace Equality.ViewModels
 
             } catch (UnprocessableEntityHttpException e) {
                 Dictionary<string, string[]> errors = e.Errors;
-                Debug.WriteLine(errors.ToString());
+                if (errors.ContainsKey("credentials")) {
+
+                } else if (errors.ContainsKey("email")) {
+                    EmailErrorText = errors["email"][0];
+                } else if (errors.ContainsKey("password")) {
+                    EmailErrorText = errors["password"][0];
+                }
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
