@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 
+using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
 
@@ -14,6 +15,7 @@ namespace Equality.ViewModels
             NavigationService = service;
 
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
+            OpenRegisterWindow = new TaskCommand(OnOpenRegisterWindowExecute);
         }
 
         public override string Title => "Вход";
@@ -23,6 +25,16 @@ namespace Equality.ViewModels
         private void OnOpenForgotPasswordExecute()
         {
             NavigationService.Navigate<ForgotPasswordPageViewModel>();
+        }
+
+        public TaskCommand OpenRegisterWindow { get; private set; }
+
+        private async Task OnOpenRegisterWindowExecute()
+        {
+            var uiVisualizerService = this.GetDependencyResolver().Resolve<IUIVisualizerService>();
+            var vm = this.GetTypeFactory().CreateInstanceWithParametersAndAutoCompletion<RegisterWindowViewModel>();
+
+            await uiVisualizerService.ShowAsync(vm);
         }
 
         protected override async Task InitializeAsync()
