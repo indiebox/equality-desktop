@@ -12,6 +12,8 @@ using Equality.Core.ApiClient.Exceptions;
 using Equality.Core.ApiClient.Interfaces;
 using Equality.Models;
 
+using Newtonsoft.Json.Linq;
+
 namespace Equality.ViewModels
 {
     public class LoginPageViewModel : ViewModelBase
@@ -47,8 +49,13 @@ namespace Equality.ViewModels
             };
 
             try {
-                var p = await ApiClient.PostAsync("login", data);
-                Debug.WriteLine(p.Content.ToString());
+                var response = await ApiClient.PostAsync("login", data);
+
+                var token = response.Content["token"].ToString();
+
+                Properties.Settings.Default.Properties["api_token"].DefaultValue = token;
+                Debug.WriteLine(Properties.Settings.Default.Properties["api_token"].DefaultValue);
+
 
             } catch (UnprocessableEntityHttpException e) {
                 var errors = e.Errors;
