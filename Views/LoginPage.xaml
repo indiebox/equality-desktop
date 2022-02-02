@@ -134,7 +134,8 @@
                           materialDesign:CheckBoxAssist.CheckBoxSize="25"
                           Margin="10,0,10,25"
                           VerticalAlignment="Center"
-                          HorizontalAlignment="Stretch" />
+                          HorizontalAlignment="Stretch"
+                          IsChecked="{Binding RememberMe}" />
                 <Button Command="{Binding Login}"
                         Grid.Row="5"
                         Margin="10,0,10,10"

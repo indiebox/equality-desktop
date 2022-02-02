@@ -36,6 +36,7 @@ namespace Equality.ViewModels
         public string EmailErrorText { get; set; }
         public string PasswordErrorText { get; set; }
         public string CredintialsErrorText { get; set; }
+        public bool RememberMe { get; set; }
 
         public TaskCommand Login { get; private set; }
 
@@ -51,10 +52,12 @@ namespace Equality.ViewModels
             try {
                 var response = await ApiClient.PostAsync("login", data);
 
-                var token = response.Content["token"].ToString();
+                if (RememberMe) {
+                    string token = response.Content["token"].ToString();
 
-                Properties.Settings.Default.Properties["api_token"].DefaultValue = token;
-                Debug.WriteLine(Properties.Settings.Default.Properties["api_token"].DefaultValue);
+                    Properties.Settings.Default.Properties["api_token"].DefaultValue = token;
+                    Debug.WriteLine(Properties.Settings.Default.Properties["api_token"].DefaultValue);
+                }
 
 
             } catch (UnprocessableEntityHttpException e) {
