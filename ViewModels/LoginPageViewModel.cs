@@ -30,13 +30,21 @@ namespace Equality.ViewModels
             User = new User(string.Empty, string.Empty, string.Empty);
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
             Login = new TaskCommand(OnLoginExecuteAsync);
+
+
+            if (Properties.Settings.Default.api_token.ToString().Length > 0) {
+                Debug.WriteLine("Auth");
+                Debug.WriteLine(Properties.Settings.Default.api_token.ToString());
+            } else {
+                Debug.WriteLine("NotAuth");
+            }
         }
 
         public override string Title => "Вход";
         public string EmailErrorText { get; set; }
         public string PasswordErrorText { get; set; }
         public string CredintialsErrorText { get; set; }
-        public bool RememberMe { get; set; }
+        public bool RememberMe { get; set; } = false;
 
         public TaskCommand Login { get; private set; }
 
@@ -51,12 +59,12 @@ namespace Equality.ViewModels
 
             try {
                 var response = await ApiClient.PostAsync("login", data);
-
                 if (RememberMe) {
                     string token = response.Content["token"].ToString();
 
-                    Properties.Settings.Default.Properties["api_token"].DefaultValue = token;
-                    Debug.WriteLine(Properties.Settings.Default.Properties["api_token"].DefaultValue);
+                    Properties.Settings.Default.api_token = token;
+                    Properties.Settings.Default.Save();
+                    Debug.WriteLine(Properties.Settings.Default.api_token.ToString());
                 }
 
 

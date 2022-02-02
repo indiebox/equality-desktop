@@ -23,12 +23,15 @@ namespace Equality.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string api_token {
             get {
                 return ((string)(this["api_token"]));
+            }
+            set {
+                this["api_token"] = value;
             }
         }
     }
