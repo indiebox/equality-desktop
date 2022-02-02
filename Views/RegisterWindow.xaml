@@ -6,11 +6,11 @@
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
-              d:DesignHeight="900"
+              d:DesignHeight="800"
               d:DesignWidth="900"
               mc:Ignorable="d"
               Width="900"
-              Height="900"
+              Height="800"
               ResizeMode="NoResize">
     <DockPanel>
         <cefSharp:ChromiumWebBrowser x:Name="Browser"
