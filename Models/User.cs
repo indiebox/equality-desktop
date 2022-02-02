@@ -1,10 +1,8 @@
 ﻿using Catel.Data;
 
-using Equality.Models.Interfaces;
-
 namespace Equality.Models
 {
-    public class User : ModelBase, IUser
+    public class User : ModelBase
     {
         public User(string name, string email, string password)
         {

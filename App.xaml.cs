@@ -6,7 +6,6 @@ using Catel.Logging;
 using Equality.Core.ApiClient;
 using Equality.Core.ApiClient.Interfaces;
 using Equality.Models;
-using Equality.Models.Interfaces;
 
 namespace Equality
 {
@@ -51,9 +50,6 @@ namespace Equality
 
             var apiClient = new ApiClient();
             serviceLocator.RegisterInstance<IApiClient>(apiClient);
-
-            var user = new User(string.Empty, string.Empty, string.Empty);
-            serviceLocator.RegisterInstance<IUser>(user);
 
             // To auto-forward styles, check out Orchestra (see https://github.com/wildgums/orchestra)
             // StyleHelper.CreateStyleForwardersForDefaultStyles();

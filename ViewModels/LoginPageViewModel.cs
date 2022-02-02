@@ -11,7 +11,6 @@ using Catel.Services;
 using Equality.Core.ApiClient.Exceptions;
 using Equality.Core.ApiClient.Interfaces;
 using Equality.Models;
-using Equality.Models.Interfaces;
 
 namespace Equality.ViewModels
 {
@@ -20,18 +19,13 @@ namespace Equality.ViewModels
         protected INavigationService NavigationService;
         protected IApiClient ApiClient;
 
-        [Model]
-        [Expose("Name")]
-        [Expose("Email")]
-        [Expose("Password")]
         public User User { get; set; }
 
-        public LoginPageViewModel(INavigationService service, IApiClient apiClient, IUser user)
+        public LoginPageViewModel(INavigationService service, IApiClient apiClient)
         {
             NavigationService = service;
             ApiClient = apiClient;
-            User = (User)user;
-
+            User = new User(string.Empty, string.Empty, string.Empty);
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
             Login = new TaskCommand(OnLoginExecuteAsync);
         }
