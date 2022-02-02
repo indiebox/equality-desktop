@@ -8,11 +8,11 @@ namespace Equality.ViewModels
 {
     public class StartPageViewModel : ViewModelBase
     {
-        public string Name { get; set; } = "Hello, Peter";
+        public string Name { get; set; }
 
         public StartPageViewModel()
         {
-
+            Name = "Hello, " + Properties.Settings.Default.api_name.ToString();
         }
     }
 }

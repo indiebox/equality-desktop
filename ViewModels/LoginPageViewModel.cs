@@ -59,13 +59,17 @@ namespace Equality.ViewModels
 
             try {
                 var response = await ApiClient.PostAsync("login", data);
+                string name = response.Content["data"]["name"].ToString();
+                string email = response.Content["data"]["email"].ToString();
+                Properties.Settings.Default.api_name = name;
+                Properties.Settings.Default.api_email = email;
                 if (RememberMe) {
                     string token = response.Content["token"].ToString();
-
                     Properties.Settings.Default.api_token = token;
                     Properties.Settings.Default.Save();
                     Debug.WriteLine(Properties.Settings.Default.api_token.ToString());
                 }
+                NavigationService.Navigate<StartPageViewModel>();
 
 
             } catch (UnprocessableEntityHttpException e) {
