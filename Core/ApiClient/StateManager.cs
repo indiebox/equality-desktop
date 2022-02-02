@@ -1,17 +1,16 @@
 ﻿using Equality.Core.ApiClient.Interfaces;
+using Equality.Models;
 
 namespace Equality.Core.ApiClient
 {
     public class StateManager : IStateManager
     {
-        public string Name { get; set; }
-        public string Email { get; set; }
+        public User User { get; set; }
         public string Token { get; set; }
 
-        public StateManager(string name, string email, string token)
+        public StateManager(User user = null, string token = "")
         {
-            Name = name;
-            Email = email;
+            User = user;
             Token = token;
         }
     }

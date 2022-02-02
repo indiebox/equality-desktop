@@ -17,7 +17,7 @@ namespace Equality.ViewModels
         public StartPageViewModel(IStateManager stateManager)
         {
             StateManager = stateManager;
-            Name = "Hello, " + StateManager.Name;
+            Name = "Hello, " + StateManager.User.Name;
         }
     }
 }

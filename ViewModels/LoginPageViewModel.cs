@@ -57,8 +57,7 @@ namespace Equality.ViewModels
                 string name = response.Content["data"]["name"].ToString();
                 string email = response.Content["data"]["email"].ToString();
                 string token = response.Content["token"].ToString();
-                StateManager.Name = name;
-                StateManager.Email = email;
+                StateManager.User = new User(name, email);
                 StateManager.Token = token;
                 if (RememberMe) {
                     Properties.Settings.Default.api_token = token;

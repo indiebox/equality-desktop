@@ -4,7 +4,7 @@ namespace Equality.Models
 {
     public class User : ModelBase
     {
-        public User(string name, string email, string password)
+        public User(string name, string email, string password = "")
         {
             Name = name;
             Email = email;
