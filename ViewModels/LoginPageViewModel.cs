@@ -33,10 +33,7 @@ namespace Equality.ViewModels
 
 
             if (Properties.Settings.Default.api_token.ToString().Length > 0) {
-                Debug.WriteLine("Auth");
-                Debug.WriteLine(Properties.Settings.Default.api_token.ToString());
-            } else {
-                Debug.WriteLine("NotAuth");
+                NavigationService.Navigate<StartPageViewModel>();
             }
         }
 
@@ -61,14 +58,13 @@ namespace Equality.ViewModels
                 var response = await ApiClient.PostAsync("login", data);
                 string name = response.Content["data"]["name"].ToString();
                 string email = response.Content["data"]["email"].ToString();
+                string token = response.Content["token"].ToString();
                 Properties.Settings.Default.api_name = name;
                 Properties.Settings.Default.api_email = email;
-                if (RememberMe) {
-                    string token = response.Content["token"].ToString();
-                    Properties.Settings.Default.api_token = token;
-                    Properties.Settings.Default.Save();
-                    Debug.WriteLine(Properties.Settings.Default.api_token.ToString());
-                }
+                Properties.Settings.Default.api_token = token;
+                Properties.Settings.Default.remember_user = RememberMe;
+                Properties.Settings.Default.Save();
+                Debug.WriteLine(Properties.Settings.Default.api_token.ToString());
                 NavigationService.Navigate<StartPageViewModel>();
 
 
