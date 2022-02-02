@@ -1,4 +1,7 @@
-﻿using Equality.Core.CefSharp;
+﻿using CefSharp;
+using CefSharp.Wpf;
+
+using Equality.Core.CefSharp;
 
 namespace Equality.Views
 {
@@ -9,6 +12,11 @@ namespace Equality.Views
     {
         public RegisterWindow()
         {
+            // Setup browser language.
+            CefSettings settingsBrowser = new();
+            settingsBrowser.Locale = "ru";
+            Cef.Initialize(settingsBrowser);
+
             InitializeComponent();
 
             // Disable context menu in browser by click RMB.
