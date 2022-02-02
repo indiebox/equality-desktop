@@ -5,14 +5,19 @@ using System.Text;
 using Catel.MVVM;
 using Catel.Services;
 
+using Equality.Core.ApiClient.Interfaces;
+
 namespace Equality.ViewModels
 {
     public class StartPageViewModel : ViewModelBase
     {
         public string Name { get; set; }
-        public StartPageViewModel()
+        public IStateManager StateManager;
+
+        public StartPageViewModel(IStateManager stateManager)
         {
-            Name = "Hello, " + Properties.Settings.Default.api_name.ToString();
+            StateManager = stateManager;
+            Name = "Hello, " + StateManager.Name;
         }
     }
 }

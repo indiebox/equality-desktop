@@ -51,6 +51,9 @@ namespace Equality
             var apiClient = new ApiClient();
             serviceLocator.RegisterInstance<IApiClient>(apiClient);
 
+            var stateManager = new StateManager(string.Empty, string.Empty, string.Empty);
+            serviceLocator.RegisterInstance<IStateManager>(stateManager);
+
             // To auto-forward styles, check out Orchestra (see https://github.com/wildgums/orchestra)
             // StyleHelper.CreateStyleForwardersForDefaultStyles();
 

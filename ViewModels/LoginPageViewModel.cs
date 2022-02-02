@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using Catel.Fody;
 using Catel.MVVM;
 using Catel.Services;
 
@@ -12,25 +11,24 @@ using Equality.Core.ApiClient.Exceptions;
 using Equality.Core.ApiClient.Interfaces;
 using Equality.Models;
 
-using Newtonsoft.Json.Linq;
-
 namespace Equality.ViewModels
 {
     public class LoginPageViewModel : ViewModelBase
     {
         protected INavigationService NavigationService;
         protected IApiClient ApiClient;
+        protected IStateManager StateManager;
 
         public User User { get; set; }
 
-        public LoginPageViewModel(INavigationService service, IApiClient apiClient)
+        public LoginPageViewModel(INavigationService service, IApiClient apiClient, IStateManager stateManager)
         {
             NavigationService = service;
             ApiClient = apiClient;
+            StateManager = stateManager;
             User = new User(string.Empty, string.Empty, string.Empty);
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
             Login = new TaskCommand(OnLoginExecuteAsync);
-
 
             if (Properties.Settings.Default.api_token.ToString().Length > 0) {
                 NavigationService.Navigate<StartPageViewModel>();
@@ -59,12 +57,13 @@ namespace Equality.ViewModels
                 string name = response.Content["data"]["name"].ToString();
                 string email = response.Content["data"]["email"].ToString();
                 string token = response.Content["token"].ToString();
-                Properties.Settings.Default.api_name = name;
-                Properties.Settings.Default.api_email = email;
-                Properties.Settings.Default.api_token = token;
-                Properties.Settings.Default.remember_user = RememberMe;
-                Properties.Settings.Default.Save();
-                Debug.WriteLine(Properties.Settings.Default.api_token.ToString());
+                StateManager.Name = name;
+                StateManager.Email = email;
+                StateManager.Token = token;
+                if (RememberMe) {
+                    Properties.Settings.Default.api_token = token;
+                    Properties.Settings.Default.Save();
+                }
                 NavigationService.Navigate<StartPageViewModel>();
 
 

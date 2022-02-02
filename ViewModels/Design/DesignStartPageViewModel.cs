@@ -6,7 +6,7 @@ namespace Equality.ViewModels.Design
 {
     public class DesignStartPageViewModel : StartPageViewModel
     {
-        public DesignStartPageViewModel() : base()
+        public DesignStartPageViewModel() : base(null)
         {
             Name = "Hello, " +
                 "Peter";

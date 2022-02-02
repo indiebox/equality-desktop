@@ -34,41 +34,5 @@ namespace Equality.Properties {
                 this["api_token"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string api_name {
-            get {
-                return ((string)(this["api_name"]));
-            }
-            set {
-                this["api_name"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string api_email {
-            get {
-                return ((string)(this["api_email"]));
-            }
-            set {
-                this["api_email"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool remember_user {
-            get {
-                return ((bool)(this["remember_user"]));
-            }
-            set {
-                this["remember_user"] = value;
-            }
-        }
     }
 }
