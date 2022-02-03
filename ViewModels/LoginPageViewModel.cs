@@ -1,8 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
+using Catel.Data;
 using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
@@ -22,6 +26,8 @@ namespace Equality.ViewModels
 
         protected IStateManager StateManager;
 
+        protected IDisposable ValidationToken;
+
         public LoginPageViewModel(INavigationService navigationService, IUserService userService, IStateManager stateManager)
         {
             NavigationService = navigationService;
@@ -30,7 +36,7 @@ namespace Equality.ViewModels
 
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
             OpenRegisterWindow = new TaskCommand(OnOpenRegisterWindowExecute);
-            Login = new TaskCommand<object>(OnLoginExecuteAsync);
+            Login = new TaskCommand<object>(OnLoginExecuteAsync, OnLoginCanExecute);
 
             if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.api_token)) {
                 NavigationService.Navigate<StartPageViewModel>();
@@ -38,6 +44,8 @@ namespace Equality.ViewModels
         }
 
         public override string Title => "Вход";
+
+        protected bool CheckApiErrors { get; set; } = false;
 
         #region Properties
 
@@ -53,6 +61,8 @@ namespace Equality.ViewModels
 
         public bool CredentialsVisibility { get; set; }
 
+        public IDataErrorInfo MyObject;
+
         #endregion
 
         #region Commands
@@ -61,6 +71,10 @@ namespace Equality.ViewModels
 
         private async Task OnLoginExecuteAsync(object parameter)
         {
+            if (!await SaveViewModelAsync()) {
+                return;
+            }
+
             try {
                 var (user, token) = await UserService.LoginAsync(Email, ((PasswordBox)parameter).Password);
 
@@ -76,13 +90,24 @@ namespace Equality.ViewModels
             } catch (UnprocessableEntityHttpException e) {
                 var errors = e.Errors;
 
+                CheckApiErrors = true;
+
                 CredintialsErrorText = errors.ContainsKey("credentials") ? string.Join("", errors["credentials"]) : string.Empty;
                 CredentialsVisibility = errors.ContainsKey("credentials") ? true : false;
                 EmailErrorText = errors.ContainsKey("email") ? string.Join("", errors["email"]) : string.Empty;
                 PasswordErrorText = errors.ContainsKey("password") ? string.Join("", errors["password"]) : string.Empty;
+
+                Validate(true);
+
+                CheckApiErrors = false;
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
+        }
+
+        private bool OnLoginCanExecute(object parameter)
+        {
+            return !HasErrors;
         }
 
         public TaskCommand OpenRegisterWindow { get; private set; }
@@ -94,10 +119,38 @@ namespace Equality.ViewModels
 
             await uiVisualizerService.ShowAsync(vm);
         }
-        
+
         public Command OpenForgotPassword { get; private set; }
 
         private void OnOpenForgotPasswordExecute() => NavigationService.Navigate<ForgotPasswordPageViewModel>();
+
+        #endregion
+
+        #region Validation
+
+        protected override void ValidateFields(List<IFieldValidationResult> validationResults)
+        {
+            Debug.WriteLine("Called");
+
+            if (CheckApiErrors) {
+                if (!string.IsNullOrWhiteSpace(EmailErrorText)) {
+                    validationResults.Add(FieldValidationResult.CreateError(nameof(Email), EmailErrorText));
+                }
+
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(Email)) {
+                validationResults.Add(FieldValidationResult.CreateError(nameof(Email), "Не может быть пустым."));
+            }
+
+            if (!string.IsNullOrEmpty(Email) && Email.Length < 6) {
+                validationResults.Add(FieldValidationResult.CreateError(nameof(Email), "Не может быть меньше 6."));
+            }
+
+            //Debug.WriteLine(GetFieldErrors(nameof(Email)));
+            //Debug.WriteLine(HasErrors);
+        }
 
         #endregion
 

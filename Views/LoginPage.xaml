@@ -98,15 +98,17 @@
                              AcceptsReturn="False"
                              materialDesign:HintAssist.Hint="Введите адрес эл. почты"
                              materialDesign:HintAssist.IsFloating="False"
-                             Margin="10,0,10,0"
+                             Margin="10,0,10,30"
                              FontSize="16"
                              TabIndex="0"
-                             Text="{Binding Email}" />
-                    <TextBlock Margin="10,2,10,0"
+                             materialDesign:ValidationAssist.FontSize="14"
+                             Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}">
+                    </TextBox>
+                    <!--<TextBlock Margin="10,2,10,0"
                                Height="23"
                                Foreground="Red"
                                Text="{Binding EmailErrorText}"
-                               TextWrapping="Wrap" />
+                               TextWrapping="Wrap" />-->
                 </StackPanel>
 
                 <StackPanel Grid.Row="3">
@@ -139,7 +141,8 @@
                                  TabIndex="0" />
                     <TextBlock Margin="10,2,10,0"
                                Height="23"
-                               Foreground="Red"
+                               FontSize="14"
+                               Foreground="{DynamicResource MaterialDesignValidationErrorBrush}"
                                Text="{Binding PasswordErrorText}"
                                TextWrapping="Wrap" />
                 </StackPanel>
