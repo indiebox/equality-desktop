@@ -7,6 +7,9 @@ namespace Equality.Core.ApiClient.Interfaces
 {
     public interface IApiClient
     {
+        public ApiClient WithToken(string token);
+
+        public ApiClient WithoutToken();
         /// <summary>
         /// Get or sets the HttpClient which perform requests.
         /// </summary>
