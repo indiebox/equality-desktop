@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -9,25 +7,24 @@ using Catel.MVVM;
 using Catel.Services;
 
 using Equality.Core.ApiClient.Exceptions;
-using Equality.Core.ApiClient.Interfaces;
 using Equality.Core.StateManager;
-using Equality.Models;
+using Equality.Services;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Equality.ViewModels
 {
     public class LoginPageViewModel : ViewModelBase
     {
         protected INavigationService NavigationService;
-        protected IApiClient ApiClient;
+
+        protected IUserService UserService;
+
         protected IStateManager StateManager;
 
-        public LoginPageViewModel(INavigationService service, IApiClient apiClient, IStateManager stateManager)
+        public LoginPageViewModel(INavigationService navigationService, IUserService userService, IStateManager stateManager)
         {
-            NavigationService = service;
-            ApiClient = apiClient;
+            NavigationService = navigationService;
+            UserService = userService;
             StateManager = stateManager;
 
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
@@ -60,24 +57,8 @@ namespace Equality.ViewModels
 
         private async Task OnLoginExecuteAsync(object parameter)
         {
-            Dictionary<string, object> data = new()
-            {
-                { "email", Email },
-                { "password", ((PasswordBox)parameter).Password },
-                { "device_name", Environment.MachineName },
-            };
-
             try {
-                var response = await ApiClient.PostAsync("login", data);
-
-                var user = JsonConvert.DeserializeObject<User>(response.Content["data"].ToString(), new JsonSerializerSettings
-                {
-                    ContractResolver = new DefaultContractResolver
-                    {
-                        NamingStrategy = new SnakeCaseNamingStrategy()
-                    },
-                });
-                string token = response.Content["token"].ToString();
+                var (user, token) = await UserService.LoginAsync(Email, ((PasswordBox)parameter).Password);
 
                 StateManager.CurrentUser = user;
                 StateManager.ApiToken = token;
