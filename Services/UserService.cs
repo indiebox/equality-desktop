@@ -29,8 +29,8 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.PostAsync("login", data);
-            var user = Deserialize(response.Content["data"].ToString());
 
+            var user = Deserialize(response.Content["data"].ToString());
             string token = response.Content["token"].ToString();
 
             return (user, token);
