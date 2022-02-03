@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 
-namespace Equality.Core.ApiClient.Exceptions
+namespace Equality.Core.ApiClient
 {
     public class UnprocessableEntityHttpException : HttpRequestException
     {

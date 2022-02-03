@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 
-namespace Equality.Core.ApiClient.Exceptions
+namespace Equality.Core.ApiClient
 {
     public class ForbiddenHttpException : HttpRequestException
     {
