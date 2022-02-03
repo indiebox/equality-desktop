@@ -4,7 +4,6 @@ using Catel.IoC;
 using Catel.Logging;
 
 using Equality.Core.ApiClient;
-using Equality.Core.ApiClient.Interfaces;
 using Equality.Core.StateManager;
 using Equality.Services;
 

@@ -2,7 +2,7 @@
 
 using Catel.MVVM;
 
-using Equality.Core.ApiClient.Interfaces;
+using Equality.Core.ApiClient;
 using Equality.Core.StateManager;
 
 namespace Equality.ViewModels

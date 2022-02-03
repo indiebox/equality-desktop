@@ -6,9 +6,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-using Equality.Core.ApiClient.Exceptions;
-using Equality.Core.ApiClient.Interfaces;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

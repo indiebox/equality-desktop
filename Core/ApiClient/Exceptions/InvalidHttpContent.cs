@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Equality.Core.ApiClient.Exceptions
+namespace Equality.Core.ApiClient
 {
     public class InvalidHttpContent : Exception
     {

@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using Catel.MVVM;
 using Catel.Services;
 
-using Equality.Core.ApiClient.Exceptions;
+using Equality.Core.ApiClient;
 using Equality.Core.StateManager;
 using Equality.Services;
 

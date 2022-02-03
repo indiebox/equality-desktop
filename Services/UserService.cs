@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Equality.Core.ApiClient.Interfaces;
+using Equality.Core.ApiClient;
 using Equality.Models;
 
 using Newtonsoft.Json;
