@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
+using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
 
@@ -28,6 +29,7 @@ namespace Equality.ViewModels
             StateManager = stateManager;
 
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
+            OpenRegisterWindow = new TaskCommand(OnOpenRegisterWindowExecute);
             Login = new TaskCommand<object>(OnLoginExecuteAsync);
 
             if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.api_token)) {
@@ -83,6 +85,16 @@ namespace Equality.ViewModels
             }
         }
 
+        public TaskCommand OpenRegisterWindow { get; private set; }
+
+        private async Task OnOpenRegisterWindowExecute()
+        {
+            var uiVisualizerService = this.GetDependencyResolver().Resolve<IUIVisualizerService>();
+            var vm = this.GetTypeFactory().CreateInstanceWithParametersAndAutoCompletion<RegisterWindowViewModel>();
+
+            await uiVisualizerService.ShowAsync(vm);
+        }
+        
         public Command OpenForgotPassword { get; private set; }
 
         private void OnOpenForgotPasswordExecute() => NavigationService.Navigate<ForgotPasswordPageViewModel>();

@@ -36,8 +36,9 @@
                         VerticalAlignment="Stretch"
                         HorizontalAlignment="Center"
                         BorderThickness="0,0,0,0"
-                        TabIndex="3"
-                        Margin="20,0,0,0" />
+                        Margin="20,0,0,0"
+                        Command="{Binding OpenRegisterWindow}"
+                        TabIndex="3" />
             </StackPanel>
         </materialDesign:Card>
 
