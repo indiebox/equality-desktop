@@ -11,6 +11,10 @@
             d:Background="{StaticResource MaterialDesignPaper}"
             d:DataContext="{d:DesignInstance dvm:DesignLoginPageViewModel, IsDesignTimeCreatable=True}"
             mc:Ignorable="d">
+    <catel:Page.Resources>
+        <catel:BooleanToHidingVisibilityConverter x:Key="HidingVisibilityConverter" />
+    </catel:Page.Resources>
+
     <DockPanel>
         <materialDesign:Card HorizontalAlignment="Stretch"
                              DockPanel.Dock="Bottom"
@@ -64,15 +68,25 @@
                            HorizontalAlignment="Center"
                            Margin="0,0,0,0"
                            Text="{Binding Title}" />
-                <TextBlock Height="52"
-                           Padding="10,0,10,0"
-                           Grid.Row="1"
-                           Text="{Binding CredintialsErrorText}"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Center"
-                           Foreground="Red"
-                           TextWrapping="Wrap"
-                           TextAlignment="Center" />
+                <Grid Grid.Row="1"
+                      Height="52"
+                      VerticalAlignment="Stretch"
+                      Visibility="{Binding CredentialsVisibility, Converter={StaticResource HidingVisibilityConverter}}"
+                      HorizontalAlignment="Stretch">
+                    <Border x:Name="border"
+                            Background="#FFFED8D7"
+                            Margin="10,10,10,10"
+                            CornerRadius="7"
+                            SnapsToDevicePixels="True" />
+                    <TextBlock Padding="10,0,10,0"
+                               Text="{Binding CredintialsErrorText}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Foreground="#FF7A1D1F"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               FontWeight="Bold" />
+                </Grid>
                 <StackPanel Grid.Row="2">
                     <Label Margin="10,0,10,0"
                            Target="{Binding ElementName=Email}"

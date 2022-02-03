@@ -16,17 +16,21 @@ namespace Equality.ViewModels
     public class LoginPageViewModel : ViewModelBase
     {
         protected INavigationService NavigationService;
-        protected IApiClient ApiClient;
-        protected IStateManager StateManager;
 
-        public User User { get; set; }
+        protected IApiClient ApiClient;
+
+        protected IStateManager StateManager;
 
         public LoginPageViewModel(INavigationService service, IApiClient apiClient, IStateManager stateManager)
         {
             NavigationService = service;
             ApiClient = apiClient;
             StateManager = stateManager;
+
             User = new User(string.Empty, string.Empty, string.Empty);
+
+            CredentialsVisibility = false;
+
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
             Login = new TaskCommand(OnLoginExecuteAsync);
 
@@ -36,10 +40,18 @@ namespace Equality.ViewModels
         }
 
         public override string Title => "Вход";
+
         public string EmailErrorText { get; set; }
+
         public string PasswordErrorText { get; set; }
+
         public string CredintialsErrorText { get; set; }
+
         public bool RememberMe { get; set; } = false;
+
+        public bool CredentialsVisibility { get; set; }
+
+        public User User { get; set; }
 
         public TaskCommand Login { get; private set; }
 
@@ -69,6 +81,7 @@ namespace Equality.ViewModels
             } catch (UnprocessableEntityHttpException e) {
                 var errors = e.Errors;
                 CredintialsErrorText = errors.ContainsKey("credentials") ? string.Join("", errors["credentials"]) : string.Empty;
+                CredentialsVisibility = errors.ContainsKey("credentials") ? true : false;
                 EmailErrorText = errors.ContainsKey("email") ? string.Join("", errors["email"]) : string.Empty;
                 PasswordErrorText = errors.ContainsKey("password") ? string.Join("", errors["password"]) : string.Empty;
             } catch (HttpRequestException e) {
