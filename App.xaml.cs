@@ -5,7 +5,7 @@ using Catel.Logging;
 
 using Equality.Core.ApiClient;
 using Equality.Core.ApiClient.Interfaces;
-using Equality.Models;
+using Equality.Core.StateManager;
 
 namespace Equality
 {
