@@ -86,7 +86,7 @@
                              Margin="10,0,10,0"
                              FontSize="16"
                              TabIndex="0"
-                             Text="{Binding User.Email}" />
+                             Text="{Binding Email}" />
                     <TextBlock Margin="10,2,10,0"
                                Height="23"
                                Foreground="Red"
@@ -121,8 +121,7 @@
                                  materialDesign:HintAssist.IsFloating="False"
                                  Margin="10,0,10,0"
                                  FontSize="16"
-                                 TabIndex="0"
-                                 PasswordChanged="Password_PasswordChanged" />
+                                 TabIndex="0" />
                     <TextBlock Margin="10,2,10,0"
                                Height="23"
                                Foreground="Red"
@@ -141,6 +140,7 @@
                           TabIndex="2"
                           IsChecked="{Binding RememberMe}" />
                 <Button Command="{Binding Login}"
+                        CommandParameter="{Binding ElementName=Password}"
                         Grid.Row="5"
                         Margin="10,0,10,10"
                         Grid.Column="0"

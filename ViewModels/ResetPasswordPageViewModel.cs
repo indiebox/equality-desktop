@@ -19,19 +19,17 @@ namespace Equality.ViewModels
 
         public override string Title => "Изменение пароля";
 
+        #region Commands
+
         public Command OpenForgotPasswordPage { get; private set; }
 
-        private void OnOpenForgotPasswordPageExecute()
-        {
-            NavigationService.Navigate<ForgotPasswordPageViewModel>();
-        }
+        private void OnOpenForgotPasswordPageExecute() => NavigationService.Navigate<ForgotPasswordPageViewModel>();
 
         public Command OpenLoginPage { get; private set; }
 
-        private void OnOpenLoginPageExecute()
-        {
-            NavigationService.Navigate<LoginPageViewModel>();
-        }
+        private void OnOpenLoginPageExecute() => NavigationService.Navigate<LoginPageViewModel>();
+
+        #endregion
 
         protected override async Task InitializeAsync()
         {

@@ -33,9 +33,13 @@ namespace Equality.ViewModels
 
         private async Task OnGetUserNameExecuteAsync()
         {
-            var response = await ApiClient.GetAsync("user");
+            if (StateManager.CurrentUser != null) {
+                Name = StateManager.CurrentUser.Name;
+            } else {
+                var response = await ApiClient.WithToken(Properties.Settings.Default.api_token).GetAsync("user");
 
-            Name = "Hello, " + response.Content["data"]["name"].ToString();
+                Name = response.Content["data"]["name"].ToString();
+            }
         }
 
         #endregion
@@ -43,8 +47,6 @@ namespace Equality.ViewModels
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-
-            ApiClient.WithToken(Properties.Settings.Default.api_token.ToString());
 
             GetUserName.Execute();
 

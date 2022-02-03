@@ -4,7 +4,7 @@
     {
         public DesignStartPageViewModel() : base(null, null)
         {
-            Name = "Hello, Peter";
+            Name = "Peter";
         }
     }
 }
