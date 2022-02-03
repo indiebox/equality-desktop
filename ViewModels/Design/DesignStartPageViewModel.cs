@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Equality.ViewModels.Design
+﻿namespace Equality.ViewModels.Design
 {
     public class DesignStartPageViewModel : StartPageViewModel
     {
         public DesignStartPageViewModel() : base(null, null)
         {
-            Name = "Hello, " +
-                "Peter";
+            Name = "Hello, Peter";
         }
     }
 }
