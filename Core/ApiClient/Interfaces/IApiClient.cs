@@ -3,12 +3,25 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Equality.Core.ApiClient.Interfaces
+namespace Equality.Core.ApiClient
 {
     public interface IApiClient
     {
         /// <summary>
-        /// Get or sets the HttpClient which perform requests.
+        /// Set api token to next requests.
+        /// </summary>
+        /// <param name="token">The api token.</param>
+        /// <returns>Returns <see langword="this"/></returns>
+        public ApiClient WithToken(string token);
+
+        /// <summary>
+        /// Remove api token from next requests.
+        /// </summary>
+        /// <returns>Returns <see langword="this"/></returns>
+        public ApiClient WithoutToken();
+
+        /// <summary>
+        /// Gets or sets the HttpClient which perform requests.
         /// </summary>
         public HttpClient HttpClient { get; set; }
 
@@ -96,11 +109,11 @@ namespace Equality.Core.ApiClient.Interfaces
         /// <exception cref="System.Net.Http.HttpRequestException">
         /// The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.
         /// </exception>
-        /// <exception cref="Exceptions.NotFoundHttpException"></exception>
-        /// <exception cref="Exceptions.ForbiddenHttpException"></exception>
-        /// <exception cref="Exceptions.TooManyRequestsHttpException"></exception>
-        /// <exception cref="Exceptions.UnauthorizedHttpException"></exception>
-        /// <exception cref="Exceptions.UnprocessableEntityHttpException"></exception>
+        /// <exception cref="NotFoundHttpException"></exception>
+        /// <exception cref="ForbiddenHttpException"></exception>
+        /// <exception cref="TooManyRequestsHttpException"></exception>
+        /// <exception cref="UnauthorizedHttpException"></exception>
+        /// <exception cref="UnprocessableEntityHttpException"></exception>
         public Task<ApiResponseMessage> DeleteAsync(Uri requestUri);
 
         /// <summary>
