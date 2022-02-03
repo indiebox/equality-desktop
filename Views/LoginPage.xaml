@@ -36,6 +36,7 @@
                         VerticalAlignment="Stretch"
                         HorizontalAlignment="Center"
                         BorderThickness="0,0,0,0"
+                        TabIndex="3"
                         Margin="20,0,0,0" />
             </StackPanel>
         </materialDesign:Card>
@@ -98,9 +99,8 @@
                              materialDesign:HintAssist.IsFloating="False"
                              Margin="10,0,10,0"
                              FontSize="16"
-                             Text="{Binding User.Email}"
-                             Cursor="IBeam">
-                    </TextBox>
+                             TabIndex="0"
+                             Text="{Binding Email}" />
                     <TextBlock Margin="10,2,10,0"
                                Height="23"
                                Foreground="Red"
@@ -115,14 +115,17 @@
                                VerticalAlignment="Stretch">
                         <Label DockPanel.Dock="Left"
                                Target="{Binding ElementName=Password}"
-                               FontSize="16">_Пароль</Label>
+                               FontSize="16">
+                            _Пароль
+                        </Label>
                         <Button Command="{Binding OpenForgotPassword}"
                                 Style="{StaticResource LinkButton}"
+                                Padding="1"
                                 FontSize="16"
                                 DockPanel.Dock="Right"
-                                VerticalAlignment="Center">
-                            Забыли пароль?
-                        </Button>
+                                TabIndex="1"
+                                Content="Забыли пароль?"
+                                VerticalAlignment="Center" />
                     </DockPanel>
 
                     <PasswordBox Name="Password"
@@ -132,8 +135,7 @@
                                  materialDesign:HintAssist.IsFloating="False"
                                  Margin="10,0,10,0"
                                  FontSize="16"
-                                 Cursor="IBeam"
-                                 PasswordChanged="Password_PasswordChanged" />
+                                 TabIndex="0" />
                     <TextBlock Margin="10,2,10,0"
                                Height="23"
                                Foreground="Red"
@@ -149,8 +151,10 @@
                           Margin="10,0,10,25"
                           VerticalAlignment="Center"
                           HorizontalAlignment="Stretch"
+                          TabIndex="2"
                           IsChecked="{Binding RememberMe}" />
                 <Button Command="{Binding Login}"
+                        CommandParameter="{Binding ElementName=Password}"
                         Grid.Row="5"
                         Margin="10,0,10,10"
                         Grid.Column="0"
@@ -158,6 +162,7 @@
                         FontSize="16"
                         Padding="10, 10, 10, 10"
                         Cursor="Hand"
+                        TabIndex="2"
                         Height="50" />
             </Grid>
         </Grid>

@@ -5,7 +5,8 @@ using Catel.Logging;
 
 using Equality.Core.ApiClient;
 using Equality.Core.ApiClient.Interfaces;
-using Equality.Models;
+using Equality.Core.StateManager;
+using Equality.Services;
 
 namespace Equality
 {
@@ -48,11 +49,9 @@ namespace Equality
 
             var serviceLocator = ServiceLocator.Default;
 
-            var apiClient = new ApiClient();
-            serviceLocator.RegisterInstance<IApiClient>(apiClient);
-
-            var stateManager = new StateManager();
-            serviceLocator.RegisterInstance<IStateManager>(stateManager);
+            serviceLocator.RegisterType<IApiClient, ApiClient>();
+            serviceLocator.RegisterType<IStateManager, StateManager>();
+            serviceLocator.RegisterType<IUserService, UserService>();
 
             // To auto-forward styles, check out Orchestra (see https://github.com/wildgums/orchestra)
             // StyleHelper.CreateStyleForwardersForDefaultStyles();

@@ -1,6 +1,4 @@
-﻿using System.Windows.Controls;
-
-namespace Equality.Views
+﻿namespace Equality.Views
 {
     /// <summary>
     /// Логика взаимодействия для LoginPage.xaml
@@ -10,15 +8,6 @@ namespace Equality.Views
         public LoginPage()
         {
             InitializeComponent();
-        }
-
-        private void Password_PasswordChanged(object sender, System.Windows.RoutedEventArgs e)
-        {
-            if (DataContext
-                == null) {
-                return;
-            }
-            ((dynamic)DataContext).User.Password = ((PasswordBox)sender).Password;
         }
     }
 }

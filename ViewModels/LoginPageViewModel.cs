@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 using Catel.MVVM;
 using Catel.Services;
 
 using Equality.Core.ApiClient.Exceptions;
-using Equality.Core.ApiClient.Interfaces;
-using Equality.Models;
+using Equality.Core.StateManager;
+using Equality.Services;
+
 
 namespace Equality.ViewModels
 {
@@ -17,29 +17,31 @@ namespace Equality.ViewModels
     {
         protected INavigationService NavigationService;
 
-        protected IApiClient ApiClient;
+        protected IUserService UserService;
 
         protected IStateManager StateManager;
 
-        public LoginPageViewModel(INavigationService service, IApiClient apiClient, IStateManager stateManager)
+        public LoginPageViewModel(INavigationService navigationService, IUserService userService, IStateManager stateManager)
         {
-            NavigationService = service;
-            ApiClient = apiClient;
+            NavigationService = navigationService;
+            UserService = userService;
             StateManager = stateManager;
 
-            User = new User(string.Empty, string.Empty, string.Empty);
-
-            CredentialsVisibility = false;
-
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
-            Login = new TaskCommand(OnLoginExecuteAsync);
+            Login = new TaskCommand<object>(OnLoginExecuteAsync);
 
-            if (Properties.Settings.Default.api_token.ToString().Length > 0) {
+            if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.api_token)) {
                 NavigationService.Navigate<StartPageViewModel>();
             }
         }
 
         public override string Title => "Вход";
+
+        #region Properties
+
+        public string Email { get; set; }
+
+        public bool RememberMe { get; set; } = false;
 
         public string EmailErrorText { get; set; }
 
@@ -47,39 +49,31 @@ namespace Equality.ViewModels
 
         public string CredintialsErrorText { get; set; }
 
-        public bool RememberMe { get; set; } = false;
-
         public bool CredentialsVisibility { get; set; }
 
-        public User User { get; set; }
+        #endregion
 
-        public TaskCommand Login { get; private set; }
+        #region Commands
 
-        private async Task OnLoginExecuteAsync()
+        public TaskCommand<object> Login { get; private set; }
+
+        private async Task OnLoginExecuteAsync(object parameter)
         {
-            Dictionary<string, object> data = new()
-            {
-                { "email", User.Email },
-                { "password", User.Password },
-                { "device_name", Environment.MachineName },
-            };
-
             try {
-                var response = await ApiClient.PostAsync("login", data);
-                string name = response.Content["data"]["name"].ToString();
-                string email = response.Content["data"]["email"].ToString();
-                string token = response.Content["token"].ToString();
-                StateManager.User = new User(name, email);
-                StateManager.Token = token;
+                var (user, token) = await UserService.LoginAsync(Email, ((PasswordBox)parameter).Password);
+
+                StateManager.CurrentUser = user;
+                StateManager.ApiToken = token;
+
                 if (RememberMe) {
                     Properties.Settings.Default.api_token = token;
                     Properties.Settings.Default.Save();
                 }
+
                 NavigationService.Navigate<StartPageViewModel>();
-
-
             } catch (UnprocessableEntityHttpException e) {
                 var errors = e.Errors;
+
                 CredintialsErrorText = errors.ContainsKey("credentials") ? string.Join("", errors["credentials"]) : string.Empty;
                 CredentialsVisibility = errors.ContainsKey("credentials") ? true : false;
                 EmailErrorText = errors.ContainsKey("email") ? string.Join("", errors["email"]) : string.Empty;
@@ -92,6 +86,8 @@ namespace Equality.ViewModels
         public Command OpenForgotPassword { get; private set; }
 
         private void OnOpenForgotPasswordExecute() => NavigationService.Navigate<ForgotPasswordPageViewModel>();
+
+        #endregion
 
         protected override async Task InitializeAsync()
         {
