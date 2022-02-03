@@ -13,9 +13,11 @@ namespace Equality.Views
         public RegisterWindow()
         {
             // Setup browser language.
-            CefSettings settingsBrowser = new();
-            settingsBrowser.Locale = "ru";
-            Cef.Initialize(settingsBrowser);
+            if (!Cef.IsInitialized) {
+                CefSettings settingsBrowser = new();
+                settingsBrowser.Locale = "ru";
+                Cef.Initialize(settingsBrowser);
+            }
 
             InitializeComponent();
 
