@@ -94,7 +94,7 @@ namespace Equality.ViewModels
 
             await uiVisualizerService.ShowAsync(vm);
         }
-        
+
         public Command OpenForgotPassword { get; private set; }
 
         private void OnOpenForgotPasswordExecute() => NavigationService.Navigate<ForgotPasswordPageViewModel>();

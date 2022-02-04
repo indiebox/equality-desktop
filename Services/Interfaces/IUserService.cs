@@ -2,6 +2,8 @@
 
 using Equality.Models;
 
+using Newtonsoft.Json.Linq;
+
 namespace Equality.Services
 {
     public interface IUserService
@@ -13,6 +15,8 @@ namespace Equality.Services
         /// <param name="password">The password email.</param>
         /// <returns>Returns the authenticated <see cref="User"/> and api token.</returns>
         public Task<(User user, string token)> LoginAsync(string email, string password);
+
+        public Task<JObject> ResetPasswordAsync(string email);
 
         /// <summary>
         /// Deserializes the JSON string to the <see cref="User"/> model.
