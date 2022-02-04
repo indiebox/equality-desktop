@@ -1,0 +1,21 @@
+﻿namespace Equality.Core.Validation
+{
+    public class MinStringLength : IValidatorRule<string>
+    {
+        public MinStringLength(int min)
+        {
+            Min = min;
+
+            Message = $"Длина строки должна быть больше {Min} символов.";
+        }
+
+        public int Min { get; set; }
+
+        public string Message { get; set; }
+
+        public bool Passes(string value)
+        {
+            return value.Length >= Min;
+        }
+    }
+}
