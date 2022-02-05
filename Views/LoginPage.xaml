@@ -13,6 +13,10 @@
             d:Background="{StaticResource MaterialDesignPaper}"
             d:DataContext="{d:DesignInstance dvm:DesignLoginPageViewModel, IsDesignTimeCreatable=True}"
             mc:Ignorable="d">
+    <catel:Page.Resources>
+        <catel:EmptyStringToHidingVisibilityConverter x:Key="EmptyStringToHidingVisibility" />
+    </catel:Page.Resources>
+
     <DockPanel>
         <materialDesign:Card HorizontalAlignment="Stretch"
                              DockPanel.Dock="Bottom"
@@ -71,7 +75,7 @@
                 <Grid Grid.Row="1"
                       Height="52"
                       VerticalAlignment="Stretch"
-                      Visibility="{Binding CredintialsErrorText, Converter={StaticResource StringIsEmptyVisibilityConverter}}"
+                      Visibility="{Binding CredintialsErrorText, Converter={StaticResource EmptyStringToHidingVisibility}}"
                       HorizontalAlignment="Stretch">
                     <Border x:Name="border"
                             Background="#FFFED8D7"
@@ -139,12 +143,6 @@
                             <catel:UpdateBindingOnPasswordChanged Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}" />
                         </i:Interaction.Behaviors>
                     </PasswordBox>
-                    <!--<TextBlock Margin="10,2,10,0"
-                               Height="23"
-                               FontSize="14"
-                               Foreground="{DynamicResource MaterialDesignValidationErrorBrush}"
-                               Text="{Binding PasswordErrorText}"
-                               TextWrapping="Wrap" />-->
                 </StackPanel>
 
                 <CheckBox FontSize="16"

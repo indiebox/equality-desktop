@@ -1,6 +1,6 @@
 ﻿namespace Equality.Core.Validation
 {
-    public interface IValidatorRule<T> where T : class
+    public interface IValidatorRule<T>
     {
         /// <summary>
         /// Gets or sets the error message.

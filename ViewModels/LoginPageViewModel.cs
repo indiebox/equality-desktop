@@ -37,6 +37,11 @@ namespace Equality.ViewModels
             if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.api_token)) {
                 NavigationService.Navigate<StartPageViewModel>();
             }
+
+            ApiFieldsMap = new()
+            {
+                { nameof(Email), "email" },
+            };
         }
 
         public override string Title => "Вход";
@@ -51,9 +56,6 @@ namespace Equality.ViewModels
         public bool RememberMe { get; set; } = false;
 
         [ExcludeFromValidation]
-        public string EmailErrorText { get; set; }
-
-        [ExcludeFromValidation]
         public string CredintialsErrorText { get; set; }
 
         #endregion
@@ -64,7 +66,7 @@ namespace Equality.ViewModels
 
         private async Task OnLoginExecuteAsync()
         {
-            if (EnableValidation()) {
+            if (FirstValidationHasErrors()) {
                 return;
             }
 
@@ -81,12 +83,9 @@ namespace Equality.ViewModels
 
                 NavigationService.Navigate<StartPageViewModel>();
             } catch (UnprocessableEntityHttpException e) {
-                var errors = e.Errors;
+                HandleApiErrors(e.Errors);
 
-                CredintialsErrorText = errors.ContainsKey("credentials") ? string.Join("", errors["credentials"]) : string.Empty;
-                EmailErrorText = errors.ContainsKey("email") ? string.Join("", errors["email"]) : string.Empty;
-
-                DisplayApiErrors();
+                CredintialsErrorText = ApiErrors.GetValueOrDefault("credentials", string.Empty);
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
@@ -117,29 +116,19 @@ namespace Equality.ViewModels
 
         protected override void ValidateFields(List<IFieldValidationResult> validationResults)
         {
-            Debug.WriteLine("Call");
-
             var validator = new Validator(validationResults);
 
             validator.ValidateField(nameof(Email), Email, new()
             {
                 new NotEmptyStringRule(),
-                new MinStringLengthRule(6)
+                new MinStringLengthRule(6),
+                new ValidEmailRule(),
             });
 
             validator.ValidateField(nameof(Password), Password, new()
             {
                 new NotEmptyStringRule(),
             });
-        }
-
-        protected override void DisplayApiErrors(List<IFieldValidationResult> validationResults)
-        {
-            Debug.WriteLine("Api call");
-
-            if (!string.IsNullOrEmpty(EmailErrorText)) {
-                validationResults.Add(FieldValidationResult.CreateError(nameof(Email), EmailErrorText));
-            }
         }
 
         #endregion
