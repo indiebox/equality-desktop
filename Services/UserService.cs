@@ -51,13 +51,13 @@ namespace Equality.Services
             return content;
         }
 
-        public async Task<JObject> ResetPasswordAsync(string email, string password, string password_confirmation, string token)
+        public async Task<JObject> ResetPasswordAsync(string email, string password, string passwordConfirmation, string token)
         {
             Dictionary<string, object> data = new()
             {
                 { "email", email },
                 { "password", password },
-                { "password_confirmation", password_confirmation },
+                { "password_confirmation", passwordConfirmation },
                 { "token", token },
             };
 
