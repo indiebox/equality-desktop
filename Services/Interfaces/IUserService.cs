@@ -16,7 +16,22 @@ namespace Equality.Services
         /// <returns>Returns the authenticated <see cref="User"/> and api token.</returns>
         public Task<(User user, string token)> LoginAsync(string email, string password);
 
-        public Task<JObject> ResetPasswordAsync(string email);
+        /// <summary>
+        /// Sends a request to send a message with a password recovery code to the mail on the API.
+        /// </summary>
+        /// <param name="email">The user email.</param>
+        /// <returns>Returns the server response as a <see cref="JObject"/>.</returns>
+        public Task<JObject> ForgotPasswordEmailSendAsync(string email);
+
+        /// <summary>
+        /// Sends a request to the API to reset the password.
+        /// </summary>
+        /// <param name="email">The user Email.</param>
+        /// <param name="password">The user password.</param>
+        /// <param name="password_confirmation">The user re-entered password.</param>
+        /// <param name="token">A token from a letter sent to an email.</param>
+        /// <returns>Returns the server response as a <see cref="JObject"/>.</returns>
+        public Task<JObject> ResetPasswordAsync(string email, string password, string password_confirmation, string token);
 
         /// <summary>
         /// Deserializes the JSON string to the <see cref="User"/> model.

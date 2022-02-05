@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -42,8 +43,12 @@ namespace Equality.ViewModels
         private async Task OnOpenResetPasswordPageExecute()
         {
             try {
-                var response = await UserService.ResetPasswordAsync(Email);
-                NavigationService.Navigate<ResetPasswordPageViewModel>();
+                var response = await UserService.ForgotPasswordEmailSendAsync(Email);
+                var parameters = new Dictionary<string, object>
+                {
+                    { "email", Email }
+                };
+                NavigationService.Navigate<ResetPasswordPageViewModel>(parameters);
             } catch (UnprocessableEntityHttpException e) {
                 var errors = e.Errors;
                 Error = errors.ContainsKey("email") ? string.Join("", errors["email"]) : string.Empty;

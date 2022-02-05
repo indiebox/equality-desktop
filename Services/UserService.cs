@@ -37,7 +37,7 @@ namespace Equality.Services
             return (user, token);
         }
 
-        public async Task<JObject> ResetPasswordAsync(string email)
+        public async Task<JObject> ForgotPasswordEmailSendAsync(string email)
         {
             Dictionary<string, object> data = new()
             {
@@ -45,6 +45,23 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.PostAsync("forgot-password", data);
+
+            var content = response.Content;
+
+            return content;
+        }
+
+        public async Task<JObject> ResetPasswordAsync(string email, string password, string password_confirmation, string token)
+        {
+            Dictionary<string, object> data = new()
+            {
+                { "email", email },
+                { "password", password },
+                { "password_confirmation", password_confirmation },
+                { "token", token },
+            };
+
+            var response = await ApiClient.PostAsync("reset-password", data);
 
             var content = response.Content;
 
