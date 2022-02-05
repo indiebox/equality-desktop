@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -13,20 +11,19 @@ using Catel.Services;
 
 using Equality.Core.ApiClient;
 using Equality.Core.StateManager;
+using Equality.Core.Validation;
+using Equality.Core.ViewModel;
 using Equality.Services;
-
 
 namespace Equality.ViewModels
 {
-    public class LoginPageViewModel : ViewModelBase
+    public class LoginPageViewModel : ViewModel
     {
         protected INavigationService NavigationService;
 
         protected IUserService UserService;
 
         protected IStateManager StateManager;
-
-        protected IDisposable ValidationToken;
 
         public LoginPageViewModel(INavigationService navigationService, IUserService userService, IStateManager stateManager)
         {
@@ -36,7 +33,7 @@ namespace Equality.ViewModels
 
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
             OpenRegisterWindow = new TaskCommand(OnOpenRegisterWindowExecute);
-            Login = new TaskCommand<object>(OnLoginExecuteAsync, OnLoginCanExecute);
+            Login = new TaskCommand(OnLoginExecuteAsync, OnLoginCanExecute);
 
             if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.api_token)) {
                 NavigationService.Navigate<StartPageViewModel>();
@@ -45,38 +42,35 @@ namespace Equality.ViewModels
 
         public override string Title => "Вход";
 
-        protected bool CheckApiErrors { get; set; } = false;
-
         #region Properties
 
         public string Email { get; set; }
 
+        public string Password { get; set; }
+
+        [ExcludeFromValidation]
         public bool RememberMe { get; set; } = false;
 
+        [ExcludeFromValidation]
         public string EmailErrorText { get; set; }
 
-        public string PasswordErrorText { get; set; }
-
+        [ExcludeFromValidation]
         public string CredintialsErrorText { get; set; }
-
-        public bool CredentialsVisibility { get; set; }
-
-        public IDataErrorInfo MyObject;
 
         #endregion
 
         #region Commands
 
-        public TaskCommand<object> Login { get; private set; }
+        public TaskCommand Login { get; private set; }
 
-        private async Task OnLoginExecuteAsync(object parameter)
+        private async Task OnLoginExecuteAsync()
         {
-            if (!await SaveViewModelAsync()) {
+            if (EnableValidation()) {
                 return;
             }
 
             try {
-                var (user, token) = await UserService.LoginAsync(Email, ((PasswordBox)parameter).Password);
+                var (user, token) = await UserService.LoginAsync(Email, Password);
 
                 StateManager.CurrentUser = user;
                 StateManager.ApiToken = token;
@@ -90,22 +84,16 @@ namespace Equality.ViewModels
             } catch (UnprocessableEntityHttpException e) {
                 var errors = e.Errors;
 
-                CheckApiErrors = true;
-
                 CredintialsErrorText = errors.ContainsKey("credentials") ? string.Join("", errors["credentials"]) : string.Empty;
-                CredentialsVisibility = errors.ContainsKey("credentials") ? true : false;
                 EmailErrorText = errors.ContainsKey("email") ? string.Join("", errors["email"]) : string.Empty;
-                PasswordErrorText = errors.ContainsKey("password") ? string.Join("", errors["password"]) : string.Empty;
 
-                Validate(true);
-
-                CheckApiErrors = false;
+                DisplayApiErrors();
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
         }
 
-        private bool OnLoginCanExecute(object parameter)
+        private bool OnLoginCanExecute()
         {
             return !HasErrors;
         }
@@ -130,26 +118,29 @@ namespace Equality.ViewModels
 
         protected override void ValidateFields(List<IFieldValidationResult> validationResults)
         {
-            Debug.WriteLine("Called");
+            Debug.WriteLine("Call: " + Password);
 
-            if (CheckApiErrors) {
-                if (!string.IsNullOrWhiteSpace(EmailErrorText)) {
-                    validationResults.Add(FieldValidationResult.CreateError(nameof(Email), EmailErrorText));
-                }
+            var validator = new Validator(validationResults);
 
-                return;
+            validator.ValidateField(nameof(Email), Email, new()
+            {
+                new NotEmptyStringRule(),
+                new MinStringLengthRule(6)
+            });
+
+            validator.ValidateField(nameof(Password), Password, new()
+            {
+                new NotEmptyStringRule(),
+            });
+        }
+
+        protected override void DisplayApiErrors(List<IFieldValidationResult> validationResults)
+        {
+            Debug.WriteLine("Api call");
+
+            if (!string.IsNullOrEmpty(EmailErrorText)) {
+                validationResults.Add(FieldValidationResult.CreateError(nameof(Email), EmailErrorText));
             }
-
-            if (string.IsNullOrWhiteSpace(Email)) {
-                validationResults.Add(FieldValidationResult.CreateError(nameof(Email), "Не может быть пустым."));
-            }
-
-            if (!string.IsNullOrEmpty(Email) && Email.Length < 6) {
-                validationResults.Add(FieldValidationResult.CreateError(nameof(Email), "Не может быть меньше 6."));
-            }
-
-            //Debug.WriteLine(GetFieldErrors(nameof(Email)));
-            //Debug.WriteLine(HasErrors);
         }
 
         #endregion

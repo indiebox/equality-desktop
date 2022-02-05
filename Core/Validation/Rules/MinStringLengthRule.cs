@@ -1,8 +1,8 @@
 ﻿namespace Equality.Core.Validation
 {
-    public class MinStringLength : IValidatorRule<string>
+    public class MinStringLengthRule : IValidatorRule<string>
     {
-        public MinStringLength(int min)
+        public MinStringLengthRule(int min)
         {
             Min = min;
 
