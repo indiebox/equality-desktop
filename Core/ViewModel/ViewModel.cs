@@ -42,8 +42,10 @@ namespace Equality.Core.ViewModel
             }
         }
 
-        protected override void OnValidatedFields(IValidationContext validationContext)
+        protected override void OnValidatingFields(IValidationContext validationContext)
         {
+            base.OnValidatedFields(validationContext);
+
             var list = new List<IFieldValidationResult>();
             if (NeedToDisplayApiErrors) {
                 DisplayApiErrors(list);
@@ -52,8 +54,6 @@ namespace Equality.Core.ViewModel
             foreach (IFieldValidationResult item in list) {
                 validationContext.Add(item);
             }
-
-            base.OnValidatedFields(validationContext);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Equality.Core.ViewModel
         }
 
         /// <summary>
-        /// Enable the display of validation errors and perform validation.
+        /// Enable display of the validation errors and perform validation.
         /// </summary>
         /// <remarks>If validation already enabled this method do nothing and just return <see langword="false"/>.</remarks>
         /// <returns>Returns <see langword="true"/> if there are errors in a validation.</returns>

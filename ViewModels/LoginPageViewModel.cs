@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 
 using Catel.Data;
 using Catel.IoC;
@@ -118,7 +117,7 @@ namespace Equality.ViewModels
 
         protected override void ValidateFields(List<IFieldValidationResult> validationResults)
         {
-            Debug.WriteLine("Call: " + Password);
+            Debug.WriteLine("Call");
 
             var validator = new Validator(validationResults);
 
