@@ -39,8 +39,6 @@ namespace Equality
             |--------------------------------------------------------------------------
             |
             | Here we register custom types in the ServiceLocator for Dependency Injection.
-            | 
-            | For singleton registration we should use serviceLocator.RegisterInstance<>(instance);
             |
             */
 
