@@ -75,7 +75,7 @@
                 <Grid Grid.Row="1"
                       Height="52"
                       VerticalAlignment="Stretch"
-                      Visibility="{Binding CredintialsErrorText, Converter={StaticResource EmptyStringToHidingVisibility}}"
+                      Visibility="{Binding CredentialsErrorMessage, Converter={StaticResource EmptyStringToHidingVisibility}}"
                       HorizontalAlignment="Stretch">
                     <Border x:Name="border"
                             Background="#FFFED8D7"
@@ -83,7 +83,7 @@
                             CornerRadius="7"
                             SnapsToDevicePixels="True" />
                     <TextBlock Padding="10,0,10,0"
-                               Text="{Binding CredintialsErrorText}"
+                               Text="{Binding CredentialsErrorMessage}"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Foreground="#FF7A1D1F"

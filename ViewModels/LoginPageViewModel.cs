@@ -56,7 +56,7 @@ namespace Equality.ViewModels
         public bool RememberMe { get; set; } = false;
 
         [ExcludeFromValidation]
-        public string CredintialsErrorText { get; set; }
+        public string CredentialsErrorMessage { get; set; }
 
         #endregion
 
@@ -85,7 +85,7 @@ namespace Equality.ViewModels
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
 
-                CredintialsErrorText = ApiErrors.GetValueOrDefault("credentials", string.Empty);
+                CredentialsErrorMessage = ApiErrors.GetValueOrDefault("credentials", string.Empty);
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
@@ -121,7 +121,6 @@ namespace Equality.ViewModels
             validator.ValidateField(nameof(Email), Email, new()
             {
                 new NotEmptyStringRule(),
-                new MinStringLengthRule(6),
                 new ValidEmailRule(),
             });
 

@@ -28,11 +28,6 @@ namespace Equality.Core.ViewModel
         /// </summary>
         private IDisposable _validationToken;
 
-        /// <summary>
-        /// Is Api errors handling right now.
-        /// </summary>
-        private bool _isApiErrorsHandling = false;
-
         public ViewModel() : base()
         {
             DeferValidationUntilFirstSaveCall = false;
@@ -132,8 +127,11 @@ namespace Equality.Core.ViewModel
             }
 
             // Remove the Api errors when the associated property has changed.
+            // Also we use check e.OldValue != e.NewValue && e.IsOldValueMeaningful,
+            // so that we can see that the value has really changed by user.
             if (AutomaticallyHideApiErrorsOnPropertyChanged
-                && !_isApiErrorsHandling
+                && e.OldValue != e.NewValue
+                && e.IsOldValueMeaningful
                 && (ApiFieldsMap?.ContainsKey(e.PropertyName) ?? false)) {
                 string apiField = ApiFieldsMap[e.PropertyName];
 
@@ -145,17 +143,15 @@ namespace Equality.Core.ViewModel
 
         protected override void OnValidatingFields(IValidationContext validationContext)
         {
-            base.OnValidatedFields(validationContext);
+            base.OnValidatingFields(validationContext);
 
-            if (ApiErrors.Count == 0) {
-                return;
-            }
+            if (ApiErrors.Count != 0) {
+                var list = new List<IFieldValidationResult>();
+                DisplayApiErrors(list);
 
-            var list = new List<IFieldValidationResult>();
-            DisplayApiErrors(list);
-
-            foreach (var item in list) {
-                validationContext.Add(item);
+                foreach (var item in list) {
+                    validationContext.Add(item);
+                }
             }
         }
 
@@ -191,11 +187,7 @@ namespace Equality.Core.ViewModel
                 ApiErrors.Add(error.Key, error.Value[0]);
             }
 
-            _isApiErrorsHandling = true;
-
             Validate(true);
-
-            _isApiErrorsHandling = false;
         }
 
         /// <summary>
