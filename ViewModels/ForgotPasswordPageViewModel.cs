@@ -17,18 +17,18 @@ namespace Equality.ViewModels
 
         protected IUserService UserService;
 
-        public ForgotPasswordPageViewModel(INavigationService service, IUserService userService)
+        public ForgotPasswordPageViewModel(INavigationService navigationService, IUserService userService)
         {
-            NavigationService = service;
+            NavigationService = navigationService;
             UserService = userService;
 
-            OpenLoginPage = new Command(OnOpenLoginPageExecute);
+            GoBack = new Command(OnGoBackExecute);
             OpenResetPasswordPage = new TaskCommand(OnOpenResetPasswordPageExecute);
         }
 
-        #region Properties
-
         public override string Title => "Восстановление пароля";
+
+        #region Properties
 
         public string Error { get; set; }
 
@@ -48,18 +48,20 @@ namespace Equality.ViewModels
                 {
                     { "email", Email }
                 };
+
                 NavigationService.Navigate<ResetPasswordPageViewModel>(parameters);
             } catch (UnprocessableEntityHttpException e) {
                 var errors = e.Errors;
+
                 Error = errors.ContainsKey("email") ? string.Join("", errors["email"]) : string.Empty;
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
         }
 
-        public Command OpenLoginPage { get; private set; }
+        public Command GoBack { get; private set; }
 
-        private void OnOpenLoginPageExecute() => NavigationService.Navigate<LoginPageViewModel>();
+        private void OnGoBackExecute() => NavigationService.GoBack();
 
         #endregion
 

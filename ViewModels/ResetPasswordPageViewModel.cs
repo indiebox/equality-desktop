@@ -16,19 +16,18 @@ namespace Equality.ViewModels
 
         protected IUserService UserServise;
 
-        public ResetPasswordPageViewModel(INavigationService service, IUserService userServise)
+        public ResetPasswordPageViewModel(INavigationService navigationService, IUserService userService)
         {
-            NavigationService = service;
-            UserServise = userServise;
+            NavigationService = navigationService;
+            UserServise = userService;
 
-            OpenForgotPasswordPage = new Command(OnOpenForgotPasswordPageExecute);
-            OpenLoginPage = new TaskCommand(OnOpenLoginPageExecute);
+            GoBack = new Command(OnGoBackExecute);
+            ResetPassword = new TaskCommand(OnResetPasswordExecute);
 
-            NavigationCompleted += ResetPasswordPageViewModel_NavigationCompleted;
+            NavigationCompleted += OnNavigationCompleted;
         }
 
         public override string Title => "Изменение пароля";
-
 
         #region Properties
 
@@ -56,19 +55,21 @@ namespace Equality.ViewModels
 
         #region Commands
 
-        public Command OpenForgotPasswordPage { get; private set; }
+        public Command GoBack { get; private set; }
 
-        private void OnOpenForgotPasswordPageExecute() => NavigationService.Navigate<ForgotPasswordPageViewModel>();
+        private void OnGoBackExecute() => NavigationService.GoBack();
 
-        public TaskCommand OpenLoginPage { get; private set; }
+        public TaskCommand ResetPassword { get; private set; }
 
-        private async Task OnOpenLoginPageExecute()
+        private async Task OnResetPasswordExecute()
         {
             try {
                 var response = await UserServise.ResetPasswordAsync(Email, Password, PasswordConfirmation, Token);
+
                 NavigationService.Navigate<LoginPageViewModel>();
             } catch (UnprocessableEntityHttpException e) {
                 var errors = e.Errors;
+
                 EmailErrorText = errors.ContainsKey("email") ? string.Join("", errors["email"]) : string.Empty;
                 PasswordErrorText = errors.ContainsKey("password") ? string.Join("", errors["password"]) : string.Empty;
                 PasswordConfirmationErrorText = errors.ContainsKey("password_confirmation") ? string.Join("", errors["password_confirmation"]) : string.Empty;
@@ -82,7 +83,7 @@ namespace Equality.ViewModels
 
         #endregion
 
-        private void ResetPasswordPageViewModel_NavigationCompleted(object sender, System.EventArgs e)
+        private void OnNavigationCompleted(object sender, System.EventArgs e)
         {
             Email = (string)NavigationContext.Values["email"];
         }

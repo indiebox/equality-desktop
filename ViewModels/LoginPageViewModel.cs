@@ -74,7 +74,6 @@ namespace Equality.ViewModels
 
                 NavigationService.Navigate<StartPageViewModel>();
             } catch (UnprocessableEntityHttpException e) {
-                Debug.WriteLine(e.ToString());
                 var errors = e.Errors;
 
                 CredintialsErrorText = errors.ContainsKey("credentials") ? string.Join("", errors["credentials"]) : string.Empty;
