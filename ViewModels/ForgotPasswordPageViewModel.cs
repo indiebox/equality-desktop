@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using Catel.Data;
-
 using Catel.MVVM;
 using Catel.Services;
 
@@ -47,7 +45,7 @@ namespace Equality.ViewModels
             IsSendingRequest = true;
 
             try {
-                var response = await UserService.ForgotPasswordEmailSendAsync(Email);
+                var response = await UserService.SendResetPasswordTokenAsync(Email);
                 var parameters = new Dictionary<string, object>
                 {
                     { "email", Email }

@@ -17,19 +17,19 @@ namespace Equality.Services
         public Task<(User user, string token)> LoginAsync(string email, string password);
 
         /// <summary>
-        /// Sends a request to send a message with a password recovery code to the mail on the API.
+        /// Sends the forgot password request to the API.
         /// </summary>
         /// <param name="email">The user email.</param>
         /// <returns>Returns the server response as a <see cref="JObject"/>.</returns>
-        public Task<JObject> ForgotPasswordEmailSendAsync(string email);
+        public Task<JObject> SendResetPasswordTokenAsync(string email);
 
         /// <summary>
-        /// Sends a request to the API to reset the password.
+        /// Sends the reset password request to the API.
         /// </summary>
         /// <param name="email">The user email.</param>
         /// <param name="password">The user password.</param>
         /// <param name="passwordConfirmation">The user re-entered password.</param>
-        /// <param name="token">A token from a letter sent to an email.</param>
+        /// <param name="token">The token from an email.</param>
         /// <returns>Returns the server response as a <see cref="JObject"/>.</returns>
         public Task<JObject> ResetPasswordAsync(string email, string password, string passwordConfirmation, string token);
 
