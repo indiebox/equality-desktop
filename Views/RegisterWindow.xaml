@@ -12,8 +12,32 @@
               Width="900"
               Height="850"
               ResizeMode="NoResize">
-    <DockPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0"
+                   Panel.ZIndex="1"
+                   Background="White"
+                   Visibility="{Binding IsBrowserLoaded, Converter={StaticResource InverseBoolToVisConverter}}"
+                   Height="Auto"
+                   Width="Auto">
+            <StackPanel VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                <ProgressBar Style="{StaticResource MaterialDesignLinearProgressBar}"
+                             Height="40"
+                             Width="500"
+                             IsIndeterminate="True"
+                             materialDesign:TransitionAssist.DisableTransitions="True"
+                             Background="Transparent"
+                             Foreground="{StaticResource PrimaryHueMidBrush}" />
+            </StackPanel>
+        </DockPanel>
+
         <cefSharp:ChromiumWebBrowser x:Name="Browser"
+                                     Grid.Row="0"
                                      Address="{Binding Url}" />
-    </DockPanel>
+
+    </Grid>
 </catel:Window>

@@ -90,9 +90,8 @@ namespace Equality.ViewModels
         private async Task OnOpenRegisterWindowExecute()
         {
             var uiVisualizerService = this.GetDependencyResolver().Resolve<IUIVisualizerService>();
-            var vm = this.GetTypeFactory().CreateInstanceWithParametersAndAutoCompletion<RegisterWindowViewModel>();
 
-            await uiVisualizerService.ShowAsync(vm);
+            await uiVisualizerService.ShowOrActivateAsync<RegisterWindowViewModel>(null, null);
         }
         
         public Command OpenForgotPassword { get; private set; }

@@ -1,12 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-using Catel.Data;
-
 using Catel.MVVM;
-
-using CefSharp;
-
-using Equality.Core.CefSharp;
 
 namespace Equality.ViewModels
 {
@@ -20,6 +14,8 @@ namespace Equality.ViewModels
         public override string Title => "Регистрация";
 
         public string Url { get; set; }
+
+        public bool IsBrowserLoaded { get; set; }
 
         protected override async Task InitializeAsync()
         {
