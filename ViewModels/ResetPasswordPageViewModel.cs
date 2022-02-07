@@ -21,7 +21,7 @@ namespace Equality.ViewModels
             NavigationService = navigationService;
             UserServise = userService;
 
-            GoBack = new Command(OnGoBackExecute);
+            GoBack = new Command(OnGoBackExecute, () => !IsSendingRequest);
             ResetPassword = new TaskCommand(OnResetPasswordExecute);
 
             NavigationCompleted += OnNavigationCompleted;
@@ -39,17 +39,7 @@ namespace Equality.ViewModels
 
         public string Token { get; set; }
 
-        public string EmailErrorText { get; set; }
-
-        public string PasswordErrorText { get; set; }
-
-        public string PasswordConfirmationErrorText { get; set; }
-
-        public string TokenErrorText { get; set; }
-
-        public string CredintialsErrorText { get; set; }
-
-        public bool CredentialsVisibility { get; set; }
+        public bool IsSendingRequest { get; set; }
 
         #endregion
 
@@ -63,22 +53,19 @@ namespace Equality.ViewModels
 
         private async Task OnResetPasswordExecute()
         {
+            IsSendingRequest = true;
+
             try {
                 var response = await UserServise.ResetPasswordAsync(Email, Password, PasswordConfirmation, Token);
 
                 NavigationService.Navigate<LoginPageViewModel>();
             } catch (UnprocessableEntityHttpException e) {
                 var errors = e.Errors;
-
-                EmailErrorText = errors.ContainsKey("email") ? string.Join("", errors["email"]) : string.Empty;
-                PasswordErrorText = errors.ContainsKey("password") ? string.Join("", errors["password"]) : string.Empty;
-                PasswordConfirmationErrorText = errors.ContainsKey("password_confirmation") ? string.Join("", errors["password_confirmation"]) : string.Empty;
-                TokenErrorText = errors.ContainsKey("token") ? string.Join("", errors["token"]) : string.Empty;
-                CredintialsErrorText = errors.ContainsKey("credentials") ? string.Join("", errors["credentials"]) : string.Empty;
-                CredentialsVisibility = errors.ContainsKey("credentials");
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
+
+            IsSendingRequest = false;
         }
 
         #endregion

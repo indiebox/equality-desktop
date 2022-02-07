@@ -70,6 +70,7 @@
                            HorizontalAlignment="Center"
                            Margin="0,0,0,0"
                            Text="{Binding Title}" />
+
                 <Grid Grid.Row="1"
                       Height="52"
                       VerticalAlignment="Stretch"
@@ -89,6 +90,7 @@
                                TextAlignment="Center"
                                FontWeight="Bold" />
                 </Grid>
+
                 <StackPanel Grid.Row="2">
                     <Label Margin="10,0,10,0"
                            Target="{Binding ElementName=Email}"

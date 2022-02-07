@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Catel.Data;
+
 using Catel.MVVM;
 using Catel.Services;
 
@@ -22,7 +24,7 @@ namespace Equality.ViewModels
             NavigationService = navigationService;
             UserService = userService;
 
-            GoBack = new Command(OnGoBackExecute);
+            GoBack = new Command(OnGoBackExecute, () => !IsSendingRequest);
             OpenResetPasswordPage = new TaskCommand(OnOpenResetPasswordPageExecute);
         }
 
@@ -30,9 +32,9 @@ namespace Equality.ViewModels
 
         #region Properties
 
-        public string Error { get; set; }
-
         public string Email { get; set; }
+
+        public bool IsSendingRequest { get; set; }
 
         #endregion
 
@@ -42,6 +44,8 @@ namespace Equality.ViewModels
 
         private async Task OnOpenResetPasswordPageExecute()
         {
+            IsSendingRequest = true;
+
             try {
                 var response = await UserService.ForgotPasswordEmailSendAsync(Email);
                 var parameters = new Dictionary<string, object>
@@ -52,11 +56,11 @@ namespace Equality.ViewModels
                 NavigationService.Navigate<ResetPasswordPageViewModel>(parameters);
             } catch (UnprocessableEntityHttpException e) {
                 var errors = e.Errors;
-
-                Error = errors.ContainsKey("email") ? string.Join("", errors["email"]) : string.Empty;
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
+
+            IsSendingRequest = false;
         }
 
         public Command GoBack { get; private set; }
