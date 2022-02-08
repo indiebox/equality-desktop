@@ -1,20 +1,22 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 
+using Catel.Data;
 using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
 
 using Equality.Core.ApiClient;
 using Equality.Core.StateManager;
+using Equality.Core.Validation;
+using Equality.Core.ViewModel;
 using Equality.Services;
-
 
 namespace Equality.ViewModels
 {
-    public class LoginPageViewModel : ViewModelBase
+    public class LoginPageViewModel : ViewModel
     {
         protected INavigationService NavigationService;
 
@@ -30,11 +32,16 @@ namespace Equality.ViewModels
 
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
             OpenRegisterWindow = new TaskCommand(OnOpenRegisterWindowExecute);
-            Login = new TaskCommand<object>(OnLoginExecuteAsync);
+            Login = new TaskCommand(OnLoginExecuteAsync, OnLoginCanExecute);
 
             if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.api_token)) {
                 NavigationService.Navigate<StartPageViewModel>();
             }
+
+            ApiFieldsMap = new()
+            {
+                { nameof(Email), "email" },
+            };
         }
 
         public override string Title => "Вход";
@@ -43,26 +50,28 @@ namespace Equality.ViewModels
 
         public string Email { get; set; }
 
+        public string Password { get; set; }
+
+        [ExcludeFromValidation]
         public bool RememberMe { get; set; } = false;
 
-        public string EmailErrorText { get; set; }
-
-        public string PasswordErrorText { get; set; }
-
-        public string CredintialsErrorText { get; set; }
-
-        public bool CredentialsVisibility { get; set; }
+        [ExcludeFromValidation]
+        public string CredentialsErrorMessage { get; set; }
 
         #endregion
 
         #region Commands
 
-        public TaskCommand<object> Login { get; private set; }
+        public TaskCommand Login { get; private set; }
 
-        private async Task OnLoginExecuteAsync(object parameter)
+        private async Task OnLoginExecuteAsync()
         {
+            if (FirstValidationHasErrors()) {
+                return;
+            }
+
             try {
-                var (user, token) = await UserService.LoginAsync(Email, ((PasswordBox)parameter).Password);
+                var (user, token) = await UserService.LoginAsync(Email, Password);
 
                 StateManager.CurrentUser = user;
                 StateManager.ApiToken = token;
@@ -74,15 +83,17 @@ namespace Equality.ViewModels
 
                 NavigationService.Navigate<StartPageViewModel>();
             } catch (UnprocessableEntityHttpException e) {
-                var errors = e.Errors;
+                HandleApiErrors(e.Errors);
 
-                CredintialsErrorText = errors.ContainsKey("credentials") ? string.Join("", errors["credentials"]) : string.Empty;
-                CredentialsVisibility = errors.ContainsKey("credentials") ? true : false;
-                EmailErrorText = errors.ContainsKey("email") ? string.Join("", errors["email"]) : string.Empty;
-                PasswordErrorText = errors.ContainsKey("password") ? string.Join("", errors["password"]) : string.Empty;
+                CredentialsErrorMessage = ApiErrors.GetValueOrDefault("credentials", string.Empty);
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
+        }
+
+        private bool OnLoginCanExecute()
+        {
+            return !HasErrors;
         }
 
         public TaskCommand OpenRegisterWindow { get; private set; }
@@ -93,10 +104,30 @@ namespace Equality.ViewModels
 
             await uiVisualizerService.ShowOrActivateAsync<RegisterWindowViewModel>(null, null);
         }
-        
+
         public Command OpenForgotPassword { get; private set; }
 
         private void OnOpenForgotPasswordExecute() => NavigationService.Navigate<ForgotPasswordPageViewModel>();
+
+        #endregion
+
+        #region Validation
+
+        protected override void ValidateFields(List<IFieldValidationResult> validationResults)
+        {
+            var validator = new Validator(validationResults);
+
+            validator.ValidateField(nameof(Email), Email, new()
+            {
+                new NotEmptyStringRule(),
+                new ValidEmailRule(),
+            });
+
+            validator.ValidateField(nameof(Password), Password, new()
+            {
+                new NotEmptyStringRule(),
+            });
+        }
 
         #endregion
 

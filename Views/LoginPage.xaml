@@ -6,13 +6,15 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+            xmlns:assists="clr-namespace:Equality.Assists"
+            xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
             d:DesignHeight="600"
             d:DesignWidth="900"
             d:Background="{StaticResource MaterialDesignPaper}"
             d:DataContext="{d:DesignInstance dvm:DesignLoginPageViewModel, IsDesignTimeCreatable=True}"
             mc:Ignorable="d">
     <catel:Page.Resources>
-        <catel:BooleanToHidingVisibilityConverter x:Key="HidingVisibilityConverter" />
+        <catel:EmptyStringToHidingVisibilityConverter x:Key="EmptyStringToHidingVisibility" />
     </catel:Page.Resources>
 
     <DockPanel>
@@ -73,7 +75,7 @@
                 <Grid Grid.Row="1"
                       Height="52"
                       VerticalAlignment="Stretch"
-                      Visibility="{Binding CredentialsVisibility, Converter={StaticResource HidingVisibilityConverter}}"
+                      Visibility="{Binding CredentialsErrorMessage, Converter={StaticResource EmptyStringToHidingVisibility}}"
                       HorizontalAlignment="Stretch">
                     <Border x:Name="border"
                             Background="#FFFED8D7"
@@ -81,7 +83,7 @@
                             CornerRadius="7"
                             SnapsToDevicePixels="True" />
                     <TextBlock Padding="10,0,10,0"
-                               Text="{Binding CredintialsErrorText}"
+                               Text="{Binding CredentialsErrorMessage}"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Foreground="#FF7A1D1F"
@@ -98,15 +100,12 @@
                              AcceptsReturn="False"
                              materialDesign:HintAssist.Hint="Введите адрес эл. почты"
                              materialDesign:HintAssist.IsFloating="False"
-                             Margin="10,0,10,0"
+                             Margin="10,0,10,30"
                              FontSize="16"
                              TabIndex="0"
-                             Text="{Binding Email}" />
-                    <TextBlock Margin="10,2,10,0"
-                               Height="23"
-                               Foreground="Red"
-                               Text="{Binding EmailErrorText}"
-                               TextWrapping="Wrap" />
+                             materialDesign:ValidationAssist.FontSize="14"
+                             Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}">
+                    </TextBox>
                 </StackPanel>
 
                 <StackPanel Grid.Row="3">
@@ -131,17 +130,19 @@
 
                     <PasswordBox Name="Password"
                                  Style="{StaticResource MaterialDesignFilledPasswordBox}"
+                                 assists:PasswordBoxAssist.Password="{Binding Password}"
+                                 materialDesign:ValidationAssist.FontSize="14"
                                  VerticalAlignment="Top"
                                  materialDesign:HintAssist.Hint="Введите пароль"
                                  materialDesign:HintAssist.IsFloating="False"
-                                 Margin="10,0,10,0"
+                                 Margin="10,0,10,30"
                                  FontSize="16"
-                                 TabIndex="0" />
-                    <TextBlock Margin="10,2,10,0"
-                               Height="23"
-                               Foreground="Red"
-                               Text="{Binding PasswordErrorText}"
-                               TextWrapping="Wrap" />
+                                 TabIndex="0"
+                                 Cursor="IBeam">
+                        <i:Interaction.Behaviors>
+                            <catel:UpdateBindingOnPasswordChanged Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}" />
+                        </i:Interaction.Behaviors>
+                    </PasswordBox>
                 </StackPanel>
 
                 <CheckBox FontSize="16"
@@ -153,9 +154,9 @@
                           VerticalAlignment="Center"
                           HorizontalAlignment="Stretch"
                           TabIndex="2"
+                          Cursor="Hand"
                           IsChecked="{Binding RememberMe}" />
                 <Button Command="{Binding Login}"
-                        CommandParameter="{Binding ElementName=Password}"
                         Grid.Row="5"
                         Margin="10,0,10,10"
                         Grid.Column="0"
