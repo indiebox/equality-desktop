@@ -45,7 +45,6 @@ namespace Equality.ViewModels
 
         #region Properties
 
-        [NoWeaving]
         [ExcludeFromValidation]
         public string Email { get; set; }
 
