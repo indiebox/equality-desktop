@@ -1,16 +1,20 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Catel.Data;
 using Catel.MVVM;
 using Catel.Services;
 
 using Equality.Core.ApiClient;
+using Equality.Core.Validation;
+using Equality.Core.ViewModel;
 using Equality.Services;
 
 namespace Equality.ViewModels
 {
-    public class ResetPasswordPageViewModel : ViewModelBase
+    public class ResetPasswordPageViewModel : ViewModel
     {
         protected INavigationService NavigationService;
 
@@ -22,9 +26,16 @@ namespace Equality.ViewModels
             UserServise = userService;
 
             GoBack = new Command(OnGoBackExecute, () => !IsSendingRequest);
-            ResetPassword = new TaskCommand(OnResetPasswordExecute);
+            ResetPassword = new TaskCommand(OnResetPasswordExecute, OnResetPasswordCanExecute);
 
             NavigationCompleted += OnNavigationCompleted;
+
+            ApiFieldsMap = new()
+            {
+                { nameof(Password), "password" },
+                { nameof(PasswordConfirmation), "password_confirmation" },
+                { nameof(Token), "token" },
+            };
         }
 
         public override string Title => "Изменение пароля";
@@ -53,6 +64,9 @@ namespace Equality.ViewModels
 
         private async Task OnResetPasswordExecute()
         {
+            if (FirstValidationHasErrors()) {
+                return;
+            }
             IsSendingRequest = true;
 
             try {
@@ -61,11 +75,39 @@ namespace Equality.ViewModels
                 NavigationService.Navigate<LoginPageViewModel>();
             } catch (UnprocessableEntityHttpException e) {
                 var errors = e.Errors;
+                HandleApiErrors(e.Errors);
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
 
             IsSendingRequest = false;
+        }
+
+        private bool OnResetPasswordCanExecute()
+        {
+            return !HasErrors;
+        }
+
+        #endregion
+
+        #region Validation
+
+        protected override void ValidateFields(List<IFieldValidationResult> validationResults)
+        {
+            var validator = new Validator(validationResults);
+
+            validator.ValidateField(nameof(Password), Password, new()
+            {
+                new NotEmptyStringRule(),
+            });
+            validator.ValidateField(nameof(PasswordConfirmation), PasswordConfirmation, new()
+            {
+                new NotEmptyStringRule(),
+            });
+            validator.ValidateField(nameof(Token), Token, new()
+            {
+                new NotEmptyStringRule(),
+            });
         }
 
         #endregion
