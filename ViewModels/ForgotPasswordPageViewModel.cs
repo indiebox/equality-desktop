@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Data;
+using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
 
@@ -20,13 +22,16 @@ namespace Equality.ViewModels
 
         protected IUserService UserService;
 
-        public ForgotPasswordPageViewModel(INavigationService navigationService, IUserService userService)
+        protected ISchedulerService SchedulerService;
+
+        public ForgotPasswordPageViewModel(INavigationService navigationService, IUserService userService, ISchedulerService schedulerService)
         {
             NavigationService = navigationService;
             UserService = userService;
+            SchedulerService = schedulerService;
 
             GoBack = new Command(OnGoBackExecute, () => !IsSendingRequest);
-            OpenResetPasswordPage = new TaskCommand(OnOpenResetPasswordPageExecute, OnOpenResetPaswordCanExecute);
+            OpenResetPasswordPage = new TaskCommand(OnOpenResetPasswordPageExecute, () => CanSendRequest);
 
             ApiFieldsMap = new()
             {
@@ -39,6 +44,8 @@ namespace Equality.ViewModels
         #region Properties
 
         public string Email { get; set; }
+
+        public bool CanSendRequest { get; set; } = true;
 
         public bool IsSendingRequest { get; set; }
 
@@ -54,6 +61,10 @@ namespace Equality.ViewModels
                 return;
             }
 
+            if (HasErrors && ApiErrors.Count == 0) {
+                return;
+            }
+
             IsSendingRequest = true;
 
             try {
@@ -63,10 +74,19 @@ namespace Equality.ViewModels
                     { "email", Email }
                 };
 
+                SuspendValidations(false);
+
                 NavigationService.Navigate<ResetPasswordPageViewModel>(parameters);
             } catch (UnprocessableEntityHttpException e) {
-                var errors = e.Errors;
                 HandleApiErrors(e.Errors);
+
+                CanSendRequest = false;
+
+                SchedulerService.Schedule(() =>
+                {
+                    CanSendRequest = true;
+                    OpenResetPasswordPage.RaiseCanExecuteChanged();
+                }, DateTime.Now.AddSeconds(30));
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
@@ -77,11 +97,6 @@ namespace Equality.ViewModels
         public Command GoBack { get; private set; }
 
         private void OnGoBackExecute() => NavigationService.GoBack();
-
-        private bool OnOpenResetPaswordCanExecute()
-        {
-            return !HasErrors;
-        }
 
         #endregion
 
@@ -94,7 +109,7 @@ namespace Equality.ViewModels
             validator.ValidateField(nameof(Email), Email, new()
             {
                 new NotEmptyStringRule(),
-                new ValidEmailRule(),
+                new ValidEmailRule(false),
             });
         }
 
