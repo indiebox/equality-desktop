@@ -6,6 +6,7 @@ using Equality.Core.ApiClient;
 using Equality.Models;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace Equality.Services
@@ -34,6 +35,33 @@ namespace Equality.Services
             string token = response.Content["token"].ToString();
 
             return (user, token);
+        }
+
+        public async Task<JObject> SendResetPasswordTokenAsync(string email)
+        {
+            Dictionary<string, object> data = new()
+            {
+                { "email", email },
+            };
+
+            var response = await ApiClient.PostAsync("forgot-password", data);
+
+            return response.Content;
+        }
+
+        public async Task<JObject> ResetPasswordAsync(string email, string password, string passwordConfirmation, string token)
+        {
+            Dictionary<string, object> data = new()
+            {
+                { "email", email },
+                { "password", password },
+                { "password_confirmation", passwordConfirmation },
+                { "token", token },
+            };
+
+            var response = await ApiClient.PostAsync("reset-password", data);
+
+            return response.Content;
         }
 
         public User Deserialize(string data)
