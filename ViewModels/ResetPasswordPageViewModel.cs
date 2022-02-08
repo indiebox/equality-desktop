@@ -115,7 +115,7 @@ namespace Equality.ViewModels
             validator.ValidateField(nameof(PasswordConfirmation), PasswordConfirmation, new()
             {
                 new NotEmptyStringRule(),
-                new PredicateRule<string>((password) => password != PasswordConfirmation, "Пароли не совпадают."),
+                new PredicateRule<string>((password) => password == Password, "Пароли не совпадают."),
             });
         }
 
