@@ -27,6 +27,11 @@ namespace Equality.ViewModels
 
             GoBack = new Command(OnGoBackExecute, () => !IsSendingRequest);
             OpenResetPasswordPage = new TaskCommand(OnOpenResetPasswordPageExecute, OnOpenResetPaswordCanExecute);
+
+            ApiFieldsMap = new()
+            {
+                { nameof(Email), "email" },
+            };
         }
 
         public override string Title => "Восстановление пароля";
