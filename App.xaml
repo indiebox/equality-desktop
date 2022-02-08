@@ -13,6 +13,8 @@
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Customize primary colors -->
+            <SolidColorBrush x:Key="PrimaryHueMidBrush"
+                             Color="#fd5a2e" />
             <SolidColorBrush x:Key="PrimaryHueLightBrush"
                              Color="#fe8c6d" />
             <SolidColorBrush x:Key="PrimaryHueDarkBrush"

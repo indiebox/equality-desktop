@@ -29,9 +29,9 @@ namespace Equality
             //
             // For more information, see http://docs.catelproject.com/vnext/faq/performance-considerations/
 
-            // Log.Info("Improving performance");
-            // Catel.Windows.Controls.UserControl.DefaultCreateWarningAndErrorValidatorForViewModelValue = false;
-            // Catel.Windows.Controls.UserControl.DefaultSkipSearchingForInfoBarMessageControlValue = true;
+            Log.Info("Improving performance");
+            Catel.Windows.Controls.UserControl.DefaultCreateWarningAndErrorValidatorForViewModelValue = false;
+            Catel.Windows.Controls.UserControl.DefaultSkipSearchingForInfoBarMessageControlValue = true;
 
             /*
             |--------------------------------------------------------------------------
@@ -39,8 +39,6 @@ namespace Equality
             |--------------------------------------------------------------------------
             |
             | Here we register custom types in the ServiceLocator for Dependency Injection.
-            | 
-            | For singleton registration we should use serviceLocator.RegisterInstance<>(instance);
             |
             */
 

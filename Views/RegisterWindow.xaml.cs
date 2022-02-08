@@ -2,6 +2,7 @@
 using CefSharp.Wpf;
 
 using Equality.Core.CefSharp;
+using Equality.ViewModels;
 
 namespace Equality.Views
 {
@@ -23,6 +24,19 @@ namespace Equality.Views
 
             // Disable context menu in browser by click RMB.
             Browser.MenuHandler = new CustomMenuHandler();
+
+            // Hide loading screen on page loaded.
+            Browser.FrameLoadEnd += OnFrameLoadEnd;
+        }
+
+        private void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)
+        {
+            if (e.Frame.IsMain) {
+                App.Current.Dispatcher.Invoke(delegate
+                {
+                    ((RegisterWindowViewModel)DataContext).IsBrowserLoaded = true;
+                });
+            }
         }
     }
 }
