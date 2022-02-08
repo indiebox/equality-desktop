@@ -15,7 +15,7 @@ namespace Equality.Views
     /// <summary>
     /// Логика взаимодействия для ApplicationWindow.xaml
     /// </summary>
-    public partial class ApplicationWindow : Window
+    public partial class ApplicationWindow
     {
         public ApplicationWindow()
         {
