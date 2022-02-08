@@ -15,16 +15,10 @@
               Width="1920"
               Height="1080"
               Title="ApplicationWindow">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"></ColumnDefinition>
-            <ColumnDefinition Width="25*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+    <StackPanel Orientation="Horizontal">
         <TabControl Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
-                    SnapsToDevicePixels="True"
+                    BorderBrush="Transparent"
+                    TabStripPlacement="Left"
                     materialDesign:ColorZoneAssist.Mode="Standard"
                     materialDesign:ShadowAssist.ShadowDepth="Depth3"
                     materialDesign:NavigationRailAssist.ShowSelectionBackground="True">
@@ -39,11 +33,10 @@
                     </Border.Background>
                 </Border>
             </materialDesign:NavigationRailAssist.FloatingContent>
-            <TabItem>
+            <TabItem Width="80">
                 <TabItem.Header>
                     <StackPanel Height="auto"
                                 Width="auto">
-
                         <materialDesign:PackIcon Kind="Home"
                                                  Width="24"
                                                  Height="24"
@@ -52,8 +45,9 @@
                                    HorizontalAlignment="Center" />
                     </StackPanel>
                 </TabItem.Header>
+
             </TabItem>
-            <TabItem>
+            <TabItem Width="80">
                 <TabItem.Header>
                     <StackPanel Height="auto"
                                 Width="auto">
@@ -66,7 +60,7 @@
                     </StackPanel>
                 </TabItem.Header>
             </TabItem>
-            <TabItem>
+            <TabItem Width="80">
                 <TabItem.Header>
                     <StackPanel Height="auto"
                                 Width="auto">
@@ -80,11 +74,9 @@
                 </TabItem.Header>
             </TabItem>
         </TabControl>
-        <Frame Grid.Column="1"
-               DockPanel.Dock="Right"
-               KeyboardNavigation.IsTabStop="False"
+        <Frame KeyboardNavigation.IsTabStop="False"
                VerticalAlignment="Stretch"
                HorizontalAlignment="Stretch"
                NavigationUIVisibility="Hidden" />
-    </Grid>
+    </StackPanel>
 </catel:Window>
