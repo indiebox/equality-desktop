@@ -1,35 +1,130 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
 
+using Catel.Data;
+using Catel.Fody;
 using Catel.MVVM;
 using Catel.Services;
 
+using Equality.Core.ApiClient;
+using Equality.Core.Validation;
+using Equality.Core.ViewModel;
+using Equality.Services;
+
 namespace Equality.ViewModels
 {
-    public class ResetPasswordPageViewModel : ViewModelBase
+    public class ResetPasswordPageViewModel : ViewModel
     {
         protected INavigationService NavigationService;
 
-        public ResetPasswordPageViewModel(INavigationService service)
-        {
-            NavigationService = service;
+        protected IUserService UserServise;
 
-            OpenForgotPasswordPage = new Command(OnOpenForgotPasswordPageExecute);
-            OpenLoginPage = new Command(OnOpenLoginPageExecute);
+        public ResetPasswordPageViewModel(INavigationService navigationService, IUserService userService)
+        {
+            NavigationService = navigationService;
+            UserServise = userService;
+
+            GoBack = new Command(OnGoBackExecute, () => !IsSendingRequest);
+            ResetPassword = new TaskCommand(OnResetPasswordExecute, OnResetPasswordCanExecute);
+
+            NavigationCompleted += OnNavigationCompleted;
+
+            ApiFieldsMap = new()
+            {
+                { nameof(Token), "token" },
+                { nameof(Password), "password" },
+                { nameof(PasswordConfirmation), "password_confirmation" },
+            };
         }
 
         public override string Title => "Изменение пароля";
 
-        #region Commands
+        #region Properties
 
-        public Command OpenForgotPasswordPage { get; private set; }
+        [NoWeaving]
+        [ExcludeFromValidation]
+        public string Email { get; set; }
 
-        private void OnOpenForgotPasswordPageExecute() => NavigationService.Navigate<ForgotPasswordPageViewModel>();
+        public string Password { get; set; }
 
-        public Command OpenLoginPage { get; private set; }
+        public string PasswordConfirmation { get; set; }
 
-        private void OnOpenLoginPageExecute() => NavigationService.Navigate<LoginPageViewModel>();
+        public string Token { get; set; }
+
+        [ExcludeFromValidation]
+        public bool IsSendingRequest { get; set; }
 
         #endregion
+
+        #region Commands
+
+        public Command GoBack { get; private set; }
+
+        private void OnGoBackExecute() => NavigationService.GoBack();
+
+        public TaskCommand ResetPassword { get; private set; }
+
+        private async Task OnResetPasswordExecute()
+        {
+            if (FirstValidationHasErrors()) {
+                return;
+            }
+
+            IsSendingRequest = true;
+
+            try {
+                var response = await UserServise.ResetPasswordAsync(Email, Password, PasswordConfirmation, Token);
+
+                NavigationService.Navigate<LoginPageViewModel>();
+            } catch (UnprocessableEntityHttpException e) {
+                HandleApiErrors(e.Errors);
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+
+            IsSendingRequest = false;
+        }
+
+        private bool OnResetPasswordCanExecute()
+        {
+            return !HasErrors;
+        }
+
+        #endregion
+
+        #region Validation
+
+        protected override void ValidateFields(List<IFieldValidationResult> validationResults)
+        {
+            var validator = new Validator(validationResults);
+
+            validator.ValidateField(nameof(Token), Token, new()
+            {
+                new NotEmptyStringRule(),
+            });
+            validator.ValidateField(nameof(Password), Password, new()
+            {
+                new NotEmptyStringRule(),
+                new MinStringLengthRule(6),
+#if !DEBUG
+                new ValidPasswordRule(),
+#endif
+            });
+            validator.ValidateField(nameof(PasswordConfirmation), PasswordConfirmation, new()
+            {
+                new NotEmptyStringRule(),
+                new PredicateRule<string>((password) => password == Password, "Пароли не совпадают."),
+            });
+        }
+
+        #endregion
+
+        private void OnNavigationCompleted(object sender, System.EventArgs e)
+        {
+            Email = (string)NavigationContext.Values["email"];
+        }
 
         protected override async Task InitializeAsync()
         {

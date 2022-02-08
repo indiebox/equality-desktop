@@ -41,6 +41,7 @@ namespace Equality.ViewModels
             ApiFieldsMap = new()
             {
                 { nameof(Email), "email" },
+                { nameof(Password), "password" },
             };
         }
 
@@ -134,6 +135,10 @@ namespace Equality.ViewModels
             validator.ValidateField(nameof(Password), Password, new()
             {
                 new NotEmptyStringRule(),
+                new MinStringLengthRule(6),
+#if !DEBUG
+                new ValidPasswordRule(),
+#endif
             });
         }
 

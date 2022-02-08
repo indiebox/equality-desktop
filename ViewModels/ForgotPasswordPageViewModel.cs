@@ -1,34 +1,102 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
 
-using Catel;
+using Catel.Data;
 using Catel.MVVM;
 using Catel.Services;
 
+using Equality.Core.ApiClient;
+using Equality.Core.Validation;
+using Equality.Core.ViewModel;
+using Equality.Services;
+
 namespace Equality.ViewModels
 {
-    public class ForgotPasswordPageViewModel : ViewModelBase
+    public class ForgotPasswordPageViewModel : ViewModel
     {
         protected INavigationService NavigationService;
 
-        public ForgotPasswordPageViewModel(INavigationService service)
-        {
-            NavigationService = service;
+        protected IUserService UserService;
 
-            OpenLoginPage = new Command(OnOpenLoginPageExecute);
-            OpenResetPasswordPage = new Command(OnOpenResetPasswordPageExecute);
+        public ForgotPasswordPageViewModel(INavigationService navigationService, IUserService userService)
+        {
+            NavigationService = navigationService;
+            UserService = userService;
+
+            GoBack = new Command(OnGoBackExecute, () => !IsSendingRequest);
+            OpenResetPasswordPage = new TaskCommand(OnOpenResetPasswordPageExecute, OnOpenResetPaswordCanExecute);
+
+            ApiFieldsMap = new()
+            {
+                { nameof(Email), "email" },
+            };
         }
 
         public override string Title => "Восстановление пароля";
 
+        #region Properties
+
+        public string Email { get; set; }
+
+        public bool IsSendingRequest { get; set; }
+
+        #endregion
+
         #region Commands
 
-        public Command OpenResetPasswordPage { get; private set; }
+        public TaskCommand OpenResetPasswordPage { get; private set; }
 
-        private void OnOpenResetPasswordPageExecute() => NavigationService.Navigate<ResetPasswordPageViewModel>();
+        private async Task OnOpenResetPasswordPageExecute()
+        {
+            if (FirstValidationHasErrors()) {
+                return;
+            }
 
-        public Command OpenLoginPage { get; private set; }
+            IsSendingRequest = true;
 
-        private void OnOpenLoginPageExecute() => NavigationService.Navigate<LoginPageViewModel>();
+            try {
+                var response = await UserService.SendResetPasswordTokenAsync(Email);
+                var parameters = new Dictionary<string, object>
+                {
+                    { "email", Email }
+                };
+
+                NavigationService.Navigate<ResetPasswordPageViewModel>(parameters);
+            } catch (UnprocessableEntityHttpException e) {
+                var errors = e.Errors;
+                HandleApiErrors(e.Errors);
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+
+            IsSendingRequest = false;
+        }
+
+        public Command GoBack { get; private set; }
+
+        private void OnGoBackExecute() => NavigationService.GoBack();
+
+        private bool OnOpenResetPaswordCanExecute()
+        {
+            return !HasErrors;
+        }
+
+        #endregion
+
+        #region Validation
+
+        protected override void ValidateFields(List<IFieldValidationResult> validationResults)
+        {
+            var validator = new Validator(validationResults);
+
+            validator.ValidateField(nameof(Email), Email, new()
+            {
+                new NotEmptyStringRule(),
+                new ValidEmailRule(),
+            });
+        }
 
         #endregion
 
