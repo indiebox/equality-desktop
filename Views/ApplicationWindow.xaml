@@ -6,6 +6,8 @@
               xmlns:local="clr-namespace:Equality.Views"
               xmlns:catel="http://schemas.catelproject.com"
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+              xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+              d:DataContext="{d:DesignInstance Type=viewmodels:ApplicationWindowViewModel}"
               mc:Ignorable="d"
               TextElement.Foreground="{DynamicResource MaterialDesignBody}"
               Background="{DynamicResource MaterialDesignPaper}"
@@ -19,41 +21,65 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
-            <ColumnDefinition Width="19*"></ColumnDefinition>
+            <ColumnDefinition Width="25*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0"
-                    Orientation="Vertical"
-                    Background="White">
-            <Image Source="/Resources/Icons/Logo.ico"
-                   Margin="10,10,10,30" />
-            <Button Style="{StaticResource MaterialDesignIconForegroundButton}"
-                    Background="{x:Null}"
-                    BorderBrush="{x:Null}"
-                    Foreground="Black">
-                <StackPanel>
-                    <materialDesign:PackIcon Kind="Home"
-                                             HorizontalAlignment="Stretch"
-                                             VerticalAlignment="Stretch" />
-                    <TextBlock FontSize="16"
-                               HorizontalAlignment="Center">Home</TextBlock>
-                </StackPanel>
-            </Button>
-            <Button Style="{StaticResource MaterialDesignIconForegroundButton}"
-                    Width="75"
-                    Height="75"
-                    Background="{x:Null}"
-                    BorderBrush="{x:Null}"
-                    Foreground="Black">
-                <StackPanel>
-                    <materialDesign:PackIcon Kind="AccountGroup"
-                                             HorizontalAlignment="Center"
-                                             Width="50"
-                                             Height="50" />
-                    <TextBlock FontSize="16"
-                               HorizontalAlignment="Center">Teams</TextBlock>
-                </StackPanel>
-            </Button>
-        </StackPanel>
+        <TabControl Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
+                    SnapsToDevicePixels="True"
+                    materialDesign:ColorZoneAssist.Mode="Standard"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                    materialDesign:NavigationRailAssist.ShowSelectionBackground="True">
+            <materialDesign:NavigationRailAssist.FloatingContent>
+                <Border CornerRadius="100,100,100,100"
+                        Margin="0,25,0,25"
+                        Width="60"
+                        Height="60">
+                    <Border.Background>
+                        <ImageBrush Stretch="UniformToFill"
+                                    ImageSource="C:/Users/Marshall/Pictures/Photo.jpg" />
+                    </Border.Background>
+                </Border>
+            </materialDesign:NavigationRailAssist.FloatingContent>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Height="auto"
+                                Width="auto">
+
+                        <materialDesign:PackIcon Kind="Home"
+                                                 Width="24"
+                                                 Height="24"
+                                                 HorizontalAlignment="Center" />
+                        <TextBlock Text="Главная"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Height="auto"
+                                Width="auto">
+                        <materialDesign:PackIcon Kind="AccountGroup"
+                                                 Width="24"
+                                                 Height="24"
+                                                 HorizontalAlignment="Center" />
+                        <TextBlock Text="Команды"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Height="auto"
+                                Width="auto">
+                        <materialDesign:PackIcon Kind="ViewDashboardVariant"
+                                                 Width="24"
+                                                 Height="24"
+                                                 HorizontalAlignment="Center" />
+                        <TextBlock Text="Проекты"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>
+        </TabControl>
         <Frame Grid.Column="1"
                DockPanel.Dock="Right"
                KeyboardNavigation.IsTabStop="False"
