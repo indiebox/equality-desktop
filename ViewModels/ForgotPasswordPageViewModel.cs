@@ -45,8 +45,10 @@ namespace Equality.ViewModels
 
         public string Email { get; set; }
 
+        [ExcludeFromValidation]
         public bool CanSendRequest { get; set; } = true;
 
+        [ExcludeFromValidation]
         public bool IsSendingRequest { get; set; }
 
         #endregion
