@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -26,7 +27,8 @@ namespace Equality.ViewModels
             NavigationService = navigationService;
             UserServise = userService;
 
-            GoBack = new Command(OnGoBackExecute, () => !IsSendingRequest);
+            GoHome = new Command(OnGoHomeExecute, () => !IsSendingRequest);
+            ResendToken = new TaskCommand(OnResendTokenExecute);
             ResetPassword = new TaskCommand(OnResetPasswordExecute, OnResetPasswordCanExecute);
 
             NavigationCompleted += OnNavigationCompleted;
@@ -54,15 +56,50 @@ namespace Equality.ViewModels
         public string Token { get; set; }
 
         [ExcludeFromValidation]
+        public string ErrorMessage { get; set; }
+
+        [ExcludeFromValidation]
+        public bool ShowSuccessMessage { get; set; } = true;
+
+        [ExcludeFromValidation]
         public bool IsSendingRequest { get; set; }
 
         #endregion
 
         #region Commands
 
-        public Command GoBack { get; private set; }
+        public Command GoHome { get; private set; }
 
-        private void OnGoBackExecute() => NavigationService.GoBack();
+        private void OnGoHomeExecute() => NavigationService.Navigate<LoginPageViewModel>();
+
+        public TaskCommand ResendToken { get; private set; }
+
+        private async Task OnResendTokenExecute()
+        {
+            IsSendingRequest = true;
+            ShowSuccessMessage = false;
+            ErrorMessage = null;
+
+            try {
+                var response = await UserServise.SendResetPasswordTokenAsync(Email);
+                var parameters = new Dictionary<string, object>
+                {
+                    { "email", Email }
+                };
+
+                ShowSuccessMessage = true;
+            } catch (UnprocessableEntityHttpException e) {
+                var errors = e.Errors;
+
+                if (errors.ContainsKey("email")) {
+                    ErrorMessage = errors["email"][0];
+                }
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+
+            IsSendingRequest = false;
+        }
 
         public TaskCommand ResetPassword { get; private set; }
 
