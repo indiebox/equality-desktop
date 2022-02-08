@@ -4,7 +4,7 @@ namespace Equality.ViewModels.Design
 {
     public class DesignForgotPasswordPageViewModel : ForgotPasswordPageViewModel
     {
-        public DesignForgotPasswordPageViewModel() : base(null, null, null)
+        public DesignForgotPasswordPageViewModel() : base(null, null)
         {
         }
     }

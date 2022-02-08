@@ -22,16 +22,13 @@ namespace Equality.ViewModels
 
         protected IUserService UserService;
 
-        protected ISchedulerService SchedulerService;
-
-        public ForgotPasswordPageViewModel(INavigationService navigationService, IUserService userService, ISchedulerService schedulerService)
+        public ForgotPasswordPageViewModel(INavigationService navigationService, IUserService userService)
         {
             NavigationService = navigationService;
             UserService = userService;
-            SchedulerService = schedulerService;
 
             GoBack = new Command(OnGoBackExecute, () => !IsSendingRequest);
-            OpenResetPasswordPage = new TaskCommand(OnOpenResetPasswordPageExecute, () => CanSendRequest);
+            OpenResetPasswordPage = new TaskCommand(OnOpenResetPasswordPageExecute, () => !HasErrors);
 
             ApiFieldsMap = new()
             {
@@ -46,9 +43,6 @@ namespace Equality.ViewModels
         public string Email { get; set; }
 
         [ExcludeFromValidation]
-        public bool CanSendRequest { get; set; } = true;
-
-        [ExcludeFromValidation]
         public bool IsSendingRequest { get; set; }
 
         #endregion
@@ -60,10 +54,6 @@ namespace Equality.ViewModels
         private async Task OnOpenResetPasswordPageExecute()
         {
             if (FirstValidationHasErrors()) {
-                return;
-            }
-
-            if (HasErrors && ApiErrors.Count == 0) {
                 return;
             }
 
@@ -81,14 +71,6 @@ namespace Equality.ViewModels
                 NavigationService.Navigate<ResetPasswordPageViewModel>(parameters);
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
-
-                CanSendRequest = false;
-
-                SchedulerService.Schedule(() =>
-                {
-                    CanSendRequest = true;
-                    OpenResetPasswordPage.RaiseCanExecuteChanged();
-                }, DateTime.Now.AddSeconds(30));
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
@@ -111,7 +93,7 @@ namespace Equality.ViewModels
             validator.ValidateField(nameof(Email), Email, new()
             {
                 new NotEmptyStringRule(),
-                new ValidEmailRule(false),
+                new ValidEmailRule(),
             });
         }
 
