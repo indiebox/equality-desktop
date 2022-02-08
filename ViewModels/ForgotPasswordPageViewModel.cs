@@ -53,6 +53,7 @@ namespace Equality.ViewModels
             if (FirstValidationHasErrors()) {
                 return;
             }
+
             IsSendingRequest = true;
 
             try {

@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Data;
+using Catel.Fody;
 using Catel.MVVM;
 using Catel.Services;
 
@@ -32,9 +33,9 @@ namespace Equality.ViewModels
 
             ApiFieldsMap = new()
             {
+                { nameof(Token), "token" },
                 { nameof(Password), "password" },
                 { nameof(PasswordConfirmation), "password_confirmation" },
-                { nameof(Token), "token" },
             };
         }
 
@@ -42,6 +43,8 @@ namespace Equality.ViewModels
 
         #region Properties
 
+        [NoWeaving]
+        [ExcludeFromValidation]
         public string Email { get; set; }
 
         public string Password { get; set; }
@@ -50,6 +53,7 @@ namespace Equality.ViewModels
 
         public string Token { get; set; }
 
+        [ExcludeFromValidation]
         public bool IsSendingRequest { get; set; }
 
         #endregion
@@ -67,6 +71,7 @@ namespace Equality.ViewModels
             if (FirstValidationHasErrors()) {
                 return;
             }
+
             IsSendingRequest = true;
 
             try {
@@ -74,7 +79,6 @@ namespace Equality.ViewModels
 
                 NavigationService.Navigate<LoginPageViewModel>();
             } catch (UnprocessableEntityHttpException e) {
-                var errors = e.Errors;
                 HandleApiErrors(e.Errors);
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
@@ -96,17 +100,22 @@ namespace Equality.ViewModels
         {
             var validator = new Validator(validationResults);
 
+            validator.ValidateField(nameof(Token), Token, new()
+            {
+                new NotEmptyStringRule(),
+            });
             validator.ValidateField(nameof(Password), Password, new()
             {
                 new NotEmptyStringRule(),
+                new MinStringLengthRule(6),
+#if !DEBUG
+                new ValidPasswordRule(),
+#endif
             });
             validator.ValidateField(nameof(PasswordConfirmation), PasswordConfirmation, new()
             {
                 new NotEmptyStringRule(),
-            });
-            validator.ValidateField(nameof(Token), Token, new()
-            {
-                new NotEmptyStringRule(),
+                new PredicateRule<string>((password) => password != PasswordConfirmation, "Пароли не совпадают."),
             });
         }
 
