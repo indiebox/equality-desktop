@@ -7,96 +7,54 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:local="clr-namespace:Equality.Views"
             mc:Ignorable="d"
+            d:DesignHeight="1080"
+            d:DesignWidth="1920"
             xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
-            d:DesignHeight="450"
-            d:DesignWidth="800"
             d:Background="{StaticResource MaterialDesignPaper}"
             d:DataContext="{d:DesignInstance dvm:DesignTeamPageViewModel, IsDesignTimeCreatable=True}"
             Title="TeamPage">
     <StackPanel>
-        <StackPanel Margin="0,20,0,20">
+        <StackPanel Orientation="Horizontal"
+                    materialDesign:ColorZoneAssist.Mode="Standard"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth5">
             <Border CornerRadius="10,10,10,10"
+                    Margin="40,30,10,30"
                     Width="100"
                     Height="100">
                 <Border.Background>
                     <ImageBrush Stretch="UniformToFill"
-                                ImageSource="C:/Users/Marshall/Pictures/Photo.jpg" />
+                                ImageSource="C:/Users/Marshall/Pictures/Logo.jpg" />
                 </Border.Background>
             </Border>
-            <TextBlock HorizontalAlignment="Center"
-                       FontSize="27">Indie Box</TextBlock>
-            <TextBlock HorizontalAlignment="Center"
-                       FontSize="14"><Hyperlink NavigateUri="https://github.com/indiebox">https://github.com/indiebox</Hyperlink></TextBlock>
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock HorizontalAlignment="Left"
+                           FontSize="27">Indie Box</TextBlock>
+                <TextBlock HorizontalAlignment="Left"
+                           FontSize="14"><Hyperlink NavigateUri="https://github.com/indiebox">https://github.com/indiebox</Hyperlink></TextBlock>
+
+            </StackPanel>
         </StackPanel>
-        <TabControl Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
-                    BorderThickness="0"
-                    BorderBrush="Transparent"
-                    TabStripPlacement="Top"
-                    materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                    materialDesign:ColorZoneAssist.Mode="Standard"
-                    SnapsToDevicePixels="True">
-            <TabItem Height="30">
-                <TabItem.Header>
-                    <StackPanel Height="auto"
-                                Width="auto">
-                        <TextBlock Text="All Files"
-                                   HorizontalAlignment="Center" />
-                    </StackPanel>
-                </TabItem.Header>
-                <TextBlock>
-      <Run Text="tab 1 content. Default look and behaviors." />
-      <LineBreak />
-      <LineBreak />
-      <Run FontStyle="Italic">
-      Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...
-    </Run>
-                </TextBlock>
-            </TabItem>
-            <TabItem Height="30">
-                <TabItem.Header>
-                    <StackPanel Height="auto"
-                                Width="auto">
-                        <TextBlock Text="Recent"
-                                   HorizontalAlignment="Center" />
-                    </StackPanel>
-                </TabItem.Header>
-                <TextBlock>
-      <Run Text="tab 2 content. Default look and behaviors." />
-      <LineBreak />
-      <LineBreak />
-      <Run FontStyle="Italic">
-      Praesent sed dui arcu. Vivamus porta auctor sagittis
-    </Run>
-                </TextBlock>
-            </TabItem>
-            <TabItem Height="30">
-                <TabItem.Header>
-                    <StackPanel Height="auto"
-                                Width="auto">
-                        <TextBlock Text="Photos"
-                                   HorizontalAlignment="Center" />
-                    </StackPanel>
-                </TabItem.Header>
-                <TextBlock>
-      <Run Text="tab 3 content. Default look and behaviors." />
-      <LineBreak />
-      <LineBreak />
-                </TextBlock>
-            </TabItem>
-            <TabItem Height="30">
-                <TabItem.Header>
-                    <StackPanel Height="auto"
-                                Width="auto">
-                        <TextBlock Text="Sounds"
-                                   HorizontalAlignment="Center" />
-                    </StackPanel>
-                </TabItem.Header>
-                <TextBlock>
-      <Run Text="tab 4 content. Default look and behaviors." />
-      <LineBreak />
-      <LineBreak />
-                </TextBlock>
-            </TabItem>
-        </TabControl>
+        <DockPanel LastChildFill="True">
+            <StackPanel Orientation="Vertical"
+                        Margin="4">
+                <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                             BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                             Margin="4"
+                             IsChecked="True"
+                             Content="Проекты" />
+                <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                             BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                             Margin="4"
+                             IsChecked="False"
+                             Content="Люди" />
+                <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                             BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                             Margin="4"
+                             IsChecked="False"
+                             Content="Статистика" />
+            </StackPanel>
+            <TextBlock HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch">dfghg</TextBlock>
+        </DockPanel>
     </StackPanel>
 </catel:Page>

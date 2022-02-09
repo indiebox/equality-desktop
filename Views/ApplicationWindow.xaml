@@ -15,8 +15,13 @@
               Width="1920"
               Height="1080"
               Title="ApplicationWindow">
-    <StackPanel Orientation="Horizontal">
-        <TabControl Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="23*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TabControl Grid.Column="0"
+                    Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
                     BorderBrush="Transparent"
                     TabStripPlacement="Left"
                     materialDesign:ColorZoneAssist.Mode="Standard"
@@ -74,9 +79,10 @@
                 </TabItem.Header>
             </TabItem>
         </TabControl>
-        <Frame KeyboardNavigation.IsTabStop="False"
+        <Frame Grid.Column="1"
+               KeyboardNavigation.IsTabStop="False"
                VerticalAlignment="Stretch"
                HorizontalAlignment="Stretch"
                NavigationUIVisibility="Hidden" />
-    </StackPanel>
+    </Grid>
 </catel:Window>
