@@ -13,58 +13,64 @@
             d:Background="{StaticResource MaterialDesignPaper}"
             d:DataContext="{d:DesignInstance dvm:DesignTeamPageViewModel, IsDesignTimeCreatable=True}"
             Title="TeamPage">
-    <DockPanel HorizontalAlignment="Stretch">
-        <StackPanel DockPanel.Dock="Top"
-                    Orientation="Horizontal"
-                    materialDesign:ColorZoneAssist.Mode="Dark"
-                    materialDesign:ShadowAssist.ShadowDepth="Depth5">
-            <Border CornerRadius="10,10,10,10"
-                    Margin="40,30,10,30"
-                    Width="100"
-                    Height="100">
-                <Border.Background>
-                    <ImageBrush Stretch="UniformToFill"
-                                ImageSource="C:/Users/Marshall/Pictures/Logo.jpg" />
-                </Border.Background>
-            </Border>
-            <StackPanel VerticalAlignment="Center">
-                <TextBlock HorizontalAlignment="Left"
-                           FontSize="27">Indie Box</TextBlock>
-                <TextBlock HorizontalAlignment="Left"
-                           FontSize="14"><Hyperlink NavigateUri="https://github.com/indiebox">https://github.com/indiebox</Hyperlink></TextBlock>
-
+    <Grid>
+        <Border>
+            <Border.Effect>
+                <BlurEffect Radius="25" />
+            </Border.Effect>
+            <Border.Background>
+                <ImageBrush Stretch="UniformToFill"
+                            ImageSource="C:/Users/Marshall/Pictures/Background2.jpg" />
+            </Border.Background>
+        </Border>
+        <Rectangle Fill="Black"
+                   Opacity="0.5" />
+        <DockPanel HorizontalAlignment="Stretch">
+            <StackPanel Margin="0,0,0,30"
+                        DockPanel.Dock="Top">
+                <Border CornerRadius="10,10,10,10"
+                        Margin="0,30,0,0"
+                        Width="100"
+                        Height="100">
+                    <Border.Background>
+                        <ImageBrush Stretch="UniformToFill"
+                                    ImageSource="C:/Users/Marshall/Pictures/Logo.jpg" />
+                    </Border.Background>
+                </Border>
+                <TextBlock HorizontalAlignment="Center"
+                           FontSize="27"
+                           Foreground="White">Indie Box</TextBlock>
             </StackPanel>
-        </StackPanel>
-        <Grid HorizontalAlignment="Stretch">
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="10*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0"
-                        Orientation="Vertical">
-                <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                             BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                             Margin="0,4,0,4"
-                             IsChecked="True"
-                             Content="Проекты" />
-                <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                             BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                             Margin="0,4,0,4"
-                             IsChecked="False"
-                             Content="Люди" />
-                <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                             BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                             Margin="0,4,0,4"
-                             IsChecked="False"
-                             Content="Статистика" />
-            </StackPanel>
-            <TextBlock Background="WhiteSmoke"
-                       Grid.Column="1"
-                       HorizontalAlignment="Stretch"
-                       VerticalAlignment="Stretch"></TextBlock>
-        </Grid>
-    </DockPanel>
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="20*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
+                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                 Margin="0"
+                                 IsChecked="True"
+                                 Content="Проекты" />
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
+                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                 Margin="0"
+                                 IsChecked="False"
+                                 Content="Люди" />
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
+                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                 Margin="0"
+                                 IsChecked="False"
+                                 Content="Статистика" />
+                </StackPanel>
+                <TextBlock Grid.Row="1"
+                           Background="WhiteSmoke"
+                           Grid.Column="1"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"></TextBlock>
+            </Grid>
+        </DockPanel>
+    </Grid>
 </catel:Page>
