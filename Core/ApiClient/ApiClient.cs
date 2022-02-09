@@ -13,7 +13,9 @@ namespace Equality.Core.ApiClient
 {
     public class ApiClient : IApiClient
     {
-        protected bool RemoveTokenAfterRequest;
+        protected bool IsTemporaryToken;
+
+        protected AuthenticationHeaderValue OriginalToken;
 
         public ApiClient()
         {
@@ -35,7 +37,8 @@ namespace Equality.Core.ApiClient
 
         public ApiClient WithTokenOnce(string token)
         {
-            RemoveTokenAfterRequest = true;
+            IsTemporaryToken = true;
+            OriginalToken = HttpClient.DefaultRequestHeaders.Authorization;
 
             return WithToken(token);
         }
@@ -200,10 +203,7 @@ namespace Equality.Core.ApiClient
 
             HandleStatusCode(response, responseData);
 
-            if (RemoveTokenAfterRequest) {
-                RemoveTokenAfterRequest = false;
-                WithoutToken();
-            }
+            RestoreToken();
 
             return new ApiResponseMessage(response, responseData);
         }
@@ -275,6 +275,20 @@ namespace Equality.Core.ApiClient
             }
 
             response.EnsureSuccessStatusCode();
+        }
+
+        /// <summary>
+        /// Restore an earlier token that was set by the user.
+        /// </summary>
+        /// <remarks>This method is necessary for correct implementation of method <c>WithTokenOnce()</c>.</remarks>
+        protected void RestoreToken()
+        {
+            if (IsTemporaryToken) {
+                IsTemporaryToken = false;
+
+                HttpClient.DefaultRequestHeaders.Authorization = OriginalToken;
+                OriginalToken = null;
+            }
         }
 
         /// <summary>
