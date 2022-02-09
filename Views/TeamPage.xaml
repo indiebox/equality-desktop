@@ -13,9 +13,10 @@
             d:Background="{StaticResource MaterialDesignPaper}"
             d:DataContext="{d:DesignInstance dvm:DesignTeamPageViewModel, IsDesignTimeCreatable=True}"
             Title="TeamPage">
-    <StackPanel>
-        <StackPanel Orientation="Horizontal"
-                    materialDesign:ColorZoneAssist.Mode="Standard"
+    <DockPanel HorizontalAlignment="Stretch">
+        <StackPanel DockPanel.Dock="Top"
+                    Orientation="Horizontal"
+                    materialDesign:ColorZoneAssist.Mode="Dark"
                     materialDesign:ShadowAssist.ShadowDepth="Depth5">
             <Border CornerRadius="10,10,10,10"
                     Margin="40,30,10,30"
@@ -34,27 +35,36 @@
 
             </StackPanel>
         </StackPanel>
-        <DockPanel LastChildFill="True">
-            <StackPanel Orientation="Vertical"
-                        Margin="4">
+        <Grid HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="10*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0"
+                        Orientation="Vertical">
                 <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                              BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                             Margin="4"
+                             Margin="0,4,0,4"
                              IsChecked="True"
                              Content="Проекты" />
                 <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                              BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                             Margin="4"
+                             Margin="0,4,0,4"
                              IsChecked="False"
                              Content="Люди" />
                 <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                              BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                             Margin="4"
+                             Margin="0,4,0,4"
                              IsChecked="False"
                              Content="Статистика" />
             </StackPanel>
-            <TextBlock HorizontalAlignment="Stretch"
-                       VerticalAlignment="Stretch">dfghg</TextBlock>
-        </DockPanel>
-    </StackPanel>
+            <TextBlock Background="WhiteSmoke"
+                       Grid.Column="1"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"></TextBlock>
+        </Grid>
+    </DockPanel>
 </catel:Page>
