@@ -11,6 +11,7 @@
               mc:Ignorable="d"
               TextElement.Foreground="{DynamicResource MaterialDesignBody}"
               Background="{DynamicResource MaterialDesignPaper}"
+              WindowStartupLocation="CenterScreen"
               Width="1920"
               Height="1080">
     <Grid>
@@ -26,6 +27,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <TabControl Grid.Row="0"
@@ -93,23 +95,36 @@
                     </TabItem>
                 </TabControl>
 
-                <Button Grid.Row="1"
-                        VerticalAlignment="Bottom"
-                        Style="{StaticResource MaterialDesignPaperSecondaryLightButton}"
-                        Foreground="#898989"
-                        Command="{Binding Logout}"
-                        Width="80"
-                        Height="80">
-                    <StackPanel Height="auto"
-                                Width="auto">
-                        <materialDesign:PackIcon Kind="Logout"
-                                                 Width="24"
-                                                 Height="24"
-                                                 HorizontalAlignment="Center" />
-                        <TextBlock Text="Выйти"
-                                   HorizontalAlignment="Center" />
-                    </StackPanel>
-                </Button>
+                <Separator Grid.Row="1"
+                           Height="1"
+                           Width="50"
+                           Margin="0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Bottom" />
+
+                <TabItem Grid.Row="2"
+                         Style="{StaticResource MaterialDesignNavigationRailTabItem}"
+                         Width="80"
+                         Height="80">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <catel:EventToCommand Command="{Binding Logout}"
+                                                  DisableAssociatedObjectOnCannotExecute="False" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+
+                    <TabItem.Header>
+                        <StackPanel Height="Auto"
+                                    Width="Auto">
+                            <materialDesign:PackIcon Kind="Logout"
+                                                     Width="24"
+                                                     Height="24"
+                                                     HorizontalAlignment="Center" />
+                            <TextBlock Text="Выйти"
+                                       HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </TabItem.Header>
+                </TabItem>
             </Grid>
         </ScrollViewer>
 
@@ -117,10 +132,5 @@
                         Focusable="False"
                         HorizontalAlignment="Stretch"
                         Content="{Binding ViewModelTab, Converter={catel:ViewModelToViewConverter}}" />
-
-        <!--<Frame KeyboardNavigation.IsTabStop="False"
-               VerticalAlignment="Stretch"
-               HorizontalAlignment="Stretch"
-               NavigationUIVisibility="Hidden" />-->
     </Grid>
 </catel:Window>

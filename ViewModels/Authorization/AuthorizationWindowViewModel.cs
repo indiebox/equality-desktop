@@ -31,11 +31,11 @@ namespace Equality.ViewModels
         {
             string apiToken = Properties.Settings.Default.api_token;
 
+            OpenLoginPage();
+
             if (await IsValidToken(apiToken)) {
                 OpenMainPage();
             }
-
-            OpenLoginPage();
         }
 
         protected async Task<bool> IsValidToken(string token)
