@@ -13,7 +13,7 @@ namespace Equality.Core.ApiClient
 {
     public class ApiClient : IApiClient
     {
-        public HttpClient HttpClient { get; set; }
+        protected bool RemoveTokenAfterRequest;
 
         public ApiClient()
         {
@@ -24,11 +24,20 @@ namespace Equality.Core.ApiClient
             HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
+        public HttpClient HttpClient { get; set; }
+
         public ApiClient WithToken(string token)
         {
             HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             return this;
+        }
+
+        public ApiClient WithTokenOnce(string token)
+        {
+            RemoveTokenAfterRequest = true;
+
+            return WithToken(token);
         }
 
         public ApiClient WithoutToken()
@@ -183,9 +192,18 @@ namespace Equality.Core.ApiClient
         /// <returns>The task object representing the asynchronous operation.</returns>
         protected async Task<ApiResponseMessage> ProcessResponseAsync(HttpResponseMessage response)
         {
-            JObject responseData = JObject.Parse(await response.Content.ReadAsStringAsync());
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+
+            var responseData = string.IsNullOrWhiteSpace(jsonResponse)
+                ? new()
+                : JObject.Parse(jsonResponse);
 
             HandleStatusCode(response, responseData);
+
+            if (RemoveTokenAfterRequest) {
+                RemoveTokenAfterRequest = false;
+                WithoutToken();
+            }
 
             return new ApiResponseMessage(response, responseData);
         }
