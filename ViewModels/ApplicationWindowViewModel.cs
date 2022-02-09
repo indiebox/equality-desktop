@@ -11,13 +11,13 @@ namespace Equality.ViewModels
 {
     class ApplicationWindowViewModel : ViewModel
     {
-        //protected INavigationService NavigationService;
+        protected INavigationService NavigationService;
 
-        public ApplicationWindowViewModel(/*INavigationService service*/)
+        public ApplicationWindowViewModel(INavigationService service)
         {
-            //NavigationService = service;
+            NavigationService = service;
 
-            //NavigationService.Navigate<StartPageViewModel>();
+            NavigationService.Navigate<TeamPageViewModel>();
         }
 
         public override string Title => "Equality";
