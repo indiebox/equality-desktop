@@ -2,6 +2,8 @@
 
 using Catel.IoC;
 using Catel.Logging;
+using Catel.MVVM;
+using Catel.Services;
 
 using Equality.Core.ApiClient;
 using Equality.Core.StateManager;
@@ -49,6 +51,40 @@ namespace Equality
             serviceLocator.RegisterType<IApiClient, ApiClient>();
             serviceLocator.RegisterType<IStateManager, StateManager>();
             serviceLocator.RegisterType<IUserService, UserService>();
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Add custom naming conventions
+            |--------------------------------------------------------------------------
+            |
+            | Here we add all folders inside Views/ and ViewModels/ to naming conventions,
+            | so they will be resolved by Catel correctly.
+            |
+            | You can register naming conventions in 3 different places:
+            | * IUrlLocator (for INavigationService)
+            | * IViewLocator (for IUIVisualizerService)
+            | * IViewModelLocator (to search for a VM for a View)
+            |
+            | In fact, IViewLocator and IViewModelLocator use namespace, 
+            | while IUrlLocator uses path. Therefore, if you split ViewModels and Views into subfolders, 
+            | but their namespace remained untouched ([Assembly].ViewModels or [Assembly].Views), 
+            | then you don't need to add your own rules to IViewLocator and IViewModelLocator.
+            | 
+            | If you are not using INavigationService, you actually dont need add custom naming conventions to
+            | IUrlLocator.
+            */
+
+            Log.Info("Registering custom naming conventions");
+
+            var urlLocator = serviceLocator.ResolveType<IUrlLocator>();
+            urlLocator.NamingConventions.Add("/Views/Authorization/[VM].xaml");
+
+            //var viewLocator = ServiceLocator.Default.ResolveType<IViewLocator>();
+            //viewLocator.NamingConventions.Add("[UP].Views.Authorization.[VM]");
+
+            //var viewModelLocator = ServiceLocator.Default.ResolveType<IViewModelLocator>();
+            //viewModelLocator.NamingConventions.Add("[UP].ViewModels.Authorization.[VM]ViewModel");
 
             // To auto-forward styles, check out Orchestra (see https://github.com/wildgums/orchestra)
             // StyleHelper.CreateStyleForwardersForDefaultStyles();
