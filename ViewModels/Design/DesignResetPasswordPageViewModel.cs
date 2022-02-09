@@ -2,7 +2,7 @@
 {
     public class DesignResetPasswordPageViewModel : ResetPasswordPageViewModel
     {
-        public DesignResetPasswordPageViewModel() : base(null)
+        public DesignResetPasswordPageViewModel() : base(null, null)
         {
         }
     }

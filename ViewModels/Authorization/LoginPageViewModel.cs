@@ -41,6 +41,7 @@ namespace Equality.ViewModels
             ApiFieldsMap = new()
             {
                 { nameof(Email), "email" },
+                { nameof(Password), "password" },
             };
         }
 
@@ -107,7 +108,15 @@ namespace Equality.ViewModels
 
         public Command OpenForgotPassword { get; private set; }
 
-        private void OnOpenForgotPasswordExecute() => NavigationService.Navigate<ForgotPasswordPageViewModel>();
+        private void OnOpenForgotPasswordExecute()
+        {
+            // Before navigation we need to SuspendValidations,
+            // so model will be saved.
+            // See: https://github.com/Catel/Catel/discussions/1932
+            SuspendValidations(false);
+
+            NavigationService.Navigate<ForgotPasswordPageViewModel>();
+        }
 
         #endregion
 
@@ -126,6 +135,10 @@ namespace Equality.ViewModels
             validator.ValidateField(nameof(Password), Password, new()
             {
                 new NotEmptyStringRule(),
+                new MinStringLengthRule(6),
+#if !DEBUG
+                new ValidPasswordRule(),
+#endif
             });
         }
 

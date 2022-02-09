@@ -2,7 +2,7 @@
 {
     public class DesignForgotPasswordPageViewModel : ForgotPasswordPageViewModel
     {
-        public DesignForgotPasswordPageViewModel() : base(null)
+        public DesignForgotPasswordPageViewModel() : base(null, null)
         {
         }
     }
