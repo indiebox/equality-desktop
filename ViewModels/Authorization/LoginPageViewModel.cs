@@ -34,10 +34,6 @@ namespace Equality.ViewModels
             OpenRegisterWindow = new TaskCommand(OnOpenRegisterWindowExecute);
             Login = new TaskCommand(OnLoginExecuteAsync, OnLoginCanExecute);
 
-            if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.api_token)) {
-                NavigationService.Navigate<StartPageViewModel>();
-            }
-
             ApiFieldsMap = new()
             {
                 { nameof(Email), "email" },
@@ -74,15 +70,16 @@ namespace Equality.ViewModels
             try {
                 var (user, token) = await UserService.LoginAsync(Email, Password);
 
-                StateManager.CurrentUser = user;
                 StateManager.ApiToken = token;
+                StateManager.CurrentUser = user;
 
                 if (RememberMe) {
                     Properties.Settings.Default.api_token = token;
                     Properties.Settings.Default.Save();
                 }
 
-                NavigationService.Navigate<StartPageViewModel>();
+                var uiService = this.GetDependencyResolver().Resolve<IUIVisualizerService>();
+                _ = uiService.ShowOrActivateAsync<MainWindowViewModel>(null, null, null);
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
 

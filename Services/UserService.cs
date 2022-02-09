@@ -8,7 +8,6 @@ using Equality.Core.ApiClient;
 using Equality.Models;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace Equality.Services

@@ -22,73 +22,99 @@
         <ScrollViewer Grid.Column="0"
                       HorizontalScrollBarVisibility="Disabled"
                       VerticalScrollBarVisibility="Hidden">
-            <TabControl Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
-                        SelectedIndex="{Binding ActiveTabIndex}"
-                        BorderBrush="Transparent"
-                        TabStripPlacement="Left"
-                        materialDesign:ColorZoneAssist.Mode="Standard"
-                        materialDesign:ShadowAssist.ShadowDepth="Depth3"
-                        materialDesign:NavigationRailAssist.ShowSelectionBackground="True">
-                <materialDesign:NavigationRailAssist.FloatingContent>
-                    <Border CornerRadius="100,100,100,100"
-                            Margin="0,25,0,25"
-                            Width="60"
-                            Height="60">
-                        <Border.Background>
-                            <ImageBrush Stretch="UniformToFill"
-                                        ImageSource="/Resources/Icons/Logo.ico" />
-                        </Border.Background>
-                    </Border>
-                </materialDesign:NavigationRailAssist.FloatingContent>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                <TabItem Width="80"
-                         Height="80">
-                    <TabItem.Header>
-                        <StackPanel Height="auto"
-                                    Width="auto">
-                            <materialDesign:PackIcon Kind="Home"
-                                                     Width="24"
-                                                     Height="24"
-                                                     HorizontalAlignment="Center" />
-                            <TextBlock Text="Главная"
-                                       HorizontalAlignment="Center" />
-                        </StackPanel>
-                    </TabItem.Header>
-                </TabItem>
+                <TabControl Grid.Row="0"
+                            Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
+                            SelectedIndex="{Binding ActiveTabIndex}"
+                            BorderBrush="Transparent"
+                            TabStripPlacement="Left"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                            materialDesign:NavigationRailAssist.ShowSelectionBackground="True">
+                    <materialDesign:NavigationRailAssist.FloatingContent>
+                        <Border CornerRadius="100,100,100,100"
+                                Margin="0,25,0,25"
+                                Width="60"
+                                Height="60">
+                            <Border.Background>
+                                <ImageBrush Stretch="UniformToFill"
+                                            ImageSource="/Resources/Icons/Logo.ico" />
+                            </Border.Background>
+                        </Border>
+                    </materialDesign:NavigationRailAssist.FloatingContent>
 
-                <TabItem Width="80"
-                         Height="80">
-                    <TabItem.Header>
-                        <StackPanel Height="auto"
-                                    Width="auto">
-                            <materialDesign:PackIcon Kind="AccountGroup"
-                                                     Width="24"
-                                                     Height="24"
-                                                     HorizontalAlignment="Center" />
-                            <TextBlock Text="Команды"
-                                       HorizontalAlignment="Center" />
-                        </StackPanel>
-                    </TabItem.Header>
-                </TabItem>
+                    <TabItem Width="80"
+                             Height="80">
+                        <TabItem.Header>
+                            <StackPanel Height="auto"
+                                        Width="auto">
+                                <materialDesign:PackIcon Kind="Home"
+                                                         Width="24"
+                                                         Height="24"
+                                                         HorizontalAlignment="Center" />
+                                <TextBlock Text="Главная"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </TabItem.Header>
+                    </TabItem>
 
-                <TabItem Width="80"
-                         Height="80">
-                    <TabItem.Header>
-                        <StackPanel Height="auto"
-                                    Width="auto">
-                            <materialDesign:PackIcon Kind="ViewDashboardVariant"
-                                                     Width="24"
-                                                     Height="24"
-                                                     HorizontalAlignment="Center" />
-                            <TextBlock Text="Проекты"
-                                       HorizontalAlignment="Center" />
-                        </StackPanel>
-                    </TabItem.Header>
-                </TabItem>
-            </TabControl>
+                    <TabItem Width="80"
+                             Height="80">
+                        <TabItem.Header>
+                            <StackPanel Height="auto"
+                                        Width="auto">
+                                <materialDesign:PackIcon Kind="AccountGroup"
+                                                         Width="24"
+                                                         Height="24"
+                                                         HorizontalAlignment="Center" />
+                                <TextBlock Text="Команды"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </TabItem.Header>
+                    </TabItem>
+
+                    <TabItem Width="80"
+                             Height="80">
+                        <TabItem.Header>
+                            <StackPanel Height="auto"
+                                        Width="auto">
+                                <materialDesign:PackIcon Kind="ViewDashboardVariant"
+                                                         Width="24"
+                                                         Height="24"
+                                                         HorizontalAlignment="Center" />
+                                <TextBlock Text="Проекты"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </TabItem.Header>
+                    </TabItem>
+                </TabControl>
+
+                <Button Grid.Row="1"
+                        VerticalAlignment="Bottom"
+                        Style="{StaticResource MaterialDesignPaperSecondaryLightButton}"
+                        Foreground="#898989"
+                        Command="{Binding Logout}"
+                        Width="80"
+                        Height="80">
+                    <StackPanel Height="auto"
+                                Width="auto">
+                        <materialDesign:PackIcon Kind="Logout"
+                                                 Width="24"
+                                                 Height="24"
+                                                 HorizontalAlignment="Center" />
+                        <TextBlock Text="Выйти"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+            </Grid>
         </ScrollViewer>
 
         <ContentControl Grid.Column="1"
+                        Focusable="False"
                         HorizontalAlignment="Stretch"
                         Content="{Binding ViewModelTab, Converter={catel:ViewModelToViewConverter}}" />
 

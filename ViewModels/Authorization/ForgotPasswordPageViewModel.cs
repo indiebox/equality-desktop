@@ -60,7 +60,7 @@ namespace Equality.ViewModels
             IsSendingRequest = true;
 
             try {
-                var response = await UserService.SendResetPasswordTokenAsync(Email);
+                await UserService.SendResetPasswordTokenAsync(Email);
                 var parameters = new Dictionary<string, object>
                 {
                     { "email", Email }

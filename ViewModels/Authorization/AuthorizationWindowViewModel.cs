@@ -1,28 +1,83 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
 
+using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
 
+using Equality.Core.ApiClient;
+using Equality.Core.StateManager;
+using Equality.Core.ViewModel;
+using Equality.Services;
+
 namespace Equality.ViewModels
 {
-    public class AuthorizationWindowViewModel : ViewModelBase
+    public class AuthorizationWindowViewModel : ViewModel
     {
-        protected INavigationService NavigationService;
+        protected IUserService UserService;
 
-        public AuthorizationWindowViewModel(INavigationService service)
+        protected IStateManager StateManager;
+
+        public AuthorizationWindowViewModel(IUserService userService, IStateManager stateManager)
         {
-            NavigationService = service;
-
-            NavigationService.Navigate<LoginPageViewModel>();
+            UserService = userService;
+            StateManager = stateManager;
         }
 
         public override string Title => "Equality";
+
+        protected async Task HandleAuthenticatedUser()
+        {
+            string apiToken = Properties.Settings.Default.api_token;
+
+            if (await IsValidToken(apiToken)) {
+                OpenMainPage();
+            }
+
+            OpenLoginPage();
+        }
+
+        protected async Task<bool> IsValidToken(string token)
+        {
+            if (string.IsNullOrWhiteSpace(token)) {
+                return false;
+            }
+
+            try {
+                var user = await UserService.GetUserAsync(token);
+
+                StateManager.CurrentUser = user;
+                StateManager.ApiToken = token;
+
+                return true;
+            } catch (UnauthorizedHttpException) {
+                Properties.Settings.Default.api_token = "";
+                Properties.Settings.Default.Save();
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+
+            return false;
+        }
+
+        protected async void OpenMainPage()
+        {
+            var uiService = this.GetDependencyResolver().Resolve<IUIVisualizerService>();
+            await uiService.ShowAsync<MainWindowViewModel>();
+        }
+
+        protected void OpenLoginPage()
+        {
+            var navigationService = this.GetDependencyResolver().Resolve<INavigationService>();
+            navigationService.Navigate<LoginPageViewModel>();
+        }
 
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
 
-            // TODO: subscribe to events here
+            await HandleAuthenticatedUser();
         }
 
         protected override async Task CloseAsync()

@@ -1,24 +1,35 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Data;
 using Catel.IoC;
 using Catel.MVVM;
+using Catel.Services;
 
+using Equality.Core.ApiClient;
+using Equality.Core.StateManager;
 using Equality.Core.ViewModel;
+using Equality.Services;
 
 namespace Equality.ViewModels
 {
     class MainWindowViewModel : ViewModel
     {
-        //protected INavigationService NavigationService;
+        protected IUserService UserService;
 
         protected IViewModelFactory ViewModelFactory;
 
-        public MainWindowViewModel(IViewModelFactory viewModelFactory/*INavigationService service*/)
+        protected IStateManager StateManager;
+
+        public MainWindowViewModel(IUserService userService, IViewModelFactory viewModelFactory, IStateManager stateManager)
         {
+            UserService = userService;
             ViewModelFactory = viewModelFactory;
+            StateManager = stateManager;
+
+            Logout = new TaskCommand(OnLogoutExecute);
 
             ViewModelTabs.Add(0, ViewModelFactory.CreateViewModel<StartPageViewModel>(null));
             ViewModelTab = ViewModelTabs[ActiveTabIndex];
@@ -59,7 +70,24 @@ namespace Equality.ViewModels
 
         #region Commands
 
+        public TaskCommand Logout { get; private set; }
 
+        private async Task OnLogoutExecute()
+        {
+            try {
+                await UserService.LogoutAsync(StateManager.ApiToken);
+
+                StateManager.ApiToken = null;
+                StateManager.CurrentUser = null;
+                Properties.Settings.Default.api_token = null;
+                Properties.Settings.Default.Save();
+
+                var uiService = this.GetDependencyResolver().Resolve<IUIVisualizerService>();
+                _ = uiService.ShowOrActivateAsync<AuthorizationWindowViewModel>(null, null, null);
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+        }
 
         #endregion
 

@@ -80,7 +80,7 @@ namespace Equality.ViewModels
             ErrorMessage = null;
 
             try {
-                var response = await UserServise.SendResetPasswordTokenAsync(Email);
+                await UserServise.SendResetPasswordTokenAsync(Email);
                 var parameters = new Dictionary<string, object>
                 {
                     { "email", Email }
@@ -111,7 +111,7 @@ namespace Equality.ViewModels
             IsSendingRequest = true;
 
             try {
-                var response = await UserServise.ResetPasswordAsync(Email, Password, PasswordConfirmation, Token);
+                await UserServise.ResetPasswordAsync(Email, Password, PasswordConfirmation, Token);
 
                 NavigationService.Navigate<LoginPageViewModel>();
             } catch (UnprocessableEntityHttpException e) {
