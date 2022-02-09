@@ -49,7 +49,8 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            GetUserName.Execute();
+            Name = "Test";
+            //GetUserName.Execute();
 
             // TODO: subscribe to events here
         }

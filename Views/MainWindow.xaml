@@ -13,8 +13,14 @@
               Background="{DynamicResource MaterialDesignPaper}"
               Width="1920"
               Height="1080">
-    <StackPanel Orientation="Horizontal">
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer Grid.Column="0"
+                      HorizontalScrollBarVisibility="Disabled"
                       VerticalScrollBarVisibility="Hidden">
             <TabControl Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
                         SelectedIndex="{Binding ActiveTabIndex}"
@@ -82,9 +88,13 @@
             </TabControl>
         </ScrollViewer>
 
-        <Frame KeyboardNavigation.IsTabStop="False"
+        <ContentControl Grid.Column="1"
+                        HorizontalAlignment="Stretch"
+                        Content="{Binding ViewModelTab, Converter={catel:ViewModelToViewConverter}}" />
+
+        <!--<Frame KeyboardNavigation.IsTabStop="False"
                VerticalAlignment="Stretch"
                HorizontalAlignment="Stretch"
-               NavigationUIVisibility="Hidden" />
-    </StackPanel>
+               NavigationUIVisibility="Hidden" />-->
+    </Grid>
 </catel:Window>
