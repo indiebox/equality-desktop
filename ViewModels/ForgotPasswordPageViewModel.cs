@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Data;
+using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
 
@@ -26,7 +28,7 @@ namespace Equality.ViewModels
             UserService = userService;
 
             GoBack = new Command(OnGoBackExecute, () => !IsSendingRequest);
-            OpenResetPasswordPage = new TaskCommand(OnOpenResetPasswordPageExecute, OnOpenResetPaswordCanExecute);
+            OpenResetPasswordPage = new TaskCommand(OnOpenResetPasswordPageExecute, () => !HasErrors);
 
             ApiFieldsMap = new()
             {
@@ -40,6 +42,7 @@ namespace Equality.ViewModels
 
         public string Email { get; set; }
 
+        [ExcludeFromValidation]
         public bool IsSendingRequest { get; set; }
 
         #endregion
@@ -63,9 +66,10 @@ namespace Equality.ViewModels
                     { "email", Email }
                 };
 
+                SuspendValidations(false);
+
                 NavigationService.Navigate<ResetPasswordPageViewModel>(parameters);
             } catch (UnprocessableEntityHttpException e) {
-                var errors = e.Errors;
                 HandleApiErrors(e.Errors);
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
@@ -77,11 +81,6 @@ namespace Equality.ViewModels
         public Command GoBack { get; private set; }
 
         private void OnGoBackExecute() => NavigationService.GoBack();
-
-        private bool OnOpenResetPaswordCanExecute()
-        {
-            return !HasErrors;
-        }
 
         #endregion
 
