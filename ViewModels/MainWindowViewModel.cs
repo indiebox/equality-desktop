@@ -3,12 +3,10 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using Catel.Data;
 using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
 
-using Equality.Core.ApiClient;
 using Equality.Core.StateManager;
 using Equality.Core.ViewModel;
 using Equality.Services;

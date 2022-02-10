@@ -108,8 +108,7 @@
                          Height="80">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                            <catel:EventToCommand Command="{Binding Logout}"
-                                                  DisableAssociatedObjectOnCannotExecute="False" />
+                            <catel:EventToCommand Command="{Binding Logout}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
 
