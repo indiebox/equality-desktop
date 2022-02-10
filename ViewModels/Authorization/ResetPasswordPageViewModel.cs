@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Data;
-using Catel.Fody;
 using Catel.MVVM;
 using Catel.Services;
 

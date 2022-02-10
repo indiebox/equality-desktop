@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.IoC;
-using Catel.MVVM;
 using Catel.Services;
 
 using Equality.Core.ApiClient;
