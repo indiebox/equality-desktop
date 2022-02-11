@@ -2,7 +2,7 @@
 {
     public class DesignStartPageViewModel : StartPageViewModel
     {
-        public DesignStartPageViewModel() : base(null, null)
+        public DesignStartPageViewModel() : base(null)
         {
             Name = "Peter";
         }

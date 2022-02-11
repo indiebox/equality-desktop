@@ -7,7 +7,6 @@ using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
 
-using Equality.Core.StateManager;
 using Equality.Core.ViewModel;
 using Equality.Services;
 
@@ -19,13 +18,10 @@ namespace Equality.ViewModels
 
         protected IViewModelFactory ViewModelFactory;
 
-        protected IStateManager StateManager;
-
-        public MainWindowViewModel(IUserService userService, IViewModelFactory viewModelFactory, IStateManager stateManager)
+        public MainWindowViewModel(IUserService userService, IViewModelFactory viewModelFactory)
         {
             UserService = userService;
             ViewModelFactory = viewModelFactory;
-            StateManager = stateManager;
 
             Logout = new TaskCommand(OnLogoutExecute);
 

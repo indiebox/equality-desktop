@@ -3,20 +3,16 @@
 using Catel.MVVM;
 
 using Equality.Core.ApiClient;
-using Equality.Core.StateManager;
 using Equality.Core.ViewModel;
 
 namespace Equality.ViewModels
 {
     public class StartPageViewModel : ViewModel
     {
-        protected IStateManager StateManager;
-
         protected IApiClient ApiClient;
 
-        public StartPageViewModel(IStateManager stateManager, IApiClient apiClient)
+        public StartPageViewModel(IApiClient apiClient)
         {
-            StateManager = stateManager;
             ApiClient = apiClient;
 
             GetUserName = new TaskCommand(OnGetUserNameExecuteAsync);

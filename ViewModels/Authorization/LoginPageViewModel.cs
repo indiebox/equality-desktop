@@ -9,7 +9,6 @@ using Catel.MVVM;
 using Catel.Services;
 
 using Equality.Core.ApiClient;
-using Equality.Core.StateManager;
 using Equality.Core.Validation;
 using Equality.Core.ViewModel;
 using Equality.Services;
@@ -22,13 +21,10 @@ namespace Equality.ViewModels
 
         protected IUserService UserService;
 
-        protected IStateManager StateManager;
-
-        public LoginPageViewModel(INavigationService navigationService, IUserService userService, IStateManager stateManager)
+        public LoginPageViewModel(INavigationService navigationService, IUserService userService)
         {
             NavigationService = navigationService;
             UserService = userService;
-            StateManager = stateManager;
 
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
             OpenRegisterWindow = new TaskCommand(OnOpenRegisterWindowExecute);

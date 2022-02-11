@@ -6,7 +6,6 @@ using Catel.IoC;
 using Catel.Services;
 
 using Equality.Core.ApiClient;
-using Equality.Core.StateManager;
 using Equality.Core.ViewModel;
 using Equality.Services;
 
@@ -16,12 +15,9 @@ namespace Equality.ViewModels
     {
         protected IUserService UserService;
 
-        protected IStateManager StateManager;
-
-        public AuthorizationWindowViewModel(IUserService userService, IStateManager stateManager)
+        public AuthorizationWindowViewModel(IUserService userService)
         {
             UserService = userService;
-            StateManager = stateManager;
         }
 
         public override string Title => "Equality";
