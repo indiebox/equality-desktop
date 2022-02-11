@@ -13,8 +13,6 @@ namespace Equality.Views
 
         private void AuthorizationWindow_Activated(object sender, System.EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("Activated");
-
             if (!ReferenceEquals(App.Current.MainWindow, this)) {
                 App.Current.MainWindow.SetCurrentValue(VisibilityProperty, Visibility.Collapsed);
                 App.Current.MainWindow = this;

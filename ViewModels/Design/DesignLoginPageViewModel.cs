@@ -2,7 +2,7 @@
 {
     public class DesignLoginPageViewModel : LoginPageViewModel
     {
-        public DesignLoginPageViewModel() : base(null, null)
+        public DesignLoginPageViewModel() : base(null, null, null)
         {
             CredentialsErrorMessage = "Ошибка данных";
         }

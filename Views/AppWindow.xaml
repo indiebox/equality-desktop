@@ -1,0 +1,20 @@
+﻿<catel:Window  x:Class="Equality.Views.AppWindow"
+               xmlns:catel="http://schemas.catelproject.com"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:local="clr-namespace:Equality.Views"
+               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+               d:DataContext="{d:DesignInstance Type=viewmodels:AppWindowViewModel}"
+               mc:Ignorable="d"
+               WindowStartupLocation="CenterScreen"
+               Visibility="{Binding Visible, Mode=TwoWay, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
+               ResizeMode="NoResize"
+               Height="300"
+               Width="300">
+    <Grid>
+        <TextBlock VerticalAlignment="Center"
+                   HorizontalAlignment="Center">Экран загрузки...</TextBlock>
+    </Grid>
+</catel:Window>

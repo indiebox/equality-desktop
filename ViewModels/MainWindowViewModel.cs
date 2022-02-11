@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
 
@@ -14,19 +13,21 @@ namespace Equality.ViewModels
 {
     class MainWindowViewModel : ViewModel
     {
+        protected IUIVisualizerService UIVisualizerService;
+
         protected IUserService UserService;
 
         protected IViewModelFactory ViewModelFactory;
 
-        public MainWindowViewModel(IUserService userService, IViewModelFactory viewModelFactory)
+        public MainWindowViewModel(IUIVisualizerService uIVisualizerService, IUserService userService, IViewModelFactory viewModelFactory)
         {
+            UIVisualizerService = uIVisualizerService;
             UserService = userService;
             ViewModelFactory = viewModelFactory;
 
             Logout = new TaskCommand(OnLogoutExecute);
 
-            ViewModelTabs.Add(0, ViewModelFactory.CreateViewModel<StartPageViewModel>(null));
-            ViewModelTab = ViewModelTabs[ActiveTabIndex];
+            OnActiveTabIndexChanged();
         }
 
         public override string Title => "Equality";
@@ -38,27 +39,6 @@ namespace Equality.ViewModels
         public IViewModel ViewModelTab { get; set; }
 
         public int ActiveTabIndex { get; set; }
-
-        private void OnActiveTabIndexChanged()
-        {
-            if (!ViewModelTabs.ContainsKey(ActiveTabIndex)) {
-                ViewModelTab = null;
-
-                return;
-
-                //IViewModel vm;
-
-                //switch (ActiveTabIndex) {
-                //    case 1:
-                //        vm = ViewModelFactory.CreateViewModel<StartPageViewModel>(null);
-                //        break;
-                //    default:
-                //        break;
-                //}
-            }
-
-            ViewModelTab = ViewModelTabs[ActiveTabIndex];
-        }
 
         #endregion
 
@@ -76,11 +56,29 @@ namespace Equality.ViewModels
                 Properties.Settings.Default.api_token = null;
                 Properties.Settings.Default.Save();
 
-                var uiService = this.GetDependencyResolver().Resolve<IUIVisualizerService>();
-                _ = uiService.ShowOrActivateAsync<AuthorizationWindowViewModel>(null, null, null);
+                _ = UIVisualizerService.ShowOrActivateAsync<AuthorizationWindowViewModel>(null, null, null);
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void OnActiveTabIndexChanged()
+        {
+            if (!ViewModelTabs.ContainsKey(ActiveTabIndex)) {
+                IViewModel vm = ActiveTabIndex switch
+                {
+                    0 => ViewModelFactory.CreateViewModel<StartPageViewModel>(null),
+                    _ => null,
+                };
+
+                ViewModelTabs.Add(ActiveTabIndex, vm);
+            }
+
+            ViewModelTab = ViewModelTabs[ActiveTabIndex];
         }
 
         #endregion

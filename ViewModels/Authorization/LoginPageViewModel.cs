@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Data;
-using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
 
@@ -19,11 +18,14 @@ namespace Equality.ViewModels
     {
         protected INavigationService NavigationService;
 
+        protected IUIVisualizerService UIVisualizerService;
+
         protected IUserService UserService;
 
-        public LoginPageViewModel(INavigationService navigationService, IUserService userService)
+        public LoginPageViewModel(INavigationService navigationService, IUIVisualizerService uIVisualizerService, IUserService userService)
         {
             NavigationService = navigationService;
+            UIVisualizerService = uIVisualizerService;
             UserService = userService;
 
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
@@ -74,8 +76,7 @@ namespace Equality.ViewModels
                     Properties.Settings.Default.Save();
                 }
 
-                var uiService = this.GetDependencyResolver().Resolve<IUIVisualizerService>();
-                _ = uiService.ShowOrActivateAsync<MainWindowViewModel>(null, null, null);
+                _ = UIVisualizerService.ShowOrActivateAsync<MainWindowViewModel>(null, null);
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
 
@@ -94,9 +95,7 @@ namespace Equality.ViewModels
 
         private async Task OnOpenRegisterWindowExecute()
         {
-            var uiVisualizerService = this.GetDependencyResolver().Resolve<IUIVisualizerService>();
-
-            await uiVisualizerService.ShowOrActivateAsync<RegisterWindowViewModel>(null, null);
+            await UIVisualizerService.ShowOrActivateAsync<RegisterWindowViewModel>(null, null);
         }
 
         public Command OpenForgotPassword { get; private set; }
