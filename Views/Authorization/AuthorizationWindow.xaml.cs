@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace Equality.Views
+﻿namespace Equality.Views
 {
     public partial class AuthorizationWindow
     {
@@ -8,19 +6,8 @@ namespace Equality.Views
         {
             InitializeComponent();
 
-            Activated += AuthorizationWindow_Activated;
-        }
-
-        private void AuthorizationWindow_Activated(object sender, System.EventArgs e)
-        {
-            if (!ReferenceEquals(App.Current.MainWindow, this)) {
-                App.Current.MainWindow.SetCurrentValue(VisibilityProperty, Visibility.Collapsed);
-                App.Current.MainWindow = this;
-            }
-
-            if (!IsVisible) {
-                SetCurrentValue(VisibilityProperty, Visibility.Visible);
-            }
+            // We need setup each dedicated window as MainWindow when we close previous one.
+            App.Current.MainWindow = this;
         }
     }
 }

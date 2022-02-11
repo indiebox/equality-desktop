@@ -9,7 +9,6 @@
                d:DataContext="{d:DesignInstance Type=viewmodels:AppWindowViewModel}"
                mc:Ignorable="d"
                WindowStartupLocation="CenterScreen"
-               Visibility="{Binding Visible, Mode=TwoWay, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
                ResizeMode="NoResize"
                Height="300"
                Width="300">

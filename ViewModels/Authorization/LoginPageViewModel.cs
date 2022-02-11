@@ -4,7 +4,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Data;
+using Catel.IoC;
 using Catel.MVVM;
+using Catel.MVVM.Views;
 using Catel.Services;
 
 using Equality.Core.ApiClient;
@@ -77,6 +79,10 @@ namespace Equality.ViewModels
                 }
 
                 _ = UIVisualizerService.ShowOrActivateAsync<MainWindowViewModel>(null, null, null);
+
+                var viewManager = this.GetDependencyResolver().Resolve<IViewModelManager>();
+                var viewModel = viewManager.GetFirstOrDefaultInstance<AuthorizationWindowViewModel>();
+                await viewModel.CloseViewModelAsync(true);
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
 

@@ -57,6 +57,7 @@ namespace Equality.ViewModels
                 Properties.Settings.Default.Save();
 
                 _ = UIVisualizerService.ShowOrActivateAsync<AuthorizationWindowViewModel>(null, null, null);
+                await CloseViewModelAsync(true);
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }

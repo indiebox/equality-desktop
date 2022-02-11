@@ -24,21 +24,19 @@ namespace Equality.ViewModels
 
         public override string Title => "Equality";
 
-        public bool Visible { get; set; } = true;
-
         protected async Task HandleAuthenticatedUser()
         {
             string apiToken = Properties.Settings.Default.api_token;
 
-            var result = await IsValidToken(apiToken);
-
-            Visible = false;
+            bool result = await IsValidToken(apiToken);
 
             if (result) {
                 OpenMainPage();
             } else {
                 OpenAuthorizationPage();
             }
+
+            await CloseViewModelAsync(true);
         }
 
         protected async Task<bool> IsValidToken(string token)
@@ -64,14 +62,14 @@ namespace Equality.ViewModels
             return false;
         }
 
-        protected async void OpenMainPage()
+        protected void OpenMainPage()
         {
-            await UIVisualizerService.ShowAsync<MainWindowViewModel>();
+            UIVisualizerService.ShowAsync<MainWindowViewModel>();
         }
 
-        protected async void OpenAuthorizationPage()
+        protected void OpenAuthorizationPage()
         {
-            await UIVisualizerService.ShowAsync<AuthorizationWindowViewModel>();
+            UIVisualizerService.ShowAsync<AuthorizationWindowViewModel>();
         }
 
         protected override async Task InitializeAsync()

@@ -3,6 +3,7 @@
 using Catel.IoC;
 using Catel.Logging;
 using Catel.MVVM;
+using Catel.Services;
 
 using Equality.Core.ApiClient;
 using Equality.Core.StateManager;
@@ -34,6 +35,26 @@ namespace Equality
             Catel.Windows.Controls.UserControl.DefaultCreateWarningAndErrorValidatorForViewModelValue = false;
             Catel.Windows.Controls.UserControl.DefaultSkipSearchingForInfoBarMessageControlValue = true;
 
+
+            /*
+            |--------------------------------------------------------------------------
+            | Overriding default types
+            |--------------------------------------------------------------------------
+            |
+            | Here we overriding default types for Dependency Injection.
+            |
+            */
+
+            Log.Info("Overriding default types");
+
+            var serviceLocator = ServiceLocator.Default;
+
+            // We need to set RegistrationType.Transient to INavigationService and INavigationRootService,
+            // so we can work with multiple windows with frame at the same time (previously not supported).
+            // It will also allow NavigationService to continue working even after reopening the same window (previously not supported).
+            serviceLocator.RegisterType<INavigationService, NavigationService>(RegistrationType.Transient);
+            serviceLocator.RegisterType<INavigationRootService, NavigationRootService>(RegistrationType.Transient);
+
             /*
             |--------------------------------------------------------------------------
             | Register types
@@ -44,8 +65,6 @@ namespace Equality
             */
 
             Log.Info("Registering custom types");
-
-            var serviceLocator = ServiceLocator.Default;
 
             serviceLocator.RegisterType<IApiClient, ApiClient>();
             serviceLocator.RegisterType<IStateManager, StateManager>();
