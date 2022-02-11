@@ -76,7 +76,7 @@ namespace Equality.ViewModels
                     Properties.Settings.Default.Save();
                 }
 
-                _ = UIVisualizerService.ShowOrActivateAsync<MainWindowViewModel>(null, null);
+                _ = UIVisualizerService.ShowOrActivateAsync<MainWindowViewModel>(null, null, null);
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
 
