@@ -3,7 +3,6 @@
 using Catel.IoC;
 using Catel.Logging;
 using Catel.MVVM;
-using Catel.Services;
 
 using Equality.Core.ApiClient;
 using Equality.Core.StateManager;
@@ -48,7 +47,9 @@ namespace Equality
 
             var serviceLocator = ServiceLocator.Default;
 
-            serviceLocator.RegisterTypesUsingDefaultNamingConvention();
+            serviceLocator.RegisterType<IApiClient, ApiClient>();
+            serviceLocator.RegisterType<IStateManager, StateManager>();
+            serviceLocator.RegisterType<IUserService, UserService>();
 
             /*
             |--------------------------------------------------------------------------
