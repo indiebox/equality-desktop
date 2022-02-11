@@ -48,10 +48,7 @@ namespace Equality
 
             var serviceLocator = ServiceLocator.Default;
 
-            serviceLocator.RegisterType<IApiClient, ApiClient>();
-            serviceLocator.RegisterType<IStateManager, StateManager>();
-            serviceLocator.RegisterType<IUserService, UserService>();
-
+            serviceLocator.RegisterTypesUsingDefaultNamingConvention();
 
             /*
             |--------------------------------------------------------------------------
