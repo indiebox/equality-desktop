@@ -11,7 +11,7 @@ using Equality.Services;
 
 namespace Equality.ViewModels
 {
-    class MainWindowViewModel : ViewModel
+    class ApplicationWindowViewModel : ViewModel
     {
         protected IUIVisualizerService UIVisualizerService;
 
@@ -19,7 +19,7 @@ namespace Equality.ViewModels
 
         protected IViewModelFactory ViewModelFactory;
 
-        public MainWindowViewModel(IUIVisualizerService uIVisualizerService, IUserService userService, IViewModelFactory viewModelFactory)
+        public ApplicationWindowViewModel(IUIVisualizerService uIVisualizerService, IUserService userService, IViewModelFactory viewModelFactory)
         {
             UIVisualizerService = uIVisualizerService;
             UserService = userService;

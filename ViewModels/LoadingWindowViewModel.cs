@@ -10,13 +10,13 @@ using Equality.Services;
 
 namespace Equality.ViewModels
 {
-    public class AppWindowViewModel : ViewModel
+    public class LoadingWindowViewModel : ViewModel
     {
         protected IUIVisualizerService UIVisualizerService;
 
         protected IUserService UserService;
 
-        public AppWindowViewModel(IUIVisualizerService uiVisualizerService, IUserService userService)
+        public LoadingWindowViewModel(IUIVisualizerService uiVisualizerService, IUserService userService)
         {
             UIVisualizerService = uiVisualizerService;
             UserService = userService;
@@ -64,7 +64,7 @@ namespace Equality.ViewModels
 
         protected void OpenMainPage()
         {
-            UIVisualizerService.ShowAsync<MainWindowViewModel>();
+            UIVisualizerService.ShowAsync<ApplicationWindowViewModel>();
         }
 
         protected void OpenAuthorizationPage()

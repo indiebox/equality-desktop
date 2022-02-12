@@ -5,9 +5,9 @@ namespace Equality.Views
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class ApplicationWindow
     {
-        public MainWindow()
+        public ApplicationWindow()
         {
             InitializeComponent();
 
