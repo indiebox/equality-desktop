@@ -35,8 +35,8 @@ namespace $rootnamespace$
         #region Commands
         
         public TaskCommand SendForm { get; private set; }
-        
-        private void OnSendFormExecute()
+
+        private async Task OnSendFormExecute()
         {
             if (FirstValidationHasErrors()) {
                 return;
