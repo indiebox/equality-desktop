@@ -113,7 +113,7 @@ namespace Equality.ViewModels
             // Before navigation we need to SuspendValidations,
             // so model will be saved.
             // See: https://github.com/Catel/Catel/discussions/1932
-            SuspendValidations(false);
+            //SuspendValidations();
 
             NavigationService.Navigate<ForgotPasswordPageViewModel>();
         }

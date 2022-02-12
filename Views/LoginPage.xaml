@@ -1,21 +1,22 @@
-﻿<catel:Page x:Class="Equality.Views.LoginPage"
-            xmlns:catel="http://schemas.catelproject.com"
-            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-            xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
-            xmlns:assists="clr-namespace:Equality.Assists"
-            xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-            d:DesignHeight="600"
-            d:DesignWidth="900"
-            d:Background="{StaticResource MaterialDesignPaper}"
-            d:DataContext="{d:DesignInstance dvm:DesignLoginPageViewModel, IsDesignTimeCreatable=True}"
-            mc:Ignorable="d">
-    <catel:Page.Resources>
+﻿<equality:Page x:Class="Equality.Views.LoginPage"
+               xmlns:equality="clr-namespace:Equality.Core.MVVM"
+               xmlns:catel="http://schemas.catelproject.com"
+               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+               xmlns:assists="clr-namespace:Equality.Assists"
+               xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+               d:DesignHeight="600"
+               d:DesignWidth="900"
+               d:Background="{StaticResource MaterialDesignPaper}"
+               d:DataContext="{d:DesignInstance dvm:DesignLoginPageViewModel, IsDesignTimeCreatable=True}"
+               mc:Ignorable="d">
+    <equality:Page.Resources>
         <catel:EmptyStringToHidingVisibilityConverter x:Key="EmptyStringToHidingVisibility" />
-    </catel:Page.Resources>
+    </equality:Page.Resources>
 
     <DockPanel>
         <materialDesign:Card HorizontalAlignment="Stretch"
@@ -171,4 +172,4 @@
             </Grid>
         </Grid>
     </DockPanel>
-</catel:Page>
+</equality:Page>
