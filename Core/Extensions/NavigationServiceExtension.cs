@@ -10,7 +10,7 @@ namespace Equality.Core.Extensions
     public static class NavigationServiceExtension
     {
         /// <summary>
-        /// Navigates the specified location in the specified view model context registered using the view model type.
+        /// Navigates the specified location using the view model type in the specified view model context.
         /// </summary>
         /// <typeparam name="TViewModelType">The view model type.</typeparam>
         /// <param name="this">INavigationService.</param>
@@ -18,8 +18,8 @@ namespace Equality.Core.Extensions
         /// <param name="parameters">
         /// Dictionary of parameters, where the key is the name of the parameter, and the value is the value of the parameter.
         /// </param>
-        /// <remarks>Find first View of the specified context view model and perform navigation in it.</remarks>
-        public static void NavigateInViewModelContext<TViewModelType>(this INavigationService @this, IViewModel viewModelContext, Dictionary<string, object> parameters = null)
+        /// <remarks>Finds first View of the specified context view model and perform navigation in it.</remarks>
+        public static void Navigate<TViewModelType>(this INavigationService @this, IViewModel viewModelContext, Dictionary<string, object> parameters = null)
             where TViewModelType : IViewModel
         {
             var viewManager = @this.GetDependencyResolver().Resolve<IViewManager>();
@@ -34,7 +34,7 @@ namespace Equality.Core.Extensions
         }
 
         /// <summary>
-        /// Navigates the specified location in the specified view model context registered using the view model type.
+        /// Navigates the specified location using the view model type in the specified view model context.
         /// </summary>
         /// <typeparam name="TViewModelType">The view model type.</typeparam>
         /// <typeparam name="TViewModelContextType">The view model context type.</typeparam>
@@ -42,15 +42,15 @@ namespace Equality.Core.Extensions
         /// <param name="parameters">
         /// Dictionary of parameters, where the key is the name of the parameter, and the value is the value of the parameter.
         /// </param>
-        /// <remarks>Find first View of the first context view model and perform navigation in it.</remarks>
-        public static void NavigateInViewModelContext<TViewModelType, TViewModelContextType>(this INavigationService @this, Dictionary<string, object> parameters = null)
+        /// <remarks>Finds first View of the first context view model and perform navigation in it.</remarks>
+        public static void Navigate<TViewModelType, TViewModelContextType>(this INavigationService @this, Dictionary<string, object> parameters = null)
             where TViewModelType : IViewModel
             where TViewModelContextType : IViewModel
         {
             var viewModelManager = @this.GetDependencyResolver().Resolve<IViewModelManager>();
             var viewModel = viewModelManager.GetFirstOrDefaultInstance<TViewModelContextType>();
 
-            NavigateInViewModelContext<TViewModelType>(@this, viewModel, parameters);
+            Navigate<TViewModelType>(@this, viewModel, parameters);
         }
     }
 }

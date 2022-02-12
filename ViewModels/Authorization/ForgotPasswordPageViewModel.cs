@@ -78,7 +78,11 @@ namespace Equality.ViewModels
 
         public Command GoBack { get; private set; }
 
-        private void OnGoBackExecute() => NavigationService.GoBack();
+        private void OnGoBackExecute()
+        {
+            SuspendValidations();
+            NavigationService.GoBack();
+        }
 
         #endregion
 

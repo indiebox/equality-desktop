@@ -67,7 +67,11 @@ namespace Equality.ViewModels
 
         public Command GoHome { get; private set; }
 
-        private void OnGoHomeExecute() => NavigationService.Navigate<LoginPageViewModel>();
+        private void OnGoHomeExecute()
+        {
+            SuspendValidations();
+            NavigationService.Navigate<LoginPageViewModel>();
+        }
 
         public TaskCommand ResendToken { get; private set; }
 
