@@ -26,6 +26,7 @@
 
     <ItemGroup>
       <Compile Remove="templates\Page\Page.xaml.cs" />
+      <Compile Remove="templates\ViewModelWithValidation\ViewModelWithValidation.cs" />
       <Compile Remove="templates\ViewModel\ViewModel.cs" />
       <Compile Remove="templates\Window\Window.xaml.cs" />
     </ItemGroup>
@@ -84,6 +85,7 @@
     <ItemGroup>
       <None Include="templates\Page\Page.xaml" />
       <None Include="templates\Page\Page.xaml.cs" />
+      <None Include="templates\ViewModelWithValidation\ViewModelWithValidation.cs" />
       <None Include="templates\ViewModel\ViewModel.cs" />
       <None Include="templates\Window\Window.xaml" />
       <None Include="templates\Window\Window.xaml.cs" />

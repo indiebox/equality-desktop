@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using Catel.Data;
+using Catel.MVVM;
 
 using Equality.Core.Validation;
 using Equality.Core.ViewModel;
@@ -13,6 +14,9 @@ namespace $rootnamespace$
         public $safeitemname$()
         {
             
+            
+            // TODO: Rename SendForm command and OnSendFormExecute method.
+            SendForm = new TaskCommand(OnSendFormExecute, () => !HasErrors);
 
             ApiFieldsMap = new ()
             {
@@ -27,10 +31,19 @@ namespace $rootnamespace$
         public string Example { get; set; }
 
         #endregion
-        
+
         #region Commands
         
+        public TaskCommand SendForm { get; private set; }
         
+        private void OnSendFormExecute()
+        {
+            if (FirstValidationHasErrors()) {
+                return;
+            }
+
+            // TODO: Handle command logic here
+        }
         
         #endregion
         
