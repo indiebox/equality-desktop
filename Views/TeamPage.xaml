@@ -51,12 +51,17 @@
                                  BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                                  Margin="0"
                                  IsChecked="False"
-                                 Content="Люди" />
+                                 Content="Участники" />
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                                  BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                                  Margin="0"
                                  IsChecked="False"
                                  Content="Статистика" />
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
+                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                 Margin="0"
+                                 IsChecked="False"
+                                 Content="Настройки" />
                 </StackPanel>
             </StackPanel>
             <Grid HorizontalAlignment="Stretch">
