@@ -15,9 +15,6 @@
             Title="TeamPage">
     <Grid>
         <Border>
-            <Border.Effect>
-                <BlurEffect Radius="25" />
-            </Border.Effect>
             <Border.Background>
                 <ImageBrush Stretch="UniformToFill"
                             ImageSource="C:/Users/Marshall/Pictures/Background2.jpg" />
@@ -26,7 +23,8 @@
         <Rectangle Fill="Black"
                    Opacity="0.5" />
         <DockPanel HorizontalAlignment="Stretch">
-            <StackPanel Margin="0,0,0,30"
+            <StackPanel Background="WhiteSmoke"
+                        Margin="0,0,0,30"
                         DockPanel.Dock="Top">
                 <Border CornerRadius="10,10,10,10"
                         Margin="0,30,0,0"
@@ -39,13 +37,8 @@
                 </Border>
                 <TextBlock HorizontalAlignment="Center"
                            FontSize="27"
-                           Foreground="White">Indie Box</TextBlock>
-            </StackPanel>
-            <Grid HorizontalAlignment="Stretch">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="20*"></RowDefinition>
-                </Grid.RowDefinitions>
+                           Foreground="Black"
+                           Margin="0,0,0,30">Indie Box</TextBlock>
                 <StackPanel Grid.Row="0"
                             Orientation="Horizontal"
                             HorizontalAlignment="Center">
@@ -65,8 +58,13 @@
                                  IsChecked="False"
                                  Content="Статистика" />
                 </StackPanel>
+            </StackPanel>
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="20*"></RowDefinition>
+                </Grid.RowDefinitions>
                 <TextBlock Grid.Row="1"
-                           Background="WhiteSmoke"
                            Grid.Column="1"
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Stretch"></TextBlock>

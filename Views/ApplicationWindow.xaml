@@ -21,6 +21,7 @@
             <ColumnDefinition Width="23*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <TabControl Grid.Column="0"
+                    SnapsToDevicePixels="True"
                     Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
                     BorderBrush="Transparent"
                     TabStripPlacement="Left"
@@ -50,7 +51,6 @@
                                    HorizontalAlignment="Center" />
                     </StackPanel>
                 </TabItem.Header>
-
             </TabItem>
             <TabItem Width="80">
                 <TabItem.Header>
@@ -80,9 +80,10 @@
             </TabItem>
         </TabControl>
         <Frame Grid.Column="1"
+               Width="Auto"
+               Height="Auto"
                KeyboardNavigation.IsTabStop="False"
-               VerticalAlignment="Stretch"
-               HorizontalAlignment="Stretch"
-               NavigationUIVisibility="Hidden" />
+               NavigationUIVisibility="Hidden"
+               Navigated="Frame_Navigated" />
     </Grid>
 </catel:Window>

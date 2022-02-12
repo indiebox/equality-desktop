@@ -17,7 +17,7 @@ namespace Equality.ViewModels
         {
             NavigationService = service;
 
-            NavigationService.Navigate<TeamPageViewModel>();
+            NavigationService.Navigate<TeamsPageViewModel>();
         }
 
         public override string Title => "Equality";

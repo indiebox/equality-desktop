@@ -13,6 +13,51 @@
             d:Background="{StaticResource MaterialDesignPaper}"
             d:DataContext="{d:DesignInstance dvm:DesignTeamsPageViewModel, IsDesignTimeCreatable=True}">
     <Grid>
-
+        <Border>
+            <Border.Background>
+                <ImageBrush Stretch="UniformToFill"
+                            ImageSource="C:/Users/Marshall/Pictures/Background2.jpg" />
+            </Border.Background>
+        </Border>
+        <Rectangle Fill="Black"
+                   Opacity="0.5" />
+        <StackPanel>
+            <TextBlock Padding="0,10,0,10"
+                       FontSize="27"
+                       TextAlignment="Center"
+                       Foreground="{StaticResource MaterialDesignPaper}">Команды</TextBlock>
+            <StackPanel Orientation="Horizontal"
+                        Background="{StaticResource MaterialDesignPaper}"
+                        Margin="20,20,20,0">
+                <Border CornerRadius="100"
+                        Width="50"
+                        Height="50"
+                        Margin="10">
+                    <Border.Background>
+                        <ImageBrush Stretch="UniformToFill"
+                                    ImageSource="C:/Users/Marshall/Pictures/Logo.jpg" />
+                    </Border.Background>
+                </Border>
+                <TextBlock FontSize="16"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center">Indie Box</TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Background="{StaticResource MaterialDesignPaper}"
+                        Margin="20,20,20,0">
+                <Border CornerRadius="100"
+                        Width="50"
+                        Height="50"
+                        Margin="10">
+                    <Border.Background>
+                        <ImageBrush Stretch="UniformToFill"
+                                    ImageSource="C:/Users/Marshall/Pictures/Logo.jpg" />
+                    </Border.Background>
+                </Border>
+                <TextBlock FontSize="16"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center">Indie Box is awecome</TextBlock>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </catel:Page>
