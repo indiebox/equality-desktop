@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 using Catel.MVVM.Navigation;
 using Catel.MVVM.Views;
@@ -17,6 +15,7 @@ namespace Equality.Core.MVVM
         {
             base.OnNavigatingAwayFromPage(e);
 
+            // We revert base cancellation of navigation if there are validation errors and close a view model.
             if (e.Cancel) {
                 await CancelAndCloseViewModelAsync();
                 e.Cancel = false;
