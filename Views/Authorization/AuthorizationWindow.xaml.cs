@@ -1,4 +1,6 @@
-﻿namespace Equality.Views
+﻿using Equality.Core.Extensions;
+
+namespace Equality.Views
 {
     public partial class AuthorizationWindow
     {
@@ -6,10 +8,7 @@
         {
             InitializeComponent();
 
-            // Change MainWindow and close previous one.
-            var temp = App.Current.MainWindow;
-            App.Current.MainWindow = this;
-            temp.Close();
+            this.SetAsMainWindow();
         }
     }
 }

@@ -56,7 +56,7 @@ namespace Equality.ViewModels
                 Properties.Settings.Default.api_token = null;
                 Properties.Settings.Default.Save();
 
-                _ = UIVisualizerService.ShowAsync<AuthorizationWindowViewModel>();
+                await UIVisualizerService.ShowAsync<AuthorizationWindowViewModel>();
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }

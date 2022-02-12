@@ -1,4 +1,6 @@
-﻿namespace Equality.Views
+﻿using Equality.Core.Extensions;
+
+namespace Equality.Views
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
@@ -9,10 +11,7 @@
         {
             InitializeComponent();
 
-            // Change MainWindow and close previous one.
-            var temp = App.Current.MainWindow;
-            App.Current.MainWindow = this;
-            temp.Close();
+            this.SetAsMainWindow();
         }
     }
 }
