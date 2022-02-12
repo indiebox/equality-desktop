@@ -9,8 +9,10 @@
         {
             InitializeComponent();
 
-            // We need setup each dedicated window as MainWindow when we close previous one.
+            // Change MainWindow and close previous one.
+            var temp = App.Current.MainWindow;
             App.Current.MainWindow = this;
+            temp.Close();
         }
     }
 }

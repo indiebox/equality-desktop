@@ -77,11 +77,7 @@ namespace Equality.ViewModels
                     Properties.Settings.Default.Save();
                 }
 
-                _ = UIVisualizerService.ShowOrActivateAsync<MainWindowViewModel>(null, null, null);
-
-                var viewManager = this.GetDependencyResolver().Resolve<IViewModelManager>();
-                var viewModel = viewManager.GetFirstOrDefaultInstance<AuthorizationWindowViewModel>();
-                await viewModel.CloseViewModelAsync(true);
+                _ = UIVisualizerService.ShowAsync<MainWindowViewModel>();
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
 
