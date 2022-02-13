@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -15,28 +14,22 @@ namespace Equality.ViewModels
     {
         protected IUIVisualizerService UIVisualizerService;
 
+        protected INavigationService NavigationService;
+
         protected IUserService UserService;
 
-        protected IViewModelFactory ViewModelFactory;
-
-        public ApplicationWindowViewModel(IUIVisualizerService uIVisualizerService, IUserService userService, IViewModelFactory viewModelFactory)
+        public ApplicationWindowViewModel(IUIVisualizerService uIVisualizerService, INavigationService navigationService, IUserService userService)
         {
             UIVisualizerService = uIVisualizerService;
+            NavigationService = navigationService;
             UserService = userService;
-            ViewModelFactory = viewModelFactory;
 
             Logout = new TaskCommand(OnLogoutExecute);
-
-            OnActiveTabIndexChanged();
         }
 
         public override string Title => "Equality";
 
         #region Properties
-
-        public Dictionary<int, IViewModel> ViewModelTabs { get; set; } = new();
-
-        public IViewModel ViewModelTab { get; set; }
 
         public int ActiveTabIndex { get; set; }
 
@@ -53,6 +46,7 @@ namespace Equality.ViewModels
 
                 StateManager.ApiToken = null;
                 StateManager.CurrentUser = null;
+
                 Properties.Settings.Default.api_token = null;
                 Properties.Settings.Default.Save();
 
@@ -68,17 +62,12 @@ namespace Equality.ViewModels
 
         private void OnActiveTabIndexChanged()
         {
-            if (!ViewModelTabs.ContainsKey(ActiveTabIndex)) {
-                IViewModel vm = ActiveTabIndex switch
-                {
-                    0 => ViewModelFactory.CreateViewModel<StartPageViewModel>(null),
-                    _ => null,
-                };
-
-                ViewModelTabs.Add(ActiveTabIndex, vm);
+            switch (ActiveTabIndex) {
+                case 0:
+                default:
+                    NavigationService.Navigate<StartPageViewModel>();
+                    break;
             }
-
-            ViewModelTab = ViewModelTabs[ActiveTabIndex];
         }
 
         #endregion
@@ -87,7 +76,7 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            // TODO: subscribe to events here
+            OnActiveTabIndexChanged();
         }
 
         protected override async Task CloseAsync()

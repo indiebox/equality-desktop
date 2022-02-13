@@ -127,9 +127,10 @@
             </Grid>
         </ScrollViewer>
 
-        <ContentControl Grid.Column="1"
-                        Focusable="False"
-                        HorizontalAlignment="Stretch"
-                        Content="{Binding ViewModelTab, Converter={catel:ViewModelToViewConverter}}" />
+        <Frame Grid.Column="1"
+               Focusable="False"
+               VerticalAlignment="Stretch"
+               HorizontalAlignment="Stretch"
+               NavigationUIVisibility="Hidden" />
     </Grid>
 </catel:Window>
