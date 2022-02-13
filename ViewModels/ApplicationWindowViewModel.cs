@@ -22,11 +22,14 @@ namespace Equality.ViewModels
 
         public override string Title => "Equality";
 
-        protected override async Task InitializeAsync() => await base.InitializeAsync();// TODO: subscribe to events here
+        protected override async Task InitializeAsync()
+        {
+            await base.InitializeAsync();
+        }
 
-        protected override async Task CloseAsync() =>
-            // TODO: unsubscribe from events here
-
+        protected override async Task CloseAsync()
+        {
             await base.CloseAsync();
+        }
     }
 }
