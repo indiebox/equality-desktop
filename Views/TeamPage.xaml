@@ -17,7 +17,7 @@
         <Border>
             <Border.Background>
                 <ImageBrush Stretch="UniformToFill"
-                            ImageSource="C:/Users/Marshall/Pictures/Background2.jpg" />
+                            ImageSource="/Resources/Images/BackgroundImage.jpg" />
             </Border.Background>
         </Border>
         <Rectangle Fill="Black"
