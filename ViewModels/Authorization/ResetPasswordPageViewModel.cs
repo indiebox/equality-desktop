@@ -26,8 +26,8 @@ namespace Equality.ViewModels
             UserServise = userService;
 
             GoHome = new Command(OnGoHomeExecute, () => !IsSendingRequest);
-            ResendToken = new TaskCommand(OnResendTokenExecute);
-            ResetPassword = new TaskCommand(OnResetPasswordExecute, OnResetPasswordCanExecute);
+            ResendToken = new TaskCommand(OnResendTokenExecute, () => !IsSendingRequest);
+            ResetPassword = new TaskCommand(OnResetPasswordExecute, () => !IsSendingRequest && !HasErrors);
 
             NavigationCompleted += OnNavigationCompleted;
 
@@ -67,17 +67,14 @@ namespace Equality.ViewModels
 
         public Command GoHome { get; private set; }
 
-        private void OnGoHomeExecute()
-        {
-            SuspendValidations();
-            NavigationService.Navigate<LoginPageViewModel>();
-        }
+        private void OnGoHomeExecute() => NavigationService.Navigate<LoginPageViewModel>();
 
         public TaskCommand ResendToken { get; private set; }
 
         private async Task OnResendTokenExecute()
         {
             IsSendingRequest = true;
+
             ShowSuccessMessage = false;
             ErrorMessage = null;
 
@@ -123,11 +120,6 @@ namespace Equality.ViewModels
             }
 
             IsSendingRequest = false;
-        }
-
-        private bool OnResetPasswordCanExecute()
-        {
-            return !HasErrors;
         }
 
         #endregion

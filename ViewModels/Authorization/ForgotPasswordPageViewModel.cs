@@ -64,8 +64,6 @@ namespace Equality.ViewModels
                     { "email", Email }
                 };
 
-                SuspendValidations(false);
-
                 NavigationService.Navigate<ResetPasswordPageViewModel>(parameters);
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
@@ -78,11 +76,7 @@ namespace Equality.ViewModels
 
         public Command GoBack { get; private set; }
 
-        private void OnGoBackExecute()
-        {
-            SuspendValidations();
-            NavigationService.GoBack();
-        }
+        private void OnGoBackExecute() => NavigationService.GoBack();
 
         #endregion
 

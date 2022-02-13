@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Data;
-using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
 
@@ -29,9 +28,9 @@ namespace Equality.ViewModels
             UIVisualizerService = uIVisualizerService;
             UserService = userService;
 
-            OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
+            OpenForgotPassword = new Command(OnOpenForgotPasswordExecute, () => !IsSendingRequest);
             OpenRegisterWindow = new TaskCommand(OnOpenRegisterWindowExecute);
-            Login = new TaskCommand(OnLoginExecuteAsync, OnLoginCanExecute);
+            Login = new TaskCommand(OnLoginExecuteAsync, () => !HasErrors);
 
             ApiFieldsMap = new()
             {
@@ -54,6 +53,9 @@ namespace Equality.ViewModels
         [ExcludeFromValidation]
         public string CredentialsErrorMessage { get; set; }
 
+        [ExcludeFromValidation]
+        public bool IsSendingRequest { get; set; }
+
         #endregion
 
         #region Commands
@@ -65,6 +67,8 @@ namespace Equality.ViewModels
             if (FirstValidationHasErrors()) {
                 return;
             }
+
+            IsSendingRequest = true;
 
             try {
                 var (user, token) = await UserService.LoginAsync(Email, Password);
@@ -85,11 +89,8 @@ namespace Equality.ViewModels
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
-        }
 
-        private bool OnLoginCanExecute()
-        {
-            return !HasErrors;
+            IsSendingRequest = false;
         }
 
         public TaskCommand OpenRegisterWindow { get; private set; }
@@ -101,15 +102,7 @@ namespace Equality.ViewModels
 
         public Command OpenForgotPassword { get; private set; }
 
-        private void OnOpenForgotPasswordExecute()
-        {
-            // Before navigation we need to SuspendValidations,
-            // so model will be saved.
-            // See: https://github.com/Catel/Catel/discussions/1932
-            SuspendValidations();
-
-            NavigationService.Navigate<ForgotPasswordPageViewModel>();
-        }
+        private void OnOpenForgotPasswordExecute() => NavigationService.Navigate<ForgotPasswordPageViewModel>();
 
         #endregion
 
