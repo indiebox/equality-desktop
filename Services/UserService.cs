@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Catel;
 
 using Equality.Core.ApiClient;
+using Equality.Core.StateManager;
 using Equality.Models;
 
 using Newtonsoft.Json;
@@ -16,21 +17,26 @@ namespace Equality.Services
     {
         protected IApiClient ApiClient;
 
-        public UserService(IApiClient apiClient)
+        protected IStateManager StateManager;
+
+        public UserService(IApiClient apiClient, IStateManager stateManager)
         {
             ApiClient = apiClient;
+            StateManager = stateManager;
         }
 
-        public async Task<User> GetUserAsync(string token)
+        public async Task<ApiResponseMessage> LoadAuthUserAsync()
         {
-            Argument.IsNotNullOrWhitespace(nameof(token), token);
+            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
 
-            var response = await ApiClient.WithTokenOnce(token).GetAsync("user");
+            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).GetAsync("user");
 
-            return Deserialize(response.Content["data"].ToString());
+            StateManager.CurrentUser = Deserialize(response.Content["data"].ToString());
+
+            return response;
         }
 
-        public async Task<(User user, string token)> LoginAsync(string email, string password)
+        public async Task<ApiResponseMessage> LoginAsync(string email, string password)
         {
             Argument.IsNotNullOrWhitespace(nameof(email), email);
             Argument.IsNotNullOrEmpty(nameof(password), password);
@@ -47,14 +53,22 @@ namespace Equality.Services
             var user = Deserialize(response.Content["data"].ToString());
             string token = response.Content["token"].ToString();
 
-            return (user, token);
+            StateManager.ApiToken = token;
+            StateManager.CurrentUser = user;
+
+            return response;
         }
 
-        public async Task<ApiResponseMessage> LogoutAsync(string token)
+        public async Task<ApiResponseMessage> LogoutAsync()
         {
-            Argument.IsNotNullOrWhitespace(nameof(token), token);
+            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
 
-            return await ApiClient.WithTokenOnce(token).PostAsync("logout");
+            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync("logout");
+
+            StateManager.ApiToken = null;
+            StateManager.CurrentUser = null;
+
+            return response;
         }
 
         public async Task<ApiResponseMessage> SendResetPasswordTokenAsync(string email)

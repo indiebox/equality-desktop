@@ -68,6 +68,7 @@ namespace Equality
 
             serviceLocator.RegisterType<IApiClient, ApiClient>();
             serviceLocator.RegisterType<IStateManager, StateManager>();
+
             serviceLocator.RegisterType<IUserService, UserService>();
 
             /*

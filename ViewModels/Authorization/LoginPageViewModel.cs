@@ -71,13 +71,10 @@ namespace Equality.ViewModels
             IsSendingRequest = true;
 
             try {
-                var (user, token) = await UserService.LoginAsync(Email, Password);
-
-                StateManager.ApiToken = token;
-                StateManager.CurrentUser = user;
+                await UserService.LoginAsync(Email, Password);
 
                 if (RememberMe) {
-                    Properties.Settings.Default.api_token = token;
+                    Properties.Settings.Default.api_token = StateManager.ApiToken;
                     Properties.Settings.Default.Save();
                 }
 

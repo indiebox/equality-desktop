@@ -45,11 +45,10 @@ namespace Equality.ViewModels
                 return false;
             }
 
-            try {
-                var user = await UserService.GetUserAsync(token);
+            StateManager.ApiToken = token;
 
-                StateManager.CurrentUser = user;
-                StateManager.ApiToken = token;
+            try {
+                await UserService.LoadAuthUserAsync();
 
                 return true;
             } catch (UnauthorizedHttpException) {
@@ -58,6 +57,8 @@ namespace Equality.ViewModels
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
+
+            StateManager.ApiToken = null;
 
             return false;
         }

@@ -2,9 +2,8 @@
 using System.Threading.Tasks;
 
 using Equality.Core.ApiClient;
+using Equality.Core.StateManager;
 using Equality.Models;
-
-using Newtonsoft.Json.Linq;
 
 namespace Equality.Services
 {
@@ -13,32 +12,51 @@ namespace Equality.Services
         /// <summary>
         /// Sends the request to get an authenticated user to the API.
         /// </summary>
-        /// <param name="token">The api token.</param>
-        /// <returns>Returns the authenticated <see cref="User"/>.</returns>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// <code></code>
+        /// After success response sets <see cref="IStateManager.CurrentUser"></see>.
+        /// </remarks>
+        /// 
         /// <exception cref="ArgumentException" />
-        public Task<User> GetUserAsync(string token);
+        public Task<ApiResponseMessage> LoadAuthUserAsync();
 
         /// <summary>
         /// Sends the login request to the API.
         /// </summary>
         /// <param name="email">The user email.</param>
         /// <param name="password">The password email.</param>
-        /// <returns>Returns the authenticated <see cref="User"/> and api token.</returns>
-        public Task<(User user, string token)> LoginAsync(string email, string password);
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// After success login sets <see cref="IStateManager.ApiToken"></see> and <see cref="IStateManager.CurrentUser"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage> LoginAsync(string email, string password);
 
         /// <summary>
         /// Sends the logout authenticated user request to the API.
         /// </summary>
-        /// <param name="token">The api token.</param>
         /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets the token from <see cref="IStateManager.ApiToken"></see>.
+        /// <code></code>
+        /// After success logout sets <c><see cref="IStateManager.ApiToken"></see> = null</c> and <c><see cref="IStateManager.CurrentUser"></see> = null</c>.
+        /// </remarks>
+        /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> LogoutAsync(string token);
+        public Task<ApiResponseMessage> LogoutAsync();
 
         /// <summary>
         /// Sends the forgot password request to the API.
         /// </summary>
         /// <param name="email">The user email.</param>
-        /// <returns>Returns the server response as a <see cref="JObject"/>.</returns>
+        /// <returns>Returns the API response.</returns>
+        /// 
         /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage> SendResetPasswordTokenAsync(string email);
 
@@ -50,6 +68,7 @@ namespace Equality.Services
         /// <param name="passwordConfirmation">The user re-entered password.</param>
         /// <param name="token">The token from an email.</param>
         /// <returns>Returns the API response.</returns>
+        /// 
         /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage> ResetPasswordAsync(string email, string password, string passwordConfirmation, string token);
 
@@ -58,6 +77,7 @@ namespace Equality.Services
         /// </summary>
         /// <param name="data">The JSON string.</param>
         /// <returns>The deserialized <see cref="User"/> model.</returns>
+        /// 
         /// <exception cref="ArgumentException" />
         public User Deserialize(string data);
     }

@@ -42,10 +42,7 @@ namespace Equality.ViewModels
         private async Task OnLogoutExecute()
         {
             try {
-                await UserService.LogoutAsync(StateManager.ApiToken);
-
-                StateManager.ApiToken = null;
-                StateManager.CurrentUser = null;
+                await UserService.LogoutAsync();
 
                 Properties.Settings.Default.api_token = null;
                 Properties.Settings.Default.Save();
