@@ -83,7 +83,6 @@
                Width="Auto"
                Height="Auto"
                KeyboardNavigation.IsTabStop="False"
-               NavigationUIVisibility="Hidden"
-               Navigated="Frame_Navigated" />
+               NavigationUIVisibility="Hidden" />
     </Grid>
 </catel:Window>
