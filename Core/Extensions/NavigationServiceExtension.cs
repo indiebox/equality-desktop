@@ -9,6 +9,8 @@ namespace Equality.Core.Extensions
 {
     public static class NavigationServiceExtension
     {
+        private readonly static object _locker = new();
+
         /// <summary>
         /// Navigates the specified location using the view model type in the specified view model context.
         /// </summary>
@@ -25,12 +27,14 @@ namespace Equality.Core.Extensions
             var viewManager = @this.GetDependencyResolver().Resolve<IViewManager>();
             var view = viewManager.GetViewsOfViewModel(viewModelContext)[0];
 
-            var temp = App.Current.MainWindow;
-            App.Current.MainWindow = (System.Windows.Window)view;
+            lock(_locker) {
+                var temp = App.Current.MainWindow;
+                App.Current.MainWindow = (System.Windows.Window)view;
 
-            @this.Navigate<TViewModelType>(parameters);
+                @this.Navigate<TViewModelType>(parameters);
 
-            App.Current.MainWindow = temp;
+                App.Current.MainWindow = temp;
+            }
         }
 
         /// <summary>
