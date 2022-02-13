@@ -1,0 +1,12 @@
+﻿<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
+    <TemplateData>
+        <Name>Equality - ViewModel</Name>
+        <Description>An Equality app ViewModel.</Description>
+        <ProjectType>CSharp</ProjectType>
+        <DefaultName>ViewModel.cs</DefaultName>
+    </TemplateData>
+    <TemplateContent>
+        <References />
+        <ProjectItem SubType="Code" TargetFileName="$fileinputname$.cs" ReplaceParameters="true">ViewModel.cs</ProjectItem>
+    </TemplateContent>
+</VSTemplate>

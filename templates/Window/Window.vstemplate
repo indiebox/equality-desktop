@@ -1,0 +1,13 @@
+﻿<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
+    <TemplateData>
+        <Name>Equality - Window</Name>
+        <Description>An Equality app Window.</Description>
+        <ProjectType>CSharp</ProjectType>
+        <DefaultName>Window.xaml</DefaultName>
+    </TemplateData>
+    <TemplateContent>
+        <References />
+        <ProjectItem SubType="Designer" TargetFileName="$fileinputname$.xaml" ReplaceParameters="true">Window.xaml</ProjectItem>
+        <ProjectItem SubType="Code" TargetFileName="$fileinputname$.xaml.cs" ReplaceParameters="true">Window.xaml.cs</ProjectItem>
+    </TemplateContent>
+</VSTemplate>
