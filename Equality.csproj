@@ -25,6 +25,18 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="templates\Page\Page.xaml.cs" />
+      <Compile Remove="templates\ViewModelWithValidation\ViewModel.cs" />
+      <Compile Remove="templates\ViewModel\ViewModel.cs" />
+      <Compile Remove="templates\Window\Window.xaml.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Remove="templates\Page\Page.xaml" />
+      <Page Remove="templates\Window\Window.xaml" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Catel.MVVM" Version="5.12.22" />
         <PackageReference Include="Catel.Fody" Version="4.7.0" PrivateAssets="all" />
         <PackageReference Include="CefSharp.Wpf.NETCore" Version="92.0.251" />
@@ -51,10 +63,28 @@
             <Generator>SettingsSingleFileGenerator</Generator>
             <LastGenOutput>Settings.Designer.cs</LastGenOutput>
         </None>
+        <None Update="templates\Page\Page.vstemplate">
+          <Generator>MSBuild:Compile</Generator>
+        </None>
+        <None Update="templates\ViewModel\ViewModel.vstemplate">
+          <Generator>MSBuild:Compile</Generator>
+        </None>
+        <None Update="templates\Window\Window.vstemplate">
+          <Generator>MSBuild:Compile</Generator>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Update="NETStandard.Library" Version="2.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="templates\Page\Page.xaml" />
+      <None Include="templates\Page\Page.xaml.cs" />
+      <None Include="templates\ViewModelWithValidation\ViewModel.cs" />
+      <None Include="templates\ViewModel\ViewModel.cs" />
+      <None Include="templates\Window\Window.xaml" />
+      <None Include="templates\Window\Window.xaml.cs" />
     </ItemGroup>
 
     <Import Project="$(MSBuildProjectDirectory)\..\Directory.build.shared.explicit.props" Condition="Exists('$(MSBuildProjectDirectory)\..\Directory.build.shared.explicit.props')" />
