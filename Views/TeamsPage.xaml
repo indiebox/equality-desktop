@@ -36,7 +36,7 @@
                                     Margin="10">
                                 <Border.Background>
                                     <ImageBrush Stretch="UniformToFill"
-                                                ImageSource="C:/Users/Marshall/Pictures/Logo.jpg" />
+                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
                                 </Border.Background>
                             </Border>
                             <TextBlock FontSize="16"
@@ -93,7 +93,7 @@
                                     Margin="10">
                                 <Border.Background>
                                     <ImageBrush Stretch="UniformToFill"
-                                                ImageSource="C:/Users/Marshall/Pictures/Logo.jpg" />
+                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
                                 </Border.Background>
                             </Border>
                             <TextBlock FontSize="16"
@@ -150,7 +150,7 @@
                                     Margin="10">
                                 <Border.Background>
                                     <ImageBrush Stretch="UniformToFill"
-                                                ImageSource="C:/Users/Marshall/Pictures/Logo.jpg" />
+                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
                                 </Border.Background>
                             </Border>
                             <TextBlock FontSize="16"
