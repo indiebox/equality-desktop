@@ -6,10 +6,10 @@ namespace Equality.Core.Validation
     {
         protected Predicate<T> Predicate;
 
-        public PredicateRule(Predicate<T> predicate, string message)
+        public PredicateRule(Predicate<T> passesPredicate, string errorMessage)
         {
-            Predicate = predicate;
-            Message = message;
+            Predicate = passesPredicate;
+            Message = errorMessage;
         }
 
         public string Message { get; set; }

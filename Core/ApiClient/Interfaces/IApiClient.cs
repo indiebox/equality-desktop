@@ -8,14 +8,21 @@ namespace Equality.Core.ApiClient
     public interface IApiClient
     {
         /// <summary>
-        /// Set api token to next requests.
+        /// Set bearer token for all next requests.
         /// </summary>
         /// <param name="token">The api token.</param>
         /// <returns>Returns <see langword="this"/></returns>
         public ApiClient WithToken(string token);
 
         /// <summary>
-        /// Remove api token from next requests.
+        /// Set bearer token only for one next request.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public ApiClient WithTokenOnce(string token);
+
+        /// <summary>
+        /// Remove bearer token from all next requests.
         /// </summary>
         /// <returns>Returns <see langword="this"/></returns>
         public ApiClient WithoutToken();

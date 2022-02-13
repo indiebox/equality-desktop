@@ -13,7 +13,9 @@ namespace Equality.Core.ApiClient
 {
     public class ApiClient : IApiClient
     {
-        public HttpClient HttpClient { get; set; }
+        protected bool IsTemporaryToken;
+
+        protected AuthenticationHeaderValue OriginalToken;
 
         public ApiClient()
         {
@@ -24,11 +26,21 @@ namespace Equality.Core.ApiClient
             HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
+        public HttpClient HttpClient { get; set; }
+
         public ApiClient WithToken(string token)
         {
             HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             return this;
+        }
+
+        public ApiClient WithTokenOnce(string token)
+        {
+            IsTemporaryToken = true;
+            OriginalToken = HttpClient.DefaultRequestHeaders.Authorization;
+
+            return WithToken(token);
         }
 
         public ApiClient WithoutToken()
@@ -183,9 +195,15 @@ namespace Equality.Core.ApiClient
         /// <returns>The task object representing the asynchronous operation.</returns>
         protected async Task<ApiResponseMessage> ProcessResponseAsync(HttpResponseMessage response)
         {
-            JObject responseData = JObject.Parse(await response.Content.ReadAsStringAsync());
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+
+            var responseData = string.IsNullOrWhiteSpace(jsonResponse)
+                ? new()
+                : JObject.Parse(jsonResponse);
 
             HandleStatusCode(response, responseData);
+
+            RestoreToken();
 
             return new ApiResponseMessage(response, responseData);
         }
@@ -257,6 +275,20 @@ namespace Equality.Core.ApiClient
             }
 
             response.EnsureSuccessStatusCode();
+        }
+
+        /// <summary>
+        /// Restore an earlier token that was set by the user.
+        /// </summary>
+        /// <remarks>This method is necessary for correct implementation of method <c>WithTokenOnce()</c>.</remarks>
+        protected void RestoreToken()
+        {
+            if (IsTemporaryToken) {
+                IsTemporaryToken = false;
+
+                HttpClient.DefaultRequestHeaders.Authorization = OriginalToken;
+                OriginalToken = null;
+            }
         }
 
         /// <summary>

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Data;
-using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
 
@@ -60,13 +58,11 @@ namespace Equality.ViewModels
             IsSendingRequest = true;
 
             try {
-                var response = await UserService.SendResetPasswordTokenAsync(Email);
+                await UserService.SendResetPasswordTokenAsync(Email);
                 var parameters = new Dictionary<string, object>
                 {
                     { "email", Email }
                 };
-
-                SuspendValidations(false);
 
                 NavigationService.Navigate<ResetPasswordPageViewModel>(parameters);
             } catch (UnprocessableEntityHttpException e) {

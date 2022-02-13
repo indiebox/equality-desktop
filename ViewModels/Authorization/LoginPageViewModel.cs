@@ -4,12 +4,10 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Data;
-using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
 
 using Equality.Core.ApiClient;
-using Equality.Core.StateManager;
 using Equality.Core.Validation;
 using Equality.Core.ViewModel;
 using Equality.Services;
@@ -20,23 +18,19 @@ namespace Equality.ViewModels
     {
         protected INavigationService NavigationService;
 
+        protected IUIVisualizerService UIVisualizerService;
+
         protected IUserService UserService;
 
-        protected IStateManager StateManager;
-
-        public LoginPageViewModel(INavigationService navigationService, IUserService userService, IStateManager stateManager)
+        public LoginPageViewModel(INavigationService navigationService, IUIVisualizerService uIVisualizerService, IUserService userService)
         {
             NavigationService = navigationService;
+            UIVisualizerService = uIVisualizerService;
             UserService = userService;
-            StateManager = stateManager;
 
-            OpenForgotPassword = new Command(OnOpenForgotPasswordExecute);
+            OpenForgotPassword = new Command(OnOpenForgotPasswordExecute, () => !IsSendingRequest);
             OpenRegisterWindow = new TaskCommand(OnOpenRegisterWindowExecute);
-            Login = new TaskCommand(OnLoginExecuteAsync, OnLoginCanExecute);
-
-            if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.api_token)) {
-                NavigationService.Navigate<StartPageViewModel>();
-            }
+            Login = new TaskCommand(OnLoginExecuteAsync, () => !HasErrors);
 
             ApiFieldsMap = new()
             {
@@ -59,6 +53,9 @@ namespace Equality.ViewModels
         [ExcludeFromValidation]
         public string CredentialsErrorMessage { get; set; }
 
+        [ExcludeFromValidation]
+        public bool IsSendingRequest { get; set; }
+
         #endregion
 
         #region Commands
@@ -71,18 +68,17 @@ namespace Equality.ViewModels
                 return;
             }
 
-            try {
-                var (user, token) = await UserService.LoginAsync(Email, Password);
+            IsSendingRequest = true;
 
-                StateManager.CurrentUser = user;
-                StateManager.ApiToken = token;
+            try {
+                await UserService.LoginAsync(Email, Password);
 
                 if (RememberMe) {
-                    Properties.Settings.Default.api_token = token;
+                    Properties.Settings.Default.api_token = StateManager.ApiToken;
                     Properties.Settings.Default.Save();
                 }
 
-                NavigationService.Navigate<StartPageViewModel>();
+                await UIVisualizerService.ShowAsync<ApplicationWindowViewModel>();
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
 
@@ -90,33 +86,20 @@ namespace Equality.ViewModels
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
-        }
 
-        private bool OnLoginCanExecute()
-        {
-            return !HasErrors;
+            IsSendingRequest = false;
         }
 
         public TaskCommand OpenRegisterWindow { get; private set; }
 
         private async Task OnOpenRegisterWindowExecute()
         {
-            var uiVisualizerService = this.GetDependencyResolver().Resolve<IUIVisualizerService>();
-
-            await uiVisualizerService.ShowOrActivateAsync<RegisterWindowViewModel>(null, null);
+            await UIVisualizerService.ShowOrActivateAsync<RegisterWindowViewModel>(null, null);
         }
 
         public Command OpenForgotPassword { get; private set; }
 
-        private void OnOpenForgotPasswordExecute()
-        {
-            // Before navigation we need to SuspendValidations,
-            // so model will be saved.
-            // See: https://github.com/Catel/Catel/discussions/1932
-            SuspendValidations(false);
-
-            NavigationService.Navigate<ForgotPasswordPageViewModel>();
-        }
+        private void OnOpenForgotPasswordExecute() => NavigationService.Navigate<ForgotPasswordPageViewModel>();
 
         #endregion
 

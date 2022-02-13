@@ -228,4 +228,12 @@
             </ItemGroup>
         </When>
     </Choose>
+    <ItemGroup>
+      <None Remove="Resources\Icons\Logo.ico" />
+    </ItemGroup>
+    <ItemGroup>
+      <Resource Include="Resources\Icons\Logo.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
 </Project>

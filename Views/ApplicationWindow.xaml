@@ -3,86 +3,134 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-              xmlns:local="clr-namespace:Equality.Views"
               xmlns:catel="http://schemas.catelproject.com"
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
               d:DataContext="{d:DesignInstance Type=viewmodels:ApplicationWindowViewModel}"
               mc:Ignorable="d"
               TextElement.Foreground="{DynamicResource MaterialDesignBody}"
               Background="{DynamicResource MaterialDesignPaper}"
-              WindowState="Maximized"
+              WindowStartupLocation="CenterScreen"
               Width="1920"
-              Height="1080"
-              Title="ApplicationWindow">
+              Height="1080">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"></ColumnDefinition>
-            <ColumnDefinition Width="23*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <TabControl Grid.Column="0"
-                    SnapsToDevicePixels="True"
-                    Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
-                    BorderBrush="Transparent"
-                    TabStripPlacement="Left"
-                    materialDesign:ColorZoneAssist.Mode="Standard"
-                    materialDesign:ShadowAssist.ShadowDepth="Depth3"
-                    materialDesign:NavigationRailAssist.ShowSelectionBackground="True">
-            <materialDesign:NavigationRailAssist.FloatingContent>
-                <Border CornerRadius="100,100,100,100"
-                        Margin="0,25,0,25"
-                        Width="60"
-                        Height="60">
-                    <Border.Background>
-                        <ImageBrush Stretch="UniformToFill"
-                                    ImageSource="C:/Users/Marshall/Pictures/Photo.jpg" />
-                    </Border.Background>
-                </Border>
-            </materialDesign:NavigationRailAssist.FloatingContent>
-            <TabItem Width="80">
-                <TabItem.Header>
-                    <StackPanel Height="auto"
-                                Width="auto">
-                        <materialDesign:PackIcon Kind="Home"
-                                                 Width="24"
-                                                 Height="24"
-                                                 HorizontalAlignment="Center" />
-                        <TextBlock Text="Главная"
-                                   HorizontalAlignment="Center" />
-                    </StackPanel>
-                </TabItem.Header>
-            </TabItem>
-            <TabItem Width="80">
-                <TabItem.Header>
-                    <StackPanel Height="auto"
-                                Width="auto">
-                        <materialDesign:PackIcon Kind="AccountGroup"
-                                                 Width="24"
-                                                 Height="24"
-                                                 HorizontalAlignment="Center" />
-                        <TextBlock Text="Команды"
-                                   HorizontalAlignment="Center" />
-                    </StackPanel>
-                </TabItem.Header>
-            </TabItem>
-            <TabItem Width="80">
-                <TabItem.Header>
-                    <StackPanel Height="auto"
-                                Width="auto">
-                        <materialDesign:PackIcon Kind="ViewDashboardVariant"
-                                                 Width="24"
-                                                 Height="24"
-                                                 HorizontalAlignment="Center" />
-                        <TextBlock Text="Проекты"
-                                   HorizontalAlignment="Center" />
-                    </StackPanel>
-                </TabItem.Header>
-            </TabItem>
-        </TabControl>
+
+        <ScrollViewer Grid.Column="0"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Hidden">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TabControl Grid.Row="0"
+                            Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
+                            SelectedIndex="{Binding ActiveTabIndex}"
+                            BorderBrush="Transparent"
+                            TabStripPlacement="Left"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                            materialDesign:NavigationRailAssist.ShowSelectionBackground="True">
+                    <materialDesign:NavigationRailAssist.FloatingContent>
+                        <Border CornerRadius="100,100,100,100"
+                                Margin="0,25,0,25"
+                                Width="60"
+                                Height="60">
+                            <Border.Background>
+                                <ImageBrush Stretch="UniformToFill"
+                                            ImageSource="/Resources/Icons/Logo.ico" />
+                            </Border.Background>
+                        </Border>
+                    </materialDesign:NavigationRailAssist.FloatingContent>
+
+                    <TabItem Width="80"
+                             Height="80">
+                        <TabItem.Header>
+                            <StackPanel Height="auto"
+                                        Width="auto">
+                                <materialDesign:PackIcon Kind="Home"
+                                                         Width="24"
+                                                         Height="24"
+                                                         HorizontalAlignment="Center" />
+                                <TextBlock Text="Главная"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </TabItem.Header>
+                    </TabItem>
+
+                    <TabItem Width="80"
+                             Height="80">
+                        <TabItem.Header>
+                            <StackPanel Height="auto"
+                                        Width="auto">
+                                <materialDesign:PackIcon Kind="AccountGroup"
+                                                         Width="24"
+                                                         Height="24"
+                                                         HorizontalAlignment="Center" />
+                                <TextBlock Text="Команды"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </TabItem.Header>
+                    </TabItem>
+
+                    <TabItem Width="80"
+                             Height="80">
+                        <TabItem.Header>
+                            <StackPanel Height="auto"
+                                        Width="auto">
+                                <materialDesign:PackIcon Kind="ViewDashboardVariant"
+                                                         Width="24"
+                                                         Height="24"
+                                                         HorizontalAlignment="Center" />
+                                <TextBlock Text="Проекты"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </TabItem.Header>
+                    </TabItem>
+                </TabControl>
+
+                <Separator Grid.Row="1"
+                           Height="1"
+                           Width="50"
+                           Margin="0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Bottom" />
+
+                <TabItem Grid.Row="2"
+                         Style="{StaticResource MaterialDesignNavigationRailTabItem}"
+                         Width="80"
+                         Height="80">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <catel:EventToCommand Command="{Binding Logout}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+
+                    <TabItem.Header>
+                        <StackPanel Height="Auto"
+                                    Width="Auto">
+                            <materialDesign:PackIcon Kind="Logout"
+                                                     Width="24"
+                                                     Height="24"
+                                                     HorizontalAlignment="Center" />
+                            <TextBlock Text="Выйти"
+                                       HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </TabItem.Header>
+                </TabItem>
+            </Grid>
+        </ScrollViewer>
+
         <Frame Grid.Column="1"
-               Width="Auto"
-               Height="Auto"
-               KeyboardNavigation.IsTabStop="False"
+               Focusable="False"
+               VerticalAlignment="Stretch"
+               HorizontalAlignment="Stretch"
                NavigationUIVisibility="Hidden" />
     </Grid>
 </catel:Window>

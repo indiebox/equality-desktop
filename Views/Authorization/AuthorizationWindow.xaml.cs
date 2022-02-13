@@ -1,4 +1,5 @@
-﻿
+﻿using Equality.Core.Extensions;
+
 namespace Equality.Views
 {
     public partial class AuthorizationWindow
@@ -6,6 +7,8 @@ namespace Equality.Views
         public AuthorizationWindow()
         {
             InitializeComponent();
+
+            this.SetAsMainWindow();
         }
     }
 }

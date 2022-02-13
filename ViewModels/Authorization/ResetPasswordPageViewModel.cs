@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Data;
-using Catel.Fody;
 using Catel.MVVM;
 using Catel.Services;
 
@@ -28,8 +26,8 @@ namespace Equality.ViewModels
             UserServise = userService;
 
             GoHome = new Command(OnGoHomeExecute, () => !IsSendingRequest);
-            ResendToken = new TaskCommand(OnResendTokenExecute);
-            ResetPassword = new TaskCommand(OnResetPasswordExecute, OnResetPasswordCanExecute);
+            ResendToken = new TaskCommand(OnResendTokenExecute, () => !IsSendingRequest);
+            ResetPassword = new TaskCommand(OnResetPasswordExecute, () => !IsSendingRequest && !HasErrors);
 
             NavigationCompleted += OnNavigationCompleted;
 
@@ -76,11 +74,12 @@ namespace Equality.ViewModels
         private async Task OnResendTokenExecute()
         {
             IsSendingRequest = true;
+
             ShowSuccessMessage = false;
             ErrorMessage = null;
 
             try {
-                var response = await UserServise.SendResetPasswordTokenAsync(Email);
+                await UserServise.SendResetPasswordTokenAsync(Email);
                 var parameters = new Dictionary<string, object>
                 {
                     { "email", Email }
@@ -111,7 +110,7 @@ namespace Equality.ViewModels
             IsSendingRequest = true;
 
             try {
-                var response = await UserServise.ResetPasswordAsync(Email, Password, PasswordConfirmation, Token);
+                await UserServise.ResetPasswordAsync(Email, Password, PasswordConfirmation, Token);
 
                 NavigationService.Navigate<LoginPageViewModel>();
             } catch (UnprocessableEntityHttpException e) {
@@ -121,11 +120,6 @@ namespace Equality.ViewModels
             }
 
             IsSendingRequest = false;
-        }
-
-        private bool OnResetPasswordCanExecute()
-        {
-            return !HasErrors;
         }
 
         #endregion

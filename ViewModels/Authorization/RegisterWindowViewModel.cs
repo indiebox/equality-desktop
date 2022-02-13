@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 
-using Catel.MVVM;
+using Equality.Core.ViewModel;
 
 namespace Equality.ViewModels
 {
-    public class RegisterWindowViewModel : ViewModelBase
+    public class RegisterWindowViewModel : ViewModel
     {
         public RegisterWindowViewModel()
         {

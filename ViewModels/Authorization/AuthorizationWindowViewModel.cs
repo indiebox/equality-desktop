@@ -1,19 +1,22 @@
 ﻿using System.Threading.Tasks;
 
-using Catel.MVVM;
 using Catel.Services;
+
+using Equality.Core.ViewModel;
+using Equality.Services;
 
 namespace Equality.ViewModels
 {
-    public class AuthorizationWindowViewModel : ViewModelBase
+    public class AuthorizationWindowViewModel : ViewModel
     {
         protected INavigationService NavigationService;
 
-        public AuthorizationWindowViewModel(INavigationService service)
-        {
-            NavigationService = service;
+        protected IUserService UserService;
 
-            NavigationService.Navigate<LoginPageViewModel>();
+        public AuthorizationWindowViewModel(INavigationService navigationService, IUserService userService)
+        {
+            NavigationService = navigationService;
+            UserService = userService;
         }
 
         public override string Title => "Equality";
@@ -22,7 +25,7 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            // TODO: subscribe to events here
+            NavigationService.Navigate<LoginPageViewModel>();
         }
 
         protected override async Task CloseAsync()

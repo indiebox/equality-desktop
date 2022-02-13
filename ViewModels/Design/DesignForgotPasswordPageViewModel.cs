@@ -1,6 +1,4 @@
-﻿using Catel.Services;
-
-namespace Equality.ViewModels.Design
+﻿namespace Equality.ViewModels.Design
 {
     public class DesignForgotPasswordPageViewModel : ForgotPasswordPageViewModel
     {

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Catel.Collections;
 using Catel.Data;
 using Catel.MVVM;
+using Catel.IoC;
+
+using Equality.Core.StateManager;
 
 namespace Equality.Core.ViewModel
 {
@@ -28,6 +30,11 @@ namespace Equality.Core.ViewModel
         /// </summary>
         private IDisposable _validationToken;
 
+        /// <summary>
+        /// The IStateManager.
+        /// </summary>
+        private IStateManager _stateManager;
+
         public ViewModel() : base()
         {
             DeferValidationUntilFirstSaveCall = false;
@@ -40,6 +47,21 @@ namespace Equality.Core.ViewModel
             AutomaticallyHideApiErrorsOnPropertyChanged = true;
 
             ExcludeFromValidationDecoratedProperties();
+        }
+
+        /// <summary>
+        /// Gets the IStateManager instance.
+        /// </summary>
+        [ExcludeFromValidation]
+        public IStateManager StateManager
+        {
+            get {
+                if (_stateManager == null) {
+                    _stateManager = this.GetDependencyResolver().Resolve<IStateManager>();
+                }
+
+                return _stateManager;
+            }
         }
 
         /// <summary>
