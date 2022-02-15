@@ -20,192 +20,264 @@
         </Border>
         <Rectangle Fill="Black"
                    Opacity="0.5" />
-        <ScrollViewer>
-            <StackPanel>
-                <TextBlock Padding="0,10,0,10"
-                           FontSize="27"
-                           TextAlignment="Center"
-                           Background="{StaticResource MaterialDesignPaper}">Проекты</TextBlock>
-                <DockPanel Margin="30,30,30,0">
-                    <Button DockPanel.Dock="Right"
-                            Command="{Binding OpenCreateNewTeamDataWindow}">Добавить новую</Button>
-                    <TextBlock DockPanel.Dock="Left"
-                               Foreground="White"
-                               FontSize="16"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center">Команды</TextBlock>
-                </DockPanel>
-                <Expander IsExpanded="True"
-                          Margin="30,30,30,0">
-                    <Expander.Header>
+        <DockPanel>
+            <StackPanel Background="White">
+                <StackPanel Margin="30,30,30,0"
+                            Orientation="Vertical">
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                 Margin="4"
+                                 IsChecked="True"
+                                 HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon VerticalAlignment="Center"
+                                                     Kind="ViewDashboard" />
+                            <TextBlock Margin="4 0 0 0"
+                                       FontSize="16"
+                                       Text="Все"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
+                    </RadioButton>
+                    <DockPanel Margin="4,0,0,0"
+                               LastChildFill="False">
+                        <TextBlock DockPanel.Dock="Left"
+                                   FontSize="16"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center">Команды</TextBlock>
+                        <Button DockPanel.Dock="Right"
+                                Style="{StaticResource MaterialDesignIconButton}"
+                                Command="{Binding OpenCreateNewTeamDataWindow}">
+                            <materialDesign:PackIcon Kind="Plus" />
+                        </Button>
+                    </DockPanel>
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                 Margin="4"
+                                 IsChecked="True"
+                                 HorizontalAlignment="Left">
                         <StackPanel Orientation="Horizontal">
                             <Border CornerRadius="100"
-                                    Width="50"
-                                    Height="50"
-                                    Margin="10">
+                                    Width="25"
+                                    Height="25">
                                 <Border.Background>
                                     <ImageBrush Stretch="UniformToFill"
                                                 ImageSource="/Resources/Images/TeamLogo.jpg" />
                                 </Border.Background>
                             </Border>
-                            <TextBlock FontSize="16"
-                                       TextAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Foreground="Black"><Run Text="Indie Box" /></TextBlock>
+                            <TextBlock Margin="4 0 0 0"
+                                       FontSize="16"
+                                       Text="Indie Box"
+                                       VerticalAlignment="Center" />
                         </StackPanel>
-                    </Expander.Header>
-                    <Grid TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
-                          Margin="24,8,24,16">
-                        <WrapPanel Orientation="Horizontal">
-                            <Border Margin="10">
-                                <Border.Background>
-                                    <ImageBrush Stretch="UniformToFill"
-                                                ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                </Border.Background>
-                                <Grid Width="384"
-                                      Height="384">
-                                    <Rectangle Fill="Black"
-                                               Opacity="0.5" />
-                                    <TextBlock HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               FontSize="16"
-                                               Foreground="White"><Run Text="Progect I" /></TextBlock>
-                                </Grid>
-                            </Border>
-                            <Border Margin="10"
-                                    Width="384"
-                                    Height="384">
-                                <Border.Background>
-                                    <ImageBrush Stretch="UniformToFill"
-                                                ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                </Border.Background>
-                                <Grid>
-                                    <Rectangle Fill="Black"
-                                               Opacity="0.5" />
-                                    <TextBlock HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               FontSize="16"
-                                               Foreground="White"><Run Text="Progect II" /></TextBlock>
-                                </Grid>
-                            </Border>
-                        </WrapPanel>
-                    </Grid>
-                </Expander>
-
-                <Expander IsExpanded="True"
-                          Margin="30,30,30,0">
-                    <Expander.Header>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                 Margin="4"
+                                 IsChecked="True"
+                                 HorizontalAlignment="Left">
                         <StackPanel Orientation="Horizontal">
                             <Border CornerRadius="100"
-                                    Width="50"
-                                    Height="50"
-                                    Margin="10">
+                                    Width="25"
+                                    Height="25">
                                 <Border.Background>
                                     <ImageBrush Stretch="UniformToFill"
                                                 ImageSource="/Resources/Images/TeamLogo.jpg" />
                                 </Border.Background>
                             </Border>
-                            <TextBlock FontSize="16"
-                                       TextAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Foreground="Black"><Run Text="Indie Box" /></TextBlock>
+                            <TextBlock Margin="4 0 0 0"
+                                       FontSize="16"
+                                       Text="Indie Box 2"
+                                       VerticalAlignment="Center" />
                         </StackPanel>
-                    </Expander.Header>
-                    <Grid TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
-                          Margin="24,8,24,16">
-                        <WrapPanel Orientation="Horizontal">
-                            <Border Margin="10">
-                                <Border.Background>
-                                    <ImageBrush Stretch="UniformToFill"
-                                                ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                </Border.Background>
-                                <Grid Width="384"
-                                      Height="384">
-                                    <Rectangle Fill="Black"
-                                               Opacity="0.5" />
-                                    <TextBlock HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               FontSize="16"
-                                               Foreground="White"><Run Text="Progect I" /></TextBlock>
-                                </Grid>
-                            </Border>
-                            <Border Margin="10"
-                                    Width="384"
-                                    Height="384">
-                                <Border.Background>
-                                    <ImageBrush Stretch="UniformToFill"
-                                                ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                </Border.Background>
-                                <Grid>
-                                    <Rectangle Fill="Black"
-                                               Opacity="0.5" />
-                                    <TextBlock HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               FontSize="16"
-                                               Foreground="White"><Run Text="Progect II" /></TextBlock>
-                                </Grid>
-                            </Border>
-                        </WrapPanel>
-                    </Grid>
-                </Expander>
-
-                <Expander IsExpanded="True"
-                          Margin="30,30,30,0">
-                    <Expander.Header>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                 Margin="4"
+                                 IsChecked="True"
+                                 HorizontalAlignment="Left">
                         <StackPanel Orientation="Horizontal">
                             <Border CornerRadius="100"
-                                    Width="50"
-                                    Height="50"
-                                    Margin="10">
+                                    Width="25"
+                                    Height="25">
                                 <Border.Background>
                                     <ImageBrush Stretch="UniformToFill"
                                                 ImageSource="/Resources/Images/TeamLogo.jpg" />
                                 </Border.Background>
                             </Border>
-                            <TextBlock FontSize="16"
-                                       TextAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Foreground="Black"><Run Text="Indie Box" /></TextBlock>
+                            <TextBlock Margin="4 0 0 0"
+                                       FontSize="16"
+                                       Text="Indie Box 3"
+                                       VerticalAlignment="Center" />
                         </StackPanel>
-                    </Expander.Header>
-                    <Grid TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
-                          Margin="24,8,24,16">
-                        <WrapPanel Orientation="Horizontal">
-                            <Border Margin="10">
-                                <Border.Background>
-                                    <ImageBrush Stretch="UniformToFill"
-                                                ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                </Border.Background>
-                                <Grid Width="384"
-                                      Height="384">
-                                    <Rectangle Fill="Black"
-                                               Opacity="0.5" />
-                                    <TextBlock HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               FontSize="16"
-                                               Foreground="White"><Run Text="Progect I" /></TextBlock>
-                                </Grid>
-                            </Border>
-                            <Border Margin="10"
-                                    Width="384"
-                                    Height="384">
-                                <Border.Background>
-                                    <ImageBrush Stretch="UniformToFill"
-                                                ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                </Border.Background>
-                                <Grid>
-                                    <Rectangle Fill="Black"
-                                               Opacity="0.5" />
-                                    <TextBlock HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               FontSize="16"
-                                               Foreground="White"><Run Text="Progect II" /></TextBlock>
-                                </Grid>
-                            </Border>
-                        </WrapPanel>
-                    </Grid>
-                </Expander>
+                    </RadioButton>
+                </StackPanel>
             </StackPanel>
-        </ScrollViewer>
+            <ScrollViewer DockPanel.Dock="Right">
+                <StackPanel Margin="0,0,0,30">
+                    <StackPanel Background="White"
+                                Margin="30,30,30,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Border CornerRadius="100"
+                                    Width="50"
+                                    Height="50"
+                                    Margin="10">
+                                <Border.Background>
+                                    <ImageBrush Stretch="UniformToFill"
+                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
+                                </Border.Background>
+                            </Border>
+                            <TextBlock FontSize="16"
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="Black"><Run Text="Indie Box" /></TextBlock>
+                        </StackPanel>
+                        <Grid TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
+                              Margin="24,8,24,16">
+                            <WrapPanel Orientation="Horizontal">
+                                <Border Margin="10">
+                                    <Border.Background>
+                                        <ImageBrush Stretch="UniformToFill"
+                                                    ImageSource="/Resources/Images/BackgroundImage.jpg" />
+                                    </Border.Background>
+                                    <Grid Width="384"
+                                          Height="216">
+                                        <Rectangle Fill="Black"
+                                                   Opacity="0.5" />
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="16"
+                                                   Foreground="White"><Run Text="Progect I" /></TextBlock>
+                                    </Grid>
+                                </Border>
+                                <Border Margin="10"
+                                        Width="384"
+                                        Height="216">
+                                    <Border.Background>
+                                        <ImageBrush Stretch="UniformToFill"
+                                                    ImageSource="/Resources/Images/BackgroundImage.jpg" />
+                                    </Border.Background>
+                                    <Grid>
+                                        <Rectangle Fill="Black"
+                                                   Opacity="0.5" />
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="16"
+                                                   Foreground="White"><Run Text="Progect II" /></TextBlock>
+                                    </Grid>
+                                </Border>
+                            </WrapPanel>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Background="White"
+                                Margin="30,30,30,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Border CornerRadius="100"
+                                    Width="50"
+                                    Height="50"
+                                    Margin="10">
+                                <Border.Background>
+                                    <ImageBrush Stretch="UniformToFill"
+                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
+                                </Border.Background>
+                            </Border>
+                            <TextBlock FontSize="16"
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="Black"><Run Text="Indie Box" /></TextBlock>
+                        </StackPanel>
+                        <Grid TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
+                              Margin="24,8,24,16">
+                            <WrapPanel Orientation="Horizontal">
+                                <Border Margin="10">
+                                    <Border.Background>
+                                        <ImageBrush Stretch="UniformToFill"
+                                                    ImageSource="/Resources/Images/BackgroundImage.jpg" />
+                                    </Border.Background>
+                                    <Grid Width="384"
+                                          Height="216">
+                                        <Rectangle Fill="Black"
+                                                   Opacity="0.5" />
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="16"
+                                                   Foreground="White"><Run Text="Progect I" /></TextBlock>
+                                    </Grid>
+                                </Border>
+                                <Border Margin="10"
+                                        Width="384"
+                                        Height="216">
+                                    <Border.Background>
+                                        <ImageBrush Stretch="UniformToFill"
+                                                    ImageSource="/Resources/Images/BackgroundImage.jpg" />
+                                    </Border.Background>
+                                    <Grid>
+                                        <Rectangle Fill="Black"
+                                                   Opacity="0.5" />
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="16"
+                                                   Foreground="White"><Run Text="Progect II" /></TextBlock>
+                                    </Grid>
+                                </Border>
+                            </WrapPanel>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Background="White"
+                                Margin="30,30,30,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Border CornerRadius="100"
+                                    Width="50"
+                                    Height="50"
+                                    Margin="10">
+                                <Border.Background>
+                                    <ImageBrush Stretch="UniformToFill"
+                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
+                                </Border.Background>
+                            </Border>
+                            <TextBlock FontSize="16"
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="Black"><Run Text="Indie Box" /></TextBlock>
+                        </StackPanel>
+                        <Grid TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
+                              Margin="24,8,24,16">
+                            <WrapPanel Orientation="Horizontal">
+                                <Border Margin="10">
+                                    <Border.Background>
+                                        <ImageBrush Stretch="UniformToFill"
+                                                    ImageSource="/Resources/Images/BackgroundImage.jpg" />
+                                    </Border.Background>
+                                    <Grid Width="384"
+                                          Height="216">
+                                        <Rectangle Fill="Black"
+                                                   Opacity="0.5" />
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="16"
+                                                   Foreground="White"><Run Text="Progect I" /></TextBlock>
+                                    </Grid>
+                                </Border>
+                                <Border Margin="10"
+                                        Width="384"
+                                        Height="216">
+                                    <Border.Background>
+                                        <ImageBrush Stretch="UniformToFill"
+                                                    ImageSource="/Resources/Images/BackgroundImage.jpg" />
+                                    </Border.Background>
+                                    <Grid>
+                                        <Rectangle Fill="Black"
+                                                   Opacity="0.5" />
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="16"
+                                                   Foreground="White"><Run Text="Progect II" /></TextBlock>
+                                    </Grid>
+                                </Border>
+                            </WrapPanel>
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
     </Grid>
 </catel:Page>
