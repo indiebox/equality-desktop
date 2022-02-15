@@ -73,8 +73,23 @@ namespace Equality.ViewModels
 
             validator.ValidateField(nameof(Team.Name), Team.Name, new()
             {
-                // TODO: add validation rules
+                new NotEmptyStringRule(),
+                new MaxStringLengthRule(255),
             });
+
+            if (!string.IsNullOrEmpty(Team.Description)) {
+                validator.ValidateField(nameof(Team.Description), Team.Description, new()
+                {
+                    new MaxStringLengthRule(255),
+                });
+            }
+
+            if (!string.IsNullOrEmpty(Team.Url)) {
+                validator.ValidateField(nameof(Team.Url), Team.Url, new()
+                {
+                    new MaxStringLengthRule(255),
+                });
+            }
         }
 
         #endregion
