@@ -11,18 +11,25 @@
                xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
                xmlns:viewmodels="clr-namespace:Equality.ViewModels"
                d:DataContext="{d:DesignInstance Type=viewmodels:DesignTeamMembersPageViewModel, IsDesignTimeCreatable=True}"
-               d:Background="{StaticResource MaterialDesignPaper}"
+               d:Background="WhiteSmoke"
                d:DesignHeight="600"
                d:DesignWidth="1000"
                mc:Ignorable="d">
-    <Grid Margin="50, 0">
+    <Grid Background="WhiteSmoke">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="431*" />
+            <ColumnDefinition Width="569*" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel HorizontalAlignment="Left">
-            <TextBox Style="{StaticResource MaterialDesignTextBox}"
+        <DockPanel Margin="10,0"
+                   LastChildFill="False"
+                   Grid.ColumnSpan="2">
+            <TextBox DockPanel.Dock="Left"
+                     Style="{StaticResource MaterialDesignFilledTextBox}"
                      x:Name="FilterText"
                      MinWidth="250"
                      Width="Auto"
@@ -32,20 +39,23 @@
                      materialDesign:TextFieldAssist.HasClearButton="True"
                      materialDesign:TextFieldAssist.HasLeadingIcon="True"
                      materialDesign:TextFieldAssist.LeadingIcon="Search"
-                     Padding="0,10"
-                     Margin="0,10,0,0"
                      FontSize="16"
+                     TabIndex="0"
                      materialDesign:ValidationAssist.FontSize="14"
-                     Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-        </StackPanel>
+                     Padding="10"
+                     Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}">
+            </TextBox>
+            <Button DockPanel.Dock="Right"
+                    VerticalAlignment="Center">Пригласить участника</Button>
+        </DockPanel>
 
-        <ListBox Grid.Column="1"
-                 Grid.Row="1"
-                 Margin="0,15,0,0"
+        <ListBox Grid.Row="1"
+                 Margin="10,15,10,0"
                  VirtualizingStackPanel.IsVirtualizing="True"
                  VirtualizingStackPanel.VirtualizationMode="Recycling"
                  ItemsSource="{Binding FilteredMembers}"
-                 Width="Auto">
+                 Width="Auto"
+                 Grid.ColumnSpan="2">
             <ListBox.Style>
                 <Style TargetType="ListBox"
                        BasedOn="{StaticResource MaterialDesignListBox}">

@@ -24,7 +24,6 @@
                    Opacity="0.5" />
         <DockPanel HorizontalAlignment="Stretch">
             <StackPanel Background="WhiteSmoke"
-                        Margin="0,0,0,30"
                         DockPanel.Dock="Top">
                 <Border CornerRadius="10,10,10,10"
                         Margin="0,30,0,0"
@@ -65,14 +64,10 @@
                 </StackPanel>
             </StackPanel>
             <Grid HorizontalAlignment="Stretch">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="20*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="1"
-                           Grid.Column="1"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Stretch"></TextBlock>
+                <Frame Margin="400, 0, 400, 0"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"
+                       Source="/Views/TeamMembersPage.xaml"></Frame>
             </Grid>
         </DockPanel>
     </Grid>

@@ -62,7 +62,7 @@ namespace Equality.ViewModels
             switch (ActiveTabIndex) {
                 case 0:
                 default:
-                    NavigationService.Navigate<StartPageViewModel>();
+                    NavigationService.Navigate<TeamPageViewModel>();
                     break;
             }
         }
