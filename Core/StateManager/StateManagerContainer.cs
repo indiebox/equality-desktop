@@ -1,4 +1,5 @@
-﻿using Catel.IoC;
+﻿using Catel;
+using Catel.IoC;
 
 namespace Equality.Core.StateManager
 {
@@ -6,6 +7,11 @@ namespace Equality.Core.StateManager
     {
         static StateManagerContainer()
         {
+            if (CatelEnvironment.IsInDesignMode) {
+                Instance = new StateManager();
+                return;
+            }
+
             Instance = ServiceLocator.Default.ResolveType<IStateManager>();
         }
 
