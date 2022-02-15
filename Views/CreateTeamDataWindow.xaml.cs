@@ -2,9 +2,9 @@
 
 namespace Equality.Views
 {
-    public partial class CreateNewTeamDataWindow
+    public partial class CreateTeamDataWindow
     {
-        public CreateNewTeamDataWindow()
+        public CreateTeamDataWindow()
         : base(DataWindowMode.Custom)
         {
             InitializeComponent();

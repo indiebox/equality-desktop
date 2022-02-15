@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Catel.MVVM;
 using Catel.Services;
@@ -10,15 +7,15 @@ using Equality.Core.ViewModel;
 
 namespace Equality.ViewModels
 {
-    public class ProgectsPageViewModel : ViewModel
+    public class ProjectsPageViewModel : ViewModel
     {
         protected IUIVisualizerService UIVisualizerService;
 
-        public ProgectsPageViewModel(IUIVisualizerService uIVisualizerService)
+        public ProjectsPageViewModel(IUIVisualizerService uIVisualizerService)
         {
             UIVisualizerService = uIVisualizerService;
 
-            OpenCreateNewTeamDataWindow = new TaskCommand(OnOpenCreateNewTeamDataWindowExecute);
+            OpenCreateTeamWindow = new TaskCommand(OnOpenCreateTeamWindowExecute);
         }
 
         #region Properties
@@ -29,13 +26,11 @@ namespace Equality.ViewModels
 
         #region Commands
 
+        public TaskCommand OpenCreateTeamWindow { get; private set; }
 
-        public TaskCommand OpenCreateNewTeamDataWindow { get; private set; }
-
-
-        private async Task OnOpenCreateNewTeamDataWindowExecute()
+        private async Task OnOpenCreateTeamWindowExecute()
         {
-            await UIVisualizerService.ShowAsync<CreateNewTeamDataWindowViewModel>();
+            await UIVisualizerService.ShowAsync<CreateTeamDataWindowViewModel>();
         }
 
         #endregion
@@ -43,10 +38,14 @@ namespace Equality.ViewModels
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
+
+            // TODO: subscribe to events here
         }
 
         protected override async Task CloseAsync()
         {
+            // TODO: unsubscribe from events here
+
             await base.CloseAsync();
         }
     }

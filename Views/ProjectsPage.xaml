@@ -1,4 +1,4 @@
-﻿<catel:Page x:Class="Equality.Views.ProgectsPage"
+﻿<catel:Page x:Class="Equality.Views.ProjectsPage"
             xmlns:catel="http://schemas.catelproject.com"
             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -7,7 +7,6 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:local="clr-namespace:Equality.Views"
             mc:Ignorable="d"
-            Title="TeamsPage"
             xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
             d:Background="{StaticResource MaterialDesignPaper}"
             d:DataContext="{d:DesignInstance dvm:DesignTeamsPageViewModel, IsDesignTimeCreatable=True}">
@@ -27,8 +26,7 @@
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                                  BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                                  Margin="4"
-                                 IsChecked="True"
-                                 HorizontalAlignment="Left">
+                                 IsChecked="True">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon VerticalAlignment="Center"
                                                      Kind="ViewDashboard" />
@@ -46,15 +44,13 @@
                                    VerticalAlignment="Center">Команды</TextBlock>
                         <Button DockPanel.Dock="Right"
                                 Style="{StaticResource MaterialDesignIconButton}"
-                                Command="{Binding OpenCreateNewTeamDataWindow}">
+                                Command="{Binding OpenCreateTeamWindow}">
                             <materialDesign:PackIcon Kind="Plus" />
                         </Button>
                     </DockPanel>
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                                 Margin="4"
-                                 IsChecked="True"
-                                 HorizontalAlignment="Left">
+                                 BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                                 Margin="4">
                         <StackPanel Orientation="Horizontal">
                             <Border CornerRadius="100"
                                     Width="25"
@@ -71,10 +67,8 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                                 Margin="4"
-                                 IsChecked="True"
-                                 HorizontalAlignment="Left">
+                                 BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                                 Margin="4">
                         <StackPanel Orientation="Horizontal">
                             <Border CornerRadius="100"
                                     Width="25"
@@ -91,10 +85,8 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                                 Margin="4"
-                                 IsChecked="True"
-                                 HorizontalAlignment="Left">
+                                 BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                                 Margin="4">
                         <StackPanel Orientation="Horizontal">
                             <Border CornerRadius="100"
                                     Width="25"

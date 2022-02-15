@@ -4,13 +4,13 @@ using Equality.Core.ViewModel;
 
 namespace Equality.ViewModels
 {
-    public class CreateNewTeamDataWindowViewModel : ViewModel
+    public class CreateTeamDataWindowViewModel : ViewModel
     {
-        public CreateNewTeamDataWindowViewModel()
+        public CreateTeamDataWindowViewModel()
         {
         }
 
-        public override string Title => "View model title";
+        public override string Title => "Equality";
 
         #region Properties
 

@@ -1,6 +1,6 @@
 ﻿namespace Equality.ViewModels.Design
 {
-    public class DesignTeamsPageViewModel : ProgectsPageViewModel
+    public class DesignTeamsPageViewModel : ProjectsPageViewModel
     {
         public DesignTeamsPageViewModel() : base(null)
         {

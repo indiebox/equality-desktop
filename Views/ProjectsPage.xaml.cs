@@ -1,8 +1,8 @@
 ﻿namespace Equality.Views
 {
-    public partial class ProgectsPage
+    public partial class ProjectsPage
     {
-        public ProgectsPage()
+        public ProjectsPage()
         {
             InitializeComponent();
         }

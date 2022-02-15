@@ -1,6 +1,6 @@
 ﻿namespace Equality.ViewModels.Design
 {
-    public class DesignCreateNewTeamDataWindowViewModel : CreateNewTeamDataWindowViewModel
+    public class DesignCreateNewTeamDataWindowViewModel : CreateTeamDataWindowViewModel
     {
         public DesignCreateNewTeamDataWindowViewModel() : base()
         {
