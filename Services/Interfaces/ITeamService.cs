@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using Equality.Core.ApiClient;
+using Equality.Core.StateManager;
 using Equality.Models;
 
 namespace Equality.Services
@@ -13,6 +14,10 @@ namespace Equality.Services
         /// </summary>
         /// <param name="team">The team.</param>
         /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage> CreateAsync(Team team);
