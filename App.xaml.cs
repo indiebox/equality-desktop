@@ -70,6 +70,7 @@ namespace Equality
             serviceLocator.RegisterType<IStateManager, StateManager>();
 
             serviceLocator.RegisterType<IUserService, UserService>();
+            serviceLocator.RegisterType<ITeamService, TeamService>();
 
             /*
             |--------------------------------------------------------------------------
