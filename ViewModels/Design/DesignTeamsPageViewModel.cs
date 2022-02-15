@@ -2,7 +2,7 @@
 {
     public class DesignTeamsPageViewModel : ProgectsPageViewModel
     {
-        public DesignTeamsPageViewModel() : base()
+        public DesignTeamsPageViewModel() : base(null)
         {
         }
     }

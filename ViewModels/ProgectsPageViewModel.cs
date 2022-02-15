@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Catel.MVVM;
+using Catel.Services;
 
 using Equality.Core.ViewModel;
 
@@ -11,9 +12,13 @@ namespace Equality.ViewModels
 {
     public class ProgectsPageViewModel : ViewModel
     {
-        public ProgectsPageViewModel()
+        protected IUIVisualizerService UIVisualizerService;
+
+        public ProgectsPageViewModel(IUIVisualizerService uIVisualizerService)
         {
-            OpenCreateNewTeamDataWindow = new Command(OnOpenCreateNewTeamDataWindowExecute);
+            UIVisualizerService = uIVisualizerService;
+
+            OpenCreateNewTeamDataWindow = new TaskCommand(OnOpenCreateNewTeamDataWindowExecute);
         }
 
         #region Properties
@@ -25,12 +30,12 @@ namespace Equality.ViewModels
         #region Commands
 
 
-        public Command OpenCreateNewTeamDataWindow { get; private set; }
+        public TaskCommand OpenCreateNewTeamDataWindow { get; private set; }
 
 
-        private void OnOpenCreateNewTeamDataWindowExecute()
+        private async Task OnOpenCreateNewTeamDataWindowExecute()
         {
-
+            await UIVisualizerService.ShowAsync<CreateNewTeamDataWindowViewModel>();
         }
 
         #endregion

@@ -1,5 +1,4 @@
-﻿
-using Catel.Windows;
+﻿using Catel.Windows;
 
 namespace Equality.Views
 {

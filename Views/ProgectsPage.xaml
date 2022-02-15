@@ -28,7 +28,7 @@
                            Background="{StaticResource MaterialDesignPaper}">Проекты</TextBlock>
                 <DockPanel Margin="30,30,30,0">
                     <Button DockPanel.Dock="Right"
-                            Command="{Binding OpenNewTeamDataWindow}">Добавить новую</Button>
+                            Command="{Binding OpenCreateNewTeamDataWindow}">Добавить новую</Button>
                     <TextBlock DockPanel.Dock="Left"
                                Foreground="White"
                                FontSize="16"
