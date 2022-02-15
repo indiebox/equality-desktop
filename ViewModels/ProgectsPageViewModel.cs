@@ -7,7 +7,7 @@ using Equality.Core.ViewModel;
 
 namespace Equality.ViewModels
 {
-    public class TeamsPageViewModel : ViewModel
+    public class ProgectsPageViewModel : ViewModel
     {
         protected override async Task InitializeAsync()
         {

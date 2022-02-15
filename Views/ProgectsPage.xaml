@@ -1,4 +1,4 @@
-﻿<catel:Page x:Class="Equality.Views.TeamsPage"
+﻿<catel:Page x:Class="Equality.Views.ProgectsPage"
             xmlns:catel="http://schemas.catelproject.com"
             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -26,6 +26,14 @@
                            FontSize="27"
                            TextAlignment="Center"
                            Background="{StaticResource MaterialDesignPaper}">Проекты</TextBlock>
+                <DockPanel Margin="30,30,30,0">
+                    <Button DockPanel.Dock="Right">Добавить новую</Button>
+                    <TextBlock DockPanel.Dock="Left"
+                               Foreground="White"
+                               FontSize="16"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center">Команды</TextBlock>
+                </DockPanel>
                 <Expander IsExpanded="True"
                           Margin="30,30,30,0">
                     <Expander.Header>
