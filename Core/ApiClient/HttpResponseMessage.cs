@@ -22,4 +22,15 @@ namespace Equality.Core.ApiClient
             Content = content;
         }
     }
+
+    public class ApiResponseMessage<TObject> : ApiResponseMessage
+        where TObject : class
+    {
+        public TObject Object { get; protected set; }
+
+        public ApiResponseMessage(TObject obj, HttpResponseMessage original, JObject content) : base(original, content)
+        {
+            Object = obj;
+        }
+    }
 }
