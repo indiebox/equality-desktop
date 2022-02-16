@@ -3,7 +3,6 @@
 using Catel.Services;
 
 using Equality.Core.ViewModel;
-using Equality.Services;
 
 namespace Equality.ViewModels
 {
@@ -11,12 +10,9 @@ namespace Equality.ViewModels
     {
         protected INavigationService NavigationService;
 
-        protected IUserService UserService;
-
-        public AuthorizationWindowViewModel(INavigationService navigationService, IUserService userService)
+        public AuthorizationWindowViewModel(INavigationService navigationService)
         {
             NavigationService = navigationService;
-            UserService = userService;
         }
 
         public override string Title => "Equality";
