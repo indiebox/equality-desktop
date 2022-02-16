@@ -35,7 +35,6 @@ namespace Equality
             Catel.Windows.Controls.UserControl.DefaultCreateWarningAndErrorValidatorForViewModelValue = false;
             Catel.Windows.Controls.UserControl.DefaultSkipSearchingForInfoBarMessageControlValue = true;
 
-
             /*
             |--------------------------------------------------------------------------
             | Overriding default types
