@@ -82,7 +82,10 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate>
-                                            <TextBlock FontSize="18">Не найдено участников по запросу: "<Run Text="{Binding ElementName=FilterText, Path=Text}"></Run>".</TextBlock>
+                                            <TextBlock Background="WhiteSmoke"
+                                                       Padding="15"
+                                                       TextWrapping="Wrap"
+                                                       FontSize="18">Не найдено участников по запросу: "<Run Text="{Binding ElementName=FilterText, Path=Text}"></Run>".</TextBlock>
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
