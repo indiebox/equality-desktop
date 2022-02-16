@@ -7,8 +7,7 @@ using Equality.Core.ApiClient;
 using Equality.Core.StateManager;
 using Equality.Models;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json.Linq;
 
 namespace Equality.Services
 {
@@ -24,18 +23,18 @@ namespace Equality.Services
             StateManager = stateManager;
         }
 
-        public async Task<Team[]> GetTeamsAsync()
+        public async Task<ApiResponseMessage<Team[]>> GetTeamsAsync()
         {
             Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
 
             var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).GetAsync("teams");
 
-            var teams = DeserializeRange(response.Content["data"].ToString());
+            var teams = DeserializeRange(response.Content["data"]);
 
-            return teams;
+            return new(teams, response);
         }
 
-        public async Task<ApiResponseMessage> CreateAsync(Team team)
+        public async Task<ApiResponseMessage<Team>> CreateAsync(Team team)
         {
             Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
             Argument.IsNotNull(nameof(team), team);
@@ -50,37 +49,15 @@ namespace Equality.Services
 
             var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync("teams", data);
 
-            return response;
+            team = Deserialize(response.Content["data"]);
+
+            return new(team, response);
         }
 
-        public Team Deserialize(string data)
-        {
-            Argument.IsNotNullOrWhitespace(nameof(data), data);
+        /// <inheritdoc cref="IApiDeserializable{T}.Deserialize(JToken)"/>
+        protected Team Deserialize(JToken data) => ((ITeamService)this).Deserialize(data);
 
-            var team = JsonConvert.DeserializeObject<Team>(data, new JsonSerializerSettings
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new SnakeCaseNamingStrategy()
-                },
-            });
-
-            return team;
-        }
-
-        public Team[] DeserializeRange(string data)
-        {
-            Argument.IsNotNullOrWhitespace(nameof(data), data);
-
-            var team = JsonConvert.DeserializeObject<Team[]>(data, new JsonSerializerSettings
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new SnakeCaseNamingStrategy()
-                },
-            });
-
-            return team;
-        }
+        /// <inheritdoc cref="IApiDeserializable{T}.DeserializeRange(JToken)"/>
+        protected Team[] DeserializeRange(JToken data) => ((ITeamService)this).DeserializeRange(data);
     }
 }

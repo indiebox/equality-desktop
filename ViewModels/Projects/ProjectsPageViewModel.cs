@@ -53,9 +53,9 @@ namespace Equality.ViewModels
 
         protected async void LoadTeamsAsync()
         {
-            var teams = await TeamService.GetTeamsAsync();
+            var response = await TeamService.GetTeamsAsync();
 
-            Teams.AddRange(teams);
+            Teams.AddRange(response.Object);
         }
 
         #endregion

@@ -7,7 +7,7 @@ using Equality.Models;
 
 namespace Equality.Services
 {
-    public interface ITeamService
+    public interface ITeamService : IApiDeserializable<Team>
     {
         /// <summary>
         /// Sends the get current user teams request to the API.
@@ -19,7 +19,7 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<Team[]> GetTeamsAsync();
+        public Task<ApiResponseMessage<Team[]>> GetTeamsAsync();
 
         /// <summary>
         /// Sends the create team request to the API.
@@ -32,24 +32,6 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> CreateAsync(Team team);
-
-        /// <summary>
-        /// Deserializes the JSON string to the <see cref="Team"/> model.
-        /// </summary>
-        /// <param name="data">The JSON string.</param>
-        /// <returns>The deserialized <see cref="Team"/> model.</returns>
-        /// 
-        /// <exception cref="ArgumentException" />
-        public Team Deserialize(string data);
-
-        /// <summary>
-        /// Deserializes the JSON string to the <see cref="Team"/> model array.
-        /// </summary>
-        /// <param name="data">The JSON string.</param>
-        /// <returns>The deserialized array of <see cref="Team"/> models.</returns>
-        /// 
-        /// <exception cref="ArgumentException" />
-        public Team[] DeserializeRange(string data);
+        public Task<ApiResponseMessage<Team>> CreateAsync(Team team);
     }
 }

@@ -7,7 +7,7 @@ using Equality.Models;
 
 namespace Equality.Services
 {
-    public interface IUserService
+    public interface IUserService : IApiDeserializable<User>
     {
         /// <summary>
         /// Sends the request to get an authenticated user to the API.
@@ -71,14 +71,5 @@ namespace Equality.Services
         /// 
         /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage> ResetPasswordAsync(string email, string password, string passwordConfirmation, string token);
-
-        /// <summary>
-        /// Deserializes the JSON string to the <see cref="User"/> model.
-        /// </summary>
-        /// <param name="data">The JSON string.</param>
-        /// <returns>The deserialized <see cref="User"/> model.</returns>
-        /// 
-        /// <exception cref="ArgumentException" />
-        public User Deserialize(string data);
     }
 }
