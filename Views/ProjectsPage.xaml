@@ -26,7 +26,8 @@
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                                  BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                                  Margin="4"
-                                 IsChecked="True">
+                                 IsChecked="True"
+                                 HorizontalContentAlignment="Left">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon VerticalAlignment="Center"
                                                      Kind="ViewDashboard" />
@@ -50,8 +51,10 @@
                     </DockPanel>
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                                  BorderBrush="{StaticResource PrimaryHueMidBrush}"
-                                 Margin="4">
-                        <StackPanel Orientation="Horizontal">
+                                 Margin="4"
+                                 HorizontalContentAlignment="Left">
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Left">
                             <Border CornerRadius="100"
                                     Width="25"
                                     Height="25">
@@ -68,7 +71,8 @@
                     </RadioButton>
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                                  BorderBrush="{StaticResource PrimaryHueMidBrush}"
-                                 Margin="4">
+                                 Margin="4"
+                                 HorizontalContentAlignment="Left">
                         <StackPanel Orientation="Horizontal">
                             <Border CornerRadius="100"
                                     Width="25"
@@ -86,7 +90,8 @@
                     </RadioButton>
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                                  BorderBrush="{StaticResource PrimaryHueMidBrush}"
-                                 Margin="4">
+                                 Margin="4"
+                                 VerticalContentAlignment="Top">
                         <StackPanel Orientation="Horizontal">
                             <Border CornerRadius="100"
                                     Width="25"
