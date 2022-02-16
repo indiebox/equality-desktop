@@ -26,8 +26,10 @@
                          IsChecked="True"
                          HorizontalContentAlignment="Left">
                 <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="AccountGroup" />
+                    <materialDesign:PackIcon Kind="AccountGroup"
+                                             VerticalAlignment="Center" />
                     <TextBlock Margin="4 0 0 0"
+                               FontSize="16"
                                Text="Пользователи" />
                 </StackPanel>
             </RadioButton>
@@ -37,14 +39,22 @@
                          IsChecked="False"
                          HorizontalContentAlignment="Left">
                 <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="Invite" />
+                    <materialDesign:PackIcon Kind="Invite"
+                                             VerticalAlignment="Center" />
                     <TextBlock Margin="4 0 0 0"
+                               FontSize="16"
                                Text="Приглашения" />
                 </StackPanel>
             </RadioButton>
         </StackPanel>
-        <StackPanel>
-            <DockPanel Margin="10,20,20,10"
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <DockPanel Grid.Row="0"
+                       Margin="10,20,20,10"
                        LastChildFill="False">
                 <TextBox DockPanel.Dock="Left"
                          Style="{StaticResource MaterialDesignFilledTextBox}"
@@ -67,7 +77,8 @@
                         VerticalAlignment="Center">Пригласить участника</Button>
             </DockPanel>
 
-            <ListBox Background="WhiteSmoke"
+            <ListBox Grid.Row="1"
+                     Background="WhiteSmoke"
                      Margin="10,0,20,0"
                      VirtualizingStackPanel.IsVirtualizing="True"
                      VirtualizingStackPanel.VirtualizationMode="Recycling"
@@ -142,7 +153,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-        </StackPanel>
+        </Grid>
 
     </DockPanel>
 
