@@ -64,8 +64,7 @@
                 </StackPanel>
             </StackPanel>
             <Grid HorizontalAlignment="Stretch">
-                <Frame Margin="400, 0, 400, 0"
-                       HorizontalAlignment="Stretch"
+                <Frame HorizontalAlignment="Stretch"
                        VerticalAlignment="Stretch"
                        Source="/Views/TeamMembersPage.xaml"></Frame>
             </Grid>

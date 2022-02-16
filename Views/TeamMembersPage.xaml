@@ -15,113 +15,132 @@
                d:DesignHeight="600"
                d:DesignWidth="1000"
                mc:Ignorable="d">
-    <Grid Background="WhiteSmoke">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="431*" />
-            <ColumnDefinition Width="569*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <DockPanel>
+        <StackPanel Orientation="Vertical"
+                    Margin="0,0,10,0"
+                    Background="WhiteSmoke"
+                    Width="Auto">
+            <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                         BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                         Margin="4"
+                         IsChecked="True"
+                         HorizontalContentAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="AccountGroup" />
+                    <TextBlock Margin="4 0 0 0"
+                               Text="Пользователи" />
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                         BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                         Margin="4"
+                         IsChecked="False"
+                         HorizontalContentAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Invite" />
+                    <TextBlock Margin="4 0 0 0"
+                               Text="Приглашения" />
+                </StackPanel>
+            </RadioButton>
+        </StackPanel>
+        <StackPanel>
+            <DockPanel Margin="10,20,20,10"
+                       LastChildFill="False">
+                <TextBox DockPanel.Dock="Left"
+                         Style="{StaticResource MaterialDesignFilledTextBox}"
+                         Background="white"
+                         x:Name="FilterText"
+                         Width="250"
+                         AcceptsReturn="False"
+                         materialDesign:HintAssist.Hint="Поиск по имени"
+                         materialDesign:HintAssist.IsFloating="False"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         materialDesign:TextFieldAssist.HasLeadingIcon="True"
+                         materialDesign:TextFieldAssist.LeadingIcon="Search"
+                         FontSize="16"
+                         TabIndex="0"
+                         materialDesign:ValidationAssist.FontSize="14"
+                         Padding="10"
+                         Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}">
+                </TextBox>
+                <Button DockPanel.Dock="Right"
+                        VerticalAlignment="Center">Пригласить участника</Button>
+            </DockPanel>
 
-        <DockPanel Margin="10,0"
-                   LastChildFill="False"
-                   Grid.ColumnSpan="2">
-            <TextBox DockPanel.Dock="Left"
-                     Style="{StaticResource MaterialDesignFilledTextBox}"
-                     x:Name="FilterText"
-                     MinWidth="250"
-                     Width="Auto"
-                     AcceptsReturn="False"
-                     materialDesign:HintAssist.Hint="Поиск по имени"
-                     materialDesign:HintAssist.IsFloating="False"
-                     materialDesign:TextFieldAssist.HasClearButton="True"
-                     materialDesign:TextFieldAssist.HasLeadingIcon="True"
-                     materialDesign:TextFieldAssist.LeadingIcon="Search"
-                     FontSize="16"
-                     TabIndex="0"
-                     materialDesign:ValidationAssist.FontSize="14"
-                     Padding="10"
-                     Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}">
-            </TextBox>
-            <Button DockPanel.Dock="Right"
-                    VerticalAlignment="Center">Пригласить участника</Button>
-        </DockPanel>
+            <ListBox Background="WhiteSmoke"
+                     Margin="10,0,20,0"
+                     VirtualizingStackPanel.IsVirtualizing="True"
+                     VirtualizingStackPanel.VirtualizationMode="Recycling"
+                     ItemsSource="{Binding FilteredMembers}"
+                     Width="Auto">
+                <ListBox.Style>
+                    <Style TargetType="ListBox"
+                           BasedOn="{StaticResource MaterialDesignListBox}">
+                        <Style.Triggers>
+                            <Trigger Property="HasItems"
+                                     Value="False">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <TextBlock FontSize="18">Не найдено участников по запросу: "<Run Text="{Binding ElementName=FilterText, Path=Text}"></Run>".</TextBlock>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.Style>
 
-        <ListBox Grid.Row="1"
-                 Margin="10,15,10,0"
-                 VirtualizingStackPanel.IsVirtualizing="True"
-                 VirtualizingStackPanel.VirtualizationMode="Recycling"
-                 ItemsSource="{Binding FilteredMembers}"
-                 Width="Auto"
-                 Grid.ColumnSpan="2">
-            <ListBox.Style>
-                <Style TargetType="ListBox"
-                       BasedOn="{StaticResource MaterialDesignListBox}">
-                    <Style.Triggers>
-                        <Trigger Property="HasItems"
-                                 Value="False">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <TextBlock FontSize="18">Не найдено участников по запросу: "<Run Text="{Binding ElementName=FilterText, Path=Text}"></Run>".</TextBlock>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ListBox.Style>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem"
+                           BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                        <Setter Property="HorizontalContentAlignment"
+                                Value="Stretch"></Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
 
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem"
-                       BasedOn="{StaticResource MaterialDesignListBoxItem}">
-                    <Setter Property="HorizontalContentAlignment"
-                            Value="Stretch"></Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Left"
+                                        Orientation="Horizontal"
+                                        Margin="10">
+                                <Border Width="50"
+                                        Height="50"
+                                        CornerRadius="50">
+                                    <Border.Background>
+                                        <ImageBrush Stretch="Fill"
+                                                    ImageSource="/Resources/Images/TeamLogo.jpg" />
+                                    </Border.Background>
+                                </Border>
 
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <DockPanel>
-                        <StackPanel DockPanel.Dock="Left"
-                                    Orientation="Horizontal"
-                                    Margin="10">
-                            <Border Width="50"
-                                    Height="50"
-                                    CornerRadius="50">
-                                <Border.Background>
-                                    <ImageBrush Stretch="Fill"
-                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
-                                </Border.Background>
-                            </Border>
+                                <TextBlock Text="{Binding Name}"
+                                           VerticalAlignment="Center"
+                                           FontSize="18"
+                                           Margin="15,0,15,0" />
 
-                            <TextBlock Text="{Binding Name}"
-                                       VerticalAlignment="Center"
-                                       FontSize="18"
-                                       Margin="15,0,15,0" />
+                                <materialDesign:Chip Content="Вы"
+                                                     Focusable="False"
+                                                     Cursor="Arrow">
+                                    <materialDesign:Chip.Style>
+                                        <Style TargetType="materialDesign:Chip">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsCurrentUser}"
+                                                             Value="False">
+                                                    <Setter Property="Visibility"
+                                                            Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </materialDesign:Chip.Style>
+                                </materialDesign:Chip>
+                            </StackPanel>
+                        </DockPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
 
-                            <materialDesign:Chip Content="Вы"
-                                                 Focusable="False"
-                                                 Cursor="Arrow">
-                                <materialDesign:Chip.Style>
-                                    <Style TargetType="materialDesign:Chip">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsCurrentUser}"
-                                                         Value="False">
-                                                <Setter Property="Visibility"
-                                                        Value="Collapsed" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </materialDesign:Chip.Style>
-                            </materialDesign:Chip>
-                        </StackPanel>
-                    </DockPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </Grid>
+    </DockPanel>
 
 </equality:Page>
