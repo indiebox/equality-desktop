@@ -53,8 +53,7 @@
                                  BorderBrush="{StaticResource PrimaryHueMidBrush}"
                                  Margin="4"
                                  HorizontalContentAlignment="Left">
-                        <StackPanel Orientation="Horizontal"
-                                    HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
                             <Border CornerRadius="100"
                                     Width="25"
                                     Height="25">
@@ -91,7 +90,7 @@
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                                  BorderBrush="{StaticResource PrimaryHueMidBrush}"
                                  Margin="4"
-                                 VerticalContentAlignment="Top">
+                                 HorizontalContentAlignment="Left">
                         <StackPanel Orientation="Horizontal">
                             <Border CornerRadius="100"
                                     Width="25"
