@@ -14,15 +14,19 @@ using Equality.Services;
 
 namespace Equality.ViewModels
 {
-    public class CreateTeamControlViewModel : ViewModel
+    public class CreateTeamDataWindowViewModel : ViewModel
     {
+        protected Dictionary<string, Team> TeamStorage;
+
         protected ITeamService TeamService;
 
-        public CreateTeamControlViewModel(ITeamService teamService)
+        public CreateTeamDataWindowViewModel(Dictionary<string, Team> teamStorage, ITeamService teamService)
         {
+            TeamStorage = teamStorage;
             TeamService = teamService;
 
             CreateTeam = new TaskCommand(OnCreateTeamExecute, () => !HasErrors);
+            CloseWindow = new Command(OnCloseWindowExecute);
 
             ApiFieldsMap = new()
             {
@@ -55,12 +59,21 @@ namespace Equality.ViewModels
             }
 
             try {
-                await TeamService.CreateAsync(Team);
+                var response = await TeamService.CreateAsync(Team);
 
-                // Success
+                TeamStorage.Add("Team", TeamService.Deserialize(response.Content["data"].ToString()));
+
+                CloseWindow.Execute();
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
+        }
+
+        public Command CloseWindow { get; private set; }
+
+        private void OnCloseWindowExecute()
+        {
+            this.SaveAndCloseViewModelAsync();
         }
 
         #endregion

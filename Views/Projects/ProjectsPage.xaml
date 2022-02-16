@@ -6,10 +6,11 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:local="clr-namespace:Equality.Views"
+            xmlns:models="clr-namespace:Equality.Models"
             mc:Ignorable="d"
             xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
             d:Background="{StaticResource MaterialDesignPaper}"
-            d:DataContext="{d:DesignInstance dvm:DesignTeamsPageViewModel, IsDesignTimeCreatable=True}">
+            d:DataContext="{d:DesignInstance dvm:DesignProjectsPageViewModel, IsDesignTimeCreatable=True}">
     <Grid>
         <Border>
             <Border.Background>
@@ -20,13 +21,16 @@
         <Rectangle Fill="Black"
                    Opacity="0.5" />
         <DockPanel>
-            <StackPanel Background="White">
-                <StackPanel Margin="30,30,30,0"
+            <StackPanel Background="White"
+                        Width="300">
+                <StackPanel Margin="15"
                             Orientation="Vertical">
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                                  BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                                  Margin="4"
                                  IsChecked="True"
+                                 Cursor="Hand"
+                                 GroupName="FilterByTeams"
                                  HorizontalContentAlignment="Left">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon VerticalAlignment="Center"
@@ -49,65 +53,45 @@
                             <materialDesign:PackIcon Kind="Plus" />
                         </Button>
                     </DockPanel>
-                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                                 BorderBrush="{StaticResource PrimaryHueMidBrush}"
-                                 Margin="4"
-                                 HorizontalContentAlignment="Left">
-                        <StackPanel Orientation="Horizontal">
-                            <Border CornerRadius="100"
-                                    Width="25"
-                                    Height="25">
-                                <Border.Background>
-                                    <ImageBrush Stretch="UniformToFill"
-                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
-                                </Border.Background>
-                            </Border>
-                            <TextBlock Margin="4 0 0 0"
-                                       FontSize="16"
-                                       Text="Indie Box"
-                                       VerticalAlignment="Center" />
-                        </StackPanel>
-                    </RadioButton>
-                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                                 BorderBrush="{StaticResource PrimaryHueMidBrush}"
-                                 Margin="4"
-                                 HorizontalContentAlignment="Left">
-                        <StackPanel Orientation="Horizontal">
-                            <Border CornerRadius="100"
-                                    Width="25"
-                                    Height="25">
-                                <Border.Background>
-                                    <ImageBrush Stretch="UniformToFill"
-                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
-                                </Border.Background>
-                            </Border>
-                            <TextBlock Margin="4 0 0 0"
-                                       FontSize="16"
-                                       Text="Indie Box 2"
-                                       VerticalAlignment="Center" />
-                        </StackPanel>
-                    </RadioButton>
-                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                                 BorderBrush="{StaticResource PrimaryHueMidBrush}"
-                                 Margin="4"
-                                 HorizontalContentAlignment="Left">
-                        <StackPanel Orientation="Horizontal">
-                            <Border CornerRadius="100"
-                                    Width="25"
-                                    Height="25">
-                                <Border.Background>
-                                    <ImageBrush Stretch="UniformToFill"
-                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
-                                </Border.Background>
-                            </Border>
-                            <TextBlock Margin="4 0 0 0"
-                                       FontSize="16"
-                                       Text="Indie Box 3"
-                                       VerticalAlignment="Center" />
-                        </StackPanel>
-                    </RadioButton>
+
+                    <ItemsControl ItemsSource="{Binding Teams}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type models:Team}">
+                                <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                                             BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                                             GroupName="FilterByTeams"
+                                             Margin="4"
+                                             Cursor="Hand"
+                                             HorizontalContentAlignment="Left">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border Grid.Column="0"
+                                                CornerRadius="100"
+                                                Width="25"
+                                                Height="25">
+                                            <Border.Background>
+                                                <ImageBrush Stretch="UniformToFill"
+                                                            ImageSource="/Resources/Images/TeamLogo.jpg" />
+                                            </Border.Background>
+                                        </Border>
+                                        <TextBlock Grid.Column="1"
+                                                   Margin="4 0 0 0"
+                                                   FontSize="16"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   Text="{Binding Name, Mode=OneTime}"
+                                                   VerticalAlignment="Center" />
+                                    </Grid>
+                                </RadioButton>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </StackPanel>
             </StackPanel>
+
             <ScrollViewer DockPanel.Dock="Right">
                 <StackPanel Margin="0,0,0,30">
                     <StackPanel Background="White"
