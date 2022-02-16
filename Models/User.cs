@@ -2,9 +2,11 @@
 
 using Catel.Data;
 
+using Equality.Core.StateManager;
+
 namespace Equality.Models
 {
-    public class User : ModelBase
+    public class User : ModelBase, IEquatable<User>
     {
         public User()
         {
@@ -18,10 +20,50 @@ namespace Equality.Models
 
         public DateTime? EmailVerifiedAt { get; set; }
 
-        public bool IsVerified => EmailVerifiedAt != null;
-
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+
+        #region Custom properties
+
+        public bool IsVerified => EmailVerifiedAt != null;
+
+        public bool IsCurrentUser => StateManagerContainer.Instance.CurrentUser == this;
+
+        #endregion
+
+        #region Override operators
+
+        public static bool operator ==(User obj1, User obj2)
+        {
+            if (ReferenceEquals(obj1, obj2)) {
+                return true;
+            }
+
+            if (obj1 is null || obj2 is null) {
+                return false;
+            }
+
+            return obj1.Equals(obj2);
+        }
+        public static bool operator !=(User obj1, User obj2) => !(obj1 == obj2);
+
+        public bool Equals(User other)
+        {
+            if (other is null) {
+                return false;
+            }
+
+            return other.Id != 0
+                && other.Id == Id;
+        }
+        public override bool Equals(object obj) => Equals(obj as User);
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        #endregion
     }
 }

@@ -64,8 +64,11 @@ namespace Equality.ViewModels
                 default:
                     NavigationService.Navigate<StartPageViewModel>();
                     break;
-                case 2:
+                case 1:
                     NavigationService.Navigate<ProjectsPageViewModel>();
+                    break;
+                case 2:
+                    NavigationService.Navigate<TeamPageViewModel>();
                     break;
             }
         }

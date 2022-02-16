@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Catel.Collections;
 using Catel.Data;
 using Catel.MVVM;
-using Catel.IoC;
 
 using Equality.Core.StateManager;
 
@@ -30,11 +29,6 @@ namespace Equality.Core.ViewModel
         /// </summary>
         private IDisposable _validationToken;
 
-        /// <summary>
-        /// The IStateManager.
-        /// </summary>
-        private IStateManager _stateManager;
-
         public ViewModel() : base()
         {
             DeferValidationUntilFirstSaveCall = false;
@@ -52,17 +46,11 @@ namespace Equality.Core.ViewModel
         /// <summary>
         /// Gets the IStateManager instance.
         /// </summary>
+        /// <remarks>
+        /// This is a convenience call that internally just returns <see cref="StateManagerContainer.Instance"/>.
+        /// </remarks>
         [ExcludeFromValidation]
-        public IStateManager StateManager
-        {
-            get {
-                if (_stateManager == null) {
-                    _stateManager = this.GetDependencyResolver().Resolve<IStateManager>();
-                }
-
-                return _stateManager;
-            }
-        }
+        public IStateManager StateManager => StateManagerContainer.Instance;
 
         /// <summary>
         /// The Api errors for fields.
