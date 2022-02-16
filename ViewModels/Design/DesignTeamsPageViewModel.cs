@@ -1,8 +1,8 @@
 ﻿namespace Equality.ViewModels.Design
 {
-    public class DesignTeamsPageViewModel : TeamsPageViewModel
+    public class DesignTeamsPageViewModel : ProjectsPageViewModel
     {
-        public DesignTeamsPageViewModel() : base()
+        public DesignTeamsPageViewModel() : base(null)
         {
         }
     }
