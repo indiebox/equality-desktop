@@ -69,11 +69,11 @@
                         <TabItem.Header>
                             <StackPanel Height="auto"
                                         Width="auto">
-                                <materialDesign:PackIcon Kind="AccountGroup"
+                                <materialDesign:PackIcon Kind="ViewDashboardVariant"
                                                          Width="24"
                                                          Height="24"
                                                          HorizontalAlignment="Center" />
-                                <TextBlock Text="Команды"
+                                <TextBlock Text="Проекты"
                                            HorizontalAlignment="Center" />
                             </StackPanel>
                         </TabItem.Header>
@@ -84,11 +84,11 @@
                         <TabItem.Header>
                             <StackPanel Height="auto"
                                         Width="auto">
-                                <materialDesign:PackIcon Kind="ViewDashboardVariant"
+                                <materialDesign:PackIcon Kind="TestTube"
                                                          Width="24"
                                                          Height="24"
                                                          HorizontalAlignment="Center" />
-                                <TextBlock Text="Проекты"
+                                <TextBlock Text="Test 1"
                                            HorizontalAlignment="Center" />
                             </StackPanel>
                         </TabItem.Header>
