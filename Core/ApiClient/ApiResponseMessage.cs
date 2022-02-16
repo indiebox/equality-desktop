@@ -26,7 +26,18 @@ namespace Equality.Core.ApiClient
     public class ApiResponseMessage<TObject> : ApiResponseMessage
         where TObject : class
     {
+        /// <summary>
+        /// Gets the parsed response object.
+        /// </summary>
+        /// <remarks>
+        /// If API response returns some object, or collection of objects,
+        /// they will be stored here.
+        /// </remarks>
         public TObject Object { get; protected set; }
+
+        public ApiResponseMessage(TObject obj, ApiResponseMessage response) : this(obj, response.Original, response.Content)
+        {
+        }
 
         public ApiResponseMessage(TObject obj, HttpResponseMessage original, JObject content) : base(original, content)
         {
