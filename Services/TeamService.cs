@@ -24,6 +24,17 @@ namespace Equality.Services
             StateManager = stateManager;
         }
 
+        public async Task<Team[]> GetTeamsAsync()
+        {
+            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
+
+            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).GetAsync("teams");
+
+            var teams = DeserializeRange(response.Content["data"].ToString());
+
+            return teams;
+        }
+
         public async Task<ApiResponseMessage> CreateAsync(Team team)
         {
             Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
@@ -47,6 +58,21 @@ namespace Equality.Services
             Argument.IsNotNullOrWhitespace(nameof(data), data);
 
             var team = JsonConvert.DeserializeObject<Team>(data, new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                },
+            });
+
+            return team;
+        }
+
+        public Team[] DeserializeRange(string data)
+        {
+            Argument.IsNotNullOrWhitespace(nameof(data), data);
+
+            var team = JsonConvert.DeserializeObject<Team[]>(data, new JsonSerializerSettings
             {
                 ContractResolver = new DefaultContractResolver
                 {
