@@ -61,7 +61,7 @@ namespace Equality.ViewModels
             try {
                 var response = await TeamService.CreateAsync(Team);
 
-                TeamStorage.Add("Team", TeamService.Deserialize(response.Content["data"].ToString()));
+                TeamStorage.Add("Team", response.Object);
 
                 CloseWindow.Execute();
             } catch (HttpRequestException e) {
