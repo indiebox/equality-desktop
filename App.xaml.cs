@@ -35,7 +35,6 @@ namespace Equality
             Catel.Windows.Controls.UserControl.DefaultCreateWarningAndErrorValidatorForViewModelValue = false;
             Catel.Windows.Controls.UserControl.DefaultSkipSearchingForInfoBarMessageControlValue = true;
 
-
             /*
             |--------------------------------------------------------------------------
             | Overriding default types
@@ -70,6 +69,7 @@ namespace Equality
             serviceLocator.RegisterType<IStateManager, StateManager>();
 
             serviceLocator.RegisterType<IUserService, UserService>();
+            serviceLocator.RegisterType<ITeamService, TeamService>();
 
             /*
             |--------------------------------------------------------------------------
@@ -97,6 +97,8 @@ namespace Equality
 
             var urlLocator = serviceLocator.ResolveType<IUrlLocator>();
             urlLocator.NamingConventions.Add("/Views/Authorization/[VM].xaml");
+            urlLocator.NamingConventions.Add("/Views/Projects/[VM].xaml");
+            urlLocator.NamingConventions.Add("/Views/Teams/[VM].xaml");
 
             //var viewLocator = ServiceLocator.Default.ResolveType<IViewLocator>();
             //viewLocator.NamingConventions.Add("[UP].Views.Authorization.[VM]");

@@ -8,8 +8,7 @@ using Equality.Core.ApiClient;
 using Equality.Core.StateManager;
 using Equality.Models;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json.Linq;
 
 namespace Equality.Services
 {
@@ -31,7 +30,7 @@ namespace Equality.Services
 
             var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).GetAsync("user");
 
-            StateManager.CurrentUser = Deserialize(response.Content["data"].ToString());
+            StateManager.CurrentUser = Deserialize(response.Content["data"]);
 
             return response;
         }
@@ -50,7 +49,7 @@ namespace Equality.Services
 
             var response = await ApiClient.PostAsync("login", data);
 
-            var user = Deserialize(response.Content["data"].ToString());
+            var user = Deserialize(response.Content["data"]);
             string token = response.Content["token"].ToString();
 
             StateManager.ApiToken = token;
@@ -101,24 +100,15 @@ namespace Equality.Services
             return await ApiClient.PostAsync("reset-password", data);
         }
 
-        public User Deserialize(string data)
-        {
-            Argument.IsNotNullOrWhitespace(nameof(data), data);
-
-            var user = JsonConvert.DeserializeObject<User>(data, new JsonSerializerSettings
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new SnakeCaseNamingStrategy()
-                },
-            });
-
-            return user;
-        }
-
         protected string GetDeviceName()
         {
             return Environment.MachineName;
         }
+
+        /// <inheritdoc cref="IApiDeserializable{T}.Deserialize(JToken)"/>
+        protected User Deserialize(JToken data) => ((IUserService)this).Deserialize(data);
+
+        /// <inheritdoc cref="IApiDeserializable{T}.DeserializeRange(JToken)"/>
+        protected User[] DeserializeRange(JToken data) => ((IUserService)this).DeserializeRange(data);
     }
 }
