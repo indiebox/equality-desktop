@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-
-using Catel.Fody;
-using Catel.MVVM;
 
 using Equality.Core.ViewModel;
 using Equality.Models;
 
 namespace Equality.ViewModels
 {
-    class TeamPageViewModel : ViewModel
+    public class TeamPageViewModel : ViewModel
     {
         public TeamPageViewModel()
         {

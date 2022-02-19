@@ -10,6 +10,7 @@ using Catel.Collections;
 using Equality.Services;
 using System.Collections.Generic;
 using System.Linq;
+using Catel.IoC;
 
 namespace Equality.ViewModels
 {
@@ -17,14 +18,11 @@ namespace Equality.ViewModels
     {
         protected IUIVisualizerService UIVisualizerService;
 
-        protected INavigationService NavigationService;
-
         protected ITeamService TeamService;
 
-        public ProjectsPageViewModel(IUIVisualizerService uIVisualizerService, INavigationService navigationService, ITeamService teamService)
+        public ProjectsPageViewModel(IUIVisualizerService uIVisualizerService, ITeamService teamService)
         {
             UIVisualizerService = uIVisualizerService;
-            NavigationService = navigationService;
             TeamService = teamService;
 
             OpenCreateTeamWindow = new TaskCommand(OnOpenCreateTeamWindowExecute);
@@ -60,7 +58,10 @@ namespace Equality.ViewModels
 
         private void OnOpenTeamPageExecute(Team team)
         {
-            NavigationService.Navigate<TeamPageViewModel>(new() { { "team", team } });
+            var vmmanager = this.GetDependencyResolver().Resolve<IViewModelManager>();
+            var vm = vmmanager.GetFirstOrDefaultInstance<ApplicationWindowViewModel>();
+            vm.SelectedTeam = team;
+            vm.ActiveTab = ApplicationWindowViewModel.Tab.Team;
         }
 
         public Command<Team> FilterProjects { get; private set; }
