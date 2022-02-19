@@ -51,8 +51,9 @@ namespace Equality
             // We need to set RegistrationType.Transient to INavigationService and INavigationRootService,
             // so we can work with multiple windows with frame at the same time (previously not supported).
             // It will also allow NavigationService to continue working even after reopening the same window (previously not supported).
+            // Also we register custom INavigationRootService, so we can navigate in the specified context by the NavigationServiceExtension.
             serviceLocator.RegisterType<INavigationService, NavigationService>(RegistrationType.Transient);
-            serviceLocator.RegisterType<INavigationRootService, NavigationRootService>(RegistrationType.Transient);
+            serviceLocator.RegisterType<INavigationRootService, Core.MVVM.NavigationRootService>(RegistrationType.Transient);
 
             /*
             |--------------------------------------------------------------------------
