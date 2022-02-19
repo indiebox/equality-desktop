@@ -4,6 +4,10 @@
     {
         public DesignTeamPageViewModel() : base()
         {
+            Team = new()
+            {
+                Name = "Test team"
+            };
         }
     }
 }

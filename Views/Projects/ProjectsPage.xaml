@@ -42,6 +42,7 @@
                                        VerticalAlignment="Center" />
                         </StackPanel>
                     </RadioButton>
+
                     <DockPanel Margin="4,0,0,0"
                                LastChildFill="False">
                         <TextBlock DockPanel.Dock="Left"
@@ -55,7 +56,8 @@
                         </Button>
                     </DockPanel>
 
-                    <ItemsControl ItemsSource="{Binding Teams}">
+                    <ItemsControl ItemsSource="{Binding Teams}"
+                                  Focusable="False">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type models:Team}">
                                 <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
@@ -97,27 +99,34 @@
 
             <ScrollViewer DockPanel.Dock="Right">
                 <StackPanel Margin="0,0,0,30">
-                    <ItemsControl ItemsSource="{Binding FilteredTeams}">
+                    <ItemsControl ItemsSource="{Binding FilteredTeams}"
+                                  Focusable="False">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type models:Team}">
                                 <StackPanel Background="White"
                                             Margin="30,30,30,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Border CornerRadius="100"
-                                                Width="50"
-                                                Height="50"
-                                                Margin="10">
-                                            <Border.Background>
-                                                <ImageBrush Stretch="UniformToFill"
-                                                            ImageSource="/Resources/Images/TeamLogo.jpg" />
-                                            </Border.Background>
-                                        </Border>
-                                        <TextBlock FontSize="16"
-                                                   TextAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   Foreground="Black"
-                                                   Text="{Binding Name}" />
-                                    </StackPanel>
+                                    <Button Style="{StaticResource BaseButton}"
+                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ProjectsPage}}, Path=DataContext.OpenTeamPage}"
+                                            CommandParameter="{Binding}"
+                                            Cursor="Hand">
+                                        <StackPanel Orientation="Horizontal"
+                                                    Cursor="Hand">
+                                            <Border CornerRadius="100"
+                                                    Width="50"
+                                                    Height="50"
+                                                    Margin="10">
+                                                <Border.Background>
+                                                    <ImageBrush Stretch="UniformToFill"
+                                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
+                                                </Border.Background>
+                                            </Border>
+                                            <TextBlock FontSize="16"
+                                                       TextAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       Style="{StaticResource LinkText}"
+                                                       Text="{Binding Name}" />
+                                        </StackPanel>
+                                    </Button>
 
                                     <Grid TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
                                           Margin="24,8,24,16">

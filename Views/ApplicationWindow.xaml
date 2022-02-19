@@ -79,7 +79,7 @@
                         </TabItem.Header>
                     </TabItem>
 
-                    <TabItem Width="80"
+                    <!--<TabItem Width="80"
                              Height="80">
                         <TabItem.Header>
                             <StackPanel Height="auto"
@@ -92,7 +92,7 @@
                                            HorizontalAlignment="Center" />
                             </StackPanel>
                         </TabItem.Header>
-                    </TabItem>
+                    </TabItem>-->
                 </TabControl>
 
                 <Separator Grid.Row="1"

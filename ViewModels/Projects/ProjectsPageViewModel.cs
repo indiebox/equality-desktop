@@ -17,14 +17,18 @@ namespace Equality.ViewModels
     {
         protected IUIVisualizerService UIVisualizerService;
 
+        protected INavigationService NavigationService;
+
         protected ITeamService TeamService;
 
-        public ProjectsPageViewModel(IUIVisualizerService uIVisualizerService, ITeamService teamService)
+        public ProjectsPageViewModel(IUIVisualizerService uIVisualizerService, INavigationService navigationService, ITeamService teamService)
         {
             UIVisualizerService = uIVisualizerService;
+            NavigationService = navigationService;
             TeamService = teamService;
 
             OpenCreateTeamWindow = new TaskCommand(OnOpenCreateTeamWindowExecute);
+            OpenTeamPage = new Command<Team>(OnOpenTeamPageExecute);
             FilterProjects = new Command<Team>(OnFilterProjectsExecute);
             ResetFilter = new Command(OnResetFilterExecute);
         }
@@ -50,6 +54,13 @@ namespace Equality.ViewModels
             if (teamStorage.ContainsKey("Team")) {
                 Teams.Add(teamStorage["Team"]);
             }
+        }
+
+        public Command<Team> OpenTeamPage { get; private set; }
+
+        private void OnOpenTeamPageExecute(Team team)
+        {
+            NavigationService.Navigate<TeamPageViewModel>(new() { { "team", team } });
         }
 
         public Command<Team> FilterProjects { get; private set; }
