@@ -22,6 +22,20 @@
             <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush"
                              Color="White" />
 
+            <Style x:Key="LinkText"
+                   TargetType="TextBlock"
+                   BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+                <Setter Property="Foreground"
+                        Value="{StaticResource PrimaryHueMidBrush}" />
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver"
+                             Value="True">
+                        <Setter Property="TextDecorations"
+                                Value="Underline" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
             <Style x:Key="LinkButton"
                    TargetType="Button">
                 <Setter Property="Foreground"
@@ -31,9 +45,25 @@
                         <ControlTemplate TargetType="{x:Type ButtonBase}">
                             <Border Background="Transparent"
                                     Cursor="Hand">
-                                <ContentControl IsTabStop="False"
-                                                Content="{TemplateBinding Content}" />
+                                <TextBlock Style="{StaticResource LinkText}"
+                                           Text="{TemplateBinding Content}" />
                             </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Cursor"
+                        Value="Hand" />
+            </Style>
+
+            <Style x:Key="BaseButton"
+                   TargetType="Button">
+                <Setter Property="Cursor"
+                        Value="Hand" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ButtonBase}">
+                            <ContentControl IsTabStop="False"
+                                            Content="{TemplateBinding Content}" />
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>

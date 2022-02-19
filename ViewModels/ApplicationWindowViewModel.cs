@@ -2,15 +2,17 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Catel;
 using Catel.MVVM;
 using Catel.Services;
 
 using Equality.Core.ViewModel;
+using Equality.Models;
 using Equality.Services;
 
 namespace Equality.ViewModels
 {
-    class ApplicationWindowViewModel : ViewModel
+    public class ApplicationWindowViewModel : ViewModel
     {
         protected IUIVisualizerService UIVisualizerService;
 
@@ -29,9 +31,19 @@ namespace Equality.ViewModels
 
         public override string Title => "Equality";
 
+        public enum Tab
+        {
+            Main,
+            Projects,
+            Team,
+            Project,
+        }
+
         #region Properties
 
-        public int ActiveTabIndex { get; set; }
+        public Tab ActiveTab { get; set; }
+
+        public Team SelectedTeam { get; set; }
 
         #endregion
 
@@ -57,18 +69,20 @@ namespace Equality.ViewModels
 
         #region Methods
 
-        private void OnActiveTabIndexChanged()
+        private void OnActiveTabChanged()
         {
-            switch (ActiveTabIndex) {
-                case 0:
+            switch (ActiveTab) {
+                case Tab.Main:
                 default:
                     NavigationService.Navigate<StartPageViewModel>();
                     break;
-                case 1:
+                case Tab.Projects:
                     NavigationService.Navigate<ProjectsPageViewModel>();
                     break;
-                case 2:
-                    NavigationService.Navigate<TeamPageViewModel>();
+                case Tab.Team:
+                    Argument.IsNotNull(nameof(SelectedTeam), SelectedTeam);
+
+                    NavigationService.Navigate<TeamPageViewModel>(new() { { "team", SelectedTeam } });
                     break;
             }
         }
@@ -79,7 +93,7 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            OnActiveTabIndexChanged();
+            OnActiveTabChanged();
         }
 
         protected override async Task CloseAsync()
