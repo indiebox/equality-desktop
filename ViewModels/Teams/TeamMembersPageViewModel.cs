@@ -25,13 +25,6 @@ namespace Equality.ViewModels
             NavigationCompleted += OnNavigated;
         }
 
-        private void OnNavigated(object sender, System.EventArgs e)
-        {
-            Team = NavigationContext.Values["team"] as Team;
-        }
-
-        public override string Title => "Equality";
-
         #region Properties
 
         public string FilterText { get; set; }
@@ -66,6 +59,13 @@ namespace Equality.ViewModels
             FilteredMembers.ReplaceRange(Members.Where(user => user.Name.ToLower().Contains(FilterText.ToLower())));
         }
 
+        private async void OnNavigated(object sender, System.EventArgs e)
+        {
+            Team = NavigationContext.Values["team"] as Team;
+
+            await LoadMembersAsync();
+        }
+
         protected async Task LoadMembersAsync()
         {
             try {
@@ -85,7 +85,7 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            await LoadMembersAsync();
+            // TODO: subscrive to events here
         }
 
         protected override async Task CloseAsync()
