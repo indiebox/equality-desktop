@@ -3,6 +3,8 @@
             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:converters="clr-namespace:Equality.Converters"
+            xmlns:viewmodels="clr-namespace:Equality.ViewModels"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:local="clr-namespace:Equality.Views"
@@ -45,30 +47,28 @@
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                                  BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                                  Margin="0"
-                                 IsChecked="True"
+                                 IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:TeamPageViewModel+Tab.Projects}}"
                                  Content="Проекты" />
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                                  BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                                  Margin="0"
-                                 IsChecked="False"
+                                 IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:TeamPageViewModel+Tab.Members}}"
                                  Content="Участники" />
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                                  BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                                  Margin="0"
-                                 IsChecked="False"
+                                 IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:TeamPageViewModel+Tab.Stats}}"
                                  Content="Статистика" />
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                                  BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                                  Margin="0"
-                                 IsChecked="False"
+                                 IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:TeamPageViewModel+Tab.Settings}}"
                                  Content="Настройки" />
                 </StackPanel>
             </StackPanel>
-            <Grid HorizontalAlignment="Stretch">
-                <Frame HorizontalAlignment="Stretch"
-                       VerticalAlignment="Stretch"
-                       Source="/Views/Teams/TeamMembersPage.xaml"></Frame>
-            </Grid>
+
+            <Frame HorizontalAlignment="Stretch"
+                   VerticalAlignment="Stretch"></Frame>
         </DockPanel>
     </Grid>
 </catel:Page>

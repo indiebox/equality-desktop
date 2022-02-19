@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
 
 using Catel.IoC;
 using Catel.MVVM;
 using Catel.MVVM.Views;
 using Catel.Services;
+using Catel.Windows;
 
 namespace Equality.Core.Extensions
 {
@@ -27,14 +31,17 @@ namespace Equality.Core.Extensions
             var viewManager = @this.GetDependencyResolver().Resolve<IViewManager>();
             var view = viewManager.GetViewsOfViewModel(viewModelContext)[0];
 
-            lock(_locker) {
-                var temp = App.Current.MainWindow;
-                App.Current.MainWindow = (System.Windows.Window)view;
+            var d = ((DependencyObject)view).FindVisualDescendant(e => e is Frame) as Frame;
 
-                @this.Navigate<TViewModelType>(parameters);
+            d.Navigate(new Uri(ResolveNavigationTarget(typeof(TViewModelType)), UriKind.RelativeOrAbsolute), parameters);
+            //lock (_locker) {
+            //    var temp = App.Current.MainWindow;
+            //    App.Current.MainWindow = (System.Windows.Window)view;
 
-                App.Current.MainWindow = temp;
-            }
+            //    @this.Navigate<TViewModelType>(parameters);
+
+            //    App.Current.MainWindow = temp;
+            //}
         }
 
         /// <summary>
@@ -55,6 +62,21 @@ namespace Equality.Core.Extensions
             var viewModel = viewModelManager.GetFirstOrDefaultInstance<TViewModelContextType>();
 
             Navigate<TViewModelType>(@this, viewModel, parameters);
+        }
+
+        /// <summary>
+        /// Resolves the navigation target.
+        /// </summary>
+        /// <param name="viewModelType">The view model type.</param>
+        /// <returns>The target to navigate to.</returns>
+        private static string ResolveNavigationTarget(Type viewModelType)
+        {
+            string navigationTarget = null;
+
+            var urlLocator = ServiceLocator.Default.ResolveType<IUrlLocator>();
+            navigationTarget = urlLocator.ResolveUrl(viewModelType);
+
+            return navigationTarget;
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class DesignTeamPageViewModel : TeamPageViewModel
     {
-        public DesignTeamPageViewModel() : base()
+        public DesignTeamPageViewModel() : base(null)
         {
             Team = new()
             {
