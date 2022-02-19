@@ -6,7 +6,6 @@ using Catel.Services;
 using Equality.Core.ViewModel;
 using Equality.Models;
 using Equality.Core.Extensions;
-using System.ComponentModel;
 
 namespace Equality.ViewModels
 {
