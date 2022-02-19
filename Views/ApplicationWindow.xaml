@@ -107,21 +107,6 @@
                             </DockPanel>
                         </TabItem.Header>
                     </TabItem>
-
-                    <!--<TabItem Width="80"
-                             Height="80">
-                        <TabItem.Header>
-                            <StackPanel Height="auto"
-                                        Width="auto">
-                                <materialDesign:PackIcon Kind="TestTube"
-                                                         Width="24"
-                                                         Height="24"
-                                                         HorizontalAlignment="Center" />
-                                <TextBlock Text="Test 1"
-                                           HorizontalAlignment="Center" />
-                            </StackPanel>
-                        </TabItem.Header>
-                    </TabItem>-->
                 </TabControl>
 
                 <Separator Grid.Row="1"
