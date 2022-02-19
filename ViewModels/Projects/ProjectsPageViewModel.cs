@@ -9,6 +9,7 @@ using Equality.Models;
 using Catel.Collections;
 using Equality.Services;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Equality.ViewModels
 {
@@ -24,11 +25,15 @@ namespace Equality.ViewModels
             TeamService = teamService;
 
             OpenCreateTeamWindow = new TaskCommand(OnOpenCreateTeamWindowExecute);
+            FilterProjects = new Command<Team>(OnFilterProjectsExecute);
+            ResetFilter = new Command(OnResetFilterExecute);
         }
 
         #region Properties
 
         public ObservableCollection<Team> Teams { get; set; } = new();
+
+        public ObservableCollection<Team> FilteredTeams { get; set; } = new();
 
         #endregion
 
@@ -47,6 +52,20 @@ namespace Equality.ViewModels
             }
         }
 
+        public Command<Team> FilterProjects { get; private set; }
+
+        private void OnFilterProjectsExecute(Team filterByTeam)
+        {
+            FilteredTeams.ReplaceRange(Teams.Where(team => team == filterByTeam));
+        }
+
+        public Command ResetFilter { get; private set; }
+
+        private void OnResetFilterExecute()
+        {
+            FilteredTeams.ReplaceRange(Teams);
+        }
+
         #endregion
 
         #region Methods
@@ -56,6 +75,7 @@ namespace Equality.ViewModels
             var response = await TeamService.GetTeamsAsync();
 
             Teams.AddRange(response.Object);
+            FilteredTeams.AddRange(Teams);
         }
 
         #endregion
