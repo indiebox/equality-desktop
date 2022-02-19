@@ -14,11 +14,20 @@ namespace Equality.ViewModels
 {
     public class TeamMembersPageViewModel : ViewModel
     {
+        protected Team Team;
+
         protected ITeamService TeamService;
 
         public TeamMembersPageViewModel(ITeamService teamService)
         {
             TeamService = teamService;
+
+            NavigationCompleted += OnNavigated;
+        }
+
+        private void OnNavigated(object sender, System.EventArgs e)
+        {
+            Team = NavigationContext.Values["team"] as Team;
         }
 
         public override string Title => "Equality";
@@ -60,7 +69,7 @@ namespace Equality.ViewModels
         protected async Task LoadMembersAsync()
         {
             try {
-                var response = await TeamService.GetMembersAsync(1);
+                var response = await TeamService.GetMembersAsync(Team);
 
                 Members.AddRange(response.Object);
 
