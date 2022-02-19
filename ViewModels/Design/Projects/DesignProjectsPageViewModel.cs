@@ -13,6 +13,8 @@ namespace Equality.ViewModels.Design
                 new Team() { Name = "Test 2"},
                 new Team() { Name = "Test 3"},
             });
+
+            FilteredTeams.AddRange(Teams);
         }
     }
 }

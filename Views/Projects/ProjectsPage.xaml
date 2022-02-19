@@ -1,16 +1,19 @@
-﻿<catel:Page x:Class="Equality.Views.ProjectsPage"
-            xmlns:catel="http://schemas.catelproject.com"
-            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-            xmlns:local="clr-namespace:Equality.Views"
-            xmlns:models="clr-namespace:Equality.Models"
-            mc:Ignorable="d"
-            xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
-            d:Background="{StaticResource MaterialDesignPaper}"
-            d:DataContext="{d:DesignInstance dvm:DesignProjectsPageViewModel, IsDesignTimeCreatable=True}">
+﻿<equality:Page xmlns:equality="clr-namespace:Equality.Core.MVVM"
+               x:Class="Equality.Views.ProjectsPage"
+               xmlns:catel="http://schemas.catelproject.com"
+               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:local="clr-namespace:Equality.Views"
+               xmlns:models="clr-namespace:Equality.Models"
+               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+               mc:Ignorable="d"
+               xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+               xmlns:converters="clr-namespace:Equality.Converters"
+               d:Background="{StaticResource MaterialDesignPaper}"
+               d:DataContext="{d:DesignInstance dvm:DesignProjectsPageViewModel, IsDesignTimeCreatable=True}">
     <Grid>
         <Border>
             <Border.Background>
@@ -20,6 +23,7 @@
         </Border>
         <Rectangle Fill="Black"
                    Opacity="0.5" />
+
         <DockPanel>
             <StackPanel Background="White"
                         Width="300">
@@ -29,6 +33,7 @@
                                  BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                                  Margin="4"
                                  IsChecked="True"
+                                 Command="{Binding ResetFilter}"
                                  Cursor="Hand"
                                  GroupName="FilterByTeams"
                                  HorizontalContentAlignment="Left">
@@ -41,6 +46,7 @@
                                        VerticalAlignment="Center" />
                         </StackPanel>
                     </RadioButton>
+
                     <DockPanel Margin="4,0,0,0"
                                LastChildFill="False">
                         <TextBlock DockPanel.Dock="Left"
@@ -54,7 +60,8 @@
                         </Button>
                     </DockPanel>
 
-                    <ItemsControl ItemsSource="{Binding Teams}">
+                    <ItemsControl ItemsSource="{Binding Teams}"
+                                  Focusable="False">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type models:Team}">
                                 <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
@@ -62,6 +69,8 @@
                                              GroupName="FilterByTeams"
                                              Margin="4"
                                              Cursor="Hand"
+                                             Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ProjectsPage}, Path=DataContext.FilterProjects}"
+                                             CommandParameter="{Binding}"
                                              HorizontalContentAlignment="Left">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -94,170 +103,84 @@
 
             <ScrollViewer DockPanel.Dock="Right">
                 <StackPanel Margin="0,0,0,30">
+                    <ItemsControl ItemsSource="{Binding FilteredTeams}"
+                                  Focusable="False">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type models:Team}">
+                                <StackPanel Background="White"
+                                            Margin="30,30,30,0">
+                                    <Button Style="{StaticResource BaseButton}"
+                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ProjectsPage}}, Path=DataContext.OpenTeamPage}"
+                                            CommandParameter="{Binding}"
+                                            Cursor="Hand">
+                                        <StackPanel Orientation="Horizontal"
+                                                    Cursor="Hand">
+                                            <Border CornerRadius="100"
+                                                    Width="50"
+                                                    Height="50"
+                                                    Margin="10">
+                                                <Border.Background>
+                                                    <ImageBrush Stretch="UniformToFill"
+                                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
+                                                </Border.Background>
+                                            </Border>
+                                            <TextBlock FontSize="16"
+                                                       TextAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       Style="{StaticResource LinkText}"
+                                                       Text="{Binding Name}" />
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Grid TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
+                                          Margin="24,8,24,16">
+                                        <WrapPanel Orientation="Horizontal">
+                                            <Border Margin="10">
+                                                <Border.Background>
+                                                    <ImageBrush Stretch="UniformToFill"
+                                                                ImageSource="/Resources/Images/BackgroundImage.jpg" />
+                                                </Border.Background>
+                                                <Grid Width="384"
+                                                      Height="216">
+                                                    <Rectangle Fill="Black"
+                                                               Opacity="0.5" />
+                                                    <TextBlock HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"
+                                                               FontSize="16"
+                                                               Foreground="White"><Run Text="Progect I" /></TextBlock>
+                                                </Grid>
+                                            </Border>
+                                            <Border Margin="10"
+                                                    Width="384"
+                                                    Height="216">
+                                                <Border.Background>
+                                                    <ImageBrush Stretch="UniformToFill"
+                                                                ImageSource="/Resources/Images/BackgroundImage.jpg" />
+                                                </Border.Background>
+                                                <Grid>
+                                                    <Rectangle Fill="Black"
+                                                               Opacity="0.5" />
+                                                    <TextBlock HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"
+                                                               FontSize="16"
+                                                               Foreground="White"><Run Text="Progect II" /></TextBlock>
+                                                </Grid>
+                                            </Border>
+                                        </WrapPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
                     <StackPanel Background="White"
-                                Margin="30,30,30,0">
-                        <StackPanel Orientation="Horizontal">
-                            <Border CornerRadius="100"
-                                    Width="50"
-                                    Height="50"
-                                    Margin="10">
-                                <Border.Background>
-                                    <ImageBrush Stretch="UniformToFill"
-                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
-                                </Border.Background>
-                            </Border>
-                            <TextBlock FontSize="16"
-                                       TextAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Foreground="Black"><Run Text="Indie Box" /></TextBlock>
-                        </StackPanel>
-                        <Grid TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
-                              Margin="24,8,24,16">
-                            <WrapPanel Orientation="Horizontal">
-                                <Border Margin="10">
-                                    <Border.Background>
-                                        <ImageBrush Stretch="UniformToFill"
-                                                    ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                    </Border.Background>
-                                    <Grid Width="384"
-                                          Height="216">
-                                        <Rectangle Fill="Black"
-                                                   Opacity="0.5" />
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   FontSize="16"
-                                                   Foreground="White"><Run Text="Progect I" /></TextBlock>
-                                    </Grid>
-                                </Border>
-                                <Border Margin="10"
-                                        Width="384"
-                                        Height="216">
-                                    <Border.Background>
-                                        <ImageBrush Stretch="UniformToFill"
-                                                    ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                    </Border.Background>
-                                    <Grid>
-                                        <Rectangle Fill="Black"
-                                                   Opacity="0.5" />
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   FontSize="16"
-                                                   Foreground="White"><Run Text="Progect II" /></TextBlock>
-                                    </Grid>
-                                </Border>
-                            </WrapPanel>
-                        </Grid>
-                    </StackPanel>
-                    <StackPanel Background="White"
-                                Margin="30,30,30,0">
-                        <StackPanel Orientation="Horizontal">
-                            <Border CornerRadius="100"
-                                    Width="50"
-                                    Height="50"
-                                    Margin="10">
-                                <Border.Background>
-                                    <ImageBrush Stretch="UniformToFill"
-                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
-                                </Border.Background>
-                            </Border>
-                            <TextBlock FontSize="16"
-                                       TextAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Foreground="Black"><Run Text="Indie Box" /></TextBlock>
-                        </StackPanel>
-                        <Grid TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
-                              Margin="24,8,24,16">
-                            <WrapPanel Orientation="Horizontal">
-                                <Border Margin="10">
-                                    <Border.Background>
-                                        <ImageBrush Stretch="UniformToFill"
-                                                    ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                    </Border.Background>
-                                    <Grid Width="384"
-                                          Height="216">
-                                        <Rectangle Fill="Black"
-                                                   Opacity="0.5" />
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   FontSize="16"
-                                                   Foreground="White"><Run Text="Progect I" /></TextBlock>
-                                    </Grid>
-                                </Border>
-                                <Border Margin="10"
-                                        Width="384"
-                                        Height="216">
-                                    <Border.Background>
-                                        <ImageBrush Stretch="UniformToFill"
-                                                    ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                    </Border.Background>
-                                    <Grid>
-                                        <Rectangle Fill="Black"
-                                                   Opacity="0.5" />
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   FontSize="16"
-                                                   Foreground="White"><Run Text="Progect II" /></TextBlock>
-                                    </Grid>
-                                </Border>
-                            </WrapPanel>
-                        </Grid>
-                    </StackPanel>
-                    <StackPanel Background="White"
-                                Margin="30,30,30,0">
-                        <StackPanel Orientation="Horizontal">
-                            <Border CornerRadius="100"
-                                    Width="50"
-                                    Height="50"
-                                    Margin="10">
-                                <Border.Background>
-                                    <ImageBrush Stretch="UniformToFill"
-                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
-                                </Border.Background>
-                            </Border>
-                            <TextBlock FontSize="16"
-                                       TextAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Foreground="Black"><Run Text="Indie Box" /></TextBlock>
-                        </StackPanel>
-                        <Grid TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
-                              Margin="24,8,24,16">
-                            <WrapPanel Orientation="Horizontal">
-                                <Border Margin="10">
-                                    <Border.Background>
-                                        <ImageBrush Stretch="UniformToFill"
-                                                    ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                    </Border.Background>
-                                    <Grid Width="384"
-                                          Height="216">
-                                        <Rectangle Fill="Black"
-                                                   Opacity="0.5" />
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   FontSize="16"
-                                                   Foreground="White"><Run Text="Progect I" /></TextBlock>
-                                    </Grid>
-                                </Border>
-                                <Border Margin="10"
-                                        Width="384"
-                                        Height="216">
-                                    <Border.Background>
-                                        <ImageBrush Stretch="UniformToFill"
-                                                    ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                    </Border.Background>
-                                    <Grid>
-                                        <Rectangle Fill="Black"
-                                                   Opacity="0.5" />
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   FontSize="16"
-                                                   Foreground="White"><Run Text="Progect II" /></TextBlock>
-                                    </Grid>
-                                </Border>
-                            </WrapPanel>
-                        </Grid>
+                                Margin="30,30,30,0"
+                                Visibility="{Binding FilteredTeams.Count, Converter={converters:IntToCollapsingVisibilityConverter}, ConverterParameter=True}">
+                        <TextBlock FontSize="18"
+                                   Padding="30">Вы не состоите ни в одной команде.</TextBlock>
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>
         </DockPanel>
     </Grid>
-</catel:Page>
+</equality:Page>

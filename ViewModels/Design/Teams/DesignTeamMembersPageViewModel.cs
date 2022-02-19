@@ -8,13 +8,13 @@ namespace Equality.ViewModels
     {
         public DesignTeamMembersPageViewModel() : base(null)
         {
-            FilteredMembers.AddRange(new TeamMember[] {
-                new TeamMember() { Name = "user1", JoinedAt = System.DateTime. },
-                new TeamMember() { Name = "user2", JoinedAt = System.DateTime.Now.AddDays(-1).AddHours(-2) },
-                new TeamMember() { Name = "user3", JoinedAt = System.DateTime.Now.AddDays(-2).AddHours(-3) },
-                new TeamMember() { Name = "Пользователь 4", JoinedAt = System.DateTime.Now.AddDays(-2).AddHours(-4) },
-                new TeamMember() { Name = "Пользователь 5", JoinedAt = System.DateTime.Now.AddDays(-3).AddHours(-5) },
-            });
+            //Members.AddRange(new User[] {
+            //    new User() { Name = "user1" },
+            //    new User() { Name = "user2" },
+            //    new User() { Name = "user3" },
+            //    new User() { Name = "Пользователь 4" },
+            //    new User() { Name = "Пользователь 5" },
+            //});
         }
     }
 }
