@@ -8,8 +8,10 @@
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:local="clr-namespace:Equality.Views"
                xmlns:models="clr-namespace:Equality.Models"
+               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
                mc:Ignorable="d"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+               xmlns:converters="clr-namespace:Equality.Converters"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DataContext="{d:DesignInstance dvm:DesignProjectsPageViewModel, IsDesignTimeCreatable=True}">
     <Grid>
@@ -170,6 +172,13 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+
+                    <StackPanel Background="White"
+                                Margin="30,30,30,0"
+                                Visibility="{Binding FilteredTeams.Count, Converter={converters:IntToCollapsingVisibilityConverter}, ConverterParameter=True}">
+                        <TextBlock FontSize="18"
+                                   Padding="30">Вы не состоите ни в одной команде.</TextBlock>
+                    </StackPanel>
                 </StackPanel>
             </ScrollViewer>
         </DockPanel>

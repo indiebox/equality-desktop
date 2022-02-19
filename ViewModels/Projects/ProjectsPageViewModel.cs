@@ -16,6 +16,8 @@ namespace Equality.ViewModels
 {
     public class ProjectsPageViewModel : ViewModel
     {
+        public bool IsFiltered = false;
+
         protected IUIVisualizerService UIVisualizerService;
 
         protected ITeamService TeamService;
@@ -51,6 +53,10 @@ namespace Equality.ViewModels
 
             if (teamStorage.ContainsKey("Team")) {
                 Teams.Add(teamStorage["Team"]);
+
+                if (!IsFiltered) {
+                    FilteredTeams.Add(teamStorage["Team"]);
+                }
             }
         }
 
@@ -68,6 +74,8 @@ namespace Equality.ViewModels
 
         private void OnFilterProjectsExecute(Team filterByTeam)
         {
+            IsFiltered = true;
+
             FilteredTeams.ReplaceRange(Teams.Where(team => team == filterByTeam));
         }
 
@@ -75,6 +83,8 @@ namespace Equality.ViewModels
 
         private void OnResetFilterExecute()
         {
+            IsFiltered = false;
+
             FilteredTeams.ReplaceRange(Teams);
         }
 
