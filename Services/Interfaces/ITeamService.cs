@@ -50,5 +50,22 @@ namespace Equality.Services
         /// <inheritdoc cref="GetMembersAsync(Team)"/>
         /// <param name="teamId">The team id.</param>
         public Task<ApiResponseMessage<TeamMember[]>> GetMembersAsync(ulong teamId);
+
+        /// <summary>
+        /// Sends the leave team request to the API.
+        /// </summary>
+        /// <param name="team">The team.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage> LeaveTeamAsync(Team team);
+
+        /// <inheritdoc cref="LeaveTeamAsync(Team)"/>
+        /// <param name="teamId">The team id.</param>
+        public Task<ApiResponseMessage> LeaveTeamAsync(ulong teamId);
     }
 }

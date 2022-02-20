@@ -68,6 +68,16 @@ namespace Equality.Services
             return new(members, response);
         }
 
+        public Task<ApiResponseMessage> LeaveTeamAsync(Team team) => LeaveTeamAsync(team.Id);
+
+        public async Task<ApiResponseMessage> LeaveTeamAsync(ulong teamId)
+        {
+            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
+            Argument.IsNotNull(nameof(teamId), teamId);
+
+            return await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync($"teams/{teamId}/leave");
+        }
+
         /// <summary>
         /// Deserializes the JToken to the <c>TeamMember[]</c>.
         /// </summary>
