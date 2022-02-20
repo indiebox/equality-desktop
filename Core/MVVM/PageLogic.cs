@@ -13,6 +13,11 @@ namespace Equality.Core.MVVM
 
         protected async override void OnNavigatingAwayFromPage(NavigatingEventArgs e)
         {
+            if (e.NavigationMode == NavigationMode.Refresh) {
+                e.Cancel = true;
+                return;
+            }
+
             base.OnNavigatingAwayFromPage(e);
 
             // We revert base cancellation of navigation if there are validation errors and close a view model.
