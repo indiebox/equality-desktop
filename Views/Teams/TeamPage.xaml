@@ -33,7 +33,8 @@
                             Background="Transparent">
                     <materialDesign:Flipper Height="100"
                                             Width="100"
-                                            materialDesign:ShadowAssist.ShadowDepth="Depth0">
+                                            materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                                            Margin="0,30,0,0">
                         <materialDesign:Flipper.Style>
                             <Style TargetType="materialDesign:Flipper">
                                 <Style.Triggers>
