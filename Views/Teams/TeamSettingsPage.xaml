@@ -11,76 +11,152 @@
                d:Background="{StaticResource MaterialDesignPaper}"
                mc:Ignorable="d">
 
-    <DockPanel>
-        <StackPanel Orientation="Vertical"
-                    Background="WhiteSmoke"
-                    Width="Auto">
-            <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                         BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                         Margin="4"
-                         IsChecked="True"
-                         HorizontalContentAlignment="Left">
-                <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="FormTextbox"
-                                             VerticalAlignment="Center" />
-                    <TextBlock Margin="4 0 0 0"
-                               FontSize="16"
-                               Text="Общие" />
+    <StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            <StackPanel Margin="20,20,20,20"
+                        Background="White"
+                        Width="150"
+                        Height="300"
+                        VerticalAlignment="Top">
+                <StackPanel Orientation="Vertical"
+                            Width="Auto"
+                            DockPanel.Dock="Left"
+                            Background="White">
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                 Margin="4"
+                                 IsChecked="True"
+                                 HorizontalContentAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="FormTextbox"
+                                                     VerticalAlignment="Center" />
+                            <TextBlock Margin="4 0 0 0"
+                                       FontSize="16"
+                                       Text="Общие" />
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                 Margin="4"
+                                 IsChecked="True"
+                                 HorizontalContentAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="FormTextbox"
+                                                     VerticalAlignment="Center" />
+                            <TextBlock Margin="4 0 0 0"
+                                       FontSize="16"
+                                       Text="Общие" />
+                        </StackPanel>
+                    </RadioButton>
                 </StackPanel>
-            </RadioButton>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Left"
+                        Margin="0,20,20,20">
+                <StackPanel Background="White"
+                            HorizontalAlignment="Center">
+                    <StackPanel Background="White">
+                        <TextBlock Margin="20"
+                                   FontSize="24"
+                                   HorizontalAlignment="Left">Основное</TextBlock>
+                        <Label Margin="20,0,20,0"
+                               FontSize="16">_Название команды</Label>
+                        <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
+                                 Width="500"
+                                 AcceptsReturn="False"
+                                 materialDesign:HintAssist.Hint="Введите название команды"
+                                 materialDesign:HintAssist.IsFloating="False"
+                                 Margin="20,0,20,30"
+                                 FontSize="16"
+                                 TabIndex="0"
+                                 materialDesign:ValidationAssist.FontSize="14"
+                                 Cursor="IBeam"
+                                 HorizontalAlignment="Center">
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Margin="20,0,20,0"
+                               FontSize="16">Ссылка</Label>
+                        <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
+                                 Width="500"
+                                 AcceptsReturn="False"
+                                 materialDesign:HintAssist.Hint="Вставьте ссылку"
+                                 materialDesign:HintAssist.IsFloating="False"
+                                 Margin="20,0,20,30"
+                                 FontSize="16"
+                                 TabIndex="0"
+                                 materialDesign:ValidationAssist.FontSize="14"
+                                 Cursor="IBeam"
+                                 HorizontalAlignment="Center">
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Margin="20,0,20,0"
+                               FontSize="16">Ссылка</Label>
+                        <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
+                                 Width="500"
+                                 AcceptsReturn="False"
+                                 materialDesign:HintAssist.Hint="Вставьте ссылку"
+                                 materialDesign:HintAssist.IsFloating="False"
+                                 Margin="20,0,20,30"
+                                 FontSize="16"
+                                 TabIndex="0"
+                                 materialDesign:ValidationAssist.FontSize="14"
+                                 Cursor="IBeam"
+                                 HorizontalAlignment="Center">
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Margin="20,0,20,0"
+                               FontSize="16">Ссылка</Label>
+                        <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
+                                 Width="500"
+                                 AcceptsReturn="False"
+                                 materialDesign:HintAssist.Hint="Вставьте ссылку"
+                                 materialDesign:HintAssist.IsFloating="False"
+                                 Margin="20,0,20,30"
+                                 FontSize="16"
+                                 TabIndex="0"
+                                 materialDesign:ValidationAssist.FontSize="14"
+                                 Cursor="IBeam"
+                                 HorizontalAlignment="Center">
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Margin="20,0,20,0"
+                               FontSize="16">_Описание команды</Label>
+                        <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 materialDesign:HintAssist.IsFloating="False"
+                                 Margin="20,0,20,30"
+                                 TextWrapping="Wrap"
+                                 Width="500"
+                                 FontSize="16"
+                                 VerticalScrollBarVisibility="Auto"
+                                 materialDesign:HintAssist.Hint="Введите описание команды"
+                                 HorizontalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Margin="20,0,20,0"
+                               FontSize="16">Ссылка</Label>
+                        <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
+                                 Width="500"
+                                 AcceptsReturn="False"
+                                 materialDesign:HintAssist.Hint="Вставьте ссылку"
+                                 materialDesign:HintAssist.IsFloating="False"
+                                 Margin="20,0,20,30"
+                                 FontSize="16"
+                                 TabIndex="0"
+                                 materialDesign:ValidationAssist.FontSize="14"
+                                 Cursor="IBeam"
+                                 HorizontalAlignment="Center">
+                        </TextBox>
+                    </StackPanel>
+                    <Button Margin="20,0,20,30"
+                            HorizontalAlignment="Center"
+                            Width="500">Сохранить</Button>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
-        <StackPanel Margin="20"
-                    Background="White">
-            <StackPanel>
-                <Label Margin="20,0,20,0"
-                       FontSize="16">_Название команды</Label>
-                <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
-                         Width="500"
-                         AcceptsReturn="False"
-                         materialDesign:HintAssist.Hint="Введите название команды"
-                         materialDesign:HintAssist.IsFloating="False"
-                         Margin="20,0,20,30"
-                         FontSize="16"
-                         TabIndex="0"
-                         materialDesign:ValidationAssist.FontSize="14"
-                         Cursor="IBeam"
-                         HorizontalAlignment="Left">
-                </TextBox>
-            </StackPanel>
-            <StackPanel>
-                <Label Margin="20,0,20,0"
-                       FontSize="16">_Описание команды</Label>
-                <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         materialDesign:HintAssist.IsFloating="False"
-                         Margin="20,0,20,30"
-                         TextWrapping="Wrap"
-                         Width="500"
-                         FontSize="16"
-                         VerticalScrollBarVisibility="Auto"
-                         materialDesign:HintAssist.Hint="Введите описание команды"
-                         HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel>
-                <Label Margin="20,0,20,0"
-                       FontSize="16">Ссылка</Label>
-                <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
-                         Width="500"
-                         AcceptsReturn="False"
-                         materialDesign:HintAssist.Hint="Вставьте ссылку"
-                         materialDesign:HintAssist.IsFloating="False"
-                         Margin="20,0,20,30"
-                         FontSize="16"
-                         TabIndex="0"
-                         materialDesign:ValidationAssist.FontSize="14"
-                         Cursor="IBeam"
-                         HorizontalAlignment="Left">
-                </TextBox>
-            </StackPanel>
-            <Button Margin="20,0,20,30"
-                    HorizontalAlignment="Left"
-                    Width="500">Сохранить</Button>
-        </StackPanel>
-
-    </DockPanel>
+    </StackPanel>
 
 </equality:Page>
