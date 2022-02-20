@@ -27,46 +27,47 @@
         <DockPanel HorizontalAlignment="Stretch">
             <StackPanel Background="WhiteSmoke"
                         DockPanel.Dock="Top">
-                <materialDesign:Flipper Height="100"
-                                        Width="100"
-                                        materialDesign:ShadowAssist.ShadowDepth="Depth0">
-                    <materialDesign:Flipper.FrontContent>
-                        <Grid Height="100"
-                              Width="100">
-                            <Button Width="100"
-                                    Height="100"
-                                    ClickMode="Hover"
-                                    Command="{x:Static materialDesign:Flipper.FlipCommand}">
+                <StackPanel x:Name="FlipperWrapper"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Background="Transparent">
+                    <materialDesign:Flipper Height="100"
+                                            Width="100"
+                                            materialDesign:ShadowAssist.ShadowDepth="Depth0">
+                        <materialDesign:Flipper.Style>
+                            <Style TargetType="materialDesign:Flipper">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=FlipperWrapper}"
+                                                 Value="True">
+                                        <Setter Property="IsFlipped"
+                                                Value="True" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </materialDesign:Flipper.Style>
+
+                        <materialDesign:Flipper.FrontContent>
+                            <Grid>
                                 <Image Source="/Resources/Images/TeamLogo.jpg"
                                        Margin="0">
-
                                 </Image>
-                            </Button>
-                        </Grid>
-                    </materialDesign:Flipper.FrontContent>
-                    <materialDesign:Flipper.BackContent>
-                        <Grid>
-                            <StackPanel Width="100"
-                                        Height="100">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="MouseLeave">
-                                        <catel1:EventToCommand Command="{x:Static materialDesign:Flipper.FlipCommand}"
-                                                               DisableAssociatedObjectOnCannotExecute="False" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition></RowDefinition>
-                                        <RowDefinition></RowDefinition>
-                                    </Grid.RowDefinitions>
+                            </Grid>
+                        </materialDesign:Flipper.FrontContent>
 
-                                    <Button Grid.Row="0">Изменить</Button>
-                                    <Button Grid.Row="1">Удалить</Button>
-                                </Grid>
-                            </StackPanel>
-                        </Grid>
-                    </materialDesign:Flipper.BackContent>
-                </materialDesign:Flipper>
+                        <materialDesign:Flipper.BackContent>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <Button Grid.Row="0">Изменить</Button>
+                                <Button Grid.Row="1">Удалить</Button>
+                            </Grid>
+                        </materialDesign:Flipper.BackContent>
+                    </materialDesign:Flipper>
+                </StackPanel>
+
                 <TextBlock HorizontalAlignment="Center"
                            FontSize="27"
                            Foreground="Black"
