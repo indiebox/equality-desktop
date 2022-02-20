@@ -85,7 +85,7 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            // TODO: subscrive to events here
+            // TODO: subscribe to events here
         }
 
         protected override async Task CloseAsync()

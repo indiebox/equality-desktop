@@ -6,14 +6,14 @@ namespace Equality.Core.MVVM
     {
         private readonly object _locker = new();
 
-        public static Frame TemporaryNagivationRoot = null;
+        public static Frame TemporaryNavigationRoot = null;
 
         public override object GetNavigationRoot()
         {
             lock (_locker) {
-                if (TemporaryNagivationRoot != null) {
-                    var root = TemporaryNagivationRoot;
-                    TemporaryNagivationRoot = null;
+                if (TemporaryNavigationRoot != null) {
+                    var root = TemporaryNavigationRoot;
+                    TemporaryNavigationRoot = null;
 
                     return root;
                 }
