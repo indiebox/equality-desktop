@@ -1,0 +1,98 @@
+﻿<catel:UserControl x:Class="Equality.Views.LeaveTeamDialog"
+                   xmlns:catel="http://schemas.catelproject.com"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                   xmlns:local="clr-namespace:Equality.Views"
+                   xmlns:system="clr-namespace:System;assembly=System.Runtime"
+                   xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+                   TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+                   Background="{DynamicResource MaterialDesignPaper}"
+                   FontSize="16"
+                   mc:Ignorable="d"
+                   d:DataContext="{d:DesignInstance Type=dvm:DesignLeaveTeamDialogViewModel, IsDesignTimeCreatable=True}">
+    <Grid VerticalAlignment="Center"
+          HorizontalAlignment="Center"
+          Margin="30">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0"
+                    Grid.ColumnSpan="3"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    MaxWidth="500">
+            <TextBlock TextAlignment="Center"
+                       TextWrapping="Wrap">Вы уверены, что хотите покинуть команду?</TextBlock>
+            <TextBlock TextAlignment="Center"
+                       TextWrapping="Wrap">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLastMember}"
+                                         Value="False">
+                                <Setter Property="Text"
+                                        Value="Вы сможете вернуться в команду только по приглашению." />
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding IsLastMember}"
+                                         Value="True">
+                                <Setter Property="Text"
+                                        Value="Вы последний участник команды, поэтому команда будет удалена без возможности восстановления!" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </StackPanel>
+
+        <DockPanel Grid.Row="1"
+                   Grid.Column="1"
+                   Margin="0,30,0,0">
+            <Button DockPanel.Dock="Left"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                <Button.CommandParameter>
+                    <system:Boolean>True</system:Boolean>
+                </Button.CommandParameter>
+
+                <Button.Style>
+                    <Style TargetType="Button"
+                           BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLastMember}"
+                                         Value="True">
+                                <Setter Property="Content"
+                                        Value="Покинуть и удалить" />
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding IsLastMember}"
+                                         Value="False">
+                                <Setter Property="Content"
+                                        Value="Покинуть" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button DockPanel.Dock="Right"
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    HorizontalAlignment="Right"
+                    Content="Отмена"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                <Button.CommandParameter>
+                    <system:Boolean>False</system:Boolean>
+                </Button.CommandParameter>
+            </Button>
+        </DockPanel>
+    </Grid>
+</catel:UserControl>
