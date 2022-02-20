@@ -1,42 +1,29 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Collections;
-using Catel.Data;
-using Catel.MVVM;
 
 using Equality.Core.ViewModel;
 using Equality.Models;
+using Equality.Services;
 
 namespace Equality.ViewModels
 {
     public class TeamMembersPageViewModel : ViewModel
     {
-        public TeamMembersPageViewModel()
+        protected Team Team;
+
+        protected ITeamService TeamService;
+
+        public TeamMembersPageViewModel(ITeamService teamService)
         {
-            Members.AddRange(new User[] {
-                new User() { Name = "user1" },
-                new User() { Name = "user2" },
-                new User() { Name = "user3" },
-                new User() { Name = "Пользователь 4" },
-                new User() { Name = "Пользователь 5" },
-                new User() { Name = "user1" },
-                new User() { Name = "user2" },
-                new User() { Name = "user3" },
-                new User() { Name = "Пользователь 4" },
-                new User() { Name = "Пользователь 5" },
-                new User() { Name = "user1" },
-                new User() { Name = "user2" },
-                new User() { Name = "user3" },
-                new User() { Name = "Пользователь 4" },
-                new User() { Name = "Пользователь 5" },
-            });
+            TeamService = teamService;
 
-            FilterMembers();
+            NavigationCompleted += OnNavigated;
         }
-
-        public override string Title => "Equality";
 
         #region Properties
 
@@ -47,9 +34,9 @@ namespace Equality.ViewModels
             FilterMembers();
         }
 
-        public ObservableCollection<User> Members { get; set; } = new();
+        public ObservableCollection<TeamMember> Members { get; set; } = new();
 
-        public ObservableCollection<User> FilteredMembers { get; set; } = new();
+        public ObservableCollection<TeamMember> FilteredMembers { get; set; } = new();
 
         #endregion
 
@@ -69,7 +56,27 @@ namespace Equality.ViewModels
                 return;
             }
 
-            FilteredMembers.ReplaceRange(Members.Where(user => user.Name.Contains(FilterText)));
+            FilteredMembers.ReplaceRange(Members.Where(user => user.Name.ToLower().Contains(FilterText.ToLower())));
+        }
+
+        private async void OnNavigated(object sender, System.EventArgs e)
+        {
+            Team = NavigationContext.Values["team"] as Team;
+
+            await LoadMembersAsync();
+        }
+
+        protected async Task LoadMembersAsync()
+        {
+            try {
+                var response = await TeamService.GetMembersAsync(Team);
+
+                Members.AddRange(response.Object);
+
+                FilterMembers();
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
         }
 
         #endregion
@@ -77,10 +84,6 @@ namespace Equality.ViewModels
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-
-            StateManager.CurrentUser = new() { Id = 1, Name = "admin" };
-
-            Members.Insert(0, StateManager.CurrentUser);
 
             // TODO: subscribe to events here
         }

@@ -38,6 +38,7 @@ namespace Equality.Core.Extensions
                     _registeredUris.Add(fullName, uri);
                 }
 
+                Core.MVVM.NavigationRootService.TemporaryNavigationRoot = viewContext;
                 viewContext.Navigate(new Uri(uri, UriKind.RelativeOrAbsolute), parameters);
             }
         }
@@ -71,6 +72,7 @@ namespace Equality.Core.Extensions
                 var view = ResolveView(viewModelContext);
                 var viewContext = ((DependencyObject)view).FindVisualDescendant(e => e is Frame) as Frame;
 
+                Core.MVVM.NavigationRootService.TemporaryNavigationRoot = viewContext;
                 viewContext.GoBack();
             }
         }
@@ -99,7 +101,8 @@ namespace Equality.Core.Extensions
                 var view = ResolveView(viewModelContext);
                 var viewContext = ((DependencyObject)view).FindVisualDescendant(e => e is Frame) as Frame;
 
-                viewContext.GoBack();
+                Core.MVVM.NavigationRootService.TemporaryNavigationRoot = viewContext;
+                viewContext.GoForward();
             }
         }
 
