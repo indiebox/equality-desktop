@@ -1,17 +1,28 @@
 ﻿using System.Threading.Tasks;
 
-using Catel.IoC;
-using Catel.Services;
-
 using Equality.Core.ViewModel;
 
 namespace Equality.ViewModels
 {
-    class TeamPageViewModel : ViewModel
+    public class TeamSettingsPageViewModel : ViewModel
     {
-        public TeamPageViewModel()
+        public TeamSettingsPageViewModel()
         {
         }
+
+        public override string Title => "View model title";
+
+        #region Properties
+
+
+
+        #endregion
+
+        #region Commands
+
+
+
+        #endregion
 
         protected override async Task InitializeAsync()
         {

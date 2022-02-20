@@ -12,7 +12,9 @@
             xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
             d:Background="{StaticResource MaterialDesignPaper}"
             d:DataContext="{d:DesignInstance dvm:DesignTeamPageViewModel, IsDesignTimeCreatable=True}"
-            Title="TeamPage">
+            Title="TeamPage"
+            xmlns:catel1="http://schemas.catelproject.com"
+            xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
     <Grid>
         <Border>
             <Border.Background>
@@ -25,15 +27,46 @@
         <DockPanel HorizontalAlignment="Stretch">
             <StackPanel Background="WhiteSmoke"
                         DockPanel.Dock="Top">
-                <Border CornerRadius="10,10,10,10"
-                        Margin="0,30,0,0"
-                        Width="100"
-                        Height="100">
-                    <Border.Background>
-                        <ImageBrush Stretch="UniformToFill"
-                                    ImageSource="/Resources/Images/TeamLogo.jpg" />
-                    </Border.Background>
-                </Border>
+                <materialDesign:Flipper Height="100"
+                                        Width="100"
+                                        materialDesign:ShadowAssist.ShadowDepth="Depth0">
+                    <materialDesign:Flipper.FrontContent>
+                        <Grid Height="100"
+                              Width="100">
+                            <Button Width="100"
+                                    Height="100"
+                                    ClickMode="Hover"
+                                    Command="{x:Static materialDesign:Flipper.FlipCommand}">
+                                <Image Source="/Resources/Images/TeamLogo.jpg"
+                                       Margin="0">
+
+                                </Image>
+                            </Button>
+                        </Grid>
+                    </materialDesign:Flipper.FrontContent>
+                    <materialDesign:Flipper.BackContent>
+                        <Grid>
+                            <StackPanel Width="100"
+                                        Height="100">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeave">
+                                        <catel1:EventToCommand Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                                               DisableAssociatedObjectOnCannotExecute="False" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+
+                                    <Button Grid.Row="0">Изменить</Button>
+                                    <Button Grid.Row="1">Удалить</Button>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </materialDesign:Flipper.BackContent>
+                </materialDesign:Flipper>
                 <TextBlock HorizontalAlignment="Center"
                            FontSize="27"
                            Foreground="Black"
@@ -66,7 +99,7 @@
             <Grid HorizontalAlignment="Stretch">
                 <Frame HorizontalAlignment="Stretch"
                        VerticalAlignment="Stretch"
-                       Source="/Views/Teams/TeamMembersPage.xaml"></Frame>
+                       Source="/Views/Teams/TeamSettingsPage.xaml"></Frame>
             </Grid>
         </DockPanel>
     </Grid>
