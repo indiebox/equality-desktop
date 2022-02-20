@@ -5,10 +5,14 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Collections;
+using Catel.MVVM;
 
+using Equality.Core.Helpers;
 using Equality.Core.ViewModel;
 using Equality.Models;
 using Equality.Services;
+
+using MaterialDesignThemes.Wpf;
 
 namespace Equality.ViewModels
 {
@@ -22,17 +26,14 @@ namespace Equality.ViewModels
         {
             TeamService = teamService;
 
+            ShowDialog = new TaskCommand(OnShowDialogExecute);
+
             NavigationCompleted += OnNavigated;
         }
 
         #region Properties
 
         public string FilterText { get; set; }
-
-        private void OnFilterTextChanged()
-        {
-            FilterMembers();
-        }
 
         public ObservableCollection<TeamMember> Members { get; set; } = new();
 
@@ -42,28 +43,32 @@ namespace Equality.ViewModels
 
         #region Commands
 
+        public TaskCommand ShowDialog { get; private set; }
 
+        private async Task OnShowDialogExecute()
+        {
+            var view = MvvmHelper.CreateViewWithViewModel<LeaveTeamDialogViewModel>(Members.Count == 1);
+            bool result = (bool)await DialogHost.Show(view);
+
+            if (result) {
+                await LeaveTeam();
+            }
+        }
 
         #endregion
 
         #region Methods
-
-        protected void FilterMembers()
-        {
-            if (string.IsNullOrEmpty(FilterText)) {
-                FilteredMembers.ReplaceRange(Members);
-
-                return;
-            }
-
-            FilteredMembers.ReplaceRange(Members.Where(user => user.Name.ToLower().Contains(FilterText.ToLower())));
-        }
 
         private async void OnNavigated(object sender, System.EventArgs e)
         {
             Team = NavigationContext.Values["team"] as Team;
 
             await LoadMembersAsync();
+        }
+
+        private void OnFilterTextChanged()
+        {
+            FilterMembers();
         }
 
         protected async Task LoadMembersAsync()
@@ -77,6 +82,30 @@ namespace Equality.ViewModels
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
+        }
+
+        protected async Task LeaveTeam()
+        {
+            try {
+                await TeamService.LeaveTeamAsync(Team);
+
+                var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
+                vm.ActiveTab = ApplicationWindowViewModel.Tab.Main;
+                vm.SelectedTeam = null;
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+        }
+
+        protected void FilterMembers()
+        {
+            if (string.IsNullOrEmpty(FilterText)) {
+                FilteredMembers.ReplaceRange(Members);
+
+                return;
+            }
+
+            FilteredMembers.ReplaceRange(Members.Where(user => user.Name.ToLower().Contains(FilterText.ToLower())));
         }
 
         #endregion

@@ -8,10 +8,8 @@
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
-               xmlns:local="clr-namespace:Equality.Models"
-               xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
-               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
-               d:DataContext="{d:DesignInstance Type=viewmodels:DesignTeamMembersPageViewModel, IsDesignTimeCreatable=True}"
+               xmlns:local="clr-namespace:Equality.Views"
+               d:DataContext="{d:DesignInstance Type=dvm:DesignTeamMembersPageViewModel, IsDesignTimeCreatable=True}"
                d:Background="WhiteSmoke"
                d:DesignHeight="600"
                d:DesignWidth="1000"
@@ -48,6 +46,7 @@
                 </StackPanel>
             </RadioButton>
         </StackPanel>
+
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -116,56 +115,68 @@
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <DockPanel>
-                            <StackPanel DockPanel.Dock="Left"
-                                        Orientation="Horizontal"
-                                        Margin="10">
-                                <Border Width="50"
-                                        Height="50"
-                                        CornerRadius="50">
-                                    <Border.Background>
-                                        <ImageBrush Stretch="Fill"
-                                                    ImageSource="/Resources/Images/TeamLogo.jpg" />
-                                    </Border.Background>
-                                </Border>
+                        <DockPanel Margin="10">
+                            <Border Width="50"
+                                    Height="50"
+                                    CornerRadius="50">
+                                <Border.Background>
+                                    <ImageBrush Stretch="Fill"
+                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
+                                </Border.Background>
+                            </Border>
 
-                                <StackPanel Margin="15,0"
-                                            VerticalAlignment="Center">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name}"
-                                                   VerticalAlignment="Center"
-                                                   FontSize="18" />
+                            <StackPanel Margin="15,0"
+                                        VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}"
+                                               VerticalAlignment="Center"
+                                               FontSize="18" />
 
-                                        <materialDesign:Chip Content="Вы"
-                                                             Margin="10,0"
-                                                             Focusable="False"
-                                                             Cursor="Arrow">
-                                            <materialDesign:Chip.Style>
-                                                <Style TargetType="materialDesign:Chip">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsCurrentUser}"
-                                                                     Value="False">
-                                                            <Setter Property="Visibility"
-                                                                    Value="Collapsed" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </materialDesign:Chip.Style>
-                                        </materialDesign:Chip>
-                                    </StackPanel>
+                                    <materialDesign:Chip Content="Вы"
+                                                         Margin="10,0"
+                                                         Focusable="False"
+                                                         Cursor="Arrow">
+                                        <materialDesign:Chip.Style>
+                                            <Style TargetType="materialDesign:Chip">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsCurrentUser}"
+                                                                 Value="False">
+                                                        <Setter Property="Visibility"
+                                                                Value="Collapsed" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </materialDesign:Chip.Style>
+                                    </materialDesign:Chip>
+                                </StackPanel>
 
-                                    <TextBlock>
+                                <TextBlock>
                                         <Run>Дата вступления:</Run>
                                         <Run Text="{Binding JoinedAt, Converter={converters:UtcToLocalDateConverter}}" />
-                                    </TextBlock>
-                                </StackPanel>
+                                </TextBlock>
                             </StackPanel>
+
+                            <Button HorizontalAlignment="Right"
+                                    Content="Покинуть команду"
+                                    Command="{Binding DataContext.ShowDialog, RelativeSource={RelativeSource AncestorType={x:Type local:TeamMembersPage}}}"
+                                    Cursor="Hand">
+                                <Button.Style>
+                                    <Style TargetType="Button"
+                                           BasedOn="{StaticResource MaterialDesignOutlinedButton}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsCurrentUser}"
+                                                         Value="False">
+                                                <Setter Property="Visibility"
+                                                        Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
                         </DockPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-
     </DockPanel>
-
 </equality:Page>
