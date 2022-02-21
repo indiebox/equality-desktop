@@ -29,15 +29,52 @@
         <DockPanel HorizontalAlignment="Stretch">
             <StackPanel Background="WhiteSmoke"
                         DockPanel.Dock="Top">
-                <Border CornerRadius="10,10,10,10"
-                        Margin="0,30,0,0"
-                        Width="100"
-                        Height="100">
-                    <Border.Background>
-                        <ImageBrush Stretch="UniformToFill"
-                                    ImageSource="/Resources/Images/TeamLogo.jpg" />
-                    </Border.Background>
-                </Border>
+                <StackPanel x:Name="FlipperWrapper"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Background="Transparent">
+                    <materialDesign:Flipper Height="100"
+                                            Width="100"
+                                            materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                                            Margin="0,30,0,0">
+                        <materialDesign:Flipper.Style>
+                            <Style TargetType="materialDesign:Flipper">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=FlipperWrapper}"
+                                                 Value="True">
+                                        <Setter Property="IsFlipped"
+                                                Value="True" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </materialDesign:Flipper.Style>
+
+                        <materialDesign:Flipper.FrontContent>
+                            <Grid>
+                                <Border CornerRadius="10,10,10,10"
+                                        Margin="0">
+                                    <Border.Background>
+                                        <ImageBrush Stretch="UniformToFill"
+                                                    ImageSource="/Resources/Images/TeamLogo.jpg" />
+                                    </Border.Background>
+                                </Border>
+                            </Grid>
+                        </materialDesign:Flipper.FrontContent>
+
+                        <materialDesign:Flipper.BackContent>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <Button Grid.Row="0">Изменить</Button>
+                                <Button Grid.Row="1">Удалить</Button>
+                            </Grid>
+                        </materialDesign:Flipper.BackContent>
+                    </materialDesign:Flipper>
+                </StackPanel>
+
                 <TextBlock HorizontalAlignment="Center"
                            FontSize="27"
                            Foreground="Black"
