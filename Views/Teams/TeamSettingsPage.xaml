@@ -1,4 +1,4 @@
-﻿<equality:Page x:Class="Equality.Views.Teams.TeamSettingsPage"
+﻿<equality:Page x:Class="Equality.Views.TeamSettingsPage"
                xmlns:equality="clr-namespace:Equality.Core.MVVM"
                xmlns:catel="http://schemas.catelproject.com"
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -24,20 +24,7 @@
                             DockPanel.Dock="Left"
                             Background="White">
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                                 Margin="4"
-                                 IsChecked="True"
-                                 HorizontalContentAlignment="Left">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="FormTextbox"
-                                                     VerticalAlignment="Center" />
-                            <TextBlock Margin="4 0 0 0"
-                                       FontSize="16"
-                                       Text="Общие" />
-                        </StackPanel>
-                    </RadioButton>
-                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                 BorderBrush="{StaticResource PrimaryHueMidBrush}"
                                  Margin="4"
                                  IsChecked="True"
                                  HorizontalContentAlignment="Left">

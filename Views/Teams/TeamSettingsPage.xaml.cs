@@ -1,5 +1,4 @@
-﻿
-namespace Equality.Views.Teams
+﻿namespace Equality.Views
 {
     public partial class TeamSettingsPage
     {

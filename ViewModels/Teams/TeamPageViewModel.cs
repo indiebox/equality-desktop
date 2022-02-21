@@ -38,6 +38,17 @@ namespace Equality.ViewModels
 
         #region Commands
 
+
+
+        #endregion
+
+        #region Methods
+
+        private void OnNavigated(object sender, EventArgs e)
+        {
+            Team = NavigationContext.Values["team"] as Team;
+        }
+
         private void OnActiveTabChanged()
         {
             switch (ActiveTab) {
@@ -51,17 +62,9 @@ namespace Equality.ViewModels
                 case Tab.Stats:
                     break;
                 case Tab.Settings:
+                    NavigationService.Navigate<TeamSettingsPageViewModel>(this);
                     break;
             }
-        }
-
-        #endregion
-
-        #region Methods
-
-        private void OnNavigated(object sender, EventArgs e)
-        {
-            Team = NavigationContext.Values["team"] as Team;
         }
 
         #endregion
