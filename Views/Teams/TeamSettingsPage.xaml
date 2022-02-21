@@ -8,7 +8,7 @@
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
                xmlns:controls="clr-namespace:Equality.Controls"
-               d:DataContext="{d:DesignInstance Type=dvm:DesignTeamSettingsPageViewModel}"
+               d:DataContext="{d:DesignInstance Type=dvm:DesignTeamSettingsPageViewModel, IsDesignTimeCreatable=True}"
                d:Background="{StaticResource MaterialDesignPaper}"
                mc:Ignorable="d">
 

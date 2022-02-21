@@ -27,8 +27,6 @@ namespace Equality.ViewModels
             TeamService = teamService;
 
             ShowDialog = new TaskCommand(OnShowDialogExecute);
-
-            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
         }
 
         #region Properties
@@ -106,6 +104,8 @@ namespace Equality.ViewModels
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
+
+            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
 
             await LoadMembersAsync();
         }

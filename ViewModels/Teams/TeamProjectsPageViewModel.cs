@@ -12,7 +12,6 @@ namespace Equality.ViewModels
 
         public TeamProjectsPageViewModel()
         {
-            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
         }
 
         #region Properties
@@ -31,7 +30,7 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            // TODO: subscribe to events here
+            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
         }
 
         protected override async Task CloseAsync()

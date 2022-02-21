@@ -21,8 +21,6 @@ namespace Equality.ViewModels
 
         public TeamSettingsPageViewModel(IOpenFileService openFileService, ITeamService teamService)
         {
-            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
-
             OpenFileService = openFileService;
             TeamService = teamService;
 
@@ -87,7 +85,7 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            // TODO: subscribe to events here
+            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
         }
 
         protected override async Task CloseAsync()
