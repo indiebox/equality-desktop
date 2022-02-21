@@ -30,7 +30,7 @@
                 <StackPanel Margin="15"
                             Orientation="Vertical">
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                 BorderBrush="{StaticResource PrimaryHueMidBrush}"
                                  Margin="4"
                                  IsChecked="True"
                                  Command="{Binding ResetFilter}"
@@ -132,8 +132,7 @@
                                         </StackPanel>
                                     </Button>
 
-                                    <Grid TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
-                                          Margin="24,8,24,16">
+                                    <Grid Margin="24,8,24,16">
                                         <WrapPanel Orientation="Horizontal">
                                             <Border Margin="10">
                                                 <Border.Background>

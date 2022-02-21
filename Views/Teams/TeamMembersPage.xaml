@@ -22,7 +22,7 @@
                     Background="WhiteSmoke"
                     Width="Auto">
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                         BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                         BorderBrush="{StaticResource PrimaryHueMidBrush}"
                          Margin="4"
                          IsChecked="True"
                          HorizontalContentAlignment="Left">
@@ -35,7 +35,7 @@
                 </StackPanel>
             </RadioButton>
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                         BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                         BorderBrush="{StaticResource PrimaryHueMidBrush}"
                          Margin="4"
                          IsChecked="False"
                          HorizontalContentAlignment="Left">
