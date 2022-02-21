@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 using Catel;
@@ -66,6 +69,38 @@ namespace Equality.Services
             var members = DeserializeMembers(response.Content["data"]);
 
             return new(members, response);
+        }
+
+        public Task<ApiResponseMessage<Team>> SetLogoAsync(Team team, string imagePath) => SetLogoAsync(team.Id, imagePath);
+
+        public async Task<ApiResponseMessage<Team>> SetLogoAsync(ulong teamId, string imagePath)
+        {
+            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
+            Argument.IsNotNull(nameof(teamId), teamId);
+            Argument.IsNotNull(nameof(imagePath), imagePath);
+
+            var fileInfo = new FileInfo(imagePath);
+            using var fileStream = fileInfo.OpenRead();
+
+            var content = new StreamContent(fileStream);
+            content.Headers.ContentType = MediaTypeHeaderValue.Parse(MimeTypes.GetMimeType(imagePath));
+            content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+            {
+                Name = "logo",
+                FileName = fileInfo.Name,
+                FileNameStar = fileInfo.Name,
+            };
+
+            Dictionary<string, object> data = new()
+            {
+                { "logo", content }
+            };
+
+            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync($"teams/{teamId}/logo", data);
+
+            var team = Deserialize(response.Content["data"]);
+
+            return new(team, response);
         }
 
         /// <summary>
