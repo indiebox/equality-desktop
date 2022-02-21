@@ -60,6 +60,48 @@
                                    FontSize="24"
                                    HorizontalAlignment="Left">Основное</TextBlock>
                         <Label Margin="20,0,20,0"
+                               FontSize="16"
+                               HorizontalContentAlignment="Left">_Рисунок профиля</Label>
+                        <Canvas Width="100"
+                                Height="100"
+                                Margin="20,0,20,30"
+                                HorizontalAlignment="Left">
+                            <Border CornerRadius="10,10,10,10"
+                                    Width="100"
+                                    Height="100"
+                                    Margin="0">
+                                <Border.Background>
+                                    <ImageBrush Stretch="UniformToFill"
+                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
+                                </Border.Background>
+                            </Border>
+                            <Rectangle Canvas.Bottom="0"
+                                       Height="50"
+                                       Width="100"
+                                       Fill="Black"
+                                       Opacity="0.5" />
+                            <DockPanel LastChildFill="False"
+                                       Canvas.Bottom="0">
+                                <Button DockPanel.Dock='Left'
+                                        Style="{StaticResource MaterialDesignIconButton}"
+                                        ToolTip="Редактировать"
+                                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}">
+                                    <Grid>
+                                        <materialDesign:PackIcon Kind="Edit" />
+                                    </Grid>
+                                </Button>
+                                <Button DockPanel.Dock="Right"
+                                        Style="{StaticResource MaterialDesignIconButton}"
+                                        ToolTip="Удалить"
+                                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                        Canvas.Right="0"
+                                        Canvas.Bottom="0">
+                                    <materialDesign:PackIcon Kind="Delete" />
+                                </Button>
+                            </DockPanel>
+                        </Canvas>
+
+                        <Label Margin="20,0,20,0"
                                FontSize="16">_Название команды</Label>
                         <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
                                  Width="500"
@@ -74,54 +116,7 @@
                                  HorizontalAlignment="Center">
                         </TextBox>
                     </StackPanel>
-                    <StackPanel>
-                        <Label Margin="20,0,20,0"
-                               FontSize="16">Ссылка</Label>
-                        <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
-                                 Width="500"
-                                 AcceptsReturn="False"
-                                 materialDesign:HintAssist.Hint="Вставьте ссылку"
-                                 materialDesign:HintAssist.IsFloating="False"
-                                 Margin="20,0,20,30"
-                                 FontSize="16"
-                                 TabIndex="0"
-                                 materialDesign:ValidationAssist.FontSize="14"
-                                 Cursor="IBeam"
-                                 HorizontalAlignment="Center">
-                        </TextBox>
-                    </StackPanel>
-                    <StackPanel>
-                        <Label Margin="20,0,20,0"
-                               FontSize="16">Ссылка</Label>
-                        <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
-                                 Width="500"
-                                 AcceptsReturn="False"
-                                 materialDesign:HintAssist.Hint="Вставьте ссылку"
-                                 materialDesign:HintAssist.IsFloating="False"
-                                 Margin="20,0,20,30"
-                                 FontSize="16"
-                                 TabIndex="0"
-                                 materialDesign:ValidationAssist.FontSize="14"
-                                 Cursor="IBeam"
-                                 HorizontalAlignment="Center">
-                        </TextBox>
-                    </StackPanel>
-                    <StackPanel>
-                        <Label Margin="20,0,20,0"
-                               FontSize="16">Ссылка</Label>
-                        <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
-                                 Width="500"
-                                 AcceptsReturn="False"
-                                 materialDesign:HintAssist.Hint="Вставьте ссылку"
-                                 materialDesign:HintAssist.IsFloating="False"
-                                 Margin="20,0,20,30"
-                                 FontSize="16"
-                                 TabIndex="0"
-                                 materialDesign:ValidationAssist.FontSize="14"
-                                 Cursor="IBeam"
-                                 HorizontalAlignment="Center">
-                        </TextBox>
-                    </StackPanel>
+
                     <StackPanel>
                         <Label Margin="20,0,20,0"
                                FontSize="16">_Описание команды</Label>

@@ -49,9 +49,13 @@
 
                         <materialDesign:Flipper.FrontContent>
                             <Grid>
-                                <Image Source="/Resources/Images/TeamLogo.jpg"
-                                       Margin="0">
-                                </Image>
+                                <Border CornerRadius="10,10,10,10"
+                                        Margin="0">
+                                    <Border.Background>
+                                        <ImageBrush Stretch="UniformToFill"
+                                                    ImageSource="/Resources/Images/TeamLogo.jpg" />
+                                    </Border.Background>
+                                </Border>
                             </Grid>
                         </materialDesign:Flipper.FrontContent>
 
