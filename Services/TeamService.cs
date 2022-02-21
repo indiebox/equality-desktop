@@ -103,6 +103,20 @@ namespace Equality.Services
             return new(team, response);
         }
 
+        public Task<ApiResponseMessage<Team>> DeleteLogoAsync(Team team) => DeleteLogoAsync(team.Id);
+
+        public async Task<ApiResponseMessage<Team>> DeleteLogoAsync(ulong teamId)
+        {
+            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
+            Argument.IsNotNull(nameof(teamId), teamId);
+
+            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).DeleteAsync($"teams/{teamId}/logo");
+
+            var team = Deserialize(response.Content["data"]);
+
+            return new(team, response);
+        }
+
         /// <summary>
         /// Deserializes the JToken to the <c>TeamMember[]</c>.
         /// </summary>
