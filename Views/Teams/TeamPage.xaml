@@ -13,6 +13,7 @@
                d:DesignHeight="1080"
                d:DesignWidth="1920"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+               xmlns:controls="clr-namespace:Equality.Controls"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DataContext="{d:DesignInstance dvm:DesignTeamPageViewModel, IsDesignTimeCreatable=True}"
                Title="TeamPage">
@@ -29,20 +30,23 @@
         <DockPanel HorizontalAlignment="Stretch">
             <StackPanel Background="WhiteSmoke"
                         DockPanel.Dock="Top">
-                <Border CornerRadius="10,10,10,10"
-                        Margin="0,30,0,0"
-                        Width="100"
-                        Height="100">
-                    <Border.Background>
-                        <ImageBrush Stretch="UniformToFill"
-                                    ImageSource="/Resources/Images/TeamLogo.jpg" />
-                    </Border.Background>
-                </Border>
+                <controls:TeamLogo CornerRadius="10"
+                                   Width="100"
+                                   Height="100"
+                                   Margin="0,30,0,0"
+                                   ImagePath="{Binding Team.Logo}" />
                 <TextBlock HorizontalAlignment="Center"
                            FontSize="27"
                            Foreground="Black"
                            Margin="0,0,0,30"
                            Text="{Binding Team.Name}" />
+                <Button Content="Upload logo"
+                        Width="150"
+                        Command="{Binding UploadLogo}"
+                        Cursor="Hand" />
+                <Button Content="Delete logo"
+                        Width="150"
+                        Command="{Binding DeleteLogo}" />
                 <StackPanel Grid.Row="0"
                             Orientation="Horizontal"
                             HorizontalAlignment="Center">

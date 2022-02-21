@@ -10,6 +10,7 @@
                                                  PrimaryColor="#FD5A2E"
                                                  SecondaryColor="#EDEDED" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="Controls/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Customize primary colors -->
