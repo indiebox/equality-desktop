@@ -13,6 +13,7 @@ namespace Equality.Core.MVVM
 
         protected async override void OnNavigatingAwayFromPage(NavigatingEventArgs e)
         {
+            // Disable page refresh (F5 key).
             if (e.NavigationMode == NavigationMode.Refresh) {
                 e.Cancel = true;
                 return;

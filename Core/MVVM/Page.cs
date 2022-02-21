@@ -1,14 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
-
-using UIEventArgs = System.EventArgs;
+using System.Windows;
 
 using Catel;
 using Catel.MVVM;
 using Catel.MVVM.Providers;
 using Catel.MVVM.Views;
 using Catel.Windows;
-using System.Windows;
+
+using UIEventArgs = System.EventArgs;
 
 namespace Equality.Core.MVVM
 {

@@ -1,16 +1,16 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
+using Catel.Collections;
 using Catel.MVVM;
 using Catel.Services;
 
+using Equality.Core.Helpers;
 using Equality.Core.ViewModel;
 using Equality.Models;
-using Catel.Collections;
 using Equality.Services;
-using System.Collections.Generic;
-using System.Linq;
-using Equality.Core.Helpers;
 
 namespace Equality.ViewModels
 {
