@@ -24,7 +24,7 @@
                             DockPanel.Dock="Left"
                             Background="White">
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                 BorderBrush="{StaticResource PrimaryHueMidBrush}"
                                  Margin="4"
                                  IsChecked="True"
                                  HorizontalContentAlignment="Left">
@@ -37,7 +37,7 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                 BorderBrush="{StaticResource PrimaryHueMidBrush}"
                                  Margin="4"
                                  IsChecked="True"
                                  HorizontalContentAlignment="Left">
