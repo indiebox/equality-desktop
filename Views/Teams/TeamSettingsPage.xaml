@@ -64,12 +64,11 @@
                                HorizontalContentAlignment="Left">_Рисунок профиля</Label>
                         <Canvas Width="100"
                                 Height="100"
-                                Margin="20,0,20,30"
+                                Margin="25,0,20,30"
                                 HorizontalAlignment="Left">
                             <Border CornerRadius="10,10,10,10"
                                     Width="100"
-                                    Height="100"
-                                    Margin="0">
+                                    Height="100">
                                 <Border.Background>
                                     <ImageBrush Stretch="UniformToFill"
                                                 ImageSource="/Resources/Images/TeamLogo.jpg" />
