@@ -79,6 +79,8 @@ namespace Equality.Services
             Argument.IsNotNull(nameof(teamId), teamId);
             Argument.IsNotNull(nameof(imagePath), imagePath);
 
+            const string fieldName = "logo";
+
             var fileInfo = new FileInfo(imagePath);
             using var fileStream = fileInfo.OpenRead();
 
@@ -86,14 +88,14 @@ namespace Equality.Services
             content.Headers.ContentType = MediaTypeHeaderValue.Parse(MimeTypes.GetMimeType(imagePath));
             content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
             {
-                Name = "logo",
+                Name = fieldName,
                 FileName = fileInfo.Name,
                 FileNameStar = fileInfo.Name,
             };
 
             Dictionary<string, object> data = new()
             {
-                { "logo", content }
+                { fieldName, content }
             };
 
             var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync($"teams/{teamId}/logo", data);
