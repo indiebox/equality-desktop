@@ -1,16 +1,16 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
+using Catel.Collections;
 using Catel.MVVM;
 using Catel.Services;
 
+using Equality.Core.Helpers;
 using Equality.Core.ViewModel;
 using Equality.Models;
-using Catel.Collections;
 using Equality.Services;
-using System.Collections.Generic;
-using System.Linq;
-using Catel.IoC;
 
 namespace Equality.ViewModels
 {
@@ -64,8 +64,7 @@ namespace Equality.ViewModels
 
         private void OnOpenTeamPageExecute(Team team)
         {
-            var vmmanager = this.GetDependencyResolver().Resolve<IViewModelManager>();
-            var vm = vmmanager.GetFirstOrDefaultInstance<ApplicationWindowViewModel>();
+            var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
             vm.SelectedTeam = team;
             vm.ActiveTab = ApplicationWindowViewModel.Tab.Team;
         }

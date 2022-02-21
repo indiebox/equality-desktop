@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 using Catel.Services;
 
+using Equality.Core.Extensions;
 using Equality.Core.ViewModel;
 using Equality.Models;
-using Equality.Core.Extensions;
 
 namespace Equality.ViewModels
 {
