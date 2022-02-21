@@ -3,11 +3,14 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
               xmlns:catel="http://schemas.catelproject.com"
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+              xmlns:local="clr-namespace:Equality.Views"
               xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-              d:DataContext="{d:DesignInstance Type=viewmodels:ApplicationWindowViewModel}"
+              xmlns:converters="clr-namespace:Equality.Converters"
+              d:DataContext="{d:DesignInstance Type=dvm:DesignApplicationWindowViewModel, IsDesignTimeCreatable=True}"
               mc:Ignorable="d"
               TextElement.Foreground="{DynamicResource MaterialDesignBody}"
               Background="{DynamicResource MaterialDesignPaper}"
@@ -32,7 +35,6 @@
 
                 <TabControl Grid.Row="0"
                             Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
-                            SelectedIndex="{Binding ActiveTabIndex}"
                             BorderBrush="Transparent"
                             TabStripPlacement="Left"
                             materialDesign:ShadowAssist.ShadowDepth="Depth3"
@@ -49,48 +51,60 @@
                         </Border>
                     </materialDesign:NavigationRailAssist.FloatingContent>
 
+                    <TabControl.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping"
+                                    Value="Wrap" />
+                            <Setter Property="TextAlignment"
+                                    Value="Center" />
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Center" />
+                        </Style>
+
+                        <Style TargetType="materialDesign:PackIcon">
+                            <Setter Property="Width"
+                                    Value="24" />
+                            <Setter Property="Height"
+                                    Value="24" />
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Center" />
+                        </Style>
+                    </TabControl.Resources>
+
                     <TabItem Width="80"
-                             Height="80">
+                             Height="80"
+                             IsSelected="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.Main}}">
                         <TabItem.Header>
-                            <StackPanel Height="auto"
-                                        Width="auto">
-                                <materialDesign:PackIcon Kind="Home"
-                                                         Width="24"
-                                                         Height="24"
-                                                         HorizontalAlignment="Center" />
-                                <TextBlock Text="Главная"
-                                           HorizontalAlignment="Center" />
+                            <StackPanel>
+                                <materialDesign:PackIcon Kind="Home" />
+                                <TextBlock Text="Главная" />
                             </StackPanel>
                         </TabItem.Header>
                     </TabItem>
 
                     <TabItem Width="80"
-                             Height="80">
+                             Height="80"
+                             IsSelected="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.Projects}}">
                         <TabItem.Header>
-                            <StackPanel Height="auto"
-                                        Width="auto">
-                                <materialDesign:PackIcon Kind="ViewDashboardVariant"
-                                                         Width="24"
-                                                         Height="24"
-                                                         HorizontalAlignment="Center" />
-                                <TextBlock Text="Проекты"
-                                           HorizontalAlignment="Center" />
+                            <StackPanel>
+                                <materialDesign:PackIcon Kind="ViewDashboardVariant" />
+                                <TextBlock Text="Проекты" />
                             </StackPanel>
                         </TabItem.Header>
                     </TabItem>
 
                     <TabItem Width="80"
-                             Height="80">
+                             Height="80"
+                             IsSelected="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.Team}}"
+                             Visibility="{Binding SelectedTeam, Converter={catel:ReferenceToCollapsingVisibilityConverter}}">
                         <TabItem.Header>
-                            <StackPanel Height="auto"
-                                        Width="auto">
-                                <materialDesign:PackIcon Kind="TestTube"
-                                                         Width="24"
-                                                         Height="24"
-                                                         HorizontalAlignment="Center" />
-                                <TextBlock Text="Test 1"
-                                           HorizontalAlignment="Center" />
-                            </StackPanel>
+                            <DockPanel Margin="5"
+                                       LastChildFill="True">
+                                <materialDesign:PackIcon DockPanel.Dock="Top"
+                                                         Kind="People" />
+                                <TextBlock TextTrimming="CharacterEllipsis"
+                                           Text="{Binding SelectedTeam.Name}" />
+                            </DockPanel>
                         </TabItem.Header>
                     </TabItem>
                 </TabControl>
@@ -113,8 +127,7 @@
                     </i:Interaction.Triggers>
 
                     <TabItem.Header>
-                        <StackPanel Height="Auto"
-                                    Width="Auto">
+                        <StackPanel>
                             <materialDesign:PackIcon Kind="Logout"
                                                      Width="24"
                                                      Height="24"

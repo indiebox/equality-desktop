@@ -8,6 +8,7 @@ using Equality.Core.StateManager;
 using Equality.Models;
 
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Equality.Services
 {
@@ -38,7 +39,6 @@ namespace Equality.Services
         {
             Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
             Argument.IsNotNull(nameof(team), team);
-            Argument.IsNotNullOrWhitespace("team.name", team.Name);
 
             Dictionary<string, object> data = new()
             {
@@ -52,6 +52,38 @@ namespace Equality.Services
             team = Deserialize(response.Content["data"]);
 
             return new(team, response);
+        }
+
+        public Task<ApiResponseMessage<TeamMember[]>> GetMembersAsync(Team team) => GetMembersAsync(team.Id);
+
+        public async Task<ApiResponseMessage<TeamMember[]>> GetMembersAsync(ulong teamId)
+        {
+            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
+            Argument.IsNotNull(nameof(teamId), teamId);
+
+            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).GetAsync($"teams/{teamId}/members");
+
+            var members = DeserializeMembers(response.Content["data"]);
+
+            return new(members, response);
+        }
+
+        /// <summary>
+        /// Deserializes the JToken to the <c>TeamMember[]</c>.
+        /// </summary>
+        /// <param name="data">The JToken.</param>
+        /// <returns>Returns the <c>TeamMember[]</c>.</returns>
+        public TeamMember[] DeserializeMembers(JToken data)
+        {
+            Argument.IsNotNull(nameof(data), data);
+
+            return data.ToObject<TeamMember[]>(new()
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                }
+            });
         }
 
         /// <inheritdoc cref="IApiDeserializable{T}.Deserialize(JToken)"/>
