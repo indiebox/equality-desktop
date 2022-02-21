@@ -52,13 +52,15 @@
 
                         <materialDesign:Flipper.FrontContent>
                             <controls:TeamLogo CornerRadius="10"
-                                               ImagePath="{Binding Team.Logo}" />
+                                               ImagePath="{Binding Logo}" />
                         </materialDesign:Flipper.FrontContent>
 
                         <materialDesign:Flipper.BackContent>
                             <DockPanel>
-                                <Button DockPanel.Dock="Top">Изменить</Button>
-                                <Button DockPanel.Dock="Bottom">Удалить</Button>
+                                <Button DockPanel.Dock="Top"
+                                        Command="{Binding UploadLogo}">Изменить</Button>
+                                <Button DockPanel.Dock="Bottom"
+                                        Command="{Binding DeleteLogo}">Удалить</Button>
                             </DockPanel>
                         </materialDesign:Flipper.BackContent>
                     </materialDesign:Flipper>
@@ -68,7 +70,7 @@
                            FontSize="27"
                            Foreground="Black"
                            Margin="0,0,0,30"
-                           Text="{Binding Team.Name}" />
+                           Text="{Binding Name}" />
                 <StackPanel Grid.Row="0"
                             Orientation="Horizontal"
                             HorizontalAlignment="Center">

@@ -1,14 +1,14 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Services;
+using Catel.MVVM;
 
 using Equality.Core.ViewModel;
 using Equality.Models;
 using Equality.Core.Extensions;
-using Catel.MVVM;
-using System.Diagnostics;
-using System.Net.Http;
 using Equality.Services;
 
 namespace Equality.ViewModels
@@ -28,7 +28,7 @@ namespace Equality.ViewModels
             TeamService = teamService;
 
             UploadLogo = new TaskCommand(OnUploadLogoExecute);
-            DeleteLogo = new TaskCommand(OnDeleteLogoExecute, () => !string.IsNullOrWhiteSpace(Team.Logo));
+            DeleteLogo = new TaskCommand(OnDeleteLogoExecute, () => !string.IsNullOrWhiteSpace(Logo));
 
             NavigationCompleted += OnNavigated;
         }
@@ -43,9 +43,16 @@ namespace Equality.ViewModels
 
         #region Properties
 
+        public Tab ActiveTab { get; set; }
+
+        [Model]
         public Team Team { get; set; }
 
-        public Tab ActiveTab { get; set; }
+        [ViewModelToModel(nameof(Team))]
+        public string Name { get; set; }
+
+        [ViewModelToModel(nameof(Team))]
+        public string Logo { get; set; }
 
         #endregion
 
@@ -93,10 +100,14 @@ namespace Equality.ViewModels
             };
             var selectedFile = await OpenFileService.DetermineFileAsync(file);
 
+            if (!selectedFile.Result) {
+                return;
+            }
+
             try {
                 var result = await TeamService.SetLogoAsync(Team, selectedFile.FileName);
 
-                Team = result.Object;
+                Team.SyncWith(result.Object);
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
@@ -109,7 +120,7 @@ namespace Equality.ViewModels
             try {
                 var result = await TeamService.DeleteLogoAsync(Team);
 
-                Team = result.Object;
+                Team.SyncWith(result.Object);
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
