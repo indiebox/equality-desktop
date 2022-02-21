@@ -6,6 +6,10 @@ using Catel.Services;
 using Equality.Core.ViewModel;
 using Equality.Models;
 using Equality.Core.Extensions;
+using Catel.MVVM;
+using System.Diagnostics;
+using System.Net.Http;
+using Equality.Services;
 
 namespace Equality.ViewModels
 {
@@ -13,9 +17,18 @@ namespace Equality.ViewModels
     {
         protected INavigationService NavigationService;
 
-        public TeamPageViewModel(INavigationService navigationService)
+        protected IOpenFileService OpenFileService;
+
+        protected ITeamService TeamService;
+
+        public TeamPageViewModel(INavigationService navigationService, IOpenFileService openFileService, ITeamService teamService)
         {
             NavigationService = navigationService;
+            OpenFileService = openFileService;
+            TeamService = teamService;
+
+            UploadLogo = new TaskCommand(OnUploadLogoExecute);
+            DeleteLogo = new TaskCommand(OnDeleteLogoExecute, () => !string.IsNullOrWhiteSpace(Team.Logo));
 
             NavigationCompleted += OnNavigated;
         }
@@ -52,6 +65,41 @@ namespace Equality.ViewModels
                     break;
                 case Tab.Settings:
                     break;
+            }
+        }
+
+        public TaskCommand UploadLogo { get; private set; }
+
+        private async Task OnUploadLogoExecute()
+        {
+            DetermineOpenFileContext file = new()
+            {
+                Title = "Выберите изображение",
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Filter = "Image|*.jpg;*.jpeg;*.png"
+            };
+            var selectedFile = await OpenFileService.DetermineFileAsync(file);
+
+            try {
+                var result = await TeamService.SetLogoAsync(Team, selectedFile.FileName);
+
+                Team = result.Object;
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+        }
+
+        public TaskCommand DeleteLogo { get; private set; }
+
+        private async Task OnDeleteLogoExecute()
+        {
+            try {
+                var result = await TeamService.DeleteLogoAsync(Team);
+
+                Team = result.Object;
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
             }
         }
 
