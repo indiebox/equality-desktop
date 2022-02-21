@@ -1,16 +1,19 @@
 ﻿using System.Threading.Tasks;
 
+using Equality.Core.Helpers;
 using Equality.Core.ViewModel;
+using Equality.Models;
 
 namespace Equality.ViewModels
 {
     public class TeamSettingsPageViewModel : ViewModel
     {
+        protected Team Team;
+
         public TeamSettingsPageViewModel()
         {
+            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
         }
-
-        public override string Title => "View model title";
 
         #region Properties
 

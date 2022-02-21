@@ -70,7 +70,7 @@ namespace Equality.ViewModels
                     NavigationService.Navigate<TeamProjectsPageViewModel>(this);
                     break;
                 case Tab.Members:
-                    NavigationService.Navigate<TeamMembersPageViewModel>(this, new() { { "team", Team } });
+                    NavigationService.Navigate<TeamMembersPageViewModel>(this);
                     break;
                 case Tab.Stats:
                     break;
