@@ -1,8 +1,8 @@
 ﻿namespace Equality.Views
 {
-    public partial class TeamProjectsPage
+    public partial class TeamSettingsPage
     {
-        public TeamProjectsPage()
+        public TeamSettingsPage()
         {
             InitializeComponent();
         }

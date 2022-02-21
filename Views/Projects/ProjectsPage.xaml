@@ -31,7 +31,7 @@
                 <StackPanel Margin="15"
                             Orientation="Vertical">
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                 BorderBrush="{StaticResource PrimaryHueMidBrush}"
                                  Margin="4"
                                  IsChecked="True"
                                  Command="{Binding ResetFilter}"
@@ -70,7 +70,7 @@
                                              GroupName="FilterByTeams"
                                              Margin="4"
                                              Cursor="Hand"
-                                             Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ProjectsPage}, Path=DataContext.FilterProjects}"
+                                             Command="{Binding DataContext.FilterProjects, RelativeSource={RelativeSource AncestorType=local:ProjectsPage}}"
                                              CommandParameter="{Binding}"
                                              HorizontalContentAlignment="Left">
                                     <Grid>
@@ -103,11 +103,11 @@
                     <ItemsControl ItemsSource="{Binding FilteredTeams}"
                                   Focusable="False">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="{x:Type models:Team}">
+                            <DataTemplate>
                                 <StackPanel Background="White"
                                             Margin="30,30,30,0">
                                     <Button Style="{StaticResource BaseButton}"
-                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ProjectsPage}}, Path=DataContext.OpenTeamPage}"
+                                            Command="{Binding DataContext.OpenTeamPage, RelativeSource={RelativeSource AncestorType=local:ProjectsPage}}"
                                             CommandParameter="{Binding}"
                                             Cursor="Hand">
                                         <StackPanel Orientation="Horizontal"
@@ -125,8 +125,7 @@
                                         </StackPanel>
                                     </Button>
 
-                                    <Grid TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
-                                          Margin="24,8,24,16">
+                                    <Grid Margin="24,8,24,16">
                                         <WrapPanel Orientation="Horizontal">
                                             <Border Margin="10">
                                                 <Border.Background>

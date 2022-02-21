@@ -4,7 +4,7 @@ using Catel.Collections;
 
 using Equality.Models;
 
-namespace Equality.ViewModels
+namespace Equality.ViewModels.Design
 {
     public class DesignTeamMembersPageViewModel : TeamMembersPageViewModel
     {

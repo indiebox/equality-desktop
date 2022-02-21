@@ -1,8 +1,8 @@
 ﻿namespace Equality.Views
 {
-    public partial class TeamProjectsPage
+    public partial class LeaveTeamDialog
     {
-        public TeamProjectsPage()
+        public LeaveTeamDialog()
         {
             InitializeComponent();
         }
