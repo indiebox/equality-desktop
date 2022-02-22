@@ -33,9 +33,9 @@ namespace Equality.ViewModels
 
             ApiFieldsMap = new()
             {
-                { nameof(Team.Name), "name" },
-                { nameof(Team.Description), "description" },
-                { nameof(Team.Url), "url" },
+                { nameof(Name), "name" },
+                { nameof(Description), "description" },
+                { nameof(Url), "url" },
             };
 
             CancelOnClose = true;
@@ -75,6 +75,8 @@ namespace Equality.ViewModels
 
                 Team.SyncWith(result.Object);
                 await SaveViewModelAsync();
+            } catch (UnprocessableEntityHttpException e) {
+                HandleApiErrors(e.Errors);
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
@@ -129,21 +131,21 @@ namespace Equality.ViewModels
         {
             var validator = new Validator(validationResults);
 
-            validator.ValidateField(nameof(Team.Name), Team.Name, new()
+            validator.ValidateField(nameof(Name), Name, new()
             {
                 new NotEmptyStringRule(),
                 new MaxStringLengthRule(255),
             });
 
-            if (!string.IsNullOrEmpty(Team.Description)) {
-                validator.ValidateField(nameof(Team.Description), Team.Description, new()
+            if (!string.IsNullOrEmpty(Description)) {
+                validator.ValidateField(nameof(Description), Description, new()
                 {
                     new MaxStringLengthRule(255),
                 });
             }
 
-            if (!string.IsNullOrEmpty(Team.Url)) {
-                validator.ValidateField(nameof(Team.Url), Team.Url, new()
+            if (!string.IsNullOrEmpty(Url)) {
+                validator.ValidateField(nameof(Url), Url, new()
                 {
                     new MaxStringLengthRule(255),
                 });
