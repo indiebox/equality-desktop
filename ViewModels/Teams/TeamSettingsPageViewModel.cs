@@ -1,12 +1,15 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Catel.Data;
 using Catel.MVVM;
 using Catel.Services;
 
 using Equality.Core.Extensions;
 using Equality.Core.Helpers;
+using Equality.Core.Validation;
 using Equality.Core.ViewModel;
 using Equality.Models;
 using Equality.Services;
@@ -27,6 +30,13 @@ namespace Equality.ViewModels
             UploadLogo = new TaskCommand(OnUploadLogoExecute);
             DeleteLogo = new TaskCommand(OnDeleteLogoExecute, () => !string.IsNullOrWhiteSpace(Logo));
             UpdateSettings = new TaskCommand(OnUpdateSettingsExecuteAsync);
+
+            ApiFieldsMap = new()
+            {
+                { nameof(Team.Name), "name" },
+                { nameof(Team.Description), "description" },
+                { nameof(Team.Url), "url" },
+            };
         }
 
         #region Properties
@@ -55,6 +65,10 @@ namespace Equality.ViewModels
 
         private async Task OnUpdateSettingsExecuteAsync()
         {
+            if (FirstValidationHasErrors()) {
+                return;
+            }
+
             try {
                 var result = await TeamService.UpdateTeamAsync(Team);
             } catch (HttpRequestException e) {
@@ -98,6 +112,35 @@ namespace Equality.ViewModels
                 Team.SyncWith(result.Object);
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
+            }
+        }
+
+        #endregion
+
+        #region Validation
+
+        protected override void ValidateFields(List<IFieldValidationResult> validationResults)
+        {
+            var validator = new Validator(validationResults);
+
+            validator.ValidateField(nameof(Team.Name), Team.Name, new()
+            {
+                new NotEmptyStringRule(),
+                new MaxStringLengthRule(255),
+            });
+
+            if (!string.IsNullOrEmpty(Team.Description)) {
+                validator.ValidateField(nameof(Team.Description), Team.Description, new()
+                {
+                    new MaxStringLengthRule(255),
+                });
+            }
+
+            if (!string.IsNullOrEmpty(Team.Url)) {
+                validator.ValidateField(nameof(Team.Url), Team.Url, new()
+                {
+                    new MaxStringLengthRule(255),
+                });
             }
         }
 

@@ -118,7 +118,7 @@
                                  materialDesign:ValidationAssist.FontSize="14"
                                  Cursor="IBeam"
                                  HorizontalAlignment="Center"
-                                 Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" />
 
                     </StackPanel>
                     <Button Margin="20,0,20,30"
