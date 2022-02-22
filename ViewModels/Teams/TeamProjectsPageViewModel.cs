@@ -1,11 +1,15 @@
 ﻿using System.Threading.Tasks;
 
+using Equality.Core.Helpers;
 using Equality.Core.ViewModel;
+using Equality.Models;
 
 namespace Equality.ViewModels
 {
     public class TeamProjectsPageViewModel : ViewModel
     {
+        protected Team Team;
+
         public TeamProjectsPageViewModel()
         {
         }
@@ -26,7 +30,7 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            // TODO: subscribe to events here
+            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
         }
 
         protected override async Task CloseAsync()

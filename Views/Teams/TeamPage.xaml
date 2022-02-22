@@ -13,6 +13,7 @@
                d:DesignHeight="1080"
                d:DesignWidth="1920"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+               xmlns:controls="clr-namespace:Equality.Controls"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DataContext="{d:DesignInstance dvm:DesignTeamPageViewModel, IsDesignTimeCreatable=True}"
                Title="TeamPage">
@@ -50,27 +51,17 @@
                         </materialDesign:Flipper.Style>
 
                         <materialDesign:Flipper.FrontContent>
-                            <Grid>
-                                <Border CornerRadius="10,10,10,10"
-                                        Margin="0">
-                                    <Border.Background>
-                                        <ImageBrush Stretch="UniformToFill"
-                                                    ImageSource="/Resources/Images/TeamLogo.jpg" />
-                                    </Border.Background>
-                                </Border>
-                            </Grid>
+                            <controls:TeamLogo CornerRadius="10"
+                                               ImagePath="{Binding Logo}" />
                         </materialDesign:Flipper.FrontContent>
 
                         <materialDesign:Flipper.BackContent>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition></RowDefinition>
-                                    <RowDefinition></RowDefinition>
-                                </Grid.RowDefinitions>
-
-                                <Button Grid.Row="0">Изменить</Button>
-                                <Button Grid.Row="1">Удалить</Button>
-                            </Grid>
+                            <DockPanel>
+                                <Button DockPanel.Dock="Top"
+                                        Command="{Binding UploadLogo}">Изменить</Button>
+                                <Button DockPanel.Dock="Bottom"
+                                        Command="{Binding DeleteLogo}">Удалить</Button>
+                            </DockPanel>
                         </materialDesign:Flipper.BackContent>
                     </materialDesign:Flipper>
                 </StackPanel>
@@ -79,7 +70,7 @@
                            FontSize="27"
                            Foreground="Black"
                            Margin="0,0,0,30"
-                           Text="{Binding Team.Name}" />
+                           Text="{Binding Name}" />
                 <StackPanel Grid.Row="0"
                             Orientation="Horizontal"
                             HorizontalAlignment="Center">

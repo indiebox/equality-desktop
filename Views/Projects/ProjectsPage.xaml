@@ -12,6 +12,7 @@
                mc:Ignorable="d"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
                xmlns:converters="clr-namespace:Equality.Converters"
+               xmlns:controls="clr-namespace:Equality.Controls"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DataContext="{d:DesignInstance dvm:DesignProjectsPageViewModel, IsDesignTimeCreatable=True}">
     <Grid>
@@ -78,15 +79,11 @@
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
 
-                                        <Border Grid.Column="0"
-                                                CornerRadius="100"
-                                                Width="25"
-                                                Height="25">
-                                            <Border.Background>
-                                                <ImageBrush Stretch="UniformToFill"
-                                                            ImageSource="/Resources/Images/TeamLogo.jpg" />
-                                            </Border.Background>
-                                        </Border>
+                                        <controls:TeamLogo Grid.Column="0"
+                                                           Width="25"
+                                                           Height="25"
+                                                           CornerRadius="100"
+                                                           ImagePath="{Binding Logo}" />
                                         <TextBlock Grid.Column="1"
                                                    Margin="4 0 0 0"
                                                    FontSize="16"
@@ -115,15 +112,11 @@
                                             Cursor="Hand">
                                         <StackPanel Orientation="Horizontal"
                                                     Cursor="Hand">
-                                            <Border CornerRadius="100"
-                                                    Width="50"
-                                                    Height="50"
-                                                    Margin="10">
-                                                <Border.Background>
-                                                    <ImageBrush Stretch="UniformToFill"
-                                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
-                                                </Border.Background>
-                                            </Border>
+                                            <controls:TeamLogo Width="50"
+                                                               Height="50"
+                                                               Margin="10"
+                                                               CornerRadius="100"
+                                                               ImagePath="{Binding Logo}" />
                                             <TextBlock FontSize="16"
                                                        TextAlignment="Center"
                                                        VerticalAlignment="Center"

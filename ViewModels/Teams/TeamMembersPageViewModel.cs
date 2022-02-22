@@ -27,8 +27,6 @@ namespace Equality.ViewModels
             TeamService = teamService;
 
             ShowDialog = new TaskCommand(OnShowDialogExecute);
-
-            NavigationCompleted += OnNavigated;
         }
 
         #region Properties
@@ -58,13 +56,6 @@ namespace Equality.ViewModels
         #endregion
 
         #region Methods
-
-        private async void OnNavigated(object sender, System.EventArgs e)
-        {
-            Team = NavigationContext.Values["team"] as Team;
-
-            await LoadMembersAsync();
-        }
 
         private void OnFilterTextChanged()
         {
@@ -114,7 +105,9 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            // TODO: subscribe to events here
+            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
+
+            await LoadMembersAsync();
         }
 
         protected override async Task CloseAsync()
