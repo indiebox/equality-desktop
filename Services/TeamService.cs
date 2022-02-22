@@ -142,7 +142,7 @@ namespace Equality.Services
                 { "url", team.Url }
             };
 
-            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync($"teams/{team.Id}", data);
+            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).PatchAsync($"teams/{team.Id}", data);
 
             team = Deserialize(response.Content["data"]);
 
