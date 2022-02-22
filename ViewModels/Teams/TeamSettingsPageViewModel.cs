@@ -48,12 +48,11 @@ namespace Equality.ViewModels
         {
             try {
                 var result = await TeamService.UpdateTeamAsync(Team);
-            } 
-            catch (HttpRequestException e) {
+            } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
         }
-        
+
         public TaskCommand UploadLogo { get; private set; }
 
         private async Task OnUploadLogoExecute()

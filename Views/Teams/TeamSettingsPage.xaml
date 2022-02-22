@@ -86,7 +86,7 @@
                                  materialDesign:ValidationAssist.FontSize="14"
                                  Cursor="IBeam"
                                  HorizontalAlignment="Center"
-                                 Text="{Binding Team.Name, UpdateSourceTrigger=PropertyChanged}">
+                                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}">
                         </TextBox>
                     </StackPanel>
 
@@ -102,7 +102,7 @@
                                  VerticalScrollBarVisibility="Auto"
                                  materialDesign:HintAssist.Hint="Введите описание команды"
                                  HorizontalAlignment="Center"
-                                 Text="{Binding Team.Description, UpdateSourceTrigger=PropertyChanged}" />
+                                 Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                     <StackPanel>
                         <Label Margin="20,0,20,0"
@@ -118,7 +118,7 @@
                                  materialDesign:ValidationAssist.FontSize="14"
                                  Cursor="IBeam"
                                  HorizontalAlignment="Center"
-                                 Text="{Binding Team.Url, UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"/>
 
                     </StackPanel>
                     <Button Margin="20,0,20,30"
