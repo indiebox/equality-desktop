@@ -7,6 +7,7 @@ using Catel.Data;
 using Catel.MVVM;
 using Catel.Services;
 
+using Equality.Core.ApiClient;
 using Equality.Core.Extensions;
 using Equality.Core.Helpers;
 using Equality.Core.Validation;
