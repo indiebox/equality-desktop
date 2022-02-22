@@ -37,6 +37,8 @@ namespace Equality.ViewModels
                 { nameof(Team.Description), "description" },
                 { nameof(Team.Url), "url" },
             };
+
+            CancelOnClose = true;
         }
 
         #region Properties
@@ -60,7 +62,6 @@ namespace Equality.ViewModels
 
         #region Commands
 
-
         public TaskCommand UpdateSettings { get; private set; }
 
         private async Task OnUpdateSettingsExecuteAsync()
@@ -71,6 +72,9 @@ namespace Equality.ViewModels
 
             try {
                 var result = await TeamService.UpdateTeamAsync(Team);
+
+                Team.SyncWith(result.Object);
+                await SaveViewModelAsync();
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
@@ -97,6 +101,7 @@ namespace Equality.ViewModels
                 var result = await TeamService.SetLogoAsync(Team, selectedFile.FileName);
 
                 Team.SyncWith(result.Object);
+                await SaveViewModelAsync();
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
@@ -110,6 +115,7 @@ namespace Equality.ViewModels
                 var result = await TeamService.DeleteLogoAsync(Team);
 
                 Team.SyncWith(result.Object);
+                await SaveViewModelAsync();
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
