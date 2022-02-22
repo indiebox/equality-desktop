@@ -53,16 +53,6 @@ namespace Equality.Core.ViewModel
         public IStateManager StateManager => StateManagerContainer.Instance;
 
         /// <summary>
-        /// Gets or sets value indicating the view model should be canceled on close.
-        /// By default the view model is saved on close.
-        /// </summary>
-        /// <remarks>
-        /// If this property is set to <see langword="true"/>, you need to call <c>SaveViewModelAsync</c> manually when needed,
-        /// or all data in view model will be canceled.
-        /// </remarks>
-        public bool CancelOnClose { get; set; } = false;
-
-        /// <summary>
         /// The Api errors for fields.
         /// </summary>
         /// <remarks>Key is the field name, Value is the first error message.</remarks>

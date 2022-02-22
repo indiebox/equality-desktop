@@ -28,17 +28,8 @@ namespace Equality.Core.MVVM
                 return;
             }
 
-            if (((ViewModel.ViewModel)ViewModel).CancelOnClose) {
-                await CancelViewModelAsync();
-            } else {
-                await SaveViewModelAsync();
-            }
-
+            await SaveViewModelAsync();
             await CloseViewModelAsync(true);
-
-            if (e.Uri != null && e.Uri.IsNavigationToExternal()) {
-                return;
-            }
         }
     }
 }

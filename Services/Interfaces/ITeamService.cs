@@ -104,8 +104,6 @@ namespace Equality.Services
         /// <param name="teamId">The team id.</param>
         public Task<ApiResponseMessage<Team>> DeleteLogoAsync(ulong teamId);
 
-
-
         /// <summary>
         /// Sends the update team request to the API.
         /// </summary>

@@ -134,6 +134,7 @@ namespace Equality.Services
         {
             Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
             Argument.IsNotNull(nameof(team), team);
+            Argument.IsMinimal<ulong>("Team.Id", team.Id, 1);
 
             Dictionary<string, object> data = new()
             {

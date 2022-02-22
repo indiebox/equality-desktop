@@ -38,8 +38,6 @@ namespace Equality.ViewModels
                 { nameof(Description), "description" },
                 { nameof(Url), "url" },
             };
-
-            CancelOnClose = true;
         }
 
         #region Properties
@@ -50,13 +48,13 @@ namespace Equality.ViewModels
         [ViewModelToModel(nameof(Team))]
         public string Logo { get; set; }
 
-        [ViewModelToModel(nameof(Team))]
+        [ViewModelToModel(nameof(Team), Mode = ViewModelToModelMode.OneWay)]
         public string Name { get; set; }
 
-        [ViewModelToModel(nameof(Team))]
+        [ViewModelToModel(nameof(Team), Mode = ViewModelToModelMode.OneWay)]
         public string Description { get; set; }
 
-        [ViewModelToModel(nameof(Team))]
+        [ViewModelToModel(nameof(Team), Mode = ViewModelToModelMode.OneWay)]
         public string Url { get; set; }
 
         #endregion
@@ -72,10 +70,16 @@ namespace Equality.ViewModels
             }
 
             try {
-                var result = await TeamService.UpdateTeamAsync(Team);
+                Team team = new()
+                {
+                    Id = Team.Id,
+                    Name = Name,
+                    Description = Description,
+                    Url = Url,
+                };
+                var result = await TeamService.UpdateTeamAsync(team);
 
                 Team.SyncWith(result.Object);
-                await SaveViewModelAsync();
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
             } catch (HttpRequestException e) {
@@ -104,7 +108,6 @@ namespace Equality.ViewModels
                 var result = await TeamService.SetLogoAsync(Team, selectedFile.FileName);
 
                 Team.SyncWith(result.Object);
-                await SaveViewModelAsync();
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
@@ -118,7 +121,6 @@ namespace Equality.ViewModels
                 var result = await TeamService.DeleteLogoAsync(Team);
 
                 Team.SyncWith(result.Object);
-                await SaveViewModelAsync();
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
