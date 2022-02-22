@@ -37,6 +37,15 @@ namespace Equality.ViewModels
         [ViewModelToModel(nameof(Team))]
         public string Logo { get; set; }
 
+        [ViewModelToModel(nameof(Team))]
+        public string Name { get; set; }
+
+        [ViewModelToModel(nameof(Team))]
+        public string Description { get; set; }
+
+        [ViewModelToModel(nameof(Team))]
+        public string Url { get; set; }
+
         #endregion
 
         #region Commands
