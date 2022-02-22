@@ -26,6 +26,7 @@ namespace Equality.ViewModels
 
             UploadLogo = new TaskCommand(OnUploadLogoExecute);
             DeleteLogo = new TaskCommand(OnDeleteLogoExecute, () => !string.IsNullOrWhiteSpace(Logo));
+            UpdateSettings = new TaskCommand(OnUpdateSettingsExecuteAsync);
         }
 
         #region Properties
@@ -40,6 +41,19 @@ namespace Equality.ViewModels
 
         #region Commands
 
+
+        public TaskCommand UpdateSettings { get; private set; }
+
+        private async Task OnUpdateSettingsExecuteAsync()
+        {
+            try {
+                var result = await TeamService.UpdateTeamAsync(Team);
+            } 
+            catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+        }
+        
         public TaskCommand UploadLogo { get; private set; }
 
         private async Task OnUploadLogoExecute()
