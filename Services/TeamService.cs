@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 using Catel;
+using Catel.MVVM;
 
 using Equality.Core.ApiClient;
 using Equality.Core.StateManager;
@@ -127,6 +128,26 @@ namespace Equality.Services
             Argument.IsNotNull(nameof(teamId), teamId);
 
             return await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync($"teams/{teamId}/leave");
+        }
+
+        public async Task<ApiResponseMessage<Team>> UpdateTeamAsync(Team team)
+        {
+            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
+            Argument.IsNotNull(nameof(team), team);
+            Argument.IsMinimal<ulong>("Team.Id", team.Id, 1);
+
+            Dictionary<string, object> data = new()
+            {
+                { "name", team.Name },
+                { "description", team.Description },
+                { "url", team.Url }
+            };
+
+            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).PatchAsync($"teams/{team.Id}", data);
+
+            team = Deserialize(response.Content["data"]);
+
+            return new(team, response);
         }
 
         /// <summary>

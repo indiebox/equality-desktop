@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Catel.Logging;
+using Catel.MVVM;
 using Catel.MVVM.Navigation;
 using Catel.MVVM.Views;
 
@@ -7,6 +9,8 @@ namespace Equality.Core.MVVM
 {
     public class PageLogic : Catel.MVVM.Providers.PageLogic
     {
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
         public PageLogic(IPage targetPage, Type viewModelType = null) : base(targetPage, viewModelType)
         {
         }
@@ -19,13 +23,17 @@ namespace Equality.Core.MVVM
                 return;
             }
 
-            base.OnNavigatingAwayFromPage(e);
-
-            // We revert base cancellation of navigation if there are validation errors and close a view model.
-            if (e.Cancel) {
-                await CancelAndCloseViewModelAsync();
-                e.Cancel = false;
+            if (ViewModelLifetimeManagement != ViewModelLifetimeManagement.Automatic) {
+                Log.Debug($"View model lifetime management is set to '{ViewModelLifetimeManagement}', not closing view model on navigation event for '{TargetViewType?.Name}'");
+                return;
             }
+
+            bool result = await SaveViewModelAsync();
+            if (!result) {
+                await CancelViewModelAsync();
+            }
+
+            await CloseViewModelAsync(true);
         }
     }
 }

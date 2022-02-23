@@ -85,7 +85,8 @@
                                  TabIndex="0"
                                  materialDesign:ValidationAssist.FontSize="14"
                                  Cursor="IBeam"
-                                 HorizontalAlignment="Center">
+                                 HorizontalAlignment="Center"
+                                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}">
                         </TextBox>
                     </StackPanel>
 
@@ -100,7 +101,8 @@
                                  FontSize="16"
                                  VerticalScrollBarVisibility="Auto"
                                  materialDesign:HintAssist.Hint="Введите описание команды"
-                                 HorizontalAlignment="Center" />
+                                 HorizontalAlignment="Center"
+                                 Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                     <StackPanel>
                         <Label Margin="20,0,20,0"
@@ -115,12 +117,14 @@
                                  TabIndex="0"
                                  materialDesign:ValidationAssist.FontSize="14"
                                  Cursor="IBeam"
-                                 HorizontalAlignment="Center">
-                        </TextBox>
+                                 HorizontalAlignment="Center"
+                                 Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" />
+
                     </StackPanel>
                     <Button Margin="20,0,20,30"
                             HorizontalAlignment="Center"
-                            Width="500">Сохранить</Button>
+                            Width="500"
+                            Command="{Binding UpdateSettings}">Сохранить</Button>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

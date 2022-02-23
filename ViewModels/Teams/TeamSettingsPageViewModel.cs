@@ -1,12 +1,16 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Catel.Data;
 using Catel.MVVM;
 using Catel.Services;
 
+using Equality.Core.ApiClient;
 using Equality.Core.Extensions;
 using Equality.Core.Helpers;
+using Equality.Core.Validation;
 using Equality.Core.ViewModel;
 using Equality.Models;
 using Equality.Services;
@@ -26,6 +30,14 @@ namespace Equality.ViewModels
 
             UploadLogo = new TaskCommand(OnUploadLogoExecute);
             DeleteLogo = new TaskCommand(OnDeleteLogoExecute, () => !string.IsNullOrWhiteSpace(Logo));
+            UpdateSettings = new TaskCommand(OnUpdateSettingsExecuteAsync);
+
+            ApiFieldsMap = new()
+            {
+                { nameof(Name), "name" },
+                { nameof(Description), "description" },
+                { nameof(Url), "url" },
+            };
         }
 
         #region Properties
@@ -36,9 +48,44 @@ namespace Equality.ViewModels
         [ViewModelToModel(nameof(Team))]
         public string Logo { get; set; }
 
+        [ViewModelToModel(nameof(Team), Mode = ViewModelToModelMode.OneWay)]
+        public string Name { get; set; }
+
+        [ViewModelToModel(nameof(Team), Mode = ViewModelToModelMode.OneWay)]
+        public string Description { get; set; }
+
+        [ViewModelToModel(nameof(Team), Mode = ViewModelToModelMode.OneWay)]
+        public string Url { get; set; }
+
         #endregion
 
         #region Commands
+
+        public TaskCommand UpdateSettings { get; private set; }
+
+        private async Task OnUpdateSettingsExecuteAsync()
+        {
+            if (FirstValidationHasErrors()) {
+                return;
+            }
+
+            try {
+                Team team = new()
+                {
+                    Id = Team.Id,
+                    Name = Name,
+                    Description = Description,
+                    Url = Url,
+                };
+                var result = await TeamService.UpdateTeamAsync(team);
+
+                Team.SyncWith(result.Object);
+            } catch (UnprocessableEntityHttpException e) {
+                HandleApiErrors(e.Errors);
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+        }
 
         public TaskCommand UploadLogo { get; private set; }
 
@@ -76,6 +123,35 @@ namespace Equality.ViewModels
                 Team.SyncWith(result.Object);
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
+            }
+        }
+
+        #endregion
+
+        #region Validation
+
+        protected override void ValidateFields(List<IFieldValidationResult> validationResults)
+        {
+            var validator = new Validator(validationResults);
+
+            validator.ValidateField(nameof(Name), Name, new()
+            {
+                new NotEmptyStringRule(),
+                new MaxStringLengthRule(255),
+            });
+
+            if (!string.IsNullOrEmpty(Description)) {
+                validator.ValidateField(nameof(Description), Description, new()
+                {
+                    new MaxStringLengthRule(255),
+                });
+            }
+
+            if (!string.IsNullOrEmpty(Url)) {
+                validator.ValidateField(nameof(Url), Url, new()
+                {
+                    new MaxStringLengthRule(255),
+                });
             }
         }
 

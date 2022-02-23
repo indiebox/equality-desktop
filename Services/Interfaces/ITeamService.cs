@@ -103,5 +103,18 @@ namespace Equality.Services
         /// <inheritdoc cref="DeleteLogoAsync(Team)"/>
         /// <param name="teamId">The team id.</param>
         public Task<ApiResponseMessage<Team>> DeleteLogoAsync(ulong teamId);
+
+        /// <summary>
+        /// Sends the update team request to the API.
+        /// </summary>
+        /// <param name="team">The team.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage<Team>> UpdateTeamAsync(Team team);
     }
 }
