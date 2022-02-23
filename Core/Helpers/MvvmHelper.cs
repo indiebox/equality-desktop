@@ -12,6 +12,14 @@ namespace Equality.Core.Helpers
 
         private static IViewModelManager _viewModelManager => ServiceLocator.Default.ResolveType<IViewModelManager>();
 
+        private static IViewModelFactory _viewModelFactory => ServiceLocator.Default.ResolveType<IViewModelFactory>();
+
+        public static TViewModel CreateViewModel<TViewModel>(object dataContext = null)
+            where TViewModel : IViewModel
+        {
+            return _viewModelFactory.CreateViewModel<TViewModel>(dataContext);
+        }
+
         /// <summary>
         /// Gets the first or default instance of the specified view model.
         /// </summary>
@@ -57,8 +65,7 @@ namespace Equality.Core.Helpers
         public static FrameworkElement CreateViewWithViewModel<TViewModel>(object viewModelData = null)
             where TViewModel : IViewModel
         {
-            var vmFactory = ServiceLocator.Default.ResolveType<IViewModelFactory>();
-            var viewModel = vmFactory.CreateViewModel<TViewModel>(viewModelData);
+            var viewModel = CreateViewModel<TViewModel>(viewModelData);
 
             var viewLocator = ServiceLocator.Default.ResolveType<IViewLocator>();
             var view = viewLocator.ResolveView(typeof(TViewModel));
