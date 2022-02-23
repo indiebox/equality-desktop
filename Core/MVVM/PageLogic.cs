@@ -28,7 +28,11 @@ namespace Equality.Core.MVVM
                 return;
             }
 
-            await SaveViewModelAsync();
+            bool result = await SaveViewModelAsync();
+            if (!result) {
+                await CancelViewModelAsync();
+            }
+
             await CloseViewModelAsync(true);
         }
     }
