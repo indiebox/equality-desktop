@@ -5,8 +5,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:TeamLogo}">
-                    <Border Margin="10"
-                            CornerRadius="{TemplateBinding CornerRadius}">
+                    <Border CornerRadius="{TemplateBinding CornerRadius}">
                         <Border.Background>
                             <ImageBrush Stretch="UniformToFill">
                                 <ImageBrush.ImageSource>

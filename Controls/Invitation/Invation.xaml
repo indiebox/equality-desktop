@@ -10,7 +10,7 @@
                         <controls:TeamLogo CornerRadius="10"
                                            Width="150"
                                            Height="150"
-                                           Margin="10,0,10,0"
+                                           Margin="10"
                                            ImagePath="{TemplateBinding TeamLogoImagePath}" />
                         <StackPanel VerticalAlignment="Center">
                             <WrapPanel Width="200"
