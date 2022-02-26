@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,7 +26,7 @@ namespace Equality.ViewModels
             UIVisualizerService = uIVisualizerService;
             TeamService = teamService;
 
-            OpenCreateTeamWindow = new TaskCommand(OnOpenCreateTeamWindowExecute);
+            OpenCreateTeamWindow = new TaskCommand(OnOpenCreateTeamWindowExecute, () => CreateTeamVm is null);
             OpenTeamPage = new Command<Team>(OnOpenTeamPageExecute);
             FilterProjects = new Command<Team>(OnFilterProjectsExecute);
             ResetFilter = new Command(OnResetFilterExecute);
@@ -39,6 +38,8 @@ namespace Equality.ViewModels
 
         public ObservableCollection<Team> FilteredTeams { get; set; } = new();
 
+        public CreateTeamControlViewModel CreateTeamVm { get; set; }
+
         #endregion
 
         #region Commands
@@ -47,17 +48,8 @@ namespace Equality.ViewModels
 
         private async Task OnOpenCreateTeamWindowExecute()
         {
-            Dictionary<string, Team> teamStorage = new();
-
-            await UIVisualizerService.ShowAsync<CreateTeamDataWindowViewModel>(teamStorage);
-
-            if (teamStorage.ContainsKey("Team")) {
-                Teams.Add(teamStorage["Team"]);
-
-                if (!IsFiltered) {
-                    FilteredTeams.Add(teamStorage["Team"]);
-                }
-            }
+            CreateTeamVm = MvvmHelper.CreateViewModel<CreateTeamControlViewModel>();
+            CreateTeamVm.ClosedAsync += CreateTeamVmClosedAsync;
         }
 
         public Command<Team> OpenTeamPage { get; private set; }
@@ -91,6 +83,22 @@ namespace Equality.ViewModels
 
         #region Methods
 
+        private Task CreateTeamVmClosedAsync(object sender, ViewModelClosedEventArgs e)
+        {
+            if (e.Result ?? false) {
+                Teams.Add(CreateTeamVm.Team);
+
+                if (!IsFiltered) {
+                    FilteredTeams.Add(CreateTeamVm.Team);
+                }
+            }
+
+            CreateTeamVm.ClosedAsync -= CreateTeamVmClosedAsync;
+            CreateTeamVm = null;
+
+            return Task.CompletedTask;
+        }
+
         protected async void LoadTeamsAsync()
         {
             var response = await TeamService.GetTeamsAsync();
@@ -110,7 +118,9 @@ namespace Equality.ViewModels
 
         protected override async Task CloseAsync()
         {
-            // TODO: unsubscribe from events here
+            if (CreateTeamVm != null) {
+                CreateTeamVm.ClosedAsync -= CreateTeamVmClosedAsync;
+            }
 
             await base.CloseAsync();
         }

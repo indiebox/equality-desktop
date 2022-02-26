@@ -2,11 +2,13 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows;
 
 using Catel.Data;
-using Catel.Fody;
 using Catel.MVVM;
 
+using Equality.Core.ApiClient;
+using Equality.Core.Extensions;
 using Equality.Core.Validation;
 using Equality.Core.ViewModel;
 using Equality.Models;
@@ -14,37 +16,30 @@ using Equality.Services;
 
 namespace Equality.ViewModels
 {
-    public class CreateTeamDataWindowViewModel : ViewModel
+    public class CreateTeamControlViewModel : ViewModel
     {
-        protected Dictionary<string, Team> TeamStorage;
-
         protected ITeamService TeamService;
 
-        public CreateTeamDataWindowViewModel(Dictionary<string, Team> teamStorage, ITeamService teamService)
+        public CreateTeamControlViewModel(ITeamService teamService)
         {
-            TeamStorage = teamStorage;
             TeamService = teamService;
 
             CreateTeam = new TaskCommand(OnCreateTeamExecute, () => !HasErrors);
-            CloseWindow = new Command(OnCloseWindowExecute);
+            Cancel = new TaskCommand(OnCancelExecute);
 
             ApiFieldsMap = new()
             {
-                { nameof(Team.Name), "name" },
-                { nameof(Team.Description), "description" },
-                { nameof(Team.Url), "url" },
+                { nameof(Name), "name" },
             };
         }
-
-        public override string Title => "Equality";
 
         #region Properties
 
         [Model]
-        [Expose("Name")]
-        [Expose("Description")]
-        [Expose("Url")]
         public Team Team { get; set; } = new();
+
+        [ViewModelToModel(nameof(Team))]
+        public string Name { get; set; }
 
         #endregion
 
@@ -60,20 +55,23 @@ namespace Equality.ViewModels
 
             try {
                 var response = await TeamService.CreateAsync(Team);
+                Team.SyncWith(response.Object);
 
-                TeamStorage.Add("Team", response.Object);
-
-                CloseWindow.Execute();
+                await SaveViewModelAsync();
+                await CloseViewModelAsync(true);
+            } catch (UnprocessableEntityHttpException e) {
+                HandleApiErrors(e.Errors);
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
         }
 
-        public Command CloseWindow { get; private set; }
+        public TaskCommand Cancel { get; private set; }
 
-        private void OnCloseWindowExecute()
+        private async Task OnCancelExecute()
         {
-            this.SaveAndCloseViewModelAsync();
+            await CancelViewModelAsync();
+            await CloseViewModelAsync(false);
         }
 
         #endregion
@@ -84,25 +82,11 @@ namespace Equality.ViewModels
         {
             var validator = new Validator(validationResults);
 
-            validator.ValidateField(nameof(Team.Name), Team.Name, new()
+            validator.ValidateField(nameof(Name), Name, new()
             {
                 new NotEmptyStringRule(),
                 new MaxStringLengthRule(255),
             });
-
-            if (!string.IsNullOrEmpty(Team.Description)) {
-                validator.ValidateField(nameof(Team.Description), Team.Description, new()
-                {
-                    new MaxStringLengthRule(255),
-                });
-            }
-
-            if (!string.IsNullOrEmpty(Team.Url)) {
-                validator.ValidateField(nameof(Team.Url), Team.Url, new()
-                {
-                    new MaxStringLengthRule(255),
-                });
-            }
         }
 
         #endregion
