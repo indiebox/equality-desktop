@@ -9,13 +9,9 @@ namespace Equality.ViewModels
 {
     public class StartPageViewModel : ViewModel
     {
-        IUIVisualizerService UIVisualizerService;
 
-        public StartPageViewModel(IUIVisualizerService uIVisualizerService)
+        public StartPageViewModel()
         {
-            UIVisualizerService = uIVisualizerService;
-
-            OpenInvitationsWindow = new TaskCommand(OnInvitationsWindowExecute);
         }
 
         #region Properties
@@ -24,13 +20,6 @@ namespace Equality.ViewModels
         #endregion
 
         #region Commands
-
-        public TaskCommand OpenInvitationsWindow { get; private set; }
-
-        private async Task OnInvitationsWindowExecute()
-        {
-            await UIVisualizerService.ShowAsync<InvitationsDataWindowViewModel>();
-        }
 
         #endregion
 
