@@ -37,15 +37,15 @@
                             <TextBlock FontSize="24"
                                        HorizontalAlignment="Center"
                                        Margin="0,0,0,30">Приглашения</TextBlock>
-                            <controls:Invation NameInvitor="IgorGaming"
-                                               Team="Indie Box"
-                                               TeamLogoImagePath="/Resources/Images/TeamLogo.jpg" />
-                            <controls:Invation NameInvitor="IgorGamingIgorGamingIgorGamingIgorGamingIgorGamingIgorGamingIgorGaming"
-                                               Team="Indie Box"
-                                               TeamLogoImagePath="/Resources/Images/TeamLogo.jpg" />
-                            <controls:Invation NameInvitor="IgorGaming"
-                                               Team="Indie Box Indie Box Indie Box Indie Box Indie Box Indie Box Indie Box Indie Box"
-                                               TeamLogoImagePath="/Resources/Images/TeamLogo.jpg" />
+                            <controls:Invitation NameInvitor="IgorGaming"
+                                                 Team="Indie Box"
+                                                 TeamLogoImagePath="/Resources/Images/TeamLogo.jpg" />
+                            <controls:Invitation NameInvitor="IgorGamingIgorGamingIgorGamingIgorGamingIgorGamingIgorGamingIgorGaming"
+                                                 Team="Indie Box"
+                                                 TeamLogoImagePath="/Resources/Images/TeamLogo.jpg" />
+                            <controls:Invitation NameInvitor="IgorGaming"
+                                                 Team="Indie Box Indie Box Indie Box Indie Box Indie Box Indie Box Indie Box Indie Box"
+                                                 TeamLogoImagePath="/Resources/Images/TeamLogo.jpg" />
                         </StackPanel>
                     </materialDesign:PopupBox>
                 </StackPanel>

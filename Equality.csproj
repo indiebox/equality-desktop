@@ -241,7 +241,7 @@
       </Resource>
     </ItemGroup>
     <ItemGroup>
-      <Page Update="Controls\Invitation\Invation.xaml">
+      <Page Update="Controls\Invitation\Invitation.xaml">
         <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       </Page>
     </ItemGroup>
