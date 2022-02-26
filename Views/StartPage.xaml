@@ -13,13 +13,6 @@
                 d:DesignWidth="900"
                 d:Background="{StaticResource MaterialDesignPaper}"
                 mc:Ignorable="d">
-    <Page.Resources>
-        <Style TargetType="TextBlock"
-               x:Key="Header">
-            <Setter Property="Padding"
-                    Value="0,0,0,0" />
-        </Style>
-    </Page.Resources>
 
     <StackPanel>
         <StackPanel HorizontalAlignment="Right">
@@ -51,8 +44,7 @@
                 </StackPanel>
             </materialDesign:Badged>
         </StackPanel>
-        <TextBlock Style="{StaticResource Header}"
-                   Grid.Row="0"
+        <TextBlock Grid.Row="0"
                    Grid.Column="0"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
