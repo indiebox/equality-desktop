@@ -35,15 +35,16 @@
                         </materialDesign:PopupBox.ToggleContent>
                         <StackPanel Margin="30">
                             <TextBlock FontSize="24"
-                                       HorizontalAlignment="Center">Приглашения</TextBlock>
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,30">Приглашения</TextBlock>
                             <controls:Invation NameInvitor="IgorGaming"
                                                Team="Indie Box"
                                                TeamLogoImagePath="/Resources/Images/TeamLogo.jpg" />
-                            <controls:Invation NameInvitor="IgorGaming"
+                            <controls:Invation NameInvitor="IgorGamingIgorGamingIgorGamingIgorGamingIgorGamingIgorGamingIgorGaming"
                                                Team="Indie Box"
                                                TeamLogoImagePath="/Resources/Images/TeamLogo.jpg" />
                             <controls:Invation NameInvitor="IgorGaming"
-                                               Team="Indie Box"
+                                               Team="Indie Box Indie Box Indie Box Indie Box Indie Box Indie Box Indie Box Indie Box"
                                                TeamLogoImagePath="/Resources/Images/TeamLogo.jpg" />
                         </StackPanel>
                     </materialDesign:PopupBox>

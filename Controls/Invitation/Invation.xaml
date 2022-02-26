@@ -20,12 +20,19 @@
                                            TextWrapping="Wrap"
                                            Text="Пользователь " />
                                 <TextBlock FontSize="16"
+                                           TextTrimming="WordEllipsis"
+                                           ToolTip="{TemplateBinding NameInvitor}"
+                                           TextDecorations="Underline"
                                            Text="{TemplateBinding NameInvitor}"></TextBlock>
                                 <TextBlock FontSize="16"
                                            TextWrapping="Wrap"
                                            Text="приглашает вас в команду "></TextBlock>
                                 <TextBlock FontSize="16"
                                            TextWrapping="Wrap"
+                                           TextTrimming="WordEllipsis"
+                                           ToolTip="{TemplateBinding Team}"
+                                           TextDecorations="Underline"
+                                           MaxHeight="24"
                                            Text="{TemplateBinding Team}"></TextBlock>
                             </WrapPanel>
                             <DockPanel LastChildFill="False"
