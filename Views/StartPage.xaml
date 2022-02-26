@@ -24,12 +24,30 @@
     <StackPanel>
         <StackPanel HorizontalAlignment="Right">
             <materialDesign:Badged Badge="3"
-                                   Margin="20"
-                                   Padding="-10">
-                <Button Style="{StaticResource MaterialDesignIconButton}"
-                        Command="{Binding OpenInvitationsWindow}">
-                    <materialDesign:PackIcon Kind="Invite" />
-                </Button>
+                                   Margin="20">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PopupBox PlacementMode='BottomAndAlignRightEdges'
+                                             StaysOpen="True">
+                        <materialDesign:PopupBox.ToggleContent>
+                            <materialDesign:PackIcon Kind="Invite"
+                                                     Width="24"
+                                                     Height="24" />
+                        </materialDesign:PopupBox.ToggleContent>
+                        <StackPanel Margin="30">
+                            <TextBlock FontSize="24"
+                                       HorizontalAlignment="Center">Приглашения</TextBlock>
+                            <controls:Invation NameInvitor="IgorGaming"
+                                               Team="Indie Box"
+                                               TeamLogoImagePath="/Resources/Images/TeamLogo.jpg" />
+                            <controls:Invation NameInvitor="IgorGaming"
+                                               Team="Indie Box"
+                                               TeamLogoImagePath="/Resources/Images/TeamLogo.jpg" />
+                            <controls:Invation NameInvitor="IgorGaming"
+                                               Team="Indie Box"
+                                               TeamLogoImagePath="/Resources/Images/TeamLogo.jpg" />
+                        </StackPanel>
+                    </materialDesign:PopupBox>
+                </StackPanel>
             </materialDesign:Badged>
         </StackPanel>
         <TextBlock Style="{StaticResource Header}"
