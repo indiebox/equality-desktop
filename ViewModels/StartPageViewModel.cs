@@ -12,10 +12,12 @@ namespace Equality.ViewModels
 
         public StartPageViewModel()
         {
+            Name = StateManager.CurrentUser.Name;
         }
 
         #region Properties
 
+        public string Name { get; set; }
 
         #endregion
 
