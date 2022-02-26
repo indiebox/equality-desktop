@@ -1,25 +1,36 @@
 ﻿using System.Threading.Tasks;
 
+using Catel.MVVM;
+using Catel.Services;
+
 using Equality.Core.ViewModel;
 
 namespace Equality.ViewModels
 {
     public class StartPageViewModel : ViewModel
     {
-        public StartPageViewModel()
+        IUIVisualizerService UIVisualizerService;
+
+        public StartPageViewModel(IUIVisualizerService uIVisualizerService)
         {
-            Name = StateManager.CurrentUser.Name;
+            UIVisualizerService = uIVisualizerService;
+
+            OpenInvitationsWindow = new TaskCommand(OnInvitationsWindowExecute);
         }
 
         #region Properties
 
-        public string Name { get; set; }
 
         #endregion
 
         #region Commands
 
+        public TaskCommand OpenInvitationsWindow { get; private set; }
 
+        private async Task OnInvitationsWindowExecute()
+        {
+            await UIVisualizerService.ShowAsync<InvitationsDataWindowViewModel>();
+        }
 
         #endregion
 

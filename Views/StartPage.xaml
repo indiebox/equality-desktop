@@ -5,18 +5,51 @@
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:controls="clr-namespace:Equality.Controls"
+                xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                d:DataContext="{d:DesignInstance Type=viewmodels:StartPageViewModel}"
                 d:DesignHeight="600"
                 d:DesignWidth="900"
                 d:Background="{StaticResource MaterialDesignPaper}"
                 mc:Ignorable="d">
+    <Page.Resources>
+        <Style TargetType="TextBlock"
+               x:Key="Header">
+            <Setter Property="Padding"
+                    Value="0,0,0,0" />
+        </Style>
+    </Page.Resources>
 
-    <TextBlock Grid.Row="0"
-               Grid.Column="0"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"
-               FontSize="16"
-               TextAlignment="Center">
-        <Run>Hello, </Run>
+    <StackPanel>
+        <StackPanel HorizontalAlignment="Right">
+            <materialDesign:Badged Badge="3"
+                                   Margin="20"
+                                   Padding="-10">
+                <Button Style="{StaticResource MaterialDesignIconButton}"
+                        Command="{Binding OpenInvitationsWindow}">
+                    <materialDesign:PackIcon Kind="Invite" />
+                </Button>
+            </materialDesign:Badged>
+        </StackPanel>
+        <TextBlock Style="{StaticResource Header}"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="24"
+                   TextAlignment="Center">
+        <Run>Hello,</Run>
         <Run Text="{Binding Name}" />
-    </TextBlock>
+        <Run>!</Run>
+        </TextBlock>
+        <TextBlock Grid.Row="0"
+                   Grid.Column="0"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="16"
+                   TextAlignment="Center">
+        Последняя активность:
+        </TextBlock>
+    </StackPanel>
 </equality:Page>

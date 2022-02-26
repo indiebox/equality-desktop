@@ -240,4 +240,12 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Resource>
     </ItemGroup>
+    <ItemGroup>
+      <Page Update="Controls\Invitation\Invation.xaml">
+        <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      </Page>
+      <Page Update="Views\InvitationsDataWindow.xaml">
+        <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      </Page>
+    </ItemGroup>
 </Project>
