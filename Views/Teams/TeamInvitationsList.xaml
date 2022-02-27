@@ -25,6 +25,7 @@
 
         <DockPanel Grid.Row="0"
                    Margin="10,20,20,10"
+                   Height="50"
                    LastChildFill="False">
             <ComboBox x:Name="FilledComboBox"
                       FontSize="16"
@@ -32,6 +33,7 @@
                       Background="White"
                       Style="{StaticResource MaterialDesignFilledComboBox}"
                       materialDesign:HintAssist.Hint="Фильтры"
+                      VerticalAlignment="Center"
                       Width="256"
                       materialDesign:ComboBoxAssist.ClassicMode="True"
                       materialDesign:ComboBoxAssist.ShowSelectedItem="True"

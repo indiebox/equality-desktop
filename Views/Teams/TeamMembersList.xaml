@@ -25,6 +25,7 @@
 
         <DockPanel Grid.Row="0"
                    Margin="10,20,20,10"
+                   Height="50"
                    LastChildFill="False">
             <TextBox DockPanel.Dock="Left"
                      Style="{StaticResource MaterialDesignFilledTextBox}"
@@ -32,6 +33,7 @@
                      x:Name="FilterText"
                      Width="250"
                      AcceptsReturn="False"
+                     VerticalAlignment="Center"
                      materialDesign:HintAssist.Hint="Поиск по имени"
                      materialDesign:HintAssist.IsFloating="False"
                      materialDesign:TextFieldAssist.HasClearButton="True"
@@ -41,7 +43,8 @@
                      TabIndex="0"
                      materialDesign:ValidationAssist.FontSize="14"
                      Padding="10"
-                     Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}">
+                     Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"
+                     Cursor="IBeam">
             </TextBox>
             <Button DockPanel.Dock="Right"
                     VerticalAlignment="Center">Пригласить участника</Button>
