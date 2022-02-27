@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Windows;
 
 using Catel.Data;
 using Catel.MVVM;

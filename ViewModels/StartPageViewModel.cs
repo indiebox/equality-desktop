@@ -1,8 +1,5 @@
 ﻿using System.Threading.Tasks;
 
-using Catel.MVVM;
-using Catel.Services;
-
 using Equality.Core.ViewModel;
 
 namespace Equality.ViewModels
