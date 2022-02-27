@@ -1,20 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-using Catel.Collections;
-using Catel.MVVM;
 using Catel.Services;
 
 using Equality.Core.Extensions;
-using Equality.Core.Helpers;
 using Equality.Core.ViewModel;
-using Equality.Models;
-using Equality.Services;
-
-using MaterialDesignThemes.Wpf;
 
 namespace Equality.ViewModels
 {
