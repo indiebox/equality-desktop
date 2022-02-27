@@ -34,7 +34,7 @@
                       Style="{StaticResource MaterialDesignFilledComboBox}"
                       materialDesign:HintAssist.Hint="Фильтры"
                       VerticalAlignment="Center"
-                      Width="256"
+                      Width="250"
                       materialDesign:ComboBoxAssist.ClassicMode="True"
                       materialDesign:ComboBoxAssist.ShowSelectedItem="True"
                       SelectedValue="{Binding SelectedValueOne}">
@@ -50,11 +50,10 @@
         <StackPanel Grid.Row="1"
                     Background="WhiteSmoke"
                     Margin="10,0,20,0">
-            <StackPanel Width="550"
-                        Height="Auto"
+            <StackPanel Height="Auto"
+                        Margin="10,0,0,0"
                         Orientation="Horizontal">
-                <Border CornerRadius="100,100,100,100"
-                        Margin="0,25,0,25"
+                <Border CornerRadius="50"
                         Width="60"
                         Height="60"
                         VerticalAlignment="Center">
@@ -95,11 +94,10 @@
                     <materialDesign:PackIcon Kind="Close" />
                 </Button>
             </StackPanel>
-            <StackPanel Width="550"
-                        Height="Auto"
+            <StackPanel Height="Auto"
+                        Margin="10,0,0,0"
                         Orientation="Horizontal">
                 <materialDesign:PackIcon Kind="Cancel"
-                                         Margin="0,25,0,25"
                                          Width="60"
                                          Height="60"
                                          VerticalAlignment="Center"
@@ -126,11 +124,10 @@
                     <TextBlock Margin="0,5,0,0">27 Feb, 12:43</TextBlock>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Width="550"
-                        Height="Auto"
+            <StackPanel Height="Auto"
+                        Margin="10,0,0,0"
                         Orientation="Horizontal">
                 <materialDesign:PackIcon Kind="Check"
-                                         Margin="0,25,0,25"
                                          Width="60"
                                          Height="60"
                                          VerticalAlignment="Center"
@@ -157,11 +154,10 @@
                     <TextBlock Margin="0,5,0,0">27 Feb, 12:43</TextBlock>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Width="550"
-                        Height="Auto"
+            <StackPanel Height="Auto"
+                        Margin="10,0,0,0"
                         Orientation="Horizontal">
-                <Border CornerRadius="100,100,100,100"
-                        Margin="0,25,0,25"
+                <Border CornerRadius="50"
                         Width="60"
                         Height="60"
                         VerticalAlignment="Center">
