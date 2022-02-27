@@ -28,6 +28,7 @@
                    LastChildFill="False">
             <ComboBox x:Name="FilledComboBox"
                       FontSize="16"
+                      materialDesign:HintAssist.IsFloating="False"
                       Background="White"
                       Style="{StaticResource MaterialDesignFilledComboBox}"
                       materialDesign:HintAssist.Hint="Фильтры"
