@@ -11,6 +11,8 @@
                xmlns:local="clr-namespace:Equality.Views"
                d:Background="WhiteSmoke"
                d:DesignHeight="600"
+               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+               d:DataContext="{d:DesignInstance Type=viewmodels:TeamMembersPageViewModel}"
                d:DesignWidth="1000"
                mc:Ignorable="d">
     <DockPanel>
@@ -21,7 +23,7 @@
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                          BorderBrush="{StaticResource PrimaryHueMidBrush}"
                          Margin="4"
-                         IsChecked="True"
+                         IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:TeamMembersPageViewModel+Tab.Participants}}"
                          HorizontalContentAlignment="Left">
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="AccountGroup"
@@ -34,7 +36,7 @@
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                          BorderBrush="{StaticResource PrimaryHueMidBrush}"
                          Margin="4"
-                         IsChecked="False"
+                         IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:TeamMembersPageViewModel+Tab.Invitations}}"
                          HorizontalContentAlignment="Left">
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="Invite"
@@ -46,7 +48,7 @@
             </RadioButton>
         </StackPanel>
 
-        <Frame Source="/Views/Teams/TeamInvitationsList.xaml">
+        <Frame>
 
         </Frame>
     </DockPanel>

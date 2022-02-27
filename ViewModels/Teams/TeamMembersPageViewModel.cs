@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Catel.Collections;
 using Catel.MVVM;
+using Catel.Services;
 
 using Equality.Core.Helpers;
 using Equality.Core.ViewModel;
@@ -18,12 +19,22 @@ namespace Equality.ViewModels
 {
     public class TeamMembersPageViewModel : ViewModel
     {
-        public TeamMembersPageViewModel()
-        { }
+        protected INavigationService NavigationService;
+
+        public TeamMembersPageViewModel(INavigationService navigationService)
+        {
+            NavigationService = navigationService;
+        }
+
+        public enum Tab
+        {
+            Participants,
+            Invitations,
+        }
 
         #region Properties
 
-
+        public Tab ActiveTab { get; set; }
 
         #endregion
 
@@ -35,13 +46,26 @@ namespace Equality.ViewModels
 
         #region Methods
 
-
+        private void OnActiveTabChanged()
+        {
+            switch (ActiveTab) {
+                case Tab.Participants:
+                default:
+                    NavigationService.Navigate<TeamMembersListViewModel>();
+                    break;
+                case Tab.Invitations:
+                    NavigationService.Navigate<TeamInvitationsListViewModel>();
+                    break;
+            }
+        }
 
         #endregion
 
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
+
+            OnActiveTabChanged();
         }
 
         protected override async Task CloseAsync()
