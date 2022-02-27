@@ -8,6 +8,7 @@ using Catel.Collections;
 using Catel.MVVM;
 using Catel.Services;
 
+using Equality.Core.Extensions;
 using Equality.Core.Helpers;
 using Equality.Core.ViewModel;
 using Equality.Models;
@@ -28,7 +29,7 @@ namespace Equality.ViewModels
 
         public enum Tab
         {
-            Participants,
+            Members,
             Invitations,
         }
 
@@ -49,12 +50,12 @@ namespace Equality.ViewModels
         private void OnActiveTabChanged()
         {
             switch (ActiveTab) {
-                case Tab.Participants:
+                case Tab.Members:
                 default:
-                    NavigationService.Navigate<TeamMembersListViewModel>();
+                    NavigationService.Navigate<TeamMembersListViewModel>(this);
                     break;
                 case Tab.Invitations:
-                    NavigationService.Navigate<TeamInvitationsListViewModel>();
+                    NavigationService.Navigate<TeamInvitationsListViewModel>(this);
                     break;
             }
         }

@@ -23,7 +23,7 @@
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                          BorderBrush="{StaticResource PrimaryHueMidBrush}"
                          Margin="4"
-                         IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:TeamMembersPageViewModel+Tab.Participants}}"
+                         IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:TeamMembersPageViewModel+Tab.Members}}"
                          HorizontalContentAlignment="Left">
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="AccountGroup"
