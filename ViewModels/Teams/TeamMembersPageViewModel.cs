@@ -18,86 +18,86 @@ namespace Equality.ViewModels
 {
     public class TeamMembersPageViewModel : ViewModel
     {
-        protected Team Team;
+        //protected Team Team;
 
-        protected ITeamService TeamService;
+        //protected ITeamService TeamService;
 
-        public TeamMembersPageViewModel(ITeamService teamService)
+        public TeamMembersPageViewModel(/*ITeamService teamService*/)
         {
-            TeamService = teamService;
+            //TeamService = teamService;
 
-            ShowDialog = new TaskCommand(OnShowDialogExecute);
+            //ShowDialog = new TaskCommand(OnShowDialogExecute);
         }
 
         #region Properties
 
-        public string FilterText { get; set; }
+        //public string FilterText { get; set; }
 
-        public ObservableCollection<TeamMember> Members { get; set; } = new();
+        //public ObservableCollection<TeamMember> Members { get; set; } = new();
 
-        public ObservableCollection<TeamMember> FilteredMembers { get; set; } = new();
+        //public ObservableCollection<TeamMember> FilteredMembers { get; set; } = new();
 
         #endregion
 
         #region Commands
 
-        public TaskCommand ShowDialog { get; private set; }
+        //public TaskCommand ShowDialog { get; private set; }
 
-        private async Task OnShowDialogExecute()
-        {
-            var view = MvvmHelper.CreateViewWithViewModel<LeaveTeamDialogViewModel>(Members.Count == 1);
-            bool result = (bool)await DialogHost.Show(view);
+        //private async Task OnShowDialogExecute()
+        //{
+        //    var view = MvvmHelper.CreateViewWithViewModel<LeaveTeamDialogViewModel>(Members.Count == 1);
+        //    bool result = (bool)await DialogHost.Show(view);
 
-            if (result) {
-                await LeaveTeam();
-            }
-        }
+        //    if (result) {
+        //        await LeaveTeam();
+        //    }
+        //}
 
         #endregion
 
         #region Methods
 
-        private void OnFilterTextChanged()
-        {
-            FilterMembers();
-        }
+        //private void OnFilterTextChanged()
+        //{
+        //    FilterMembers();
+        //}
 
-        protected async Task LoadMembersAsync()
-        {
-            try {
-                var response = await TeamService.GetMembersAsync(Team);
+        //protected async Task LoadMembersAsync()
+        //{
+        //    try {
+        //        var response = await TeamService.GetMembersAsync(Team);
 
-                Members.AddRange(response.Object);
+        //        Members.AddRange(response.Object);
 
-                FilterMembers();
-            } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
-            }
-        }
+        //        FilterMembers();
+        //    } catch (HttpRequestException e) {
+        //        Debug.WriteLine(e.ToString());
+        //    }
+        //}
 
-        protected async Task LeaveTeam()
-        {
-            try {
-                await TeamService.LeaveTeamAsync(Team);
+        //protected async Task LeaveTeam()
+        //{
+        //    try {
+        //        await TeamService.LeaveTeamAsync(Team);
 
-                var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
-                vm.ActiveTab = ApplicationWindowViewModel.Tab.Main;
-                vm.SelectedTeam = null;
-            } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
-            }
-        }
+        //        var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
+        //        vm.ActiveTab = ApplicationWindowViewModel.Tab.Main;
+        //        vm.SelectedTeam = null;
+        //    } catch (HttpRequestException e) {
+        //        Debug.WriteLine(e.ToString());
+        //    }
+        //}
 
-        protected void FilterMembers()
-        {
-            if (string.IsNullOrEmpty(FilterText)) {
-                FilteredMembers.ReplaceRange(Members);
+        //protected void FilterMembers()
+        //{
+        //    if (string.IsNullOrEmpty(FilterText)) {
+        //        FilteredMembers.ReplaceRange(Members);
 
-                return;
-            }
+        //        return;
+        //    }
 
-            FilteredMembers.ReplaceRange(Members.Where(user => user.Name.ToLower().Contains(FilterText.ToLower())));
-        }
+        //    FilteredMembers.ReplaceRange(Members.Where(user => user.Name.ToLower().Contains(FilterText.ToLower())));
+        //}
 
         #endregion
 
@@ -105,9 +105,9 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
+            //Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
 
-            await LoadMembersAsync();
+            //await LoadMembersAsync();
         }
 
         protected override async Task CloseAsync()

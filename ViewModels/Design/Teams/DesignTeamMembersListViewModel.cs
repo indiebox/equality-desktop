@@ -6,9 +6,9 @@ using Equality.Models;
 
 namespace Equality.ViewModels.Design
 {
-    public class DesignTeamMembersPageViewModel : TeamMembersPageViewModel
+    public class DesignTeamMembersListViewModel : TeamMembersListViewModel
     {
-        public DesignTeamMembersPageViewModel() : base(null)
+        public DesignTeamMembersListViewModel() : base(null)
         {
             FilteredMembers.AddRange(new TeamMember[] {
                 new TeamMember() { Name = "user1", JoinedAt = DateTime.Now.AddHours(-2) },
