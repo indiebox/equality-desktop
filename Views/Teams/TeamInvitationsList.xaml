@@ -44,7 +44,8 @@
         </DockPanel>
 
         <StackPanel Grid.Row="1"
-                    Background="WhiteSmoke">
+                    Background="WhiteSmoke"
+                    Margin="10,0,20,0">
             <StackPanel Width="550"
                         Height="Auto"
                         Orientation="Horizontal">
