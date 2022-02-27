@@ -42,10 +42,6 @@
         <PackageReference Include="CefSharp.Wpf.NETCore" Version="92.0.251" />
         <PackageReference Include="Fody" Version="6.6.0" PrivateAssets="all" />
         <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
-        <PackageReference Include="MimeTypes" Version="2.3.0">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Obsolete.Fody" Version="5.2.1" PrivateAssets="all" />
         <PackageReference Include="WpfAnalyzers" Version="3.5.4">
