@@ -17,6 +17,7 @@ namespace Equality.Controls
         }
         public static readonly DependencyProperty TeamProperty =
           DependencyProperty.Register(nameof(Team), typeof(string), typeof(Invitation), new PropertyMetadata(string.Empty));
+
         public string NameInvitor
         {
             get => (string)GetValue(NameInvitorProperty);
