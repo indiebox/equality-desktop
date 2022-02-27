@@ -128,7 +128,7 @@
 
                         <Button HorizontalAlignment="Right"
                                 Content="Покинуть команду"
-                                Command="{Binding DataContext.ShowDialog, RelativeSource={RelativeSource AncestorType=local:TeamMembersPage}}"
+                                Command="{Binding DataContext.ShowDialog, RelativeSource={RelativeSource AncestorType=equality:Page}}"
                                 Cursor="Hand">
                             <Button.Style>
                                 <Style TargetType="Button"
