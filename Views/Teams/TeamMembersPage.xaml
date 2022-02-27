@@ -9,7 +9,6 @@
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
                xmlns:local="clr-namespace:Equality.Views"
-               d:DataContext="{d:DesignInstance Type=dvm:DesignTeamMembersPageViewModel, IsDesignTimeCreatable=True}"
                d:Background="WhiteSmoke"
                d:DesignHeight="600"
                d:DesignWidth="1000"
@@ -47,7 +46,7 @@
             </RadioButton>
         </StackPanel>
 
-        <Frame Source="/Views/Teams/TeamMembersList.xaml">
+        <Frame Source="/Views/Teams/TeamInvitationsList.xaml">
 
         </Frame>
     </DockPanel>

@@ -241,6 +241,9 @@
 		</Resource>
 	</ItemGroup>
 	<ItemGroup>
+	  <Page Update="Views\Teams\TeamInvitationsList.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	  </Page>
 	  <Page Update="Views\Teams\TeamMembersList.xaml">
 	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
 	  </Page>
