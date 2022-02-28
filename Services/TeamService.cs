@@ -5,7 +5,6 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 using Catel;
-using Catel.MVVM;
 
 using Equality.Core.ApiClient;
 using Equality.Core.StateManager;

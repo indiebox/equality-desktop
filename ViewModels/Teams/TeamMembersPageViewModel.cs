@@ -1,102 +1,52 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-using Catel.Collections;
-using Catel.MVVM;
+using Catel.Services;
 
-using Equality.Core.Helpers;
+using Equality.Core.Extensions;
 using Equality.Core.ViewModel;
-using Equality.Models;
-using Equality.Services;
-
-using MaterialDesignThemes.Wpf;
 
 namespace Equality.ViewModels
 {
     public class TeamMembersPageViewModel : ViewModel
     {
-        protected Team Team;
+        protected INavigationService NavigationService;
 
-        protected ITeamService TeamService;
-
-        public TeamMembersPageViewModel(ITeamService teamService)
+        public TeamMembersPageViewModel(INavigationService navigationService)
         {
-            TeamService = teamService;
+            NavigationService = navigationService;
+        }
 
-            ShowDialog = new TaskCommand(OnShowDialogExecute);
+        public enum Tab
+        {
+            Members,
+            Invitations,
         }
 
         #region Properties
 
-        public string FilterText { get; set; }
-
-        public ObservableCollection<TeamMember> Members { get; set; } = new();
-
-        public ObservableCollection<TeamMember> FilteredMembers { get; set; } = new();
+        public Tab ActiveTab { get; set; }
 
         #endregion
 
         #region Commands
 
-        public TaskCommand ShowDialog { get; private set; }
 
-        private async Task OnShowDialogExecute()
-        {
-            var view = MvvmHelper.CreateViewWithViewModel<LeaveTeamDialogViewModel>(Members.Count == 1);
-            bool result = (bool)await DialogHost.Show(view);
-
-            if (result) {
-                await LeaveTeam();
-            }
-        }
 
         #endregion
 
         #region Methods
 
-        private void OnFilterTextChanged()
+        private void OnActiveTabChanged()
         {
-            FilterMembers();
-        }
-
-        protected async Task LoadMembersAsync()
-        {
-            try {
-                var response = await TeamService.GetMembersAsync(Team);
-
-                Members.AddRange(response.Object);
-
-                FilterMembers();
-            } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+            switch (ActiveTab) {
+                case Tab.Members:
+                default:
+                    NavigationService.Navigate<TeamMembersListViewModel>(this);
+                    break;
+                case Tab.Invitations:
+                    NavigationService.Navigate<TeamInvitationsListViewModel>(this);
+                    break;
             }
-        }
-
-        protected async Task LeaveTeam()
-        {
-            try {
-                await TeamService.LeaveTeamAsync(Team);
-
-                var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
-                vm.ActiveTab = ApplicationWindowViewModel.Tab.Main;
-                vm.SelectedTeam = null;
-            } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
-            }
-        }
-
-        protected void FilterMembers()
-        {
-            if (string.IsNullOrEmpty(FilterText)) {
-                FilteredMembers.ReplaceRange(Members);
-
-                return;
-            }
-
-            FilteredMembers.ReplaceRange(Members.Where(user => user.Name.ToLower().Contains(FilterText.ToLower())));
         }
 
         #endregion
@@ -105,15 +55,11 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
-
-            await LoadMembersAsync();
+            OnActiveTabChanged();
         }
 
         protected override async Task CloseAsync()
         {
-            // TODO: unsubscribe from events here
-
             await base.CloseAsync();
         }
     }

@@ -4,35 +4,37 @@ using Equality.Core.ViewModel;
 
 namespace Equality.ViewModels
 {
-    public class StartPageViewModel : ViewModel
+    public class TeamInvitationsListViewModel : ViewModel
     {
 
-        public StartPageViewModel()
+        public TeamInvitationsListViewModel()
         {
-            Name = StateManager.CurrentUser.Name;
         }
 
         #region Properties
 
-        public string Name { get; set; }
 
         #endregion
 
         #region Commands
+
+
+
+        #endregion
+
+        #region Methods
+
+
 
         #endregion
 
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-
-            // TODO: subscribe to events here
         }
 
         protected override async Task CloseAsync()
         {
-            // TODO: unsubscribe from events here
-
             await base.CloseAsync();
         }
     }
