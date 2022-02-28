@@ -34,6 +34,7 @@ namespace Equality.Converters
         }
     }
 
+    [ValueConversion(typeof(int), typeof(Visibility))]
     public class IntToHidingVisibilityConverter : IntToCollapsingVisibilityConverter
     {
         public IntToHidingVisibilityConverter() : base(Visibility.Hidden)

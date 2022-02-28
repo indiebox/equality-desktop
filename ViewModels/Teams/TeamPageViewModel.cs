@@ -58,35 +58,6 @@ namespace Equality.ViewModels
 
         #region Commands
 
-
-
-        #endregion
-
-        #region Methods
-
-        private void OnNavigated(object sender, EventArgs e)
-        {
-            Team = NavigationContext.Values["team"] as Team;
-        }
-
-        private void OnActiveTabChanged()
-        {
-            switch (ActiveTab) {
-                case Tab.Projects:
-                default:
-                    NavigationService.Navigate<TeamProjectsPageViewModel>(this);
-                    break;
-                case Tab.Members:
-                    NavigationService.Navigate<TeamMembersPageViewModel>(this);
-                    break;
-                case Tab.Stats:
-                    break;
-                case Tab.Settings:
-                    NavigationService.Navigate<TeamSettingsPageViewModel>(this);
-                    break;
-            }
-        }
-
         public TaskCommand UploadLogo { get; private set; }
 
         private async Task OnUploadLogoExecute()
@@ -123,6 +94,33 @@ namespace Equality.ViewModels
                 Team.SyncWith(result.Object);
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void OnNavigated(object sender, EventArgs e)
+        {
+            Team = NavigationContext.Values["team"] as Team;
+        }
+
+        private void OnActiveTabChanged()
+        {
+            switch (ActiveTab) {
+                case Tab.Projects:
+                default:
+                    NavigationService.Navigate<TeamProjectsPageViewModel>(this);
+                    break;
+                case Tab.Members:
+                    NavigationService.Navigate<TeamMembersPageViewModel>(this);
+                    break;
+                case Tab.Stats:
+                    break;
+                case Tab.Settings:
+                    NavigationService.Navigate<TeamSettingsPageViewModel>(this);
+                    break;
             }
         }
 

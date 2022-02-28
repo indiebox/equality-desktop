@@ -82,10 +82,16 @@ namespace Equality.Services
             const string fieldName = "logo";
 
             var fileInfo = new FileInfo(imagePath);
+            string mimeType = fileInfo.Extension switch
+            {
+                "jpg" or "jpeg" => "image/jpeg",
+                "png" => "image/png",
+                _ => "application/octet-stream",
+            };
             using var fileStream = fileInfo.OpenRead();
 
             var content = new StreamContent(fileStream);
-            content.Headers.ContentType = MediaTypeHeaderValue.Parse(MimeTypes.GetMimeType(imagePath));
+            content.Headers.ContentType = MediaTypeHeaderValue.Parse(mimeType);
             content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
             {
                 Name = fieldName,
