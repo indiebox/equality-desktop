@@ -70,7 +70,7 @@
                                              GroupName="FilterByTeams"
                                              Margin="4"
                                              Cursor="Hand"
-                                             Command="{Binding DataContext.FilterProjects, RelativeSource={RelativeSource AncestorType=local:ProjectsPage}}"
+                                             Command="{Binding DataContext.FilterProjects, RelativeSource={RelativeSource AncestorType=equality:Page}}"
                                              CommandParameter="{Binding}"
                                              HorizontalContentAlignment="Left">
                                     <Grid>
@@ -111,7 +111,7 @@
                                 <StackPanel Background="White"
                                             Margin="30,30,30,0">
                                     <Button Style="{StaticResource BaseButton}"
-                                            Command="{Binding DataContext.OpenTeamPage, RelativeSource={RelativeSource AncestorType=local:ProjectsPage}}"
+                                            Command="{Binding DataContext.OpenTeamPage, RelativeSource={RelativeSource AncestorType=equality:Page}}"
                                             CommandParameter="{Binding}"
                                             Cursor="Hand">
                                         <StackPanel Orientation="Horizontal"

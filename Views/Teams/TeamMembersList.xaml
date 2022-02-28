@@ -1,0 +1,154 @@
+﻿<equality:Page xmlns:equality="clr-namespace:Equality.Core.MVVM"
+               x:Class="Equality.Views.TeamMembersList"
+               xmlns:catel="http://schemas.catelproject.com"
+               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:converters="clr-namespace:Equality.Converters"
+               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:local="clr-namespace:Equality.Views"
+               mc:Ignorable="d"
+               d:DesignHeight="1080"
+               d:DesignWidth="1920"
+               xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+               xmlns:controls="clr-namespace:Equality.Controls"
+               d:Background="{StaticResource MaterialDesignPaper}"
+               d:DataContext="{d:DesignInstance dvm:DesignTeamMembersListViewModel, IsDesignTimeCreatable=True}"
+               Title="TeamPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0"
+                   Margin="10,20,20,10"
+                   Height="50"
+                   LastChildFill="False">
+            <TextBox DockPanel.Dock="Left"
+                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                     Background="white"
+                     x:Name="FilterText"
+                     Width="250"
+                     AcceptsReturn="False"
+                     VerticalAlignment="Center"
+                     materialDesign:HintAssist.Hint="Поиск по имени"
+                     materialDesign:HintAssist.IsFloating="False"
+                     materialDesign:TextFieldAssist.HasClearButton="True"
+                     materialDesign:TextFieldAssist.HasLeadingIcon="True"
+                     materialDesign:TextFieldAssist.LeadingIcon="Search"
+                     FontSize="16"
+                     TabIndex="0"
+                     materialDesign:ValidationAssist.FontSize="14"
+                     Padding="10"
+                     Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"
+                     Cursor="IBeam">
+            </TextBox>
+            <Button DockPanel.Dock="Right"
+                    VerticalAlignment="Center">Пригласить участника</Button>
+        </DockPanel>
+
+        <ListBox Grid.Row="1"
+                 Background="WhiteSmoke"
+                 Margin="10,0,20,0"
+                 VirtualizingStackPanel.IsVirtualizing="True"
+                 VirtualizingStackPanel.VirtualizationMode="Recycling"
+                 ItemsSource="{Binding FilteredMembers}"
+                 Width="Auto">
+            <ListBox.Style>
+                <Style TargetType="ListBox"
+                       BasedOn="{StaticResource MaterialDesignListBox}">
+                    <Style.Triggers>
+                        <Trigger Property="HasItems"
+                                 Value="False">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <TextBlock Background="WhiteSmoke"
+                                                   Padding="15"
+                                                   TextWrapping="Wrap"
+                                                   FontSize="18">Не найдено участников по запросу: "<Run Text="{Binding ElementName=FilterText, Path=Text}"></Run>".</TextBlock>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.Style>
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem"
+                       BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Stretch"></Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel Margin="10">
+                        <Border Width="50"
+                                Height="50"
+                                CornerRadius="50">
+                            <Border.Background>
+                                <ImageBrush Stretch="Fill"
+                                            ImageSource="/Resources/Images/TeamLogo.jpg" />
+                            </Border.Background>
+                        </Border>
+
+                        <StackPanel Margin="15,0"
+                                    VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}"
+                                           VerticalAlignment="Center"
+                                           FontSize="18" />
+
+                                <materialDesign:Chip Content="Вы"
+                                                     Margin="10,0"
+                                                     Focusable="False"
+                                                     Cursor="Arrow">
+                                    <materialDesign:Chip.Style>
+                                        <Style TargetType="materialDesign:Chip">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsCurrentUser}"
+                                                             Value="False">
+                                                    <Setter Property="Visibility"
+                                                            Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </materialDesign:Chip.Style>
+                                </materialDesign:Chip>
+                            </StackPanel>
+
+                            <TextBlock>
+                                        <Run>Дата вступления:</Run>
+                                        <Run Text="{Binding JoinedAt, Converter={converters:UtcToLocalDateConverter}}" />
+                            </TextBlock>
+                        </StackPanel>
+
+                        <Button HorizontalAlignment="Right"
+                                Content="Покинуть команду"
+                                Command="{Binding DataContext.ShowDialog, RelativeSource={RelativeSource AncestorType=equality:Page}}"
+                                Cursor="Hand">
+                            <Button.Style>
+                                <Style TargetType="Button"
+                                       BasedOn="{StaticResource MaterialDesignOutlinedButton}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsCurrentUser}"
+                                                     Value="False">
+                                            <Setter Property="Visibility"
+                                                    Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </DockPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</equality:Page>
