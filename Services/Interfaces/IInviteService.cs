@@ -54,5 +54,22 @@ namespace Equality.Services
         /// <param name="teamId">The team id.</param>
         /// <param name="email">The user email.</param>
         public Task<ApiResponseMessage<Invite>> InviteUserAsync(ulong teamId, string email);
+
+        /// <summary>
+        /// Sends the revoke invite request to the API.
+        /// </summary>
+        /// <param name="invite">The invite.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage> RevokeInviteAsync(Invite invite);
+
+        /// <inheritdoc cref="RevokeInviteAsync(Invite)"/>
+        /// <param name="inviteId">The invite id.</param>
+        public Task<ApiResponseMessage> RevokeInviteAsync(ulong inviteId);
     }
 }

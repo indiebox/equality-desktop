@@ -62,6 +62,16 @@ namespace Equality.Services
             return new(invite, response);
         }
 
+        public Task<ApiResponseMessage> RevokeInviteAsync(Invite invite) => RevokeInviteAsync(invite.Id);
+
+        public async Task<ApiResponseMessage> RevokeInviteAsync(ulong inviteId)
+        {
+            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
+            Argument.IsNotNull(nameof(inviteId), inviteId);
+
+            return await ApiClient.WithTokenOnce(StateManager.ApiToken).DeleteAsync($"invites/{inviteId}");
+        }
+
         /// <inheritdoc cref="IApiDeserializable{T}.Deserialize(JToken)"/>
         protected Invite Deserialize(JToken data) => ((IInviteService)this).Deserialize(data);
 
