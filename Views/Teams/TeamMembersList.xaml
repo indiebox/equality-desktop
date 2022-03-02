@@ -15,8 +15,7 @@
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
                xmlns:controls="clr-namespace:Equality.Controls"
                d:Background="{StaticResource MaterialDesignPaper}"
-               d:DataContext="{d:DesignInstance dvm:DesignTeamMembersListViewModel, IsDesignTimeCreatable=True}"
-               Title="TeamPage">
+               d:DataContext="{d:DesignInstance dvm:DesignTeamMembersListViewModel, IsDesignTimeCreatable=True}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -47,6 +46,7 @@
                      Cursor="IBeam">
             </TextBox>
             <Button DockPanel.Dock="Right"
+                    Command="{Binding InviteUser}"
                     VerticalAlignment="Center">Пригласить участника</Button>
         </DockPanel>
 
