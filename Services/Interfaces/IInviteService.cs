@@ -9,6 +9,33 @@ namespace Equality.Services
 {
     public interface IInviteService : IApiDeserializable<Invite>
     {
+        public enum InviteFilter
+        {
+            All,
+            Pending,
+            Accepted,
+            Declined,
+        };
+
+        /// <summary>
+        /// Sends the get team invites request to the API.
+        /// </summary>
+        /// <param name="team">The team.</param>
+        /// <param name="filter">Filter.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage<Invite[]>> GetTeamInvitesAsync(Team team, InviteFilter filter = InviteFilter.All);
+
+        /// <inheritdoc cref="GetTeamInvitesAsync(Team, InviteFilter)"/>
+        /// <param name="teamId">The team id.</param>
+        /// <param name="filter">Filter.</param>
+        public Task<ApiResponseMessage<Invite[]>> GetTeamInvitesAsync(ulong teamId, InviteFilter filter = InviteFilter.All);
+
         /// <summary>
         /// Sends the invite user to the team request to the API.
         /// </summary>
