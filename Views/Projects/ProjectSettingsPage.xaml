@@ -14,8 +14,7 @@
 
     <DockPanel>
         <StackPanel DockPanel.Dock="Right"
-                    Background="White"
-                    Margin="10">
+                    Background="White">
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                          BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                          Margin="4"
