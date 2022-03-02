@@ -27,6 +27,7 @@ namespace Equality.ViewModels
             InviteService = inviteService;
 
             OpenInviteUserDialog = new TaskCommand(OnOpenInviteUserDialogExecuteAsync);
+            RevokeInvite = new TaskCommand<Invite>(OnRevokeInviteExecuteAsync);
 
             NavigationCompleted += OnNavigated;
         }
@@ -58,6 +59,20 @@ namespace Equality.ViewModels
                     || SelectedFilter == IInviteService.InviteFilter.Pending) {
                     FilteredInvites.Add(invite);
                 }
+            }
+        }
+
+        public TaskCommand<Invite> RevokeInvite { get; private set; }
+
+        private async Task OnRevokeInviteExecuteAsync(Invite invite)
+        {
+            try {
+                await InviteService.RevokeInviteAsync(invite);
+
+                Invites.Remove(invite);
+                FilteredInvites.Remove(invite);
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
             }
         }
 

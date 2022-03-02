@@ -269,7 +269,11 @@
                             </TextBlock>
                         </StackPanel>
 
-                        <Button HorizontalAlignment="Right">
+                        <!-- Button -->
+                        <Button Command="{Binding DataContext.RevokeInvite, RelativeSource={RelativeSource AncestorType=equality:Page}}"
+                                CommandParameter="{Binding}"
+                                HorizontalAlignment="Right"
+                                ToolTip="Отменить приглашение">
                             <Button.Style>
                                 <Style TargetType="Button"
                                        BasedOn="{StaticResource MaterialDesignIconButton}">
