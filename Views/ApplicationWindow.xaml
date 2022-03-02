@@ -93,16 +93,6 @@
                                 </StackPanel>
                             </TabItem.Header>
                         </TabItem>
-                        <TabItem Width="80"
-                                 Height="80"
-                                 IsSelected="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.TempProgect}}">
-                            <TabItem.Header>
-                                <StackPanel>
-                                    <materialDesign:PackIcon Kind="ViewDashboardVariant" />
-                                    <TextBlock Text="Проект" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
 
                         <TabItem Width="80"
                                  Height="80"
