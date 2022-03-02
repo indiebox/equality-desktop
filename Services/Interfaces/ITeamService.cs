@@ -52,25 +52,6 @@ namespace Equality.Services
         public Task<ApiResponseMessage<TeamMember[]>> GetMembersAsync(ulong teamId);
 
         /// <summary>
-        /// Sends the invite user request to the API.
-        /// </summary>
-        /// <param name="team">The team.</param>
-        /// <param name="email">The user email.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<Invite>> InviteUserAsync(Team team, string email);
-
-        /// <inheritdoc cref="InviteUserAsync(Team, string)"/>
-        /// <param name="teamId">The team id.</param>
-        /// <param name="email">The user email.</param>
-        public Task<ApiResponseMessage<Invite>> InviteUserAsync(ulong teamId, string email);
-
-        /// <summary>
         /// Sends the leave team request to the API.
         /// </summary>
         /// <param name="team">The team.</param>

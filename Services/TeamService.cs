@@ -71,25 +71,6 @@ namespace Equality.Services
             return new(members, response);
         }
 
-        public Task<ApiResponseMessage<Invite>> InviteUserAsync(Team team, string email) => InviteUserAsync(team.Id, email);
-
-        public async Task<ApiResponseMessage<Invite>> InviteUserAsync(ulong teamId, string email)
-        {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
-            Argument.IsNotNull(nameof(teamId), teamId);
-
-            Dictionary<string, object> data = new()
-            {
-                { "email", email }
-            };
-
-            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync($"teams/{teamId}/invites", data);
-
-            var invite = DeserializeInvite(response.Content["data"]);
-
-            return new(invite, response);
-        }
-
         public Task<ApiResponseMessage<Team>> SetLogoAsync(Team team, string imagePath) => SetLogoAsync(team.Id, imagePath);
 
         public async Task<ApiResponseMessage<Team>> SetLogoAsync(ulong teamId, string imagePath)
@@ -184,24 +165,6 @@ namespace Equality.Services
             Argument.IsNotNull(nameof(data), data);
 
             return data.ToObject<TeamMember[]>(new()
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new SnakeCaseNamingStrategy()
-                }
-            });
-        }
-
-        /// <summary>
-        /// Deserializes the JToken to the <c>Invite</c>.
-        /// </summary>
-        /// <param name="data">The JToken.</param>
-        /// <returns>Returns the <see cref="Invite"/>.</returns>
-        public Invite DeserializeInvite(JToken data)
-        {
-            Argument.IsNotNull(nameof(data), data);
-
-            return data.ToObject<Invite>(new()
             {
                 ContractResolver = new DefaultContractResolver
                 {
