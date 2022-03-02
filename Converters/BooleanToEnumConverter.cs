@@ -44,12 +44,33 @@ namespace Equality.Converters
                 return DependencyProperty.UnsetValue;
             }
 
-            return ((Enum)value).HasFlag(parameterEnum);
+            return value.Equals(parameter);
         }
 
         protected override object ConvertBack(object value, Type targetType, object parameter)
         {
             return value.Equals(true) ? parameter : Binding.DoNothing;
+        }
+    }
+
+    [ValueConversion(typeof(object), typeof(object))]
+    public class BooleanToEnumFlagsConverter : BooleanToEnumConverter
+    {
+        protected override object Convert(object value, Type targetType, object parameter)
+        {
+            if (value == null) {
+                return false;
+            }
+
+            if (parameter is not Enum parameterEnum) {
+                return DependencyProperty.UnsetValue;
+            }
+
+            if (Enum.IsDefined(value.GetType(), parameterEnum) == false) {
+                return DependencyProperty.UnsetValue;
+            }
+
+            return ((Enum)value).HasFlag(parameterEnum);
         }
     }
 }
