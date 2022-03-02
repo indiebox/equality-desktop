@@ -37,6 +37,7 @@ namespace Equality.ViewModels
             Projects,
             Team,
             Project,
+            TempProgect,
         }
 
         #region Properties
@@ -78,6 +79,9 @@ namespace Equality.ViewModels
                     break;
                 case Tab.Projects:
                     NavigationService.Navigate<ProjectsPageViewModel>();
+                    break;
+                case Tab.TempProgect:
+                    NavigationService.Navigate<ProjectPageViewModel>();
                     break;
                 case Tab.Team:
                     Argument.IsNotNull(nameof(SelectedTeam), SelectedTeam);
