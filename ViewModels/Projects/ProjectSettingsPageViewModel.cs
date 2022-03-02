@@ -2,7 +2,7 @@
 
 using Equality.Core.ViewModel;
 
-namespace Equality.ViewModels.Projects
+namespace Equality.ViewModels
 {
     public class ProjectSettingsPageViewModel : ViewModel
     {

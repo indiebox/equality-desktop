@@ -8,12 +8,30 @@
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
                d:Background="{StaticResource MaterialDesignPaper}"
-               d:DesignHeight="300"
-               d:DesignWidth="300"
+               d:DesignHeight="900"
+               d:DesignWidth="1820"
                mc:Ignorable="d">
 
-    <Grid>
-        <TextBlock>Content</TextBlock>
-    </Grid>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Right"
+                    Background="White"
+                    Margin="10">
+            <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                         BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                         Margin="4"
+                         IsChecked="True">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon VerticalAlignment="Center"
+                                             Kind="Settings"
+                                             Margin="0,10,10,10" />
+                    <TextBlock VerticalAlignment="Center"
+                               FontFamily="16">Основные</TextBlock>
+                </StackPanel>
+            </RadioButton>
+        </StackPanel>
+        <Frame>
+
+        </Frame>
+    </DockPanel>
 
 </equality:Page>

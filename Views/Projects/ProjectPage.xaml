@@ -51,7 +51,7 @@
                                  Content="Настройки" />
                 </StackPanel>
             </DockPanel>
-            <Frame>
+            <Frame Source="/Views/Projects/ProjectSettingsPage.xaml">
 
             </Frame>
         </DockPanel>
