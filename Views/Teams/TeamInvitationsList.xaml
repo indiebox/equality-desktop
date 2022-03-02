@@ -47,186 +47,113 @@
                     VerticalAlignment="Center">Пригласить участника</Button>
         </DockPanel>
 
-        <StackPanel Grid.Row="1"
-                    Background="WhiteSmoke"
-                    Margin="10,0,20,0">
-            <ItemsControl ItemsSource="{Binding FilteredInvites}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Height="Auto"
-                                    Margin="10,0,0,0"
-                                    Orientation="Horizontal">
-                            <!-- Image -->
-                            <Border CornerRadius="50"
-                                    Width="60"
-                                    Height="60"
+        <ListBox Grid.Row="1"
+                 Background="WhiteSmoke"
+                 Margin="10,0,20,0"
+                 materialDesign:ListBoxItemAssist.ShowSelection="False"
+                 HorizontalContentAlignment="Stretch"
+                 VirtualizingPanel.IsVirtualizing="True"
+                 VirtualizingPanel.VirtualizationMode="Recycling"
+                 ItemsSource="{Binding FilteredInvites}">
+            <ListBox.Style>
+                <Style TargetType="ListBox"
+                       BasedOn="{StaticResource MaterialDesignListBox}">
+                    <Style.Triggers>
+                        <Trigger Property="HasItems"
+                                 Value="False">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <TextBlock Background="WhiteSmoke"
+                                                   Padding="15"
+                                                   FontSize="18">Приглашений не найдено.</TextBlock>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.Style>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel Margin="10">
+                        <!-- Image -->
+                        <Border CornerRadius="50"
+                                Width="60"
+                                Height="60"
+                                VerticalAlignment="Center">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Visibility"
+                                            Value="Collapsed" />
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Status}"
+                                                     Value="Pending">
+                                            <Setter Property="Visibility"
+                                                    Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <Border.Background>
+                                <ImageBrush x:Name="UserLogo"
+                                            Stretch="UniformToFill"
+                                            ImageSource="/Resources/Icons/Logo.ico" />
+                            </Border.Background>
+                        </Border>
+                        <materialDesign:PackIcon Kind="Check"
+                                                 Width="60"
+                                                 Height="60"
+                                                 VerticalAlignment="Center"
+                                                 Foreground="#FFFD5A2E">
+                            <materialDesign:PackIcon.Style>
+                                <Style TargetType="materialDesign:PackIcon">
+                                    <Setter Property="Visibility"
+                                            Value="Collapsed" />
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Status}"
+                                                     Value="Accepted">
+                                            <Setter Property="Visibility"
+                                                    Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </materialDesign:PackIcon.Style>
+                        </materialDesign:PackIcon>
+                        <materialDesign:PackIcon Kind="Cancel"
+                                                 Width="60"
+                                                 Height="60"
+                                                 VerticalAlignment="Center"
+                                                 Foreground="#FFFD5A2E">
+                            <materialDesign:PackIcon.Style>
+                                <Style TargetType="materialDesign:PackIcon">
+                                    <Setter Property="Visibility"
+                                            Value="Collapsed" />
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Status}"
+                                                     Value="Declined">
+                                            <Setter Property="Visibility"
+                                                    Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </materialDesign:PackIcon.Style>
+                        </materialDesign:PackIcon>
+
+                        <!-- Content -->
+                        <StackPanel Margin="20,0"
                                     VerticalAlignment="Center">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Setter Property="Visibility"
-                                                Value="Collapsed" />
-
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Status}"
-                                                         Value="Pending">
-                                                <Setter Property="Visibility"
-                                                        Value="Visible" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-
-                                <Border.Background>
-                                    <ImageBrush x:Name="UserLogo"
-                                                Stretch="UniformToFill"
-                                                ImageSource="/Resources/Icons/Logo.ico" />
-                                </Border.Background>
-                            </Border>
-                            <materialDesign:PackIcon Kind="Check"
-                                                     Width="60"
-                                                     Height="60"
-                                                     VerticalAlignment="Center"
-                                                     Foreground="#FFFD5A2E">
-                                <materialDesign:PackIcon.Style>
-                                    <Style TargetType="materialDesign:PackIcon">
-                                        <Setter Property="Visibility"
-                                                Value="Collapsed" />
-
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Status}"
-                                                         Value="Accepted">
-                                                <Setter Property="Visibility"
-                                                        Value="Visible" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </materialDesign:PackIcon.Style>
-                            </materialDesign:PackIcon>
-                            <materialDesign:PackIcon Kind="Cancel"
-                                                     Width="60"
-                                                     Height="60"
-                                                     VerticalAlignment="Center"
-                                                     Foreground="#FFFD5A2E">
-                                <materialDesign:PackIcon.Style>
-                                    <Style TargetType="materialDesign:PackIcon">
-                                        <Setter Property="Visibility"
-                                                Value="Collapsed" />
-
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Status}"
-                                                         Value="Declined">
-                                                <Setter Property="Visibility"
-                                                        Value="Visible" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </materialDesign:PackIcon.Style>
-                            </materialDesign:PackIcon>
-
-                            <!-- Content -->
-                            <StackPanel Margin="20"
-                                        VerticalAlignment="Center">
-                                <StackPanel Orientation="Horizontal"
-                                            HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Stretch">
-                                    <TextBlock FontSize="16"
-                                               MaxWidth="120"
-                                               TextTrimming="WordEllipsis"
-                                               TextDecorations="Underline"
-                                               ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"
-                                               VerticalAlignment="Center">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock"
-                                                   BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Status}"
-                                                                 Value="Pending">
-                                                        <Setter Property="Text"
-                                                                Value="{Binding Inviter.Name}" />
-                                                    </DataTrigger>
-
-                                                    <DataTrigger Binding="{Binding Status}"
-                                                                 Value="Accepted">
-                                                        <Setter Property="Text"
-                                                                Value="{Binding Invited.Name}" />
-                                                    </DataTrigger>
-
-                                                    <DataTrigger Binding="{Binding Status}"
-                                                                 Value="Declined">
-                                                        <Setter Property="Text"
-                                                                Value="{Binding Invited.Name}" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-
-                                    <TextBlock FontSize="16"
-                                               TextWrapping="Wrap"
-                                               VerticalAlignment="Center">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock"
-                                                   BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Status}"
-                                                                 Value="Pending">
-                                                        <Setter Property="Text"
-                                                                Value=" пригласил " />
-                                                    </DataTrigger>
-
-                                                    <DataTrigger Binding="{Binding Status}"
-                                                                 Value="Accepted">
-                                                        <Setter Property="Text"
-                                                                Value=" принял " />
-                                                    </DataTrigger>
-
-                                                    <DataTrigger Binding="{Binding Status}"
-                                                                 Value="Declined">
-                                                        <Setter Property="Text"
-                                                                Value=" отклонил " />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-
-                                    <TextBlock FontSize="16"
-                                               TextWrapping="NoWrap"
-                                               TextTrimming="WordEllipsis"
-                                               MaxWidth="120"
-                                               VerticalAlignment="Center">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock"
-                                                   BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Status}"
-                                                                 Value="Pending">
-                                                        <Setter Property="Text"
-                                                                Value="{Binding Invited.Name}" />
-                                                        <Setter Property="ToolTip"
-                                                                Value="{Binding Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                                        <Setter Property="TextDecorations"
-                                                                Value="Underline" />
-                                                    </DataTrigger>
-
-                                                    <DataTrigger Binding="{Binding Status}"
-                                                                 Value="Accepted">
-                                                        <Setter Property="Text"
-                                                                Value="приглашение" />
-                                                    </DataTrigger>
-
-                                                    <DataTrigger Binding="{Binding Status}"
-                                                                 Value="Declined">
-                                                        <Setter Property="Text"
-                                                                Value="приглашение" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </StackPanel>
-
-                                <TextBlock Margin="0,5,0,0">
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch">
+                                <TextBlock FontSize="16"
+                                           TextDecorations="Underline"
+                                           VerticalAlignment="Center">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock"
                                                BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
@@ -234,19 +161,79 @@
                                                 <DataTrigger Binding="{Binding Status}"
                                                              Value="Pending">
                                                     <Setter Property="Text"
-                                                            Value="{Binding CreatedAt, Converter={converters:UtcToLocalDateConverter}, ConverterParameter=f}" />
+                                                            Value="{Binding Inviter.Name}" />
                                                 </DataTrigger>
 
                                                 <DataTrigger Binding="{Binding Status}"
                                                              Value="Accepted">
                                                     <Setter Property="Text"
-                                                            Value="{Binding AcceptedAt, Converter={converters:UtcToLocalDateConverter}, ConverterParameter=f}" />
+                                                            Value="{Binding Invited.Name}" />
                                                 </DataTrigger>
 
                                                 <DataTrigger Binding="{Binding Status}"
                                                              Value="Declined">
                                                     <Setter Property="Text"
-                                                            Value="{Binding DeclinedAt, Converter={converters:UtcToLocalDateConverter}, ConverterParameter=f}" />
+                                                            Value="{Binding Invited.Name}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+
+                                <TextBlock FontSize="16"
+                                           TextWrapping="Wrap"
+                                           VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock"
+                                               BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Status}"
+                                                             Value="Pending">
+                                                    <Setter Property="Text"
+                                                            Value=" пригласил " />
+                                                </DataTrigger>
+
+                                                <DataTrigger Binding="{Binding Status}"
+                                                             Value="Accepted">
+                                                    <Setter Property="Text"
+                                                            Value=" принял " />
+                                                </DataTrigger>
+
+                                                <DataTrigger Binding="{Binding Status}"
+                                                             Value="Declined">
+                                                    <Setter Property="Text"
+                                                            Value=" отклонил " />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+
+                                <TextBlock FontSize="16"
+                                           TextWrapping="NoWrap"
+                                           VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock"
+                                               BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Status}"
+                                                             Value="Pending">
+                                                    <Setter Property="Text"
+                                                            Value="{Binding Invited.Name}" />
+                                                    <Setter Property="TextDecorations"
+                                                            Value="Underline" />
+                                                </DataTrigger>
+
+                                                <DataTrigger Binding="{Binding Status}"
+                                                             Value="Accepted">
+                                                    <Setter Property="Text"
+                                                            Value="приглашение" />
+                                                </DataTrigger>
+
+                                                <DataTrigger Binding="{Binding Status}"
+                                                             Value="Declined">
+                                                    <Setter Property="Text"
+                                                            Value="приглашение" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -254,29 +241,56 @@
                                 </TextBlock>
                             </StackPanel>
 
-                            <Button>
-                                <Button.Style>
-                                    <Style TargetType="Button"
-                                           BasedOn="{StaticResource MaterialDesignIconButton}">
-                                        <Setter Property="Visibility"
-                                                Value="Collapsed" />
-
+                            <TextBlock Margin="0,5,0,0">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock"
+                                           BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Status}"
                                                          Value="Pending">
-                                                <Setter Property="Visibility"
-                                                        Value="Visible" />
+                                                <Setter Property="Text"
+                                                        Value="{Binding CreatedAt, Converter={converters:UtcToLocalDateConverter}, ConverterParameter=f}" />
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding Status}"
+                                                         Value="Accepted">
+                                                <Setter Property="Text"
+                                                        Value="{Binding AcceptedAt, Converter={converters:UtcToLocalDateConverter}, ConverterParameter=f}" />
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding Status}"
+                                                         Value="Declined">
+                                                <Setter Property="Text"
+                                                        Value="{Binding DeclinedAt, Converter={converters:UtcToLocalDateConverter}, ConverterParameter=f}" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </Button.Style>
-
-                                <materialDesign:PackIcon Kind="Close" />
-                            </Button>
+                                </TextBlock.Style>
+                            </TextBlock>
                         </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </StackPanel>
+
+                        <Button HorizontalAlignment="Right">
+                            <Button.Style>
+                                <Style TargetType="Button"
+                                       BasedOn="{StaticResource MaterialDesignIconButton}">
+                                    <Setter Property="Visibility"
+                                            Value="Collapsed" />
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Status}"
+                                                     Value="Pending">
+                                            <Setter Property="Visibility"
+                                                    Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                            <materialDesign:PackIcon Kind="Close" />
+                        </Button>
+                    </DockPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </equality:Page>

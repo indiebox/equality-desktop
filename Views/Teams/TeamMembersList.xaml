@@ -53,6 +53,7 @@
         <ListBox Grid.Row="1"
                  Background="WhiteSmoke"
                  Margin="10,0,20,0"
+                 HorizontalContentAlignment="Stretch"
                  VirtualizingStackPanel.IsVirtualizing="True"
                  VirtualizingStackPanel.VirtualizationMode="Recycling"
                  ItemsSource="{Binding FilteredMembers}"
@@ -77,14 +78,6 @@
                     </Style.Triggers>
                 </Style>
             </ListBox.Style>
-
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem"
-                       BasedOn="{StaticResource MaterialDesignListBoxItem}">
-                    <Setter Property="HorizontalContentAlignment"
-                            Value="Stretch"></Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -131,8 +124,7 @@
 
                         <Button HorizontalAlignment="Right"
                                 Content="Покинуть команду"
-                                Command="{Binding DataContext.ShowDialog, RelativeSource={RelativeSource AncestorType=equality:Page}}"
-                                Cursor="Hand">
+                                Command="{Binding DataContext.ShowDialog, RelativeSource={RelativeSource AncestorType=equality:Page}}">
                             <Button.Style>
                                 <Style TargetType="Button"
                                        BasedOn="{StaticResource MaterialDesignOutlinedButton}">
