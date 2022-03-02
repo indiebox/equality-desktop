@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using Catel.Services;
 
@@ -26,11 +27,7 @@ namespace Equality.ViewModels
 
         public Tab ActiveTab { get; set; }
 
-        #endregion
-
-        #region Commands
-
-
+        public Dictionary<string, object> NavigationParameters { get; set; }
 
         #endregion
 
@@ -41,12 +38,14 @@ namespace Equality.ViewModels
             switch (ActiveTab) {
                 case Tab.Members:
                 default:
-                    NavigationService.Navigate<TeamMembersListViewModel>(this);
+                    NavigationService.Navigate<TeamMembersListViewModel>(this, NavigationParameters);
                     break;
                 case Tab.Invitations:
-                    NavigationService.Navigate<TeamInvitationsListViewModel>(this);
+                    NavigationService.Navigate<TeamInvitationsListViewModel>(this, NavigationParameters);
                     break;
             }
+
+            NavigationParameters = null;
         }
 
         #endregion

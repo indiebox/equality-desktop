@@ -27,6 +27,7 @@ namespace Equality.ViewModels
             TeamService = teamService;
 
             ShowDialog = new TaskCommand(OnShowDialogExecute);
+            InviteUser = new TaskCommand(OnInviteUserExecuteAsync);
         }
 
         #region Properties
@@ -51,6 +52,15 @@ namespace Equality.ViewModels
             if (result) {
                 await LeaveTeam();
             }
+        }
+
+        public TaskCommand InviteUser { get; private set; }
+
+        private async Task OnInviteUserExecuteAsync()
+        {
+            var membersPage = MvvmHelper.GetFirstInstanceOfViewModel<TeamMembersPageViewModel>();
+            membersPage.NavigationParameters = new() { { "send-invite", true } };
+            membersPage.ActiveTab = TeamMembersPageViewModel.Tab.Invitations;
         }
 
         #endregion
