@@ -71,6 +71,7 @@ namespace Equality
 
             serviceLocator.RegisterType<IUserService, UserService>();
             serviceLocator.RegisterType<ITeamService, TeamService>();
+            serviceLocator.RegisterType<IInviteService, InviteService>();
 
             /*
             |--------------------------------------------------------------------------
