@@ -33,20 +33,20 @@
 				</StackPanel>
 				<StackPanel Orientation="Horizontal"
 							DockPanel.Dock="Top"
-							Margin="4">
+							Margin="4,4,4,0">
 					<RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
 								 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-								 Margin="4"
+								 Margin="4,4,4,0"
 								 IsChecked="True"
 								 Content="Доска" />
 					<RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
 								 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-								 Margin="4"
+								 Margin="4,4,4,0"
 								 IsChecked="False"
 								 Content="Лидер" />
 					<RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
 								 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-								 Margin="4"
+								 Margin="4,4,4,0"
 								 IsChecked="False"
 								 Content="Настройки" />
 				</StackPanel>
