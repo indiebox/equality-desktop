@@ -116,6 +116,8 @@
                                                 <DockPanel LastChildFill="False"
                                                            Margin="0,5,0,0">
                                                     <Button DockPanel.Dock="Left"
+                                                            Command="{Binding DataContext.AcceptInvite, RelativeSource={RelativeSource AncestorType=equality:Page}}"
+                                                            CommandParameter="{Binding}"
                                                             Style="{StaticResource MaterialDesignFlatMidBgButton}">Принять</Button>
                                                     <Button DockPanel.Dock="Right"
                                                             Style="{StaticResource MaterialDesignOutlinedButton}">Отклонить</Button>

@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Collections;
+using Catel.MVVM;
 
 using Equality.Core.ViewModel;
 using Equality.Models;
@@ -19,6 +20,8 @@ namespace Equality.ViewModels
         {
             InviteService = inviteService;
 
+            AcceptInvite = new TaskCommand<Invite>(OnAcceptInviteExecuteAsync);
+
             Name = StateManager.CurrentUser.Name;
         }
 
@@ -31,6 +34,19 @@ namespace Equality.ViewModels
         #endregion
 
         #region Commands
+
+        public TaskCommand<Invite> AcceptInvite { get; private set; }
+
+        private async Task OnAcceptInviteExecuteAsync(Invite invite)
+        {
+            try {
+                await InviteService.AcceptInviteAsync(invite);
+
+                Invites.Remove(invite);
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+        }
 
         #endregion
 
