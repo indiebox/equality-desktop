@@ -52,7 +52,7 @@
 
         <ListBox Grid.Row="1"
                  Background="WhiteSmoke"
-                 Margin="10,0,20,0"
+                 Margin="10,0"
                  HorizontalContentAlignment="Stretch"
                  VirtualizingStackPanel.IsVirtualizing="True"
                  VirtualizingStackPanel.VirtualizationMode="Recycling"
