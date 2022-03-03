@@ -13,7 +13,7 @@
                mc:Ignorable="d">
 
     <DockPanel>
-        <StackPanel DockPanel.Dock="Right"
+        <!--<StackPanel DockPanel.Dock="Right"
                     Background="White">
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                          BorderBrush="{DynamicResource PrimaryHueMidBrush}"
@@ -27,10 +27,12 @@
                                FontFamily="16">Основные</TextBlock>
                 </StackPanel>
             </RadioButton>
-        </StackPanel>
-        <StackPanel>
+        </StackPanel>-->
+        <Grid>
             <StackPanel Background="White"
-                        HorizontalAlignment="Center">
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Margin="0,10,0,0">
                 <Grid Width="500"
                       Margin="0,30,0,30">
                     <Image Source="/Resources/Images/BackgroundImage.jpg" />
@@ -83,7 +85,7 @@
                 </StackPanel>
             </StackPanel>
 
-        </StackPanel>
+        </Grid>
     </DockPanel>
 
 </equality:Page>
