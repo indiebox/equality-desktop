@@ -33,8 +33,10 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
                         Margin="0,10,0,0">
+                <TextBlock FontSize="24"
+                           Margin="20,20,20,0">Основные</TextBlock>
                 <Grid Width="500"
-                      Margin="0,30,0,30">
+                      Margin="0,20,0,20">
                     <Image Source="/Resources/Images/BackgroundImage.jpg" />
                     <Rectangle Fill="Black"
                                Opacity="0.5" />
@@ -48,7 +50,7 @@
                              AcceptsReturn="False"
                              materialDesign:HintAssist.Hint="Вставьте название проекта"
                              materialDesign:HintAssist.IsFloating="False"
-                             Margin="20,0,20,30"
+                             Margin="20,0,20,20"
                              FontSize="16"
                              TabIndex="0"
                              materialDesign:ValidationAssist.FontSize="14"
@@ -61,7 +63,7 @@
                            FontSize="16">Описание</Label>
                     <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
                              materialDesign:HintAssist.IsFloating="False"
-                             Margin="20,0,20,30"
+                             Margin="20,0,20,20"
                              TextWrapping="Wrap"
                              Width="500"
                              FontSize="16"
@@ -73,7 +75,7 @@
 
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right"
-                            Margin="0,0,20,30">
+                            Margin="0,0,20,20">
                     <Button Margin="0,0,10,0"
                             Content="Сохранить">
                     </Button>
