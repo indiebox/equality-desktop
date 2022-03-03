@@ -43,6 +43,17 @@ namespace Equality.Services
             return new(invites, response);
         }
 
+        public async Task<ApiResponseMessage<Invite[]>> GetUserInvitesAsync()
+        {
+            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
+
+            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).GetAsync("invites");
+
+            var invites = DeserializeRange(response.Content["data"]);
+
+            return new(invites, response);
+        }
+
         public Task<ApiResponseMessage<Invite>> InviteUserAsync(Team team, string email) => InviteUserAsync(team.Id, email);
 
         public async Task<ApiResponseMessage<Invite>> InviteUserAsync(ulong teamId, string email)

@@ -37,6 +37,18 @@ namespace Equality.Services
         public Task<ApiResponseMessage<Invite[]>> GetTeamInvitesAsync(ulong teamId, InviteFilter filter = InviteFilter.All);
 
         /// <summary>
+        /// Sends the get user invites request to the API.
+        /// </summary>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage<Invite[]>> GetUserInvitesAsync();
+
+        /// <summary>
         /// Sends the invite user to the team request to the API.
         /// </summary>
         /// <param name="team">The team.</param>
