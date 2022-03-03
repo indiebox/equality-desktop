@@ -16,8 +16,20 @@
 
     <StackPanel>
         <StackPanel HorizontalAlignment="Right">
-            <materialDesign:Badged Badge="3"
+            <materialDesign:Badged Badge="{Binding Invites.Count}"
                                    Margin="20">
+                <materialDesign:Badged.Style>
+                    <Style TargetType="materialDesign:Badged">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Invites.Count}"
+                                         Value="0">
+                                <Setter Property="Visibility"
+                                        Value="Hidden" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </materialDesign:Badged.Style>
+
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PopupBox PlacementMode='BottomAndAlignRightEdges'
                                              StaysOpen="True">
@@ -26,24 +38,99 @@
                                                      Width="24"
                                                      Height="24" />
                         </materialDesign:PopupBox.ToggleContent>
-                        <StackPanel Margin="30">
-                            <TextBlock FontSize="24"
+
+                        <Grid MaxHeight="600"
+                              Margin="30">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                       FontSize="24"
                                        HorizontalAlignment="Center"
                                        Margin="0,0,0,30">Приглашения</TextBlock>
-                            <controls:Invitation NameInvitor="IgorGaming"
-                                                 Team="Indie Box"
-                                                 TeamLogoImagePath="/Resources/Images/TeamLogo.jpg" />
-                            <controls:Invitation NameInvitor="IgorGamingIgorGamingIgorGamingIgorGamingIgorGamingIgorGamingIgorGaming"
-                                                 Team="Indie Box"
-                                                 TeamLogoImagePath="/Resources/Images/TeamLogo.jpg" />
-                            <controls:Invitation NameInvitor="IgorGaming"
-                                                 Team="Indie Box Indie Box Indie Box Indie Box Indie Box Indie Box Indie Box Indie Box"
-                                                 TeamLogoImagePath="/Resources/Images/TeamLogo.jpg" />
-                        </StackPanel>
+
+                            <ListBox Grid.Row="1"
+                                     Background="WhiteSmoke"
+                                     Margin="10,0,20,0"
+                                     HorizontalContentAlignment="Stretch"
+                                     VirtualizingPanel.IsVirtualizing="True"
+                                     VirtualizingPanel.VirtualizationMode="Recycling"
+                                     VirtualizingPanel.ScrollUnit="Pixel"
+                                     materialDesign:ListBoxItemAssist.ShowSelection="False"
+                                     ItemsSource="{Binding Invites}">
+                                <ListBox.Style>
+                                    <Style TargetType="ListBox"
+                                           BasedOn="{StaticResource MaterialDesignListBox}">
+                                        <Style.Triggers>
+                                            <Trigger Property="HasItems"
+                                                     Value="False">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate>
+                                                            <TextBlock Background="WhiteSmoke"
+                                                                       Padding="15"
+                                                                       TextWrapping="Wrap"
+                                                                       FontSize="18">Приглашений не найдено.</TextBlock>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListBox.Style>
+
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel Margin="10">
+                                            <controls:TeamLogo CornerRadius="10"
+                                                               Width="150"
+                                                               Height="150"
+                                                               Margin="10"
+                                                               ImagePath="{Binding Team.Logo}" />
+                                            <StackPanel VerticalAlignment="Center">
+                                                <WrapPanel Width="200"
+                                                           Height="Auto"
+                                                           Orientation="Horizontal">
+                                                    <TextBlock FontSize="16"
+                                                               TextWrapping="Wrap"
+                                                               Text="Пользователь " />
+                                                    <TextBlock FontSize="16"
+                                                               TextTrimming="WordEllipsis"
+                                                               TextDecorations="Underline"
+                                                               ToolTip="{Binding Inviter.Name}"
+                                                               Text="{Binding Inviter.Name}"></TextBlock>
+                                                    <TextBlock FontSize="16"
+                                                               TextWrapping="Wrap"
+                                                               Text="приглашает вас в команду "></TextBlock>
+                                                    <TextBlock FontSize="16"
+                                                               TextWrapping="Wrap"
+                                                               TextTrimming="WordEllipsis"
+                                                               TextDecorations="Underline"
+                                                               MaxHeight="24"
+                                                               ToolTip="{Binding Team.Name}"
+                                                               Text="{Binding Team.Name}"></TextBlock>
+                                                </WrapPanel>
+
+                                                <DockPanel LastChildFill="False"
+                                                           Margin="0,5,0,0">
+                                                    <Button DockPanel.Dock="Left"
+                                                            Style="{StaticResource MaterialDesignFlatMidBgButton}">Принять</Button>
+                                                    <Button DockPanel.Dock="Right"
+                                                            Style="{StaticResource MaterialDesignOutlinedButton}">Отклонить</Button>
+                                                </DockPanel>
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
                     </materialDesign:PopupBox>
                 </StackPanel>
             </materialDesign:Badged>
         </StackPanel>
+
         <TextBlock Grid.Row="0"
                    Grid.Column="0"
                    HorizontalAlignment="Center"
@@ -54,6 +141,7 @@
         <Run Text="{Binding Name}" />
         <Run>!</Run>
         </TextBlock>
+
         <TextBlock Grid.Row="0"
                    Grid.Column="0"
                    HorizontalAlignment="Center"
