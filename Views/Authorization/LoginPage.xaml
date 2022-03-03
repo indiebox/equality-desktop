@@ -15,10 +15,6 @@
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DataContext="{d:DesignInstance dvm:DesignLoginPageViewModel, IsDesignTimeCreatable=True}"
                mc:Ignorable="d">
-    <equality:Page.Resources>
-        <catel:EmptyStringToHidingVisibilityConverter x:Key="EmptyStringToHidingVisibility" />
-    </equality:Page.Resources>
-
     <DockPanel>
         <materialDesign:Card HorizontalAlignment="Stretch"
                              DockPanel.Dock="Bottom"
@@ -72,34 +68,27 @@
                 <TextBlock Grid.Row="0"
                            FontSize="27"
                            HorizontalAlignment="Center"
-                           Margin="0,0,0,0"
                            Text="{Binding Title}" />
 
                 <controls:InfoCard Grid.Row="1"
-                                   Visibility="{Binding CredentialsErrorMessage, Converter={StaticResource EmptyStringToHidingVisibility}}"
+                                   Visibility="{Binding CredentialsErrorMessage, Converter={catel:EmptyStringToHidingVisibilityConverter}}"
                                    Text="{Binding CredentialsErrorMessage}" />
 
                 <StackPanel Grid.Row="2">
-                    <Label Margin="10,0,10,0"
+                    <Label Margin="10,0"
                            Target="{Binding ElementName=Email}"
                            FontSize="16">_Адрес эл. почты</Label>
-                    <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
+                    <TextBox Style="{StaticResource FilledTextBox}"
                              x:Name="Email"
-                             AcceptsReturn="False"
                              materialDesign:HintAssist.Hint="Введите адрес эл. почты"
-                             materialDesign:HintAssist.IsFloating="False"
-                             Margin="10,0,10,30"
-                             FontSize="16"
                              TabIndex="0"
-                             materialDesign:ValidationAssist.FontSize="14"
-                             Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
-                             Cursor="IBeam">
+                             Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}">
                     </TextBox>
                 </StackPanel>
 
                 <StackPanel Grid.Row="3">
                     <DockPanel LastChildFill="False"
-                               Margin="10,0,10,0"
+                               Margin="10,0"
                                HorizontalAlignment="Stretch"
                                VerticalAlignment="Stretch">
                         <Label DockPanel.Dock="Left"
@@ -109,50 +98,37 @@
                         </Label>
                         <Button Command="{Binding OpenForgotPassword}"
                                 Style="{StaticResource LinkButton}"
+                                DockPanel.Dock="Right"
                                 Padding="1"
                                 FontSize="16"
-                                DockPanel.Dock="Right"
                                 TabIndex="1"
-                                Content="Забыли пароль?"
-                                VerticalAlignment="Center" />
+                                Content="Забыли пароль?" />
                     </DockPanel>
 
                     <PasswordBox Name="Password"
-                                 Style="{StaticResource MaterialDesignFilledPasswordBox}"
+                                 Style="{StaticResource FilledPasswordBox}"
                                  assists:PasswordBoxAssist.Password="{Binding Password}"
-                                 materialDesign:ValidationAssist.FontSize="14"
-                                 VerticalAlignment="Top"
                                  materialDesign:HintAssist.Hint="Введите пароль"
-                                 materialDesign:HintAssist.IsFloating="False"
-                                 Margin="10,0,10,30"
-                                 FontSize="16"
-                                 TabIndex="0"
-                                 Cursor="IBeam">
+                                 TabIndex="0">
                         <i:Interaction.Behaviors>
                             <catel:UpdateBindingOnPasswordChanged Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}" />
                         </i:Interaction.Behaviors>
                     </PasswordBox>
                 </StackPanel>
 
-                <CheckBox FontSize="16"
+                <CheckBox Style="{StaticResource CheckBox}"
                           Grid.Row="4"
                           Content="Запомнить меня"
-                          Style="{StaticResource MaterialDesignCheckBox}"
-                          materialDesign:CheckBoxAssist.CheckBoxSize="25"
-                          Margin="10,0,10,25"
-                          VerticalAlignment="Center"
-                          HorizontalAlignment="Stretch"
                           TabIndex="2"
-                          Cursor="Hand"
                           IsChecked="{Binding RememberMe}" />
+
                 <Button Command="{Binding Login}"
                         Grid.Row="5"
-                        Margin="10,0,10,10"
                         Grid.Column="0"
+                        Margin="10,0"
                         Content="Войти"
                         FontSize="16"
-                        Padding="10, 10, 10, 10"
-                        Cursor="Hand"
+                        Padding="10"
                         TabIndex="2"
                         Height="50" />
             </Grid>

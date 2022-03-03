@@ -17,13 +17,13 @@
         </Grid.RowDefinitions>
 
         <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                 Style="{StaticResource MaterialDesignTextBox}"
                  FontSize="16"
                  AcceptsReturn="False"
                  Margin="0,0,0,30"
                  materialDesign:ValidationAssist.FontSize="14"
                  materialDesign:ValidationAssist.UsePopup="True"
-                 materialDesign:HintAssist.Hint="Название команды"
-                 Cursor="IBeam">
+                 materialDesign:HintAssist.Hint="Название команды">
             <i:Interaction.Behaviors>
                 <catel:Focus />
             </i:Interaction.Behaviors>

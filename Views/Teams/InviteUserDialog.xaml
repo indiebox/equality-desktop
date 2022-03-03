@@ -34,15 +34,9 @@
             <Label Margin="10,0,10,0"
                    Target="{Binding ElementName=Email}"
                    FontSize="16">_Адрес эл. почты</Label>
-            <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
+            <TextBox Style="{StaticResource FilledTextBox}"
                      x:Name="Email"
-                     AcceptsReturn="False"
                      materialDesign:HintAssist.Hint="Введите адрес эл. почты"
-                     materialDesign:HintAssist.IsFloating="False"
-                     Margin="10,0,10,30"
-                     FontSize="16"
-                     TabIndex="0"
-                     materialDesign:ValidationAssist.FontSize="14"
                      Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}">
             </TextBox>
         </StackPanel>
