@@ -24,12 +24,12 @@ namespace Equality.ViewModels
 
         protected Invite Invite;
 
-        protected ITeamService TeamService;
+        protected IInviteService InviteService;
 
-        public InviteUserDialogViewModel(Invite invite, ITeamService teamService)
+        public InviteUserDialogViewModel(Invite invite, IInviteService inviteService)
         {
             Invite = invite;
-            TeamService = teamService;
+            InviteService = inviteService;
 
             InviteUser = new TaskCommand(OnInviteUserExecute, () => !HasErrors);
 
@@ -58,7 +58,7 @@ namespace Equality.ViewModels
             }
 
             try {
-                var response = await TeamService.InviteUserAsync(Team, Email);
+                var response = await InviteService.InviteUserAsync(Team, Email);
 
                 Invite.SyncWith(response.Object);
 
