@@ -54,26 +54,14 @@
                  Background="WhiteSmoke"
                  Margin="10,0"
                  ItemsSource="{Binding FilteredMembers}">
-            <ListBox.Style>
-                <Style TargetType="ListBox"
-                       BasedOn="{StaticResource MaterialDesignListBox}">
-                    <Style.Triggers>
-                        <Trigger Property="HasItems"
-                                 Value="False">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <TextBlock Background="WhiteSmoke"
-                                                   Padding="15"
-                                                   TextWrapping="Wrap"
-                                                   FontSize="18">Не найдено участников по запросу: "<Run Text="{Binding ElementName=FilterText, Path=Text}"></Run>".</TextBlock>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ListBox.Style>
+            <ListBox.Resources>
+                <ControlTemplate x:Key="NoItemsTemplate">
+                    <TextBlock Background="WhiteSmoke"
+                               Padding="15"
+                               TextWrapping="Wrap"
+                               FontSize="18">Не найдено участников по запросу: "<Run Text="{Binding ElementName=FilterText, Path=Text}"></Run>".</TextBlock>
+                </ControlTemplate>
+            </ListBox.Resources>
 
             <ListBox.ItemTemplate>
                 <DataTemplate>

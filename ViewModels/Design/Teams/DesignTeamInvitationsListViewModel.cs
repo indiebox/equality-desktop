@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Catel.Collections;
+
 using Equality.Models;
 
 namespace Equality.ViewModels.Design
@@ -8,7 +10,7 @@ namespace Equality.ViewModels.Design
     {
         public DesignTeamInvitationsListViewModel() : base(null)
         {
-            FilteredInvites = new()
+            FilteredInvites.AddRange(new Invite[]
             {
                 new Invite()
                 {
@@ -41,7 +43,7 @@ namespace Equality.ViewModels.Design
                     DeclinedAt = DateTime.Now.AddHours(-1).AddMinutes(-5),
                     Status = Invite.InviteStatus.Declined,
                 },
-            };
+            });
         }
     }
 }

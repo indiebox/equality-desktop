@@ -50,30 +50,14 @@
         <ListBox Grid.Row="1"
                  Background="WhiteSmoke"
                  Margin="10,0"
-                 materialDesign:ListBoxItemAssist.ShowSelection="False"
-                 HorizontalContentAlignment="Stretch"
-                 VirtualizingPanel.IsVirtualizing="True"
-                 VirtualizingPanel.VirtualizationMode="Recycling"
                  ItemsSource="{Binding FilteredInvites}">
-            <ListBox.Style>
-                <Style TargetType="ListBox"
-                       BasedOn="{StaticResource MaterialDesignListBox}">
-                    <Style.Triggers>
-                        <Trigger Property="HasItems"
-                                 Value="False">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <TextBlock Background="WhiteSmoke"
-                                                   Padding="15"
-                                                   FontSize="18">Приглашений не найдено.</TextBlock>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ListBox.Style>
+            <ListBox.Resources>
+                <ControlTemplate x:Key="NoItemsTemplate">
+                    <TextBlock Background="WhiteSmoke"
+                               Padding="15"
+                               FontSize="18">Приглашений не найдено.</TextBlock>
+                </ControlTemplate>
+            </ListBox.Resources>
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
