@@ -100,5 +100,22 @@ namespace Equality.Services
         /// <inheritdoc cref="AcceptInviteAsync(Invite)"/>
         /// <param name="inviteId">The invite id.</param>
         public Task<ApiResponseMessage> AcceptInviteAsync(ulong inviteId);
+
+        /// <summary>
+        /// Sends the decline invite request to the API.
+        /// </summary>
+        /// <param name="invite">The invite.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage> DeclineInviteAsync(Invite invite);
+
+        /// <inheritdoc cref="DeclineInviteAsync(Invite)"/>
+        /// <param name="inviteId">The invite id.</param>
+        public Task<ApiResponseMessage> DeclineInviteAsync(ulong inviteId);
     }
 }

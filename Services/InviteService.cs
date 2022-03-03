@@ -93,6 +93,16 @@ namespace Equality.Services
             return await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync($"invites/{inviteId}/accept");
         }
 
+        public Task<ApiResponseMessage> DeclineInviteAsync(Invite invite) => DeclineInviteAsync(invite.Id);
+
+        public async Task<ApiResponseMessage> DeclineInviteAsync(ulong inviteId)
+        {
+            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
+            Argument.IsNotNull(nameof(inviteId), inviteId);
+
+            return await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync($"invites/{inviteId}/decline");
+        }
+
         /// <inheritdoc cref="IApiDeserializable{T}.Deserialize(JToken)"/>
         protected Invite Deserialize(JToken data) => ((IInviteService)this).Deserialize(data);
 
