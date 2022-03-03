@@ -83,5 +83,22 @@ namespace Equality.Services
         /// <inheritdoc cref="RevokeInviteAsync(Invite)"/>
         /// <param name="inviteId">The invite id.</param>
         public Task<ApiResponseMessage> RevokeInviteAsync(ulong inviteId);
+
+        /// <summary>
+        /// Sends the accept invite request to the API.
+        /// </summary>
+        /// <param name="invite">The invite.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage> AcceptInviteAsync(Invite invite);
+
+        /// <inheritdoc cref="AcceptInviteAsync(Invite)"/>
+        /// <param name="inviteId">The invite id.</param>
+        public Task<ApiResponseMessage> AcceptInviteAsync(ulong inviteId);
     }
 }
