@@ -13,6 +13,8 @@
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
                xmlns:converters="clr-namespace:Equality.Converters"
                xmlns:controls="clr-namespace:Equality.Controls"
+               d:Height="600"
+               d:Width="1000"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DataContext="{d:DesignInstance dvm:DesignProjectsPageViewModel, IsDesignTimeCreatable=True}">
     <Grid>
@@ -26,11 +28,17 @@
                    Opacity="0.5" />
 
         <DockPanel>
-            <StackPanel Background="White"
-                        Width="300">
-                <StackPanel Margin="15"
-                            Orientation="Vertical">
-                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+            <Grid Background="White"
+                  Width="300">
+                <Grid Margin="15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <RadioButton Grid.Row="0"
+                                 Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                                  BorderBrush="{StaticResource PrimaryHueMidBrush}"
                                  Margin="4"
                                  IsChecked="True"
@@ -48,7 +56,8 @@
                         </StackPanel>
                     </RadioButton>
 
-                    <DockPanel Margin="4,0,0,0"
+                    <DockPanel Grid.Row="1"
+                               Margin="4,0,0,0"
                                LastChildFill="False">
                         <TextBlock DockPanel.Dock="Left"
                                    FontSize="16"
@@ -61,122 +70,131 @@
                         </Button>
                     </DockPanel>
 
-                    <ItemsControl ItemsSource="{Binding Teams}"
-                                  Focusable="False">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="{x:Type models:Team}">
-                                <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
-                                             BorderBrush="{StaticResource PrimaryHueMidBrush}"
-                                             GroupName="FilterByTeams"
-                                             Margin="4"
-                                             Cursor="Hand"
-                                             Command="{Binding DataContext.FilterProjects, RelativeSource={RelativeSource AncestorType=equality:Page}}"
-                                             CommandParameter="{Binding}"
-                                             HorizontalContentAlignment="Left">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
+                    <DockPanel Grid.Row="2"
+                               LastChildFill="True"
+                               VerticalAlignment="Top">
+                        <ContentControl DockPanel.Dock="Bottom"
+                                        Margin="20,5,0,0"
+                                        Focusable="False"
+                                        Content="{Binding CreateTeamVm, Converter={catel:ViewModelToViewConverter}}" />
 
-                                        <controls:TeamLogo Grid.Column="0"
-                                                           Width="25"
-                                                           Height="25"
-                                                           CornerRadius="100"
-                                                           ImagePath="{Binding Logo}" />
-                                        <TextBlock Grid.Column="1"
-                                                   Margin="4 0 0 0"
-                                                   FontSize="16"
-                                                   TextTrimming="CharacterEllipsis"
-                                                   Text="{Binding Name, Mode=OneTime}"
-                                                   VerticalAlignment="Center" />
-                                    </Grid>
-                                </RadioButton>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                        <ListBox DockPanel.Dock="Top"
+                                 ItemsSource="{Binding Teams}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="{x:Type models:Team}">
+                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                                                 BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                                                 GroupName="FilterByTeams"
+                                                 Margin="0,5"
+                                                 Cursor="Hand"
+                                                 Command="{Binding DataContext.FilterProjects, RelativeSource={RelativeSource AncestorType=equality:Page}}"
+                                                 CommandParameter="{Binding}"
+                                                 HorizontalContentAlignment="Left">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
 
-                    <ContentControl Margin="20,4,0,0"
-                                    Focusable="False"
-                                    Content="{Binding CreateTeamVm, Converter={catel:ViewModelToViewConverter}}" />
-                </StackPanel>
-            </StackPanel>
-
-            <ScrollViewer DockPanel.Dock="Right">
-                <StackPanel Margin="0,0,0,30">
-                    <ItemsControl ItemsSource="{Binding FilteredTeams}"
-                                  Focusable="False">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Background="White"
-                                            Margin="30,30,30,0">
-                                    <Button Style="{StaticResource BaseButton}"
-                                            Command="{Binding DataContext.OpenTeamPage, RelativeSource={RelativeSource AncestorType=equality:Page}}"
-                                            CommandParameter="{Binding}"
-                                            Cursor="Hand">
-                                        <StackPanel Orientation="Horizontal"
-                                                    Cursor="Hand">
-                                            <controls:TeamLogo Width="50"
-                                                               Height="50"
-                                                               Margin="10"
+                                            <controls:TeamLogo Grid.Column="0"
+                                                               Width="25"
+                                                               Height="25"
                                                                CornerRadius="100"
                                                                ImagePath="{Binding Logo}" />
-                                            <TextBlock FontSize="16"
-                                                       TextAlignment="Center"
-                                                       VerticalAlignment="Center"
-                                                       Style="{StaticResource LinkText}"
-                                                       Text="{Binding Name}" />
-                                        </StackPanel>
-                                    </Button>
+                                            <TextBlock Grid.Column="1"
+                                                       Margin="4,0,0,0"
+                                                       FontSize="16"
+                                                       Foreground="Black"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       Text="{Binding Name, Mode=OneTime}"
+                                                       VerticalAlignment="Center" />
+                                        </Grid>
+                                    </RadioButton>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </DockPanel>
+                </Grid>
+            </Grid>
 
-                                    <Grid Margin="24,8,24,16">
-                                        <WrapPanel Orientation="Horizontal">
-                                            <Border Margin="10">
-                                                <Border.Background>
-                                                    <ImageBrush Stretch="UniformToFill"
-                                                                ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                                </Border.Background>
-                                                <Grid Width="384"
-                                                      Height="216">
-                                                    <Rectangle Fill="Black"
-                                                               Opacity="0.5" />
-                                                    <TextBlock HorizontalAlignment="Center"
-                                                               VerticalAlignment="Center"
-                                                               FontSize="16"
-                                                               Foreground="White"><Run Text="Progect I" /></TextBlock>
-                                                </Grid>
-                                            </Border>
-                                            <Border Margin="10"
-                                                    Width="384"
-                                                    Height="216">
-                                                <Border.Background>
-                                                    <ImageBrush Stretch="UniformToFill"
-                                                                ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                                </Border.Background>
-                                                <Grid>
-                                                    <Rectangle Fill="Black"
-                                                               Opacity="0.5" />
-                                                    <TextBlock HorizontalAlignment="Center"
-                                                               VerticalAlignment="Center"
-                                                               FontSize="16"
-                                                               Foreground="White"><Run Text="Progect II" /></TextBlock>
-                                                </Grid>
-                                            </Border>
-                                        </WrapPanel>
-                                    </Grid>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+            <Grid DockPanel.Dock="Right">
+                <ListBox ItemsSource="{Binding FilteredTeams}"
+                         ItemContainerStyle="{StaticResource ListBoxItemStyle}">
+                    <ListBox.Resources>
+                        <ControlTemplate x:Key="NoItemsTemplate">
+                            <StackPanel>
+                                <TextBlock Background="White"
+                                           Padding="15"
+                                           Margin="30"
+                                           TextWrapping="Wrap"
+                                           FontSize="18">Вы не состоите ни в одной команде.</TextBlock>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </ListBox.Resources>
 
-                    <StackPanel Background="White"
-                                Margin="30,30,30,0"
-                                Visibility="{Binding FilteredTeams.Count, Converter={converters:IntToCollapsingVisibilityConverter}, ConverterParameter=True}">
-                        <TextBlock FontSize="18"
-                                   Padding="30">Вы не состоите ни в одной команде.</TextBlock>
-                    </StackPanel>
-                </StackPanel>
-            </ScrollViewer>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Background="White"
+                                        Margin="30,30,20,0">
+                                <Button Style="{StaticResource BaseButton}"
+                                        Command="{Binding DataContext.OpenTeamPage, RelativeSource={RelativeSource AncestorType=equality:Page}}"
+                                        CommandParameter="{Binding}"
+                                        Cursor="Hand">
+                                    <StackPanel Orientation="Horizontal"
+                                                Cursor="Hand">
+                                        <controls:TeamLogo Width="50"
+                                                           Height="50"
+                                                           Margin="10"
+                                                           CornerRadius="100"
+                                                           ImagePath="{Binding Logo}" />
+                                        <TextBlock FontSize="16"
+                                                   TextAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Style="{StaticResource LinkText}"
+                                                   Text="{Binding Name}" />
+                                    </StackPanel>
+                                </Button>
+
+                                <Grid Margin="24,8,24,16">
+                                    <WrapPanel Orientation="Horizontal">
+                                        <Border Margin="10">
+                                            <Border.Background>
+                                                <ImageBrush Stretch="UniformToFill"
+                                                            ImageSource="/Resources/Images/BackgroundImage.jpg" />
+                                            </Border.Background>
+                                            <Grid Width="384"
+                                                  Height="216">
+                                                <Rectangle Fill="Black"
+                                                           Opacity="0.5" />
+                                                <TextBlock HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           FontSize="16"
+                                                           Foreground="White"><Run Text="Progect I" /></TextBlock>
+                                            </Grid>
+                                        </Border>
+                                        <Border Margin="10"
+                                                Width="384"
+                                                Height="216">
+                                            <Border.Background>
+                                                <ImageBrush Stretch="UniformToFill"
+                                                            ImageSource="/Resources/Images/BackgroundImage.jpg" />
+                                            </Border.Background>
+                                            <Grid>
+                                                <Rectangle Fill="Black"
+                                                           Opacity="0.5" />
+                                                <TextBlock HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           FontSize="16"
+                                                           Foreground="White"><Run Text="Progect II" /></TextBlock>
+                                            </Grid>
+                                        </Border>
+                                    </WrapPanel>
+                                </Grid>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
         </DockPanel>
     </Grid>
 </equality:Page>

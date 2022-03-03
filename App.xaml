@@ -71,22 +71,6 @@
             </Style>
 
             <!-- ListBox -->
-            <Style TargetType="ListBox"
-                   BasedOn="{StaticResource MaterialDesignListBox}">
-                <Style.Resources>
-                    <Style TargetType="ScrollBar"
-                           BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" />
-                </Style.Resources>
-
-                <Setter Property="materialDesign:ListBoxItemAssist.ShowSelection"
-                        Value="False" />
-                <Setter Property="VirtualizingPanel.VirtualizationMode"
-                        Value="Recycling" />
-                <Setter Property="VirtualizingPanel.ScrollUnit"
-                        Value="Pixel" />
-                <Setter Property="HorizontalContentAlignment"
-                        Value="Stretch" />
-            </Style>
             <Style x:Key="ListBoxItemStyle"
                    TargetType="ListBoxItem"
                    BasedOn="{StaticResource MaterialDesignListBoxItem}">
@@ -95,6 +79,36 @@
                 <Setter Property="Focusable"
                         Value="False" />
             </Style>
+            <Style x:Key="ListBoxStyle"
+                   TargetType="ListBox"
+                   BasedOn="{StaticResource MaterialDesignListBox}">
+                <Style.Resources>
+                    <Style TargetType="ScrollBar"
+                           BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" />
+                </Style.Resources>
+
+                <Setter Property="ItemContainerStyle"
+                        Value="{StaticResource ListBoxItemStyle}" />
+                <Setter Property="materialDesign:ListBoxItemAssist.ShowSelection"
+                        Value="False" />
+                <Setter Property="VirtualizingPanel.VirtualizationMode"
+                        Value="Recycling" />
+                <Setter Property="VirtualizingPanel.ScrollUnit"
+                        Value="Pixel" />
+                <Setter Property="HorizontalContentAlignment"
+                        Value="Stretch" />
+
+                <Style.Triggers>
+                    <Trigger Property="HasItems"
+                             Value="False">
+                        <Setter Property="Template"
+                                Value="{DynamicResource NoItemsTemplate}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="ListBox"
+                   BasedOn="{StaticResource ListBoxStyle}" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -53,11 +53,7 @@
         <ListBox Grid.Row="1"
                  Background="WhiteSmoke"
                  Margin="10,0"
-                 HorizontalContentAlignment="Stretch"
-                 VirtualizingStackPanel.IsVirtualizing="True"
-                 VirtualizingStackPanel.VirtualizationMode="Recycling"
-                 ItemsSource="{Binding FilteredMembers}"
-                 Width="Auto">
+                 ItemsSource="{Binding FilteredMembers}">
             <ListBox.Style>
                 <Style TargetType="ListBox"
                        BasedOn="{StaticResource MaterialDesignListBox}">
