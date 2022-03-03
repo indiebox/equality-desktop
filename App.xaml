@@ -69,6 +69,32 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
+            <!-- ListBox -->
+            <Style TargetType="ListBox"
+                   BasedOn="{StaticResource MaterialDesignListBox}">
+                <Style.Resources>
+                    <Style TargetType="ScrollBar"
+                           BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" />
+                </Style.Resources>
+
+                <Setter Property="materialDesign:ListBoxItemAssist.ShowSelection"
+                        Value="False" />
+                <Setter Property="VirtualizingPanel.VirtualizationMode"
+                        Value="Recycling" />
+                <Setter Property="VirtualizingPanel.ScrollUnit"
+                        Value="Pixel" />
+                <Setter Property="HorizontalContentAlignment"
+                        Value="Stretch" />
+            </Style>
+            <Style x:Key="ListBoxItemStyle"
+                   TargetType="ListBoxItem"
+                   BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                <Setter Property="Padding"
+                        Value="0" />
+                <Setter Property="Focusable"
+                        Value="False" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
