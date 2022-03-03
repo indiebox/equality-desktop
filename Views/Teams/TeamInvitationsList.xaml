@@ -49,7 +49,7 @@
 
         <ListBox Grid.Row="1"
                  Background="WhiteSmoke"
-                 Margin="10,0,20,0"
+                 Margin="10,0"
                  materialDesign:ListBoxItemAssist.ShowSelection="False"
                  HorizontalContentAlignment="Stretch"
                  VirtualizingPanel.IsVirtualizing="True"

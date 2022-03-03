@@ -16,6 +16,7 @@ namespace Equality.ViewModels.Design
                 new TeamMember() { Name = "user3", JoinedAt = DateTime.Now.AddDays(-1).AddHours(-4) },
                 new TeamMember() { Name = "Пользователь 4", JoinedAt = DateTime.Now.AddDays(-2).AddHours(-5) },
                 new TeamMember() { Name = "Пользователь 5", JoinedAt = DateTime.Now.AddDays(-3).AddHours(-5) },
+                new TeamMember() { Id = 1, Name = "Текущий пользователь", JoinedAt = DateTime.Now.AddDays(-3).AddHours(-5) },
             });
         }
     }

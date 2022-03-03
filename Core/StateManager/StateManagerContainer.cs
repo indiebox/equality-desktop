@@ -8,7 +8,16 @@ namespace Equality.Core.StateManager
         static StateManagerContainer()
         {
             if (CatelEnvironment.IsInDesignMode) {
-                Instance = new StateManager();
+                Instance = new StateManager()
+                {
+                    CurrentUser = new Models.User()
+                    {
+                        Id = 1,
+                        Name = "Logged user",
+                        Email = "example@example.org",
+                        CreatedAt = System.DateTime.Today,
+                    },
+                };
                 return;
             }
 
