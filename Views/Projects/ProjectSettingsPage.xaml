@@ -28,7 +28,7 @@
                 </StackPanel>
             </RadioButton>
         </StackPanel>
-        <Frame>
+        <Frame Source="/Views/Projects/MainProgectSettingsPage.xaml">
 
         </Frame>
     </DockPanel>
