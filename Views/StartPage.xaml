@@ -8,6 +8,7 @@
                 xmlns:controls="clr-namespace:Equality.Controls"
                 xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
                 xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                xmlns:converters="clr-namespace:Equality.Converters"
                 d:DataContext="{d:DesignInstance Type=dvm:DesignStartPageViewModel, IsDesignTimeCreatable=True}"
                 d:DesignHeight="600"
                 d:DesignWidth="900"
@@ -16,20 +17,8 @@
 
     <StackPanel>
         <StackPanel HorizontalAlignment="Right">
-            <materialDesign:Badged Badge="{Binding Invites.Count}"
+            <materialDesign:Badged Badge="{Binding Invites.Count, Converter={converters:ZeroToEmptyStringConverter}}"
                                    Margin="20">
-                <materialDesign:Badged.Style>
-                    <Style TargetType="materialDesign:Badged">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Invites.Count}"
-                                         Value="0">
-                                <Setter Property="Visibility"
-                                        Value="Hidden" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </materialDesign:Badged.Style>
-
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PopupBox PlacementMode='BottomAndAlignRightEdges'
                                              StaysOpen="True">
@@ -53,7 +42,7 @@
 
                             <ListBox Grid.Row="1"
                                      Background="WhiteSmoke"
-                                     Margin="10,0,20,0"
+                                     Margin="20,0"
                                      HorizontalContentAlignment="Stretch"
                                      VirtualizingPanel.IsVirtualizing="True"
                                      VirtualizingPanel.VirtualizationMode="Recycling"
@@ -120,6 +109,8 @@
                                                             CommandParameter="{Binding}"
                                                             Style="{StaticResource MaterialDesignFlatMidBgButton}">Принять</Button>
                                                     <Button DockPanel.Dock="Right"
+                                                            Command="{Binding DataContext.DeclineInvite, RelativeSource={RelativeSource AncestorType=equality:Page}}"
+                                                            CommandParameter="{Binding}"
                                                             Style="{StaticResource MaterialDesignOutlinedButton}">Отклонить</Button>
                                                 </DockPanel>
                                             </StackPanel>

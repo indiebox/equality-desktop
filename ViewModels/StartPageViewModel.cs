@@ -21,6 +21,7 @@ namespace Equality.ViewModels
             InviteService = inviteService;
 
             AcceptInvite = new TaskCommand<Invite>(OnAcceptInviteExecuteAsync);
+            DeclineInvite = new TaskCommand<Invite>(OnDeclineInviteExecuteAsync);
 
             Name = StateManager.CurrentUser.Name;
         }
@@ -41,6 +42,19 @@ namespace Equality.ViewModels
         {
             try {
                 await InviteService.AcceptInviteAsync(invite);
+
+                Invites.Remove(invite);
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+        }
+
+        public TaskCommand<Invite> DeclineInvite { get; private set; }
+
+        private async Task OnDeclineInviteExecuteAsync(Invite invite)
+        {
+            try {
+                await InviteService.DeclineInviteAsync(invite);
 
                 Invites.Remove(invite);
             } catch (HttpRequestException e) {
