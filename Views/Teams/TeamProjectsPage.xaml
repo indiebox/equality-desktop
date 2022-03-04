@@ -7,11 +7,12 @@
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+               FontSize="16"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DesignHeight="1080"
                d:DesignWidth="1920"
-               mc:Ignorable="d"
-               d:DataContext="{d:DesignInstance dvm:DesignTeamProjectsPageViewModel, IsDesignTimeCreatable=True}">
+               d:DataContext="{d:DesignInstance dvm:DesignTeamProjectsPageViewModel, IsDesignTimeCreatable=True}"
+               mc:Ignorable="d">
 
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -20,10 +21,12 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
-                   Margin="30,20,0,20"
+                   Margin="20,20,0,20"
                    FontSize="24">Проекты</TextBlock>
-        <ScrollViewer Grid.Row="1">
-            <StackPanel Margin="10,0,0,0">
+        <ScrollViewer Grid.Row="1"
+                      Margin="10,0">
+            <WrapPanel Grid.Row="1"
+                       Margin="10,0">
                 <ListBox materialDesign:ListBoxItemAssist.ShowSelection="False"
                          ItemsSource="{Binding Projects}">
                     <ListBox.Template>
@@ -44,7 +47,7 @@
                         <DataTemplate>
                             <Grid Width="500"
                                   Height="280"
-                                  Margin="10">
+                                  Margin="10,0,10,20">
                                 <Image Stretch="UniformToFill"
                                        Source="/Resources/Images/BackgroundImage.jpg" />
                                 <Rectangle Fill="Black"
@@ -66,7 +69,7 @@
                         Width="500"
                         Height="280"
                         Cursor="Hand"
-                        Margin="20">
+                        Margin="10,0,10,20">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Setter Property="Background"
@@ -87,7 +90,7 @@
                                TextAlignment="Center"
                                FontSize="24">Создать проект</TextBlock>
                 </Border>
-            </StackPanel>
+            </WrapPanel>
         </ScrollViewer>
     </Grid>
 </equality:Page>

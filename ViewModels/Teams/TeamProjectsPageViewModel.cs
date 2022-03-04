@@ -19,15 +19,6 @@ namespace Equality.ViewModels
                 new Project { Name = "Project I"},
                 new Project { Name = "Project II"},
                 new Project { Name = "Project III"},
-                new Project { Name = "Project I"},
-                new Project { Name = "Project II"},
-                new Project { Name = "Project III"},
-                new Project { Name = "Project I"},
-                new Project { Name = "Project II"},
-                new Project { Name = "Project III"},
-                new Project { Name = "Project I"},
-                new Project { Name = "Project II"},
-                new Project { Name = "Project III"},
             });
         }
 
