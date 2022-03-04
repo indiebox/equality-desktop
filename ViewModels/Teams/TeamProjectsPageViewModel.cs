@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 using Equality.Core.Helpers;
 using Equality.Core.ViewModel;
@@ -16,6 +17,7 @@ namespace Equality.ViewModels
 
         #region Properties
 
+        public ObservableCollection<Project> Projects { get; set; } = new();
 
 
         #endregion

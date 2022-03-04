@@ -10,19 +10,67 @@
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DesignHeight="1080"
                d:DesignWidth="1920"
-               mc:Ignorable="d">
+               mc:Ignorable="d"
+               d:DataContext="{d:DesignInstance dvm:DesignTeamProjectsPageViewModel, IsDesignTimeCreatable=True}">
 
-    <Grid Background="Transparent">
+    <StackPanel>
+        <StackPanel Background="White">
+            <TextBlock Margin="20,20,0,0"
+                       FontSize="24">Проекты</TextBlock>
+            <WrapPanel>
+                <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ItemsSource="{Binding Projects}"
+                         HorizontalAlignment="Left">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel IsItemsHost="True" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="500"
+                                  Height="281"
+                                  Margin="20,20,0,20">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <TextBlock Grid.Row="0"
-                   Background="White"
-                   Foreground="Black"
-                   HorizontalAlignment="Left"
-                   Padding="30">Проекты</TextBlock>
-    </Grid>
-
+                                <Image Stretch="UniformToFill"
+                                       Source="/Resources/Images/BackgroundImage.jpg" />
+                                <Rectangle Fill="Black"
+                                           Opacity="0.5" />
+                                <TextBlock Width="200"
+                                           Foreground="White"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           TextAlignment="Center"
+                                           FontSize="24"
+                                           Text="{Binding Name}"></TextBlock>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Border Width="500"
+                        Height="281"
+                        Margin="20,20,0,20">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background"
+                                    Value="#FFCCCCCC" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            Value="#FFB3B3B3" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <TextBlock Width="200"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               TextAlignment="Center"
+                               FontSize="24">Создать проект</TextBlock>
+                </Border>
+            </WrapPanel>
+        </StackPanel>
+    </StackPanel>
 </equality:Page>
