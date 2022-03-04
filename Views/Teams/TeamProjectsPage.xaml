@@ -13,29 +13,43 @@
                mc:Ignorable="d"
                d:DataContext="{d:DesignInstance dvm:DesignTeamProjectsPageViewModel, IsDesignTimeCreatable=True}">
 
-    <StackPanel>
-        <StackPanel Background="White">
-            <TextBlock Margin="20,20,0,0"
-                       FontSize="24">Проекты</TextBlock>
-            <WrapPanel>
-                <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                         ItemsSource="{Binding Projects}"
-                         HorizontalAlignment="Left">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Margin="30,20,0,20"
+                   FontSize="24">Проекты</TextBlock>
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Margin="10,0,0,0">
+                <ListBox materialDesign:ListBoxItemAssist.ShowSelection="False"
+                         ItemsSource="{Binding Projects}">
+                    <ListBox.Template>
+                        <ControlTemplate TargetType="ListBox">
+                            <Border>
+                                <ItemsPresenter />
+                            </Border>
+                        </ControlTemplate>
+                    </ListBox.Template>
+
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel IsItemsHost="True" />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
+
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Width="500"
-                                  Height="281"
-                                  Margin="20,20,0,20">
-
+                                  Height="280"
+                                  Margin="10">
                                 <Image Stretch="UniformToFill"
                                        Source="/Resources/Images/BackgroundImage.jpg" />
                                 <Rectangle Fill="Black"
                                            Opacity="0.5" />
+
                                 <TextBlock Width="200"
                                            Foreground="White"
                                            HorizontalAlignment="Center"
@@ -47,9 +61,12 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <Border Width="500"
-                        Height="281"
-                        Margin="20,20,0,20">
+
+                <Border HorizontalAlignment="Left"
+                        Width="500"
+                        Height="280"
+                        Cursor="Hand"
+                        Margin="20">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Setter Property="Background"
@@ -70,7 +87,7 @@
                                TextAlignment="Center"
                                FontSize="24">Создать проект</TextBlock>
                 </Border>
-            </WrapPanel>
-        </StackPanel>
-    </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </equality:Page>
