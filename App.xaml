@@ -11,9 +11,11 @@
                                                  SecondaryColor="#EDEDED" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="Controls/Controls.xaml" />
+
                 <ResourceDictionary Source="Styles/Form.xaml" />
                 <ResourceDictionary Source="Styles/Button.xaml" />
                 <ResourceDictionary Source="Styles/ItemsPresenter.xaml" />
+                <ResourceDictionary Source="Styles/Global.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Customize primary colors -->
