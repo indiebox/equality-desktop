@@ -10,7 +10,8 @@ namespace Equality.ViewModels.Design
     {
         public DesignTeamMembersListViewModel() : base(null)
         {
-            FilteredMembers.AddRange(new TeamMember[] {
+            FilteredMembers.AddRange(new TeamMember[]
+            {
                 new TeamMember() { Name = "user1", JoinedAt = DateTime.Now.AddHours(-2) },
                 new TeamMember() { Name = "user2", JoinedAt = DateTime.Now.AddDays(-1).AddHours(-1) },
                 new TeamMember() { Name = "user3", JoinedAt = DateTime.Now.AddDays(-1).AddHours(-4) },

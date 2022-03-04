@@ -17,7 +17,7 @@
             <StackPanel Background="White"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
-                        Margin="0,20,20,20">
+                        Margin="20">
                 <TextBlock FontSize="24"
                            Margin="20">Основное</TextBlock>
                 <Grid Width="500"
@@ -27,34 +27,20 @@
                                Opacity="0.5" />
                     <Button Width="200">Изменить изображение</Button>
                 </Grid>
+
                 <StackPanel HorizontalAlignment="Center">
-                    <Label Margin="20,0,20,0"
-                           FontSize="16">Название</Label>
-                    <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
+                    <Label Margin="10,0">Название</Label>
+                    <TextBox Style="{StaticResource FilledTextBox}"
                              Width="500"
-                             AcceptsReturn="False"
-                             materialDesign:HintAssist.Hint="Вставьте название проекта"
-                             materialDesign:HintAssist.IsFloating="False"
-                             Margin="20,0,20,30"
-                             FontSize="16"
-                             TabIndex="0"
-                             materialDesign:ValidationAssist.FontSize="14"
-                             Cursor="IBeam"
-                             HorizontalAlignment="Center" />
+                             materialDesign:HintAssist.Hint="Вставьте название проекта" />
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Center">
-                    <Label Margin="20,0,20,0"
-                           FontSize="16">Описание</Label>
-                    <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                             materialDesign:HintAssist.IsFloating="False"
-                             Margin="20,0,20,30"
-                             TextWrapping="Wrap"
+                    <Label Margin="10,0">Описание</Label>
+                    <TextBox Style="{StaticResource OutlinedTextBox}"
                              Width="500"
-                             FontSize="16"
-                             VerticalScrollBarVisibility="Auto"
-                             materialDesign:HintAssist.Hint="Введите описание проекта"
-                             HorizontalAlignment="Center" />
+                             materialDesign:HintAssist.Hint="Введите описание проекта" />
                 </StackPanel>
+
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right"
                             Margin="20,0,20,30">

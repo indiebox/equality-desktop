@@ -11,99 +11,65 @@
                d:DataContext="{d:DesignInstance Type=dvm:DesignTeamSettingsPageViewModel, IsDesignTimeCreatable=True}"
                d:Background="{StaticResource MaterialDesignPaper}"
                mc:Ignorable="d">
-
-    <StackPanel>
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Center">
-            <StackPanel DockPanel.Dock="Left"
-                        Margin="20">
+    <StackPanel Orientation="Horizontal"
+                HorizontalAlignment="Center">
+        <StackPanel Margin="10,10,10,0">
+            <StackPanel Background="White"
+                        HorizontalAlignment="Center">
                 <StackPanel Background="White"
-                            HorizontalAlignment="Center">
-                    <StackPanel Background="White">
-                        <TextBlock Margin="20"
-                                   FontSize="24"
-                                   HorizontalAlignment="Left">Основное</TextBlock>
-                        <Label Margin="20,0,20,10"
-                               FontSize="16"
-                               HorizontalContentAlignment="Left">_Фото профиля</Label>
-                        <StackPanel Margin="25,0,20,30"
-                                    HorizontalAlignment="Left"
-                                    Orientation="Horizontal">
-                            <controls:TeamLogo CornerRadius="10"
-                                               Width="100"
-                                               Height="100"
-                                               ImagePath="{Binding Logo}" />
-                            <DockPanel Margin="20,0,0,0"
-                                       LastChildFill="False"
-                                       Canvas.Bottom="0">
-                                <Button DockPanel.Dock='Top'
-                                        Style="{StaticResource MaterialDesignRaisedButton}"
-                                        Margin="0,10,0,0"
-                                        Content="Изменить"
-                                        Command="{Binding UploadLogo}" />
-                                <Button DockPanel.Dock='Top'
-                                        Style="{StaticResource MaterialDesignPaperButton}"
-                                        Margin="0,10,0,0"
-                                        Content="Удалить"
-                                        Command="{Binding DeleteLogo}" />
-                            </DockPanel>
-                        </StackPanel>
-
-                        <Label Margin="20,0,20,0"
-                               FontSize="16">_Название команды</Label>
-                        <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
-                                 Width="500"
-                                 AcceptsReturn="False"
-                                 materialDesign:HintAssist.Hint="Введите название команды"
-                                 materialDesign:HintAssist.IsFloating="False"
-                                 Margin="20,0,20,30"
-                                 FontSize="16"
-                                 TabIndex="0"
-                                 materialDesign:ValidationAssist.FontSize="14"
-                                 Cursor="IBeam"
-                                 HorizontalAlignment="Center"
-                                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}">
-                        </TextBox>
+                            Margin="10,0">
+                    <TextBlock Margin="10"
+                               FontSize="24"
+                               HorizontalAlignment="Left">Основное</TextBlock>
+                    <Label Margin="10,0,10,10"
+                           HorizontalContentAlignment="Left">_Фото профиля</Label>
+                    <StackPanel Margin="10,0,10,30"
+                                HorizontalAlignment="Left"
+                                Orientation="Horizontal">
+                        <controls:TeamLogo CornerRadius="10"
+                                           Width="100"
+                                           Height="100"
+                                           ImagePath="{Binding Logo}" />
+                        <DockPanel Margin="20,0,0,0"
+                                   LastChildFill="False"
+                                   Canvas.Bottom="0">
+                            <Button DockPanel.Dock='Top'
+                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                    Margin="0,10,0,0"
+                                    Content="Изменить"
+                                    Command="{Binding UploadLogo}" />
+                            <Button DockPanel.Dock='Top'
+                                    Style="{StaticResource MaterialDesignPaperButton}"
+                                    Margin="0,10,0,0"
+                                    Content="Удалить"
+                                    Command="{Binding DeleteLogo}" />
+                        </DockPanel>
                     </StackPanel>
 
-                    <StackPanel>
-                        <Label Margin="20,0,20,0"
-                               FontSize="16">_Описание команды</Label>
-                        <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                 materialDesign:HintAssist.IsFloating="False"
-                                 Margin="20,0,20,30"
-                                 TextWrapping="Wrap"
-                                 Width="500"
-                                 FontSize="16"
-                                 VerticalScrollBarVisibility="Auto"
-                                 materialDesign:HintAssist.Hint="Введите описание команды"
-                                 HorizontalAlignment="Center"
-                                 Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
-                    </StackPanel>
-                    <StackPanel>
-                        <Label Margin="20,0,20,0"
-                               FontSize="16">Ссылка</Label>
-                        <TextBox Style="{StaticResource MaterialDesignFilledTextBox}"
-                                 Width="500"
-                                 AcceptsReturn="False"
-                                 materialDesign:HintAssist.Hint="Вставьте ссылку"
-                                 materialDesign:HintAssist.IsFloating="False"
-                                 Margin="20,0,20,30"
-                                 FontSize="16"
-                                 TabIndex="0"
-                                 materialDesign:ValidationAssist.FontSize="14"
-                                 Cursor="IBeam"
-                                 HorizontalAlignment="Center"
-                                 Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" />
+                    <Label Margin="10,0">_Название команды</Label>
+                    <TextBox Style="{StaticResource FilledTextBox}"
+                             Width="500"
+                             materialDesign:HintAssist.Hint="Введите название команды"
+                             Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}">
+                    </TextBox>
 
-                    </StackPanel>
-                    <Button Margin="20,0,20,30"
-                            HorizontalAlignment="Center"
-                            Width="500"
+                    <Label Margin="10,0">_Описание команды</Label>
+                    <TextBox Style="{StaticResource OutlinedTextBox}"
+                             Width="500"
+                             materialDesign:HintAssist.Hint="Введите описание команды"
+                             Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <Label Margin="10,0">Ссылка</Label>
+                    <TextBox Style="{StaticResource FilledTextBox}"
+                             Width="500"
+                             materialDesign:HintAssist.Hint="Вставьте ссылку"
+                             Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <Button Margin="10,0,10,30"
+                            HorizontalAlignment="Right"
                             Command="{Binding UpdateSettings}">Сохранить</Button>
                 </StackPanel>
             </StackPanel>
         </StackPanel>
     </StackPanel>
-
 </equality:Page>
