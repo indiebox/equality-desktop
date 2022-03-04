@@ -50,9 +50,7 @@
                             <materialDesign:PackIcon VerticalAlignment="Center"
                                                      Kind="ViewDashboard" />
                             <TextBlock Margin="4 0 0 0"
-                                       FontSize="16"
-                                       Text="Все"
-                                       VerticalAlignment="Center" />
+                                       Text="Все" />
                         </StackPanel>
                     </RadioButton>
 
@@ -60,8 +58,6 @@
                                Margin="4,0,0,0"
                                LastChildFill="False">
                         <TextBlock DockPanel.Dock="Left"
-                                   FontSize="16"
-                                   HorizontalAlignment="Left"
                                    VerticalAlignment="Center">Команды</TextBlock>
                         <Button DockPanel.Dock="Right"
                                 Style="{StaticResource MaterialDesignIconButton}"
@@ -147,8 +143,7 @@
                                                            Margin="10"
                                                            CornerRadius="100"
                                                            ImagePath="{Binding Logo}" />
-                                        <TextBlock FontSize="16"
-                                                   TextAlignment="Center"
+                                        <TextBlock TextAlignment="Center"
                                                    VerticalAlignment="Center"
                                                    Style="{StaticResource LinkText}"
                                                    Text="{Binding Name}" />
@@ -168,7 +163,6 @@
                                                            Opacity="0.5" />
                                                 <TextBlock HorizontalAlignment="Center"
                                                            VerticalAlignment="Center"
-                                                           FontSize="16"
                                                            Foreground="White"><Run Text="Progect I" /></TextBlock>
                                             </Grid>
                                         </Border>
@@ -184,7 +178,6 @@
                                                            Opacity="0.5" />
                                                 <TextBlock HorizontalAlignment="Center"
                                                            VerticalAlignment="Center"
-                                                           FontSize="16"
                                                            Foreground="White"><Run Text="Progect II" /></TextBlock>
                                             </Grid>
                                         </Border>

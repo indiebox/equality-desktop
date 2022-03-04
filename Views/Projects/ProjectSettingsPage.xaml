@@ -29,15 +29,13 @@
                 </Grid>
 
                 <StackPanel HorizontalAlignment="Center">
-                    <Label Margin="10,0"
-                           FontSize="16">Название</Label>
+                    <Label Margin="10,0">Название</Label>
                     <TextBox Style="{StaticResource FilledTextBox}"
                              Width="500"
                              materialDesign:HintAssist.Hint="Вставьте название проекта" />
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Center">
-                    <Label Margin="10,0"
-                           FontSize="16">Описание</Label>
+                    <Label Margin="10,0">Описание</Label>
                     <TextBox Style="{StaticResource OutlinedTextBox}"
                              Width="500"
                              materialDesign:HintAssist.Hint="Введите описание проекта" />

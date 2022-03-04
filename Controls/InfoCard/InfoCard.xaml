@@ -16,6 +16,7 @@
                                 SnapsToDevicePixels="True">
                             <TextBlock x:Name="TextBlock"
                                        Padding="10"
+                                       FontSize="12"
                                        Text="{TemplateBinding Text}"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"

@@ -10,7 +10,6 @@
                    xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
                    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                    Background="{DynamicResource MaterialDesignPaper}"
-                   FontSize="16"
                    mc:Ignorable="d"
                    d:DataContext="{d:DesignInstance Type=dvm:DesignInviteUserDialogViewModel, IsDesignTimeCreatable=True}">
     <Grid VerticalAlignment="Center"
@@ -32,8 +31,7 @@
                        Text="{Binding Title}" />
 
             <Label Margin="10,0,10,0"
-                   Target="{Binding ElementName=Email}"
-                   FontSize="16">_Адрес эл. почты</Label>
+                   Target="{Binding ElementName=Email}">_Адрес эл. почты</Label>
             <TextBox Style="{StaticResource FilledTextBox}"
                      x:Name="Email"
                      materialDesign:HintAssist.Hint="Введите адрес эл. почты"

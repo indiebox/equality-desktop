@@ -22,7 +22,6 @@
                                FontSize="24"
                                HorizontalAlignment="Left">Основное</TextBlock>
                     <Label Margin="10,0,10,10"
-                           FontSize="16"
                            HorizontalContentAlignment="Left">_Фото профиля</Label>
                     <StackPanel Margin="10,0,10,30"
                                 HorizontalAlignment="Left"
@@ -47,23 +46,20 @@
                         </DockPanel>
                     </StackPanel>
 
-                    <Label Margin="10,0"
-                           FontSize="16">_Название команды</Label>
+                    <Label Margin="10,0">_Название команды</Label>
                     <TextBox Style="{StaticResource FilledTextBox}"
                              Width="500"
                              materialDesign:HintAssist.Hint="Введите название команды"
                              Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}">
                     </TextBox>
 
-                    <Label Margin="10,0"
-                           FontSize="16">_Описание команды</Label>
+                    <Label Margin="10,0">_Описание команды</Label>
                     <TextBox Style="{StaticResource OutlinedTextBox}"
                              Width="500"
                              materialDesign:HintAssist.Hint="Введите описание команды"
                              Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <Label Margin="10,0"
-                           FontSize="16">Ссылка</Label>
+                    <Label Margin="10,0">Ссылка</Label>
                     <TextBox Style="{StaticResource FilledTextBox}"
                              Width="500"
                              materialDesign:HintAssist.Hint="Вставьте ссылку"

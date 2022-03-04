@@ -65,19 +65,15 @@
                                                 <WrapPanel Width="200"
                                                            Height="Auto"
                                                            Orientation="Horizontal">
-                                                    <TextBlock FontSize="16"
-                                                               TextWrapping="Wrap"
+                                                    <TextBlock TextWrapping="Wrap"
                                                                Text="Пользователь " />
-                                                    <TextBlock FontSize="16"
-                                                               TextTrimming="WordEllipsis"
+                                                    <TextBlock TextTrimming="WordEllipsis"
                                                                TextDecorations="Underline"
                                                                ToolTip="{Binding Inviter.Name}"
                                                                Text="{Binding Inviter.Name}"></TextBlock>
-                                                    <TextBlock FontSize="16"
-                                                               TextWrapping="Wrap"
+                                                    <TextBlock TextWrapping="Wrap"
                                                                Text="приглашает вас в команду "></TextBlock>
-                                                    <TextBlock FontSize="16"
-                                                               TextWrapping="Wrap"
+                                                    <TextBlock TextWrapping="Wrap"
                                                                TextTrimming="WordEllipsis"
                                                                TextDecorations="Underline"
                                                                MaxHeight="24"
@@ -122,7 +118,6 @@
                    Grid.Column="0"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   FontSize="16"
                    TextAlignment="Center">
         Последняя активность:
         </TextBlock>

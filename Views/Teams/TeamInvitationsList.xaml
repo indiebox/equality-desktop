@@ -24,15 +24,11 @@
                    Margin="10,20,20,10"
                    Height="50"
                    LastChildFill="False">
-            <ComboBox FontSize="16"
-                      materialDesign:HintAssist.IsFloating="False"
+            <ComboBox Style="{StaticResource FilledComboBox}"
                       Background="White"
-                      Style="{StaticResource MaterialDesignFilledComboBox}"
                       materialDesign:HintAssist.Hint="Фильтры"
                       VerticalAlignment="Center"
-                      Width="250"
-                      materialDesign:ComboBoxAssist.ClassicMode="True"
-                      materialDesign:ComboBoxAssist.ShowSelectedItem="True">
+                      Width="250">
                 <ComboBoxItem IsSelected="{Binding SelectedFilter, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static services:IInviteService+InviteFilter.All}}"
                               Content="Без фильтра" />
                 <ComboBoxItem IsSelected="{Binding SelectedFilter, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static services:IInviteService+InviteFilter.Pending}}"
@@ -135,8 +131,7 @@
                             <StackPanel Orientation="Horizontal"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch">
-                                <TextBlock FontSize="16"
-                                           TextDecorations="Underline"
+                                <TextBlock TextDecorations="Underline"
                                            VerticalAlignment="Center">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock"
@@ -164,8 +159,7 @@
                                     </TextBlock.Style>
                                 </TextBlock>
 
-                                <TextBlock FontSize="16"
-                                           TextWrapping="Wrap"
+                                <TextBlock TextWrapping="Wrap"
                                            VerticalAlignment="Center">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock"
@@ -193,8 +187,7 @@
                                     </TextBlock.Style>
                                 </TextBlock>
 
-                                <TextBlock FontSize="16"
-                                           TextWrapping="NoWrap"
+                                <TextBlock TextWrapping="NoWrap"
                                            VerticalAlignment="Center">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock"

@@ -25,17 +25,11 @@
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
-                <TextBlock FontSize="16"
-                           Text="Нет аккаунта?"
+                <TextBlock Text="Нет аккаунта?"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center" />
                 <Button Grid.Row="3"
                         Content="Зарегистрироваться"
-                        FontSize="16"
-                        Cursor="Hand"
-                        VerticalAlignment="Stretch"
-                        HorizontalAlignment="Center"
-                        BorderThickness="0,0,0,0"
                         Margin="20,0,0,0"
                         Command="{Binding OpenRegisterWindow}"
                         TabIndex="3" />
@@ -76,8 +70,7 @@
 
                 <StackPanel Grid.Row="2">
                     <Label Margin="10,0"
-                           Target="{Binding ElementName=Email}"
-                           FontSize="16">_Адрес эл. почты</Label>
+                           Target="{Binding ElementName=Email}">_Адрес эл. почты</Label>
                     <TextBox Style="{StaticResource FilledTextBox}"
                              x:Name="Email"
                              materialDesign:HintAssist.Hint="Введите адрес эл. почты"
@@ -92,17 +85,16 @@
                                HorizontalAlignment="Stretch"
                                VerticalAlignment="Stretch">
                         <Label DockPanel.Dock="Left"
-                               Target="{Binding ElementName=Password}"
-                               FontSize="16">
+                               Target="{Binding ElementName=Password}">
                             _Пароль
                         </Label>
                         <Button Command="{Binding OpenForgotPassword}"
                                 Style="{StaticResource LinkButton}"
                                 DockPanel.Dock="Right"
                                 Padding="1"
-                                FontSize="16"
                                 TabIndex="1"
-                                Content="Забыли пароль?" />
+                                Content="Забыли пароль?"
+                                Cursor="Hand" />
                     </DockPanel>
 
                     <PasswordBox Name="Password"
@@ -127,7 +119,6 @@
                         Grid.Column="0"
                         Margin="10,0"
                         Content="Войти"
-                        FontSize="16"
                         Padding="10"
                         TabIndex="2"
                         Height="50" />
