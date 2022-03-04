@@ -9,14 +9,15 @@
                xmlns:local="clr-namespace:Equality.Views"
                xmlns:models="clr-namespace:Equality.Models"
                xmlns:viewmodels="clr-namespace:Equality.ViewModels"
-               mc:Ignorable="d"
-               xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
-               xmlns:converters="clr-namespace:Equality.Converters"
                xmlns:controls="clr-namespace:Equality.Controls"
+               xmlns:converters="clr-namespace:Equality.Converters"
+               xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+               FontSize="16"
                d:Height="600"
                d:Width="1000"
                d:Background="{StaticResource MaterialDesignPaper}"
-               d:DataContext="{d:DesignInstance dvm:DesignProjectsPageViewModel, IsDesignTimeCreatable=True}">
+               d:DataContext="{d:DesignInstance dvm:DesignProjectsPageViewModel, IsDesignTimeCreatable=True}"
+               mc:Ignorable="d">
     <Grid>
         <Border>
             <Border.Background>

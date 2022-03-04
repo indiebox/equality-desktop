@@ -10,13 +10,14 @@
               xmlns:local="clr-namespace:Equality.Views"
               xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
               xmlns:converters="clr-namespace:Equality.Converters"
-              d:DataContext="{d:DesignInstance Type=dvm:DesignApplicationWindowViewModel, IsDesignTimeCreatable=True}"
-              mc:Ignorable="d"
               TextElement.Foreground="{DynamicResource MaterialDesignBody}"
               Background="{DynamicResource MaterialDesignPaper}"
               WindowStartupLocation="CenterScreen"
               Width="1920"
-              Height="1080">
+              Height="1080"
+              FontSize="16"
+              d:DataContext="{d:DesignInstance Type=dvm:DesignApplicationWindowViewModel, IsDesignTimeCreatable=True}"
+              mc:Ignorable="d">
     <materialDesign:DialogHost DialogTheme="Inherit">
         <Grid>
             <Grid.ColumnDefinitions>
