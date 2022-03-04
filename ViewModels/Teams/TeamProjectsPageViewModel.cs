@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
+using Catel.Collections;
+
 using Equality.Core.Helpers;
 using Equality.Core.ViewModel;
 using Equality.Models;
@@ -13,6 +15,20 @@ namespace Equality.ViewModels
 
         public TeamProjectsPageViewModel()
         {
+            Projects.AddRange(new Project[] {
+                new Project { Name = "Project I"},
+                new Project { Name = "Project II"},
+                new Project { Name = "Project III"},
+                new Project { Name = "Project I"},
+                new Project { Name = "Project II"},
+                new Project { Name = "Project III"},
+                new Project { Name = "Project I"},
+                new Project { Name = "Project II"},
+                new Project { Name = "Project III"},
+                new Project { Name = "Project I"},
+                new Project { Name = "Project II"},
+                new Project { Name = "Project III"},
+            });
         }
 
         #region Properties

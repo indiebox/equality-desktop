@@ -12,13 +12,11 @@ namespace Equality.ViewModels.Design
     {
         public DesignTeamProjectsPageViewModel() : base()
         {
-            Projects.AddRange(new Project[] {
-                new Project { Name = "Project I"},
-
-                new Project { Name = "Project II"},
-
-                new Project { Name = "Project III"}
-            });
+            //Projects.AddRange(new Project[] {
+            //    new Project { Name = "Project I"},
+            //    new Project { Name = "Project II"},
+            //    new Project { Name = "Project III"}
+            //});
         }
     }
 }
