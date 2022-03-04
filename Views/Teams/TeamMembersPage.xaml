@@ -29,7 +29,6 @@
                     <materialDesign:PackIcon Kind="AccountGroup"
                                              VerticalAlignment="Center" />
                     <TextBlock Margin="4 0 0 0"
-                               FontSize="16"
                                Text="Пользователи" />
                 </StackPanel>
             </RadioButton>
@@ -42,7 +41,6 @@
                     <materialDesign:PackIcon Kind="Invite"
                                              VerticalAlignment="Center" />
                     <TextBlock Margin="4 0 0 0"
-                               FontSize="16"
                                Text="Приглашения" />
                 </StackPanel>
             </RadioButton>

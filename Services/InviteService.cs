@@ -43,6 +43,17 @@ namespace Equality.Services
             return new(invites, response);
         }
 
+        public async Task<ApiResponseMessage<Invite[]>> GetUserInvitesAsync()
+        {
+            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
+
+            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).GetAsync("invites");
+
+            var invites = DeserializeRange(response.Content["data"]);
+
+            return new(invites, response);
+        }
+
         public Task<ApiResponseMessage<Invite>> InviteUserAsync(Team team, string email) => InviteUserAsync(team.Id, email);
 
         public async Task<ApiResponseMessage<Invite>> InviteUserAsync(ulong teamId, string email)
@@ -70,6 +81,26 @@ namespace Equality.Services
             Argument.IsNotNull(nameof(inviteId), inviteId);
 
             return await ApiClient.WithTokenOnce(StateManager.ApiToken).DeleteAsync($"invites/{inviteId}");
+        }
+
+        public Task<ApiResponseMessage> AcceptInviteAsync(Invite invite) => AcceptInviteAsync(invite.Id);
+
+        public async Task<ApiResponseMessage> AcceptInviteAsync(ulong inviteId)
+        {
+            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
+            Argument.IsNotNull(nameof(inviteId), inviteId);
+
+            return await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync($"invites/{inviteId}/accept");
+        }
+
+        public Task<ApiResponseMessage> DeclineInviteAsync(Invite invite) => DeclineInviteAsync(invite.Id);
+
+        public async Task<ApiResponseMessage> DeclineInviteAsync(ulong inviteId)
+        {
+            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
+            Argument.IsNotNull(nameof(inviteId), inviteId);
+
+            return await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync($"invites/{inviteId}/decline");
         }
 
         /// <inheritdoc cref="IApiDeserializable{T}.Deserialize(JToken)"/>

@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="InfoCard/InfoCard.xaml" />
         <ResourceDictionary Source="TeamLogo/TeamLogo.xaml" />
-        <ResourceDictionary Source="Invitation/Invitation.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
