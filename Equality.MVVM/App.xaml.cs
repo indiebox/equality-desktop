@@ -6,7 +6,7 @@ using Catel.MVVM;
 using Catel.Services;
 
 using Equality.Http;
-using Equality.StateManager;
+using Equality.Data;
 using Equality.Services;
 
 namespace Equality
@@ -67,7 +67,7 @@ namespace Equality
             Log.Info("Registering custom types");
 
             serviceLocator.RegisterType<IApiClient, ApiClient>();
-            serviceLocator.RegisterType<IStateManager, StateManager.StateManager>();
+            serviceLocator.RegisterType<IStateManager, StateManager>();
 
             serviceLocator.RegisterType<IUserService, UserService>();
             serviceLocator.RegisterType<ITeamService, TeamService>();

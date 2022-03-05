@@ -5,7 +5,7 @@ using Catel.Collections;
 using Catel.Data;
 using Catel.MVVM;
 
-using Equality.StateManager;
+using Equality.Data;
 
 namespace Equality.MVVM
 {

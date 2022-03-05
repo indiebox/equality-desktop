@@ -2,7 +2,7 @@
 
 using Catel.Data;
 
-using Equality.StateManager;
+using Equality.Data;
 
 namespace Equality.Models
 {

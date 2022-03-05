@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 using Equality.Http;
-using Equality.StateManager;
+using Equality.Data;
 using Equality.Models;
 
 namespace Equality.Services

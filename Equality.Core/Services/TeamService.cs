@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Catel;
 
 using Equality.Http;
-using Equality.StateManager;
+using Equality.Data;
 using Equality.Models;
 
 using Newtonsoft.Json.Linq;

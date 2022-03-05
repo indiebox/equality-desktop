@@ -1,6 +1,6 @@
 ﻿using Equality.Models;
 
-namespace Equality.StateManager
+namespace Equality.Data
 {
     public interface IStateManager
     {

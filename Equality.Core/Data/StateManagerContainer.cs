@@ -1,7 +1,7 @@
 ﻿using Catel;
 using Catel.IoC;
 
-namespace Equality.StateManager
+namespace Equality.Data
 {
     public static class StateManagerContainer
     {
