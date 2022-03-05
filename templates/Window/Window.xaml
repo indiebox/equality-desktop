@@ -1,18 +1,18 @@
-﻿<catel:Window x:Class="$rootnamespace$.$safeitemname$"
-               xmlns:catel="http://schemas.catelproject.com"
-               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-               xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
-               d:Background="{StaticResource MaterialDesignPaper}"
-               d:DesignHeight="300"
-               d:DesignWidth="300"
-               mc:Ignorable="d">
-
+﻿<catel:Window x:Class="Equality.Views.$safeitemname$"
+              xmlns:catel="http://schemas.catelproject.com"
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+              Background="{DynamicResource MaterialDesignPaper}"
+              FontSize="16"
+              d:DesignHeight="300"
+              d:DesignWidth="300"
+              mc:Ignorable="d">
     <Grid>
         <TextBlock>Content</TextBlock>
     </Grid>
-
 </catel:Window>

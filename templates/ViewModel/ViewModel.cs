@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-using Equality.Core.ViewModel;
+using Equality.MVVM;
 
-namespace $rootnamespace$
+namespace Equality.ViewModels
 {
     public class $safeitemname$ : ViewModel
     {
@@ -10,20 +10,18 @@ namespace $rootnamespace$
         {
         }
 
-        public override string Title => "View model title";
-
         #region Properties
-        
-        
-        
-        #endregion
-        
-        #region Commands
-        
-        
+
+
 
         #endregion
-        
+
+        #region Commands
+
+
+
+        #endregion
+
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
