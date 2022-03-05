@@ -1,4 +1,5 @@
 ﻿using CefSharp;
+using CefSharp.Handler;
 using CefSharp.Wpf;
 
 using Equality.ViewModels;
@@ -22,7 +23,7 @@ namespace Equality.Views
             InitializeComponent();
 
             // Disable context menu in browser by click RMB.
-            //Browser.MenuHandler = new CustomMenuHandler();
+            Browser.MenuHandler = new Browser.ContextMenuHandler();
 
             // Hide loading screen on page loaded.
             Browser.FrameLoadEnd += OnFrameLoadEnd;
