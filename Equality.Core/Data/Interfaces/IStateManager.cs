@@ -7,7 +7,7 @@ namespace Equality.Data
         /// <summary>
         /// Gets or sets the current authenticated user.
         /// </summary>
-        public User CurrentUser { get; set; }
+        public IUser CurrentUser { get; set; }
 
         /// <summary>
         /// Gets or sets the currently used Api token.

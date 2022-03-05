@@ -7,7 +7,7 @@ using Equality.Models;
 
 namespace Equality.Services
 {
-    public interface ITeamService : IApiDeserializable<Team>
+    public interface ITeamService : IApiDeserializable<ITeam>
     {
         /// <summary>
         /// Sends the get current user teams request to the API.
@@ -19,7 +19,7 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<Team[]>> GetTeamsAsync();
+        public Task<ApiResponseMessage<ITeam[]>> GetTeamsAsync();
 
         /// <summary>
         /// Sends the create team request to the API.
@@ -32,7 +32,7 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<Team>> CreateAsync(Team team);
+        public Task<ApiResponseMessage<ITeam>> CreateAsync(ITeam team);
 
         /// <summary>
         /// Sends the get members request to the API.
@@ -45,11 +45,11 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TeamMember[]>> GetMembersAsync(Team team);
+        public Task<ApiResponseMessage<ITeamMember[]>> GetMembersAsync(ITeam team);
 
         /// <inheritdoc cref="GetMembersAsync(Team)"/>
         /// <param name="teamId">The team id.</param>
-        public Task<ApiResponseMessage<TeamMember[]>> GetMembersAsync(ulong teamId);
+        public Task<ApiResponseMessage<ITeamMember[]>> GetMembersAsync(ulong teamId);
 
         /// <summary>
         /// Sends the leave team request to the API.
@@ -62,7 +62,7 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> LeaveTeamAsync(Team team);
+        public Task<ApiResponseMessage> LeaveTeamAsync(ITeam team);
 
         /// <inheritdoc cref="LeaveTeamAsync(Team)"/>
         /// <param name="teamId">The team id.</param>
@@ -80,12 +80,12 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<Team>> SetLogoAsync(Team team, string imagePath);
+        public Task<ApiResponseMessage<ITeam>> SetLogoAsync(ITeam team, string imagePath);
 
         /// <inheritdoc cref="SetLogoAsync(Team, string)"/>
         /// <param name="teamId">The team id.</param>
         /// <param name="imagePath">The path to image file.</param>
-        public Task<ApiResponseMessage<Team>> SetLogoAsync(ulong teamId, string imagePath);
+        public Task<ApiResponseMessage<ITeam>> SetLogoAsync(ulong teamId, string imagePath);
 
         /// <summary>
         /// Sends the delete logo request to the API.
@@ -98,11 +98,11 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<Team>> DeleteLogoAsync(Team team);
+        public Task<ApiResponseMessage<ITeam>> DeleteLogoAsync(ITeam team);
 
         /// <inheritdoc cref="DeleteLogoAsync(Team)"/>
         /// <param name="teamId">The team id.</param>
-        public Task<ApiResponseMessage<Team>> DeleteLogoAsync(ulong teamId);
+        public Task<ApiResponseMessage<ITeam>> DeleteLogoAsync(ulong teamId);
 
         /// <summary>
         /// Sends the update team request to the API.
@@ -115,6 +115,6 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<Team>> UpdateTeamAsync(Team team);
+        public Task<ApiResponseMessage<ITeam>> UpdateTeamAsync(ITeam team);
     }
 }

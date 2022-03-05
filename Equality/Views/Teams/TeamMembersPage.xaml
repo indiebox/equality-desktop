@@ -1,0 +1,54 @@
+﻿<equality:Page x:Class="Equality.Views.TeamMembersPage"
+               xmlns:equality="clr-namespace:Equality.MVVM"
+               xmlns:catel="http://schemas.catelproject.com"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+               xmlns:converters="clr-namespace:Equality.Converters;assembly=Equality.MVVM"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+               xmlns:local="clr-namespace:Equality.Views"
+               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+               FontSize="16"
+               d:Background="WhiteSmoke"
+               d:DesignHeight="600"
+               d:DataContext="{d:DesignInstance Type=viewmodels:TeamMembersPageViewModel}"
+               d:DesignWidth="1000"
+               mc:Ignorable="d">
+    <DockPanel>
+        <StackPanel Orientation="Vertical"
+                    Margin="0,0,10,0"
+                    Background="WhiteSmoke"
+                    Width="Auto">
+            <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                         BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                         Margin="4"
+                         IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:TeamMembersPageViewModel+Tab.Members}}"
+                         HorizontalContentAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="AccountGroup"
+                                             VerticalAlignment="Center" />
+                    <TextBlock Margin="4 0 0 0"
+                               Text="Пользователи" />
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                         BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                         Margin="4"
+                         IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:TeamMembersPageViewModel+Tab.Invitations}}"
+                         HorizontalContentAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Invite"
+                                             VerticalAlignment="Center" />
+                    <TextBlock Margin="4 0 0 0"
+                               Text="Приглашения" />
+                </StackPanel>
+            </RadioButton>
+        </StackPanel>
+
+        <Frame>
+
+        </Frame>
+    </DockPanel>
+</equality:Page>

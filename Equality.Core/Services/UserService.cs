@@ -106,9 +106,9 @@ namespace Equality.Services
         }
 
         /// <inheritdoc cref="IApiDeserializable{T}.Deserialize(JToken)"/>
-        protected User Deserialize(JToken data) => ((IUserService)this).Deserialize(data);
+        protected IUser Deserialize(JToken data) => ((IUserService)this).Deserialize(data);
 
         /// <inheritdoc cref="IApiDeserializable{T}.DeserializeRange(JToken)"/>
-        protected User[] DeserializeRange(JToken data) => ((IUserService)this).DeserializeRange(data);
+        protected IUser[] DeserializeRange(JToken data) => ((IUserService)this).DeserializeRange(data);
     }
 }

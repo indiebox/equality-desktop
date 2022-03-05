@@ -1,0 +1,162 @@
+﻿<catel:Window x:Class="Equality.Views.ApplicationWindow"
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+              xmlns:catel="http://schemas.catelproject.com"
+              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+              xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+              xmlns:local="clr-namespace:Equality.Views"
+              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+              xmlns:converters="clr-namespace:Equality.Converters;assembly=Equality.MVVM"
+              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+              Background="{DynamicResource MaterialDesignPaper}"
+              WindowStartupLocation="CenterScreen"
+              Width="1920"
+              Height="1080"
+              FontSize="16"
+              d:DataContext="{d:DesignInstance Type=dvm:DesignApplicationWindowViewModel, IsDesignTimeCreatable=True}"
+              mc:Ignorable="d">
+    <materialDesign:DialogHost DialogTheme="Inherit">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer Grid.Column="0"
+                          HorizontalScrollBarVisibility="Disabled"
+                          VerticalScrollBarVisibility="Hidden">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TabControl Grid.Row="0"
+                                Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
+                                BorderBrush="Transparent"
+                                TabStripPlacement="Left"
+                                materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                                materialDesign:NavigationRailAssist.ShowSelectionBackground="True">
+                        <materialDesign:NavigationRailAssist.FloatingContent>
+                            <Border CornerRadius="100,100,100,100"
+                                    Margin="0,25,0,25"
+                                    Width="60"
+                                    Height="60">
+                                <Border.Background>
+                                    <ImageBrush Stretch="UniformToFill"
+                                                ImageSource="/Resources/Icons/Logo.ico" />
+                                </Border.Background>
+                            </Border>
+                        </materialDesign:NavigationRailAssist.FloatingContent>
+
+                        <TabControl.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextWrapping"
+                                        Value="Wrap" />
+                                <Setter Property="TextAlignment"
+                                        Value="Center" />
+                                <Setter Property="HorizontalAlignment"
+                                        Value="Center" />
+                            </Style>
+
+                            <Style TargetType="materialDesign:PackIcon">
+                                <Setter Property="Width"
+                                        Value="24" />
+                                <Setter Property="Height"
+                                        Value="24" />
+                                <Setter Property="HorizontalAlignment"
+                                        Value="Center" />
+                            </Style>
+                        </TabControl.Resources>
+
+                        <TabItem Width="80"
+                                 Height="80"
+                                 IsSelected="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.Main}}">
+                            <TabItem.Header>
+                                <StackPanel>
+                                    <materialDesign:PackIcon Kind="Home" />
+                                    <TextBlock Text="Главная" />
+                                </StackPanel>
+                            </TabItem.Header>
+                        </TabItem>
+
+                        <TabItem Width="80"
+                                 Height="80"
+                                 IsSelected="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.Projects}}">
+                            <TabItem.Header>
+                                <StackPanel>
+                                    <materialDesign:PackIcon Kind="ViewDashboardVariant" />
+                                    <TextBlock Text="Проекты" />
+                                </StackPanel>
+                            </TabItem.Header>
+                        </TabItem>
+                        <TabItem Width="80"
+                                 Height="80"
+                                 IsSelected="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.TempProject}}">
+                            <TabItem.Header>
+                                <StackPanel>
+                                    <materialDesign:PackIcon Kind="ViewDashboardVariant" />
+                                    <TextBlock Text="Проекты" />
+                                </StackPanel>
+                            </TabItem.Header>
+                        </TabItem>
+
+                        <TabItem Width="80"
+                                 Height="80"
+                                 IsSelected="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.Team}}"
+                                 Visibility="{Binding SelectedTeam, Converter={catel:ReferenceToCollapsingVisibilityConverter}}">
+                            <TabItem.Header>
+                                <DockPanel Margin="5"
+                                           LastChildFill="True">
+                                    <materialDesign:PackIcon DockPanel.Dock="Top"
+                                                             Kind="People" />
+                                    <TextBlock TextTrimming="CharacterEllipsis"
+                                               Text="{Binding SelectedTeam.Name}" />
+                                </DockPanel>
+                            </TabItem.Header>
+                        </TabItem>
+                    </TabControl>
+
+                    <Separator Grid.Row="1"
+                               Height="1"
+                               Width="50"
+                               Margin="0"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Bottom" />
+
+                    <TabItem Grid.Row="2"
+                             Style="{StaticResource MaterialDesignNavigationRailTabItem}"
+                             Width="80"
+                             Height="80">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <catel:EventToCommand Command="{Binding Logout}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+
+                        <TabItem.Header>
+                            <StackPanel>
+                                <materialDesign:PackIcon Kind="Logout"
+                                                         Width="24"
+                                                         Height="24"
+                                                         HorizontalAlignment="Center" />
+                                <TextBlock Text="Выйти"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </TabItem.Header>
+                    </TabItem>
+                </Grid>
+            </ScrollViewer>
+
+            <Frame Grid.Column="1"
+                   Focusable="False"
+                   VerticalAlignment="Stretch"
+                   HorizontalAlignment="Stretch"
+                   NavigationUIVisibility="Hidden" />
+        </Grid>
+    </materialDesign:DialogHost>
+</catel:Window>

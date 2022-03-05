@@ -7,7 +7,7 @@ using Equality.Models;
 
 namespace Equality.Services
 {
-    public interface IUserService : IApiDeserializable<User>
+    public interface IUserService : IApiDeserializable<IUser>
     {
         /// <summary>
         /// Sends the request to get an authenticated user to the API.

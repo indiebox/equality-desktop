@@ -27,7 +27,7 @@ namespace Equality.Services
             StateManager = stateManager;
         }
 
-        public async Task<ApiResponseMessage<Team[]>> GetTeamsAsync()
+        public async Task<ApiResponseMessage<ITeam[]>> GetTeamsAsync()
         {
             Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
 
@@ -38,7 +38,7 @@ namespace Equality.Services
             return new(teams, response);
         }
 
-        public async Task<ApiResponseMessage<Team>> CreateAsync(Team team)
+        public async Task<ApiResponseMessage<ITeam>> CreateAsync(ITeam team)
         {
             Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
             Argument.IsNotNull(nameof(team), team);
@@ -57,9 +57,9 @@ namespace Equality.Services
             return new(team, response);
         }
 
-        public Task<ApiResponseMessage<TeamMember[]>> GetMembersAsync(Team team) => GetMembersAsync(team.Id);
+        public Task<ApiResponseMessage<ITeamMember[]>> GetMembersAsync(ITeam team) => GetMembersAsync(team.Id);
 
-        public async Task<ApiResponseMessage<TeamMember[]>> GetMembersAsync(ulong teamId)
+        public async Task<ApiResponseMessage<ITeamMember[]>> GetMembersAsync(ulong teamId)
         {
             Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
             Argument.IsNotNull(nameof(teamId), teamId);
@@ -71,9 +71,9 @@ namespace Equality.Services
             return new(members, response);
         }
 
-        public Task<ApiResponseMessage<Team>> SetLogoAsync(Team team, string imagePath) => SetLogoAsync(team.Id, imagePath);
+        public Task<ApiResponseMessage<ITeam>> SetLogoAsync(ITeam team, string imagePath) => SetLogoAsync(team.Id, imagePath);
 
-        public async Task<ApiResponseMessage<Team>> SetLogoAsync(ulong teamId, string imagePath)
+        public async Task<ApiResponseMessage<ITeam>> SetLogoAsync(ulong teamId, string imagePath)
         {
             Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
             Argument.IsNotNull(nameof(teamId), teamId);
@@ -111,9 +111,9 @@ namespace Equality.Services
             return new(team, response);
         }
 
-        public Task<ApiResponseMessage<Team>> DeleteLogoAsync(Team team) => DeleteLogoAsync(team.Id);
+        public Task<ApiResponseMessage<ITeam>> DeleteLogoAsync(ITeam team) => DeleteLogoAsync(team.Id);
 
-        public async Task<ApiResponseMessage<Team>> DeleteLogoAsync(ulong teamId)
+        public async Task<ApiResponseMessage<ITeam>> DeleteLogoAsync(ulong teamId)
         {
             Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
             Argument.IsNotNull(nameof(teamId), teamId);
@@ -125,7 +125,7 @@ namespace Equality.Services
             return new(team, response);
         }
 
-        public Task<ApiResponseMessage> LeaveTeamAsync(Team team) => LeaveTeamAsync(team.Id);
+        public Task<ApiResponseMessage> LeaveTeamAsync(ITeam team) => LeaveTeamAsync(team.Id);
 
         public async Task<ApiResponseMessage> LeaveTeamAsync(ulong teamId)
         {
@@ -135,11 +135,11 @@ namespace Equality.Services
             return await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync($"teams/{teamId}/leave");
         }
 
-        public async Task<ApiResponseMessage<Team>> UpdateTeamAsync(Team team)
+        public async Task<ApiResponseMessage<ITeam>> UpdateTeamAsync(ITeam team)
         {
             Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
             Argument.IsNotNull(nameof(team), team);
-            Argument.IsMinimal<ulong>("Team.Id", team.Id, 1);
+            Argument.IsMinimal<ulong>("ITeam.Id", team.Id, 1);
 
             Dictionary<string, object> data = new()
             {
@@ -156,15 +156,15 @@ namespace Equality.Services
         }
 
         /// <summary>
-        /// Deserializes the JToken to the <c>TeamMember[]</c>.
+        /// Deserializes the JToken to the <c>ITeamMember[]</c>.
         /// </summary>
         /// <param name="data">The JToken.</param>
-        /// <returns>Returns the <c>TeamMember[]</c>.</returns>
-        public TeamMember[] DeserializeMembers(JToken data)
+        /// <returns>Returns the <c>ITeamMember[]</c>.</returns>
+        public ITeamMember[] DeserializeMembers(JToken data)
         {
             Argument.IsNotNull(nameof(data), data);
 
-            return data.ToObject<TeamMember[]>(new()
+            return data.ToObject<ITeamMember[]>(new()
             {
                 ContractResolver = new DefaultContractResolver
                 {
@@ -174,9 +174,9 @@ namespace Equality.Services
         }
 
         /// <inheritdoc cref="IApiDeserializable{T}.Deserialize(JToken)"/>
-        protected Team Deserialize(JToken data) => ((ITeamService)this).Deserialize(data);
+        protected ITeam Deserialize(JToken data) => ((ITeamService)this).Deserialize(data);
 
         /// <inheritdoc cref="IApiDeserializable{T}.DeserializeRange(JToken)"/>
-        protected Team[] DeserializeRange(JToken data) => ((ITeamService)this).DeserializeRange(data);
+        protected ITeam[] DeserializeRange(JToken data) => ((ITeamService)this).DeserializeRange(data);
     }
 }

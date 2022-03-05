@@ -8,7 +8,7 @@ namespace Equality.Data
         {
         }
 
-        public User CurrentUser { get; set; }
+        public IUser CurrentUser { get; set; }
 
         public string ApiToken { get; set; }
     }
