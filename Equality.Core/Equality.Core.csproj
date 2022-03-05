@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <LangVersion>9.0</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Catel.MVVM" Version="5.12.22" />
+        <PackageReference Include="Catel.Fody" Version="4.7.0" PrivateAssets="all" />
+        <PackageReference Include="Fody" Version="6.6.0" PrivateAssets="all" />
+        <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    </ItemGroup>
+</Project>
