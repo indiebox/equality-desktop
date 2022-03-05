@@ -37,4 +37,14 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <!-- ScrollViewer -->
+    <Style x:Key="ScrollViewerStyle"
+           TargetType="ScrollViewer"
+           BasedOn="{StaticResource MaterialDesignScrollViewer}">
+        <Style.Resources>
+            <Style TargetType="ScrollBar"
+                   BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" />
+        </Style.Resources>
+    </Style>
 </ResourceDictionary>

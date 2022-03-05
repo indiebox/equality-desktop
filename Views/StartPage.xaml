@@ -9,10 +9,11 @@
                 xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
                 xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                 xmlns:converters="clr-namespace:Equality.Converters"
-                d:DataContext="{d:DesignInstance Type=dvm:DesignStartPageViewModel, IsDesignTimeCreatable=True}"
+                FontSize="16"
                 d:DesignHeight="600"
                 d:DesignWidth="900"
                 d:Background="{StaticResource MaterialDesignPaper}"
+                d:DataContext="{d:DesignInstance Type=dvm:DesignStartPageViewModel, IsDesignTimeCreatable=True}"
                 mc:Ignorable="d">
 
     <StackPanel>

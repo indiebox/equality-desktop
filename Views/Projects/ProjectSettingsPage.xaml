@@ -7,6 +7,7 @@
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+               FontSize="16"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DesignHeight="900"
                d:DesignWidth="1820"

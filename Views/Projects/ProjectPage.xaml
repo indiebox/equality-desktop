@@ -8,6 +8,7 @@
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
                xmlns:controls="clr-namespace:Equality.Controls"
+               FontSize="16"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DesignWidth="1920"
                d:DesignHeight="1080"

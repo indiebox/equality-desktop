@@ -10,6 +10,7 @@
                    xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
                    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                    Background="{DynamicResource MaterialDesignPaper}"
+                   FontSize="16"
                    mc:Ignorable="d"
                    d:DataContext="{d:DesignInstance Type=dvm:DesignLeaveTeamDialogViewModel, IsDesignTimeCreatable=True}">
     <Grid VerticalAlignment="Center"

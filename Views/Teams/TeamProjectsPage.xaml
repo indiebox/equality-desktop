@@ -7,22 +7,90 @@
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+               FontSize="16"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DesignHeight="1080"
                d:DesignWidth="1920"
+               d:DataContext="{d:DesignInstance dvm:DesignTeamProjectsPageViewModel, IsDesignTimeCreatable=True}"
                mc:Ignorable="d">
 
-    <Grid Background="Transparent">
-
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
-                   Background="White"
-                   Foreground="Black"
-                   HorizontalAlignment="Left"
-                   Padding="30">Проекты</TextBlock>
-    </Grid>
+                   Margin="20,20,0,20"
+                   FontSize="24">Проекты</TextBlock>
+        <ScrollViewer Grid.Row="1"
+                      Margin="10,0">
+            <WrapPanel Grid.Row="1"
+                       Margin="10,0">
+                <ListBox materialDesign:ListBoxItemAssist.ShowSelection="False"
+                         ItemsSource="{Binding Projects}">
+                    <ListBox.Template>
+                        <ControlTemplate TargetType="ListBox">
+                            <Border>
+                                <ItemsPresenter />
+                            </Border>
+                        </ControlTemplate>
+                    </ListBox.Template>
 
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel IsItemsHost="True" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="500"
+                                  Height="280"
+                                  Margin="10,0,10,20">
+                                <Image Stretch="UniformToFill"
+                                       Source="/Resources/Images/BackgroundImage.jpg" />
+                                <Rectangle Fill="Black"
+                                           Opacity="0.5" />
+
+                                <TextBlock Width="200"
+                                           Foreground="White"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           TextAlignment="Center"
+                                           FontSize="24"
+                                           Text="{Binding Name}"></TextBlock>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <Border HorizontalAlignment="Left"
+                        Width="500"
+                        Height="280"
+                        Cursor="Hand"
+                        Margin="10,0,10,20">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background"
+                                    Value="#FFCCCCCC" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            Value="#FFB3B3B3" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <TextBlock Width="200"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               TextAlignment="Center"
+                               FontSize="24">Создать проект</TextBlock>
+                </Border>
+            </WrapPanel>
+        </ScrollViewer>
+    </Grid>
 </equality:Page>
