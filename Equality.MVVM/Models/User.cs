@@ -1,13 +1,10 @@
 ﻿using System;
 
 using Catel.Data;
-using Catel.IoC;
-
-using Equality.Core.Services;
 
 namespace Equality.Models
 {
-    public class User : ModelBase, IModelWithId, IEquatable<User>
+    public class User : ModelBase, IEquatable<User>
     {
         public User()
         {
@@ -28,8 +25,6 @@ namespace Equality.Models
         #region Custom properties
 
         public bool IsVerified => EmailVerifiedAt != null;
-
-        public bool IsCurrentUser => this == (User)this.GetDependencyResolver().TryResolve<ITokenResolverService>()?.ResolveCurrentUser();
 
         #endregion
 

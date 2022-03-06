@@ -1,11 +1,7 @@
-﻿using Equality.Models;
-
-namespace Equality.Core.Services
+﻿namespace Equality.Data
 {
     public interface ITokenResolverService
     {
         public string ResolveApiToken();
-
-        public IModelWithId ResolveCurrentUser();
     }
 }

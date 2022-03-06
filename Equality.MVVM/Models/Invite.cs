@@ -4,7 +4,7 @@ using Catel.Data;
 
 namespace Equality.Models
 {
-    public class Invite : ModelBase
+    public class Invite : ModelBase, IEquatable<Invite>
     {
         public Invite()
         {
@@ -27,5 +27,39 @@ namespace Equality.Models
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+
+        #region Override operators
+
+        public static bool operator ==(Invite obj1, Invite obj2)
+        {
+            if (ReferenceEquals(obj1, obj2)) {
+                return true;
+            }
+
+            if (obj1 is null || obj2 is null) {
+                return false;
+            }
+
+            return obj1.Equals(obj2);
+        }
+        public static bool operator !=(Invite obj1, Invite obj2) => !(obj1 == obj2);
+
+        public bool Equals(Invite other)
+        {
+            if (other is null) {
+                return false;
+            }
+
+            return other.Id != 0
+                && other.Id == Id;
+        }
+        public override bool Equals(object obj) => Equals(obj as Invite);
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        #endregion
     }
 }

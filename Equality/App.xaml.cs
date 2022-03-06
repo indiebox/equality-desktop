@@ -55,7 +55,7 @@ namespace Equality
 
             var serviceLocator = ServiceLocator.Default;
 
-            serviceLocator.RegisterType<Core.Services.ITokenResolverService, TokenResolver>();
+            serviceLocator.RegisterType<ITokenResolverService, TokenResolver>();
 
             /*
             |--------------------------------------------------------------------------

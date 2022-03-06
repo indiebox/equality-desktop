@@ -13,7 +13,6 @@ using Equality.Models;
 using Equality.Services;
 
 using MaterialDesignThemes.Wpf;
-using Equality.Extensions;
 
 namespace Equality.ViewModels
 {

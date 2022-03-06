@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Catel;
 
+using Equality.Data;
 using Equality.Http;
 using Equality.Models;
 
