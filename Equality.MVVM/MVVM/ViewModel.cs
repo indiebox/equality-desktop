@@ -5,8 +5,6 @@ using Catel.Collections;
 using Catel.Data;
 using Catel.MVVM;
 
-using Equality.Data;
-
 namespace Equality.MVVM
 {
     public class ViewModel : ViewModelBase
@@ -42,15 +40,6 @@ namespace Equality.MVVM
 
             ExcludeFromValidationDecoratedProperties();
         }
-
-        /// <summary>
-        /// Gets the IStateManager instance.
-        /// </summary>
-        /// <remarks>
-        /// This is a convenience call that internally just returns <see cref="StateManagerContainer.Instance"/>.
-        /// </remarks>
-        [ExcludeFromValidation]
-        public IStateManager StateManager => StateManagerContainer.Instance;
 
         /// <summary>
         /// The Api errors for fields.

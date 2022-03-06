@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Catel;
 
 using Equality.Http;
-using Equality.Data;
 
 namespace Equality.Core.Services
 {
@@ -13,22 +12,21 @@ namespace Equality.Core.Services
     {
         protected IApiClient ApiClient;
 
-        protected IStateManager StateManager;
+        protected ITokenResolverService TokenResolver;
 
-        public UserService(IApiClient apiClient, IStateManager stateManager)
+        public UserService(IApiClient apiClient, ITokenResolverService tokenResolver)
         {
+            Argument.IsNotNull(nameof(apiClient), apiClient);
+            Argument.IsNotNull(nameof(tokenResolver), tokenResolver);
+
             ApiClient = apiClient;
-            StateManager = stateManager;
+            TokenResolver = tokenResolver;
         }
 
-        public virtual async Task<ApiResponseMessage> LoadAuthUserAsync()
-        {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
+        public async Task<ApiResponseMessage> LoadAuthUserAsync()
+            => await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync("user");
 
-            return await ApiClient.WithTokenOnce(StateManager.ApiToken).GetAsync("user");
-        }
-
-        public virtual async Task<ApiResponseMessage> LoginAsync(string email, string password)
+        public async Task<ApiResponseMessage> LoginAsync(string email, string password)
         {
             Argument.IsNotNullOrWhitespace(nameof(email), email);
             Argument.IsNotNullOrEmpty(nameof(password), password);
@@ -40,27 +38,13 @@ namespace Equality.Core.Services
                 { "device_name", GetDeviceName() },
             };
 
-            var response = await ApiClient.PostAsync("login", data);
-
-            string token = response.Content["token"].ToString();
-
-            StateManager.ApiToken = token;
-
-            return response;
+            return await ApiClient.PostAsync("login", data);
         }
 
-        public virtual async Task<ApiResponseMessage> LogoutAsync()
-        {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
+        public async Task<ApiResponseMessage> LogoutAsync()
+            => await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync("logout");
 
-            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync("logout");
-
-            StateManager.ApiToken = null;
-
-            return response;
-        }
-
-        public virtual async Task<ApiResponseMessage> SendResetPasswordTokenAsync(string email)
+        public async Task<ApiResponseMessage> SendResetPasswordTokenAsync(string email)
         {
             Argument.IsNotNullOrWhitespace(nameof(email), email);
 
@@ -72,7 +56,7 @@ namespace Equality.Core.Services
             return await ApiClient.PostAsync("forgot-password", data);
         }
 
-        public virtual async Task<ApiResponseMessage> ResetPasswordAsync(string email, string password, string passwordConfirmation, string token)
+        public async Task<ApiResponseMessage> ResetPasswordAsync(string email, string password, string passwordConfirmation, string token)
         {
             Argument.IsNotNullOrWhitespace(nameof(email), email);
             Argument.IsNotNullOrEmpty(nameof(password), password);

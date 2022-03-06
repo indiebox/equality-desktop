@@ -11,6 +11,7 @@ using Equality.Http;
 using Equality.Validation;
 using Equality.MVVM;
 using Equality.Services;
+using Equality.Data;
 
 namespace Equality.ViewModels
 {
@@ -71,7 +72,10 @@ namespace Equality.ViewModels
             IsSendingRequest = true;
 
             try {
-                await UserService.LoginAsync(Email, Password);
+                var response = await UserService.LoginAsync(Email, Password);
+
+                StateManager.ApiToken = response.Content["token"].ToString();
+                StateManager.CurrentUser = response.Object;
 
                 if (RememberMe) {
                     Properties.Settings.Default.api_token = StateManager.ApiToken;

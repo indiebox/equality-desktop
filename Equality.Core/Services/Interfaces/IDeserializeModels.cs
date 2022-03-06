@@ -8,7 +8,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace Equality.Core.Services
 {
-    public interface IApiDeserializable<T>
+    public interface IDeserializeModels<T>
         where T : new()
     {
         /// <summary>

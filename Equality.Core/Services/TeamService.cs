@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Catel;
 
 using Equality.Http;
-using Equality.Data;
 using Equality.Models;
 
 namespace Equality.Core.Services
@@ -16,24 +15,22 @@ namespace Equality.Core.Services
     {
         protected IApiClient ApiClient;
 
-        protected IStateManager StateManager;
+        protected ITokenResolverService TokenResolver;
 
-        public TeamService(IApiClient apiClient, IStateManager stateManager)
+        public TeamService(IApiClient apiClient, ITokenResolverService tokenResolver)
         {
+            Argument.IsNotNull(nameof(apiClient), apiClient);
+            Argument.IsNotNull(nameof(tokenResolver), tokenResolver);
+
             ApiClient = apiClient;
-            StateManager = stateManager;
+            TokenResolver = tokenResolver;
         }
 
         public async Task<ApiResponseMessage> GetTeamsAsync()
-        {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
-
-            return await ApiClient.WithTokenOnce(StateManager.ApiToken).GetAsync("teams");
-        }
+            => await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync("teams");
 
         public async Task<ApiResponseMessage> CreateAsync(ITeam team)
         {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
             Argument.IsNotNull(nameof(team), team);
 
             Dictionary<string, object> data = new()
@@ -43,24 +40,22 @@ namespace Equality.Core.Services
                 { "url", team.Url }
             };
 
-            return await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync("teams", data);
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync("teams", data);
         }
 
         public Task<ApiResponseMessage> GetMembersAsync(ITeam team) => GetMembersAsync(team.Id);
 
         public async Task<ApiResponseMessage> GetMembersAsync(ulong teamId)
         {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
             Argument.IsNotNull(nameof(teamId), teamId);
 
-            return await ApiClient.WithTokenOnce(StateManager.ApiToken).GetAsync($"teams/{teamId}/members");
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/members");
         }
 
         public Task<ApiResponseMessage> SetLogoAsync(ITeam team, string imagePath) => SetLogoAsync(team.Id, imagePath);
 
         public async Task<ApiResponseMessage> SetLogoAsync(ulong teamId, string imagePath)
         {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
             Argument.IsNotNull(nameof(teamId), teamId);
             Argument.IsNotNull(nameof(imagePath), imagePath);
 
@@ -89,32 +84,30 @@ namespace Equality.Core.Services
                 { fieldName, content }
             };
 
-            return await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync($"teams/{teamId}/logo", data);
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/logo", data);
         }
 
         public Task<ApiResponseMessage> DeleteLogoAsync(ITeam team) => DeleteLogoAsync(team.Id);
 
         public async Task<ApiResponseMessage> DeleteLogoAsync(ulong teamId)
         {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
             Argument.IsNotNull(nameof(teamId), teamId);
 
-            return await ApiClient.WithTokenOnce(StateManager.ApiToken).DeleteAsync($"teams/{teamId}/logo");
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"teams/{teamId}/logo");
         }
 
         public Task<ApiResponseMessage> LeaveTeamAsync(ITeam team) => LeaveTeamAsync(team.Id);
 
         public async Task<ApiResponseMessage> LeaveTeamAsync(ulong teamId)
         {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
             Argument.IsNotNull(nameof(teamId), teamId);
 
-            return await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync($"teams/{teamId}/leave");
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/leave");
         }
 
         public async Task<ApiResponseMessage> UpdateTeamAsync(ITeam team)
         {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
+
             Argument.IsNotNull(nameof(team), team);
             Argument.IsMinimal<ulong>("ITeam.Id", team.Id, 1);
 
@@ -125,7 +118,7 @@ namespace Equality.Core.Services
                 { "url", team.Url }
             };
 
-            return await ApiClient.WithTokenOnce(StateManager.ApiToken).PatchAsync($"teams/{team.Id}", data);
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync($"teams/{team.Id}", data);
         }
     }
 }

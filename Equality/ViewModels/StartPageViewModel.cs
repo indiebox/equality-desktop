@@ -9,6 +9,7 @@ using Catel.MVVM;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
+using Equality.Data;
 
 namespace Equality.ViewModels
 {

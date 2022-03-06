@@ -9,6 +9,7 @@ using Catel.Services;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
+using Equality.Data;
 
 namespace Equality.ViewModels
 {
@@ -56,6 +57,9 @@ namespace Equality.ViewModels
         {
             try {
                 await UserService.LogoutAsync();
+
+                StateManager.ApiToken = null;
+                StateManager.CurrentUser = null;
 
                 Properties.Settings.Default.api_token = null;
                 Properties.Settings.Default.Save();

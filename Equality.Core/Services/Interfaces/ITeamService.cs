@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 
 using Equality.Http;
-using Equality.Data;
 using Equality.Models;
 
 namespace Equality.Core.Services
@@ -118,7 +117,7 @@ namespace Equality.Core.Services
         public Task<ApiResponseMessage> UpdateTeamAsync(ITeam team);
     }
 
-    public interface ITeamService<TTeamModel, TTeamMemberModel> : IApiDeserializable<TTeamModel>
+    public interface ITeamService<TTeamModel, TTeamMemberModel> : IDeserializeModels<TTeamModel>
         where TTeamModel : class, new()
         where TTeamMemberModel : class, new()
     {

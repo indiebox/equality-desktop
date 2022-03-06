@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 
 using Equality.Http;
-using Equality.Data;
 using Equality.Models;
 
 namespace Equality.Core.Services
@@ -119,7 +118,7 @@ namespace Equality.Core.Services
         public Task<ApiResponseMessage> DeclineInviteAsync(ulong inviteId);
     }
 
-    public interface IInviteService<TInviteModel, TTeamModel> : IApiDeserializable<TInviteModel>
+    public interface IInviteService<TInviteModel, TTeamModel> : IDeserializeModels<TInviteModel>
         where TInviteModel : class, new()
         where TTeamModel : class, new()
     {

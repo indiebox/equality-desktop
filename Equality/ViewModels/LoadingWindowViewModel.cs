@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 using Catel.Services;
 
+using Equality.Data;
 using Equality.Http;
 using Equality.MVVM;
 using Equality.Services;
@@ -48,7 +49,8 @@ namespace Equality.ViewModels
             StateManager.ApiToken = token;
 
             try {
-                await UserService.LoadAuthUserAsync();
+                var response = await UserService.LoadAuthUserAsync();
+                StateManager.CurrentUser = response.Object;
 
                 return true;
             } catch (UnauthorizedHttpException) {

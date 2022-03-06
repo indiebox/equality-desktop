@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 
 using Equality.Http;
-using Equality.Data;
-using Equality.Models;
 
 namespace Equality.Core.Services
 {
@@ -73,7 +71,7 @@ namespace Equality.Core.Services
         public Task<ApiResponseMessage> ResetPasswordAsync(string email, string password, string passwordConfirmation, string token);
     }
 
-    public interface IUserService<TUserModel> : IApiDeserializable<TUserModel>
+    public interface IUserService<TUserModel> : IDeserializeModels<TUserModel>
         where TUserModel : class, new()
     {
         /// <summary>
@@ -88,7 +86,7 @@ namespace Equality.Core.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> LoadAuthUserAsync();
+        public Task<ApiResponseMessage<TUserModel>> LoadAuthUserAsync();
 
         /// <summary>
         /// Sends the login request to the API.
@@ -102,7 +100,7 @@ namespace Equality.Core.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> LoginAsync(string email, string password);
+        public Task<ApiResponseMessage<TUserModel>> LoginAsync(string email, string password);
 
         /// <summary>
         /// Sends the logout authenticated user request to the API.

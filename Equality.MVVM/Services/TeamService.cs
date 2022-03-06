@@ -1,13 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 using Catel;
 
 using Equality.Http;
-using Equality.Data;
 using Equality.Models;
 
 using Newtonsoft.Json.Linq;
@@ -15,23 +11,15 @@ using Newtonsoft.Json.Serialization;
 
 namespace Equality.Services
 {
-    public class TeamService : ITeamService
+    public class TeamService : Core.Services.TeamService, ITeamService
     {
-        protected IApiClient ApiClient;
-
-        protected IStateManager StateManager;
-
-        public TeamService(IApiClient apiClient, IStateManager stateManager)
+        public TeamService(IApiClient apiClient, Core.Services.ITokenResolverService tokenResolver) : base(apiClient, tokenResolver)
         {
-            ApiClient = apiClient;
-            StateManager = stateManager;
         }
 
-        public async Task<ApiResponseMessage<Team[]>> GetTeamsAsync()
+        public new async Task<ApiResponseMessage<Team[]>> GetTeamsAsync()
         {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
-
-            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).GetAsync("teams");
+            var response = await base.GetTeamsAsync();
 
             var teams = DeserializeRange(response.Content["data"]);
 
@@ -40,7 +28,6 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage<Team>> CreateAsync(Team team)
         {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
             Argument.IsNotNull(nameof(team), team);
 
             Dictionary<string, object> data = new()
@@ -50,7 +37,7 @@ namespace Equality.Services
                 { "url", team.Url }
             };
 
-            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync("teams", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync("teams", data);
 
             team = Deserialize(response.Content["data"]);
 
@@ -59,12 +46,9 @@ namespace Equality.Services
 
         public Task<ApiResponseMessage<TeamMember[]>> GetMembersAsync(Team team) => GetMembersAsync(team.Id);
 
-        public async Task<ApiResponseMessage<TeamMember[]>> GetMembersAsync(ulong teamId)
+        public new async Task<ApiResponseMessage<TeamMember[]>> GetMembersAsync(ulong teamId)
         {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
-            Argument.IsNotNull(nameof(teamId), teamId);
-
-            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).GetAsync($"teams/{teamId}/members");
+            var response = await base.GetMembersAsync(teamId);
 
             var members = DeserializeMembers(response.Content["data"]);
 
@@ -73,38 +57,9 @@ namespace Equality.Services
 
         public Task<ApiResponseMessage<Team>> SetLogoAsync(Team team, string imagePath) => SetLogoAsync(team.Id, imagePath);
 
-        public async Task<ApiResponseMessage<Team>> SetLogoAsync(ulong teamId, string imagePath)
+        public new async Task<ApiResponseMessage<Team>> SetLogoAsync(ulong teamId, string imagePath)
         {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
-            Argument.IsNotNull(nameof(teamId), teamId);
-            Argument.IsNotNull(nameof(imagePath), imagePath);
-
-            const string fieldName = "logo";
-
-            var fileInfo = new FileInfo(imagePath);
-            string mimeType = fileInfo.Extension switch
-            {
-                "jpg" or "jpeg" => "image/jpeg",
-                "png" => "image/png",
-                _ => "application/octet-stream",
-            };
-            using var fileStream = fileInfo.OpenRead();
-
-            var content = new StreamContent(fileStream);
-            content.Headers.ContentType = MediaTypeHeaderValue.Parse(mimeType);
-            content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
-            {
-                Name = fieldName,
-                FileName = fileInfo.Name,
-                FileNameStar = fileInfo.Name,
-            };
-
-            Dictionary<string, object> data = new()
-            {
-                { fieldName, content }
-            };
-
-            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync($"teams/{teamId}/logo", data);
+            var response = await base.SetLogoAsync(teamId, imagePath);
 
             var team = Deserialize(response.Content["data"]);
 
@@ -113,12 +68,9 @@ namespace Equality.Services
 
         public Task<ApiResponseMessage<Team>> DeleteLogoAsync(Team team) => DeleteLogoAsync(team.Id);
 
-        public async Task<ApiResponseMessage<Team>> DeleteLogoAsync(ulong teamId)
+        public new async Task<ApiResponseMessage<Team>> DeleteLogoAsync(ulong teamId)
         {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
-            Argument.IsNotNull(nameof(teamId), teamId);
-
-            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).DeleteAsync($"teams/{teamId}/logo");
+            var response = await base.DeleteLogoAsync(teamId);
 
             var team = Deserialize(response.Content["data"]);
 
@@ -127,19 +79,10 @@ namespace Equality.Services
 
         public Task<ApiResponseMessage> LeaveTeamAsync(Team team) => LeaveTeamAsync(team.Id);
 
-        public async Task<ApiResponseMessage> LeaveTeamAsync(ulong teamId)
-        {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
-            Argument.IsNotNull(nameof(teamId), teamId);
-
-            return await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync($"teams/{teamId}/leave");
-        }
-
         public async Task<ApiResponseMessage<Team>> UpdateTeamAsync(Team team)
         {
-            Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
             Argument.IsNotNull(nameof(team), team);
-            Argument.IsMinimal<ulong>("ITeam.Id", team.Id, 1);
+            Argument.IsMinimal<ulong>("Team.Id", team.Id, 1);
 
             Dictionary<string, object> data = new()
             {
@@ -148,7 +91,7 @@ namespace Equality.Services
                 { "url", team.Url }
             };
 
-            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).PatchAsync($"teams/{team.Id}", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync($"teams/{team.Id}", data);
 
             team = Deserialize(response.Content["data"]);
 
@@ -173,10 +116,10 @@ namespace Equality.Services
             });
         }
 
-        /// <inheritdoc cref="Core.Services.IApiDeserializable{T}.Deserialize(JToken)"/>
+        /// <inheritdoc cref="Core.Services.IDeserializeModels{T}.Deserialize(JToken)"/>
         protected Team Deserialize(JToken data) => ((ITeamService)this).Deserialize(data);
 
-        /// <inheritdoc cref="Core.Services.IApiDeserializable{T}.DeserializeRange(JToken)"/>
+        /// <inheritdoc cref="Core.Services.IDeserializeModels{T}.DeserializeRange(JToken)"/>
         protected Team[] DeserializeRange(JToken data) => ((ITeamService)this).DeserializeRange(data);
     }
 }
