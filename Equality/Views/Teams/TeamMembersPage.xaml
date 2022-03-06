@@ -18,7 +18,6 @@
                mc:Ignorable="d">
     <DockPanel>
         <StackPanel Orientation="Vertical"
-                    Margin="0,0,10,0"
                     Background="WhiteSmoke"
                     Width="Auto">
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
@@ -47,8 +46,6 @@
             </RadioButton>
         </StackPanel>
 
-        <Frame>
-
-        </Frame>
+        <Frame Margin="20,0" />
     </DockPanel>
 </equality:Page>

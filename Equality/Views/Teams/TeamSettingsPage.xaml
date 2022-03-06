@@ -10,11 +10,13 @@
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
                FontSize="16"
                d:DataContext="{d:DesignInstance Type=dvm:DesignTeamSettingsPageViewModel, IsDesignTimeCreatable=True}"
-               d:Background="{StaticResource MaterialDesignPaper}"
+               d:Background="Gray"
+               d:DesignWidth="1800"
+               d:DesignHeight="900"
                mc:Ignorable="d">
     <StackPanel Orientation="Horizontal"
                 HorizontalAlignment="Center">
-        <StackPanel Margin="10,10,10,0">
+        <StackPanel Margin="20">
             <StackPanel Background="White"
                         HorizontalAlignment="Center">
                 <StackPanel Background="White"

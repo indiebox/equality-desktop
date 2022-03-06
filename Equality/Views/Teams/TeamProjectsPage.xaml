@@ -25,8 +25,7 @@
                    FontSize="24">Проекты</TextBlock>
         <ScrollViewer Grid.Row="1"
                       Margin="10,0">
-            <WrapPanel Grid.Row="1"
-                       Margin="10,0">
+            <WrapPanel>
                 <ListBox materialDesign:ListBoxItemAssist.ShowSelection="False"
                          ItemsSource="{Binding Projects}">
                     <ListBox.Template>

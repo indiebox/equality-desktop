@@ -24,7 +24,7 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0"
-                   Margin="10,20,20,10"
+                   Margin="0,20,0,10"
                    Height="50"
                    LastChildFill="False">
             <TextBox Style="{StaticResource FilterTextBox}"
@@ -35,8 +35,7 @@
                      Background="White"
                      VerticalAlignment="Center"
                      materialDesign:HintAssist.Hint="Поиск по имени"
-                     Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"
-                     Cursor="IBeam">
+                     Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}">
             </TextBox>
             <Button DockPanel.Dock="Right"
                     Command="{Binding InviteUser}"
@@ -45,7 +44,6 @@
 
         <ListBox Grid.Row="1"
                  Background="WhiteSmoke"
-                 Margin="10,0"
                  ItemsSource="{Binding FilteredMembers}">
             <ListBox.Resources>
                 <ControlTemplate x:Key="NoItemsTemplate">

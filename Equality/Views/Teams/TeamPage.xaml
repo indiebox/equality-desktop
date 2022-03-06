@@ -58,8 +58,10 @@
                         <materialDesign:Flipper.BackContent>
                             <DockPanel>
                                 <Button DockPanel.Dock="Top"
+                                        FontSize="14"
                                         Command="{Binding UploadLogo}">Изменить</Button>
                                 <Button DockPanel.Dock="Bottom"
+                                        FontSize="14"
                                         Command="{Binding DeleteLogo}">Удалить</Button>
                             </DockPanel>
                         </materialDesign:Flipper.BackContent>
