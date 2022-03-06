@@ -1,4 +1,4 @@
-﻿namespace $rootnamespace$
+﻿namespace Equality.Views
 {
     public partial class $safeitemname$
     {

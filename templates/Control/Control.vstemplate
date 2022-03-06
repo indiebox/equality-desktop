@@ -1,0 +1,13 @@
+﻿<VSTemplate Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
+    <TemplateData>
+        <Name>Equality - Control</Name>
+        <Description>An Equality app Control.</Description>
+        <ProjectType>CSharp</ProjectType>
+        <DefaultName>Control.xaml</DefaultName>
+    </TemplateData>
+    <TemplateContent>
+        <References />
+        <ProjectItem SubType="Designer" TargetFileName="$fileinputname$.xaml" ReplaceParameters="true">Control.xaml</ProjectItem>
+        <ProjectItem SubType="Code" TargetFileName="$fileinputname$.cs" ReplaceParameters="true">Control.cs</ProjectItem>
+    </TemplateContent>
+</VSTemplate>

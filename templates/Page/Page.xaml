@@ -1,5 +1,5 @@
-﻿<equality:Page x:Class="$rootnamespace$.$safeitemname$"
-               xmlns:equality="clr-namespace:Equality.Core.MVVM"
+﻿<equality:Page x:Class="Equality.Views.$safeitemname$"
+               xmlns:equality="clr-namespace:Equality.MVVM"
                xmlns:catel="http://schemas.catelproject.com"
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,13 +7,14 @@
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
-               d:Background="{StaticResource MaterialDesignPaper}"
+               TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+               Background="{DynamicResource MaterialDesignPaper}"
+               FontSize="16"
                d:DesignHeight="300"
                d:DesignWidth="300"
+               d:DataContext="{d:DesignInstance Type=dvm:$safeitemname$ViewModel, IsDesignTimeCreatable=True}"
                mc:Ignorable="d">
-
     <Grid>
         <TextBlock>Content</TextBlock>
     </Grid>
-
 </equality:Page>

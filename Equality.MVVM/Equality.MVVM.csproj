@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <LangVersion>9.0</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Catel.MVVM" Version="5.12.22" />
+        <PackageReference Include="Catel.Fody" Version="4.7.0" PrivateAssets="all" />
+        <PackageReference Include="Fody" Version="6.6.0" PrivateAssets="all" />
+        <PackageReference Include="Obsolete.Fody" Version="5.2.1" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Equality.Core\Equality.Core.csproj" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,13 @@
+﻿<VSTemplate Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
+    <TemplateData>
+        <Name>Equality - UserControl</Name>
+        <Description>An Equality app UserControl.</Description>
+        <ProjectType>CSharp</ProjectType>
+        <DefaultName>UserControl.xaml</DefaultName>
+    </TemplateData>
+    <TemplateContent>
+        <References />
+        <ProjectItem SubType="Designer" TargetFileName="$fileinputname$.xaml" ReplaceParameters="true">UserControl.xaml</ProjectItem>
+        <ProjectItem SubType="Code" TargetFileName="$fileinputname$.xaml.cs" ReplaceParameters="true">UserControl.xaml.cs</ProjectItem>
+    </TemplateContent>
+</VSTemplate>
