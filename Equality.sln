@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Equality", "Equality\Equality.csproj", "{2006656A-3BA0-47AE-BE16-469E98F7A0C5}"
+Project("{2d7f9628-9d63-11ec-b909-0242ac120002}") = "Equality", "Equality\Equality.csproj", "{2006656A-3BA0-47AE-BE16-469E98F7A0C5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Equality.Core", "Equality.Core\Equality.Core.csproj", "{7462C640-D65F-449E-9560-773C2031F15B}"
 EndProject

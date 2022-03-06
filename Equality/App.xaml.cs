@@ -3,11 +3,8 @@
 using Catel.IoC;
 using Catel.Logging;
 using Catel.MVVM;
-using Catel.Services;
 
-using Equality.Http;
 using Equality.Data;
-using Equality.Services;
 
 namespace Equality
 {
@@ -35,25 +32,15 @@ namespace Equality
             Catel.Windows.Controls.UserControl.DefaultCreateWarningAndErrorValidatorForViewModelValue = false;
             Catel.Windows.Controls.UserControl.DefaultSkipSearchingForInfoBarMessageControlValue = true;
 
+
             /*
             |--------------------------------------------------------------------------
-            | Overriding default types
+            | Preload Equality assemblies.
             |--------------------------------------------------------------------------
-            |
-            | Here we overriding default types for Dependency Injection.
-            |
             */
 
-            Log.Info("Overriding default types");
-
-            var serviceLocator = ServiceLocator.Default;
-
-            // We need to set RegistrationType.Transient to INavigationService and INavigationRootService,
-            // so we can work with multiple windows with frame at the same time (previously not supported).
-            // It will also allow NavigationService to continue working even after reopening the same window (previously not supported).
-            // Also we register custom INavigationRootService, so we can navigate in the specified context by the NavigationServiceExtension.
-            serviceLocator.RegisterType<INavigationService, NavigationService>(RegistrationType.Transient);
-            serviceLocator.RegisterType<INavigationRootService, MVVM.NavigationRootService>(RegistrationType.Transient);
+            var t = typeof(MVVM.ViewModel);
+            t = typeof(Http.ApiClient);
 
             /*
             |--------------------------------------------------------------------------
@@ -66,12 +53,9 @@ namespace Equality
 
             Log.Info("Registering custom types");
 
-            serviceLocator.RegisterType<IApiClient, ApiClient>();
-            serviceLocator.RegisterType<IStateManager, StateManager>();
+            var serviceLocator = ServiceLocator.Default;
 
-            serviceLocator.RegisterType<IUserService, UserService>();
-            serviceLocator.RegisterType<ITeamService, TeamService>();
-            serviceLocator.RegisterType<IInviteService, InviteService>();
+            serviceLocator.RegisterType<Core.Services.ITokenResolverService, TokenResolver>();
 
             /*
             |--------------------------------------------------------------------------

@@ -1,8 +1,7 @@
 ﻿using System.Reflection;
 using System.Resources;
-using System.Runtime.CompilerServices;
 
-[assembly: AssemblyTitle("Equality.MVVM")]
+[assembly: AssemblyTitle("Equality")]
 [assembly: AssemblyProduct("Equality")]
 [assembly: AssemblyDescription("Equality")]
 [assembly: NeutralResourcesLanguage("en-US")]
