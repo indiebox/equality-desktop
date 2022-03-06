@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 
+using Equality.Data;
 using Equality.Http;
 using Equality.Models;
 
@@ -9,7 +10,7 @@ namespace Equality.Services
 {
     public class UserService : Core.Services.UserService, IUserService
     {
-        public UserService(IApiClient apiClient, Core.Services.ITokenResolverService stateManager) : base(apiClient, stateManager)
+        public UserService(IApiClient apiClient, ITokenResolverService stateManager) : base(apiClient, stateManager)
         {
         }
 

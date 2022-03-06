@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using Catel;
 
+using Equality.Data;
 using Equality.Http;
 using Equality.Models;
 
@@ -13,7 +14,7 @@ namespace Equality.Services
 {
     public class TeamService : Core.Services.TeamService, ITeamService
     {
-        public TeamService(IApiClient apiClient, Core.Services.ITokenResolverService tokenResolver) : base(apiClient, tokenResolver)
+        public TeamService(IApiClient apiClient, ITokenResolverService tokenResolver) : base(apiClient, tokenResolver)
         {
         }
 

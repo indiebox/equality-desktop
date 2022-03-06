@@ -5,12 +5,13 @@ using Equality.Models;
 using InviteFilter = Equality.Core.Services.IInviteService.InviteFilter;
 
 using Newtonsoft.Json.Linq;
+using Equality.Data;
 
 namespace Equality.Services
 {
     public class InviteService : Core.Services.InviteService, IInviteService
     {
-        public InviteService(IApiClient apiClient, Core.Services.ITokenResolverService tokenResolver) : base(apiClient, tokenResolver)
+        public InviteService(IApiClient apiClient, ITokenResolverService tokenResolver) : base(apiClient, tokenResolver)
         {
         }
 
