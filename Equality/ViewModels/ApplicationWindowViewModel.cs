@@ -44,7 +44,7 @@ namespace Equality.ViewModels
 
         public Tab ActiveTab { get; set; }
 
-        public ITeam SelectedTeam { get; set; }
+        public Team SelectedTeam { get; set; }
 
         #endregion
 

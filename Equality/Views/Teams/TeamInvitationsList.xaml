@@ -4,7 +4,7 @@
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:converters="clr-namespace:Equality.Converters;assembly=Equality.MVVM"
-               xmlns:services="clr-namespace:Equality.Services;assembly=Equality.Core"
+               xmlns:services="clr-namespace:Equality.Core.Services;assembly=Equality.Core"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"

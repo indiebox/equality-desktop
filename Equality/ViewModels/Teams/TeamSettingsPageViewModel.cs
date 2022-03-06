@@ -14,6 +14,7 @@ using Equality.Validation;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
+using Catel.IoC;
 
 namespace Equality.ViewModels
 {
@@ -162,6 +163,11 @@ namespace Equality.ViewModels
             await base.InitializeAsync();
 
             Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
+        }
+
+        private void Team_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Debug.WriteLine("Prop changed");
         }
 
         protected override async Task CloseAsync()

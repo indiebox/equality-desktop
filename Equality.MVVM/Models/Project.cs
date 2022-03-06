@@ -4,7 +4,7 @@ using Catel.Data;
 
 namespace Equality.Models
 {
-    public class Project : ModelBase, IProject
+    public class Project : ModelBase
     {
         public ulong Id { get; set; }
 
@@ -14,7 +14,7 @@ namespace Equality.Models
 
         public string Image { get; set; }
 
-        public ITeam Team { get; set; }
+        public Team Team { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

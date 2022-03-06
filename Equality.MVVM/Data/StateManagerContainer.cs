@@ -10,13 +10,13 @@ namespace Equality.Data
             if (CatelEnvironment.IsInDesignMode) {
                 Instance = new StateManager()
                 {
-                    CurrentUser = new Models.User()
-                    {
-                        Id = 1,
-                        Name = "Logged user",
-                        Email = "example@example.org",
-                        CreatedAt = System.DateTime.Today,
-                    },
+                    //CurrentUser = new Models.User()
+                    //{
+                    //    Id = 1,
+                    //    Name = "Logged user",
+                    //    Email = "example@example.org",
+                    //    CreatedAt = System.DateTime.Today,
+                    //},
                 };
                 return;
             }

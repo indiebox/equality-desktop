@@ -6,9 +6,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
-namespace Equality.Services
+namespace Equality.Core.Services
 {
     public interface IApiDeserializable<T>
+        where T : new()
     {
         /// <summary>
         /// Deserializes the JSON string to the object.

@@ -27,16 +27,16 @@ namespace Equality.ViewModels
             TeamService = teamService;
 
             OpenCreateTeamWindow = new TaskCommand(OnOpenCreateTeamWindowExecute, () => CreateTeamVm is null);
-            OpenTeamPage = new Command<ITeam>(OnOpenTeamPageExecute);
-            FilterProjects = new Command<ITeam>(OnFilterProjectsExecute);
+            OpenTeamPage = new Command<Team>(OnOpenTeamPageExecute);
+            FilterProjects = new Command<Team>(OnFilterProjectsExecute);
             ResetFilter = new Command(OnResetFilterExecute);
         }
 
         #region Properties
 
-        public ObservableCollection<ITeam> Teams { get; set; } = new();
+        public ObservableCollection<Team> Teams { get; set; } = new();
 
-        public ObservableCollection<ITeam> FilteredTeams { get; set; } = new();
+        public ObservableCollection<Team> FilteredTeams { get; set; } = new();
 
         public CreateTeamControlViewModel CreateTeamVm { get; set; }
 
@@ -52,18 +52,18 @@ namespace Equality.ViewModels
             CreateTeamVm.ClosedAsync += CreateTeamVmClosedAsync;
         }
 
-        public Command<ITeam> OpenTeamPage { get; private set; }
+        public Command<Team> OpenTeamPage { get; private set; }
 
-        private void OnOpenTeamPageExecute(ITeam team)
+        private void OnOpenTeamPageExecute(Team team)
         {
             var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
             vm.SelectedTeam = team;
             vm.ActiveTab = ApplicationWindowViewModel.Tab.Team;
         }
 
-        public Command<ITeam> FilterProjects { get; private set; }
+        public Command<Team> FilterProjects { get; private set; }
 
-        private void OnFilterProjectsExecute(ITeam filterByTeam)
+        private void OnFilterProjectsExecute(Team filterByTeam)
         {
             IsFiltered = true;
 

@@ -20,8 +20,8 @@ namespace Equality.ViewModels
         {
             InviteService = inviteService;
 
-            AcceptInvite = new TaskCommand<IInvite>(OnAcceptInviteExecuteAsync);
-            DeclineInvite = new TaskCommand<IInvite>(OnDeclineInviteExecuteAsync);
+            AcceptInvite = new TaskCommand<Invite>(OnAcceptInviteExecuteAsync);
+            DeclineInvite = new TaskCommand<Invite>(OnDeclineInviteExecuteAsync);
 
             Name = StateManager.CurrentUser.Name;
         }
@@ -30,15 +30,15 @@ namespace Equality.ViewModels
 
         public string Name { get; set; }
 
-        public ObservableCollection<IInvite> Invites { get; set; } = new();
+        public ObservableCollection<Invite> Invites { get; set; } = new();
 
         #endregion
 
         #region Commands
 
-        public TaskCommand<IInvite> AcceptInvite { get; private set; }
+        public TaskCommand<Invite> AcceptInvite { get; private set; }
 
-        private async Task OnAcceptInviteExecuteAsync(IInvite invite)
+        private async Task OnAcceptInviteExecuteAsync(Invite invite)
         {
             try {
                 await InviteService.AcceptInviteAsync(invite);
@@ -49,9 +49,9 @@ namespace Equality.ViewModels
             }
         }
 
-        public TaskCommand<IInvite> DeclineInvite { get; private set; }
+        public TaskCommand<Invite> DeclineInvite { get; private set; }
 
-        private async Task OnDeclineInviteExecuteAsync(IInvite invite)
+        private async Task OnDeclineInviteExecuteAsync(Invite invite)
         {
             try {
                 await InviteService.DeclineInviteAsync(invite);

@@ -6,11 +6,8 @@ using Catel;
 
 using Equality.Http;
 using Equality.Data;
-using Equality.Models;
 
-using Newtonsoft.Json.Linq;
-
-namespace Equality.Services
+namespace Equality.Core.Services
 {
     public class UserService : IUserService
     {
@@ -24,18 +21,14 @@ namespace Equality.Services
             StateManager = stateManager;
         }
 
-        public async Task<ApiResponseMessage> LoadAuthUserAsync()
+        public virtual async Task<ApiResponseMessage> LoadAuthUserAsync()
         {
             Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
 
-            var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).GetAsync("user");
-
-            StateManager.CurrentUser = Deserialize(response.Content["data"]);
-
-            return response;
+            return await ApiClient.WithTokenOnce(StateManager.ApiToken).GetAsync("user");
         }
 
-        public async Task<ApiResponseMessage> LoginAsync(string email, string password)
+        public virtual async Task<ApiResponseMessage> LoginAsync(string email, string password)
         {
             Argument.IsNotNullOrWhitespace(nameof(email), email);
             Argument.IsNotNullOrEmpty(nameof(password), password);
@@ -49,28 +42,25 @@ namespace Equality.Services
 
             var response = await ApiClient.PostAsync("login", data);
 
-            var user = Deserialize(response.Content["data"]);
             string token = response.Content["token"].ToString();
 
             StateManager.ApiToken = token;
-            StateManager.CurrentUser = user;
 
             return response;
         }
 
-        public async Task<ApiResponseMessage> LogoutAsync()
+        public virtual async Task<ApiResponseMessage> LogoutAsync()
         {
             Argument.IsNotNullOrWhitespace("IStateManager.ApiToken", StateManager.ApiToken);
 
             var response = await ApiClient.WithTokenOnce(StateManager.ApiToken).PostAsync("logout");
 
             StateManager.ApiToken = null;
-            StateManager.CurrentUser = null;
 
             return response;
         }
 
-        public async Task<ApiResponseMessage> SendResetPasswordTokenAsync(string email)
+        public virtual async Task<ApiResponseMessage> SendResetPasswordTokenAsync(string email)
         {
             Argument.IsNotNullOrWhitespace(nameof(email), email);
 
@@ -82,7 +72,7 @@ namespace Equality.Services
             return await ApiClient.PostAsync("forgot-password", data);
         }
 
-        public async Task<ApiResponseMessage> ResetPasswordAsync(string email, string password, string passwordConfirmation, string token)
+        public virtual async Task<ApiResponseMessage> ResetPasswordAsync(string email, string password, string passwordConfirmation, string token)
         {
             Argument.IsNotNullOrWhitespace(nameof(email), email);
             Argument.IsNotNullOrEmpty(nameof(password), password);
@@ -104,11 +94,5 @@ namespace Equality.Services
         {
             return Environment.MachineName;
         }
-
-        /// <inheritdoc cref="IApiDeserializable{T}.Deserialize(JToken)"/>
-        protected IUser Deserialize(JToken data) => ((IUserService)this).Deserialize(data);
-
-        /// <inheritdoc cref="IApiDeserializable{T}.DeserializeRange(JToken)"/>
-        protected IUser[] DeserializeRange(JToken data) => ((IUserService)this).DeserializeRange(data);
     }
 }

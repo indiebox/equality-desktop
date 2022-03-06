@@ -4,7 +4,7 @@ using Catel.Data;
 
 namespace Equality.Models
 {
-    public class Invite : ModelBase, IInvite
+    public class Invite : ModelBase
     {
         public Invite()
         {
@@ -12,11 +12,11 @@ namespace Equality.Models
 
         public ulong Id { get; set; }
 
-        public ITeam Team { get; set; }
+        public Team Team { get; set; }
 
-        public IUser Inviter { get; set; }
+        public User Inviter { get; set; }
 
-        public IUser Invited { get; set; }
+        public User Invited { get; set; }
 
         public IInvite.InviteStatus Status { get; set; }
 

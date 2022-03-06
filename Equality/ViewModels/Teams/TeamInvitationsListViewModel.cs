@@ -11,6 +11,7 @@ using Equality.Helpers;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
+using InviteFilter = Equality.Core.Services.IInviteService.InviteFilter;
 
 using MaterialDesignThemes.Wpf;
 
@@ -27,18 +28,18 @@ namespace Equality.ViewModels
             InviteService = inviteService;
 
             OpenInviteUserDialog = new TaskCommand(OnOpenInviteUserDialogExecuteAsync);
-            RevokeInvite = new TaskCommand<IInvite>(OnRevokeInviteExecuteAsync);
+            RevokeInvite = new TaskCommand<Invite>(OnRevokeInviteExecuteAsync);
 
             NavigationCompleted += OnNavigated;
         }
 
         #region Properties
 
-        public ObservableCollection<IInvite> Invites { get; set; } = new();
+        public ObservableCollection<Invite> Invites { get; set; } = new();
 
-        public ObservableCollection<IInvite> FilteredInvites { get; set; } = new();
+        public ObservableCollection<Invite> FilteredInvites { get; set; } = new();
 
-        public IInviteService.InviteFilter SelectedFilter { get; set; }
+        public InviteFilter SelectedFilter { get; set; }
 
         #endregion
 
@@ -55,16 +56,16 @@ namespace Equality.ViewModels
             if (result) {
                 Invites.Add(invite);
 
-                if (SelectedFilter == IInviteService.InviteFilter.All
-                    || SelectedFilter == IInviteService.InviteFilter.Pending) {
+                if (SelectedFilter == InviteFilter.All
+                    || SelectedFilter == InviteFilter.Pending) {
                     FilteredInvites.Add(invite);
                 }
             }
         }
 
-        public TaskCommand<IInvite> RevokeInvite { get; private set; }
+        public TaskCommand<Invite> RevokeInvite { get; private set; }
 
-        private async Task OnRevokeInviteExecuteAsync(IInvite invite)
+        private async Task OnRevokeInviteExecuteAsync(Invite invite)
         {
             try {
                 await InviteService.RevokeInviteAsync(invite);
@@ -90,17 +91,17 @@ namespace Equality.ViewModels
         private void OnSelectedFilterChanged()
         {
             switch (SelectedFilter) {
-                case IInviteService.InviteFilter.All:
+                case InviteFilter.All:
                 default:
                     FilteredInvites.ReplaceRange(Invites);
                     break;
-                case IInviteService.InviteFilter.Pending:
+                case InviteFilter.Pending:
                     FilteredInvites.ReplaceRange(Invites.Where(invite => invite.Status == IInvite.InviteStatus.Pending));
                     break;
-                case IInviteService.InviteFilter.Accepted:
+                case InviteFilter.Accepted:
                     FilteredInvites.ReplaceRange(Invites.Where(invite => invite.Status == IInvite.InviteStatus.Accepted));
                     break;
-                case IInviteService.InviteFilter.Declined:
+                case InviteFilter.Declined:
                     FilteredInvites.ReplaceRange(Invites.Where(invite => invite.Status == IInvite.InviteStatus.Declined));
                     break;
             }
@@ -127,7 +128,7 @@ namespace Equality.ViewModels
 
             await LoadInvitesAsync();
 
-            SelectedFilter = IInviteService.InviteFilter.Pending;
+            SelectedFilter = InviteFilter.Pending;
         }
 
         protected override async Task CloseAsync()

@@ -34,9 +34,9 @@ namespace Equality.ViewModels
 
         public string FilterText { get; set; }
 
-        public ObservableCollection<ITeamMember> Members { get; set; } = new();
+        public ObservableCollection<TeamMember> Members { get; set; } = new();
 
-        public ObservableCollection<ITeamMember> FilteredMembers { get; set; } = new();
+        public ObservableCollection<TeamMember> FilteredMembers { get; set; } = new();
 
         #endregion
 
