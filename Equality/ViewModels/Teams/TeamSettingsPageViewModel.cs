@@ -42,12 +42,15 @@ namespace Equality.ViewModels
         public string Logo { get; set; }
 
         [ViewModelToModel(nameof(Team), Mode = ViewModelToModelMode.OneWay)]
+        [Validatable]
         public string Name { get; set; }
 
         [ViewModelToModel(nameof(Team), Mode = ViewModelToModelMode.OneWay)]
+        [Validatable]
         public string Description { get; set; }
 
         [ViewModelToModel(nameof(Team), Mode = ViewModelToModelMode.OneWay)]
+        [Validatable]
         public string Url { get; set; }
 
         #endregion

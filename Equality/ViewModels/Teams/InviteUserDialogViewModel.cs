@@ -38,6 +38,7 @@ namespace Equality.ViewModels
 
         #region Properties
 
+        [Validatable]
         public string Email { get; set; }
 
         #endregion

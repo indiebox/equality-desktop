@@ -33,6 +33,7 @@ namespace Equality.ViewModels
         public Team Team { get; set; } = new();
 
         [ViewModelToModel(nameof(Team))]
+        [Validatable]
         public string Name { get; set; }
 
         #endregion

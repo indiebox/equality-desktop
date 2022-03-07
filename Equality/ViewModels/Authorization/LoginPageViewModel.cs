@@ -38,17 +38,16 @@ namespace Equality.ViewModels
 
         #region Properties
 
+        [Validatable]
         public string Email { get; set; }
 
+        [Validatable]
         public string Password { get; set; }
 
-        [ExcludeFromValidation]
         public bool RememberMe { get; set; } = false;
 
-        [ExcludeFromValidation]
         public string CredentialsErrorMessage { get; set; }
 
-        [ExcludeFromValidation]
         public bool IsSendingRequest { get; set; }
 
         #endregion
