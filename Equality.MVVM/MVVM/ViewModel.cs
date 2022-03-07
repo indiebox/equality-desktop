@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
+using Catel;
 using Catel.Collections;
 using Catel.Data;
 using Catel.MVVM;
@@ -9,19 +11,6 @@ namespace Equality.MVVM
 {
     public class ViewModel : ViewModelBase
     {
-        /// <summary>
-        /// Map between <c>ViewModel`s</c> properties and Api fields.
-        /// </summary>
-        /// <remarks>
-        /// It is used for base implementation of <c>DisplayApiErrors</c> method for attaching Api errors to the <c>ViewModel</c> property.
-        /// <code></code>
-        /// Also for auto detaching Api errors when associated property in <c>ViewModel</c> has changed.
-        /// <code></code>
-        /// Key is the property name in <c>ViewModel</c>, Value is the name of field in Api response.
-        /// </remarks>
-        [ExcludeFromValidation]
-        protected Dictionary<string, string> ApiFieldsMap { get; set; }
-
         /// <summary>
         /// The validation token that enables validation after a call <c>Dispose()</c> method.
         /// </summary>
@@ -37,9 +26,23 @@ namespace Equality.MVVM
             ApiFieldsMap = new();
 
             AutomaticallyHideApiErrorsOnPropertyChanged = true;
+            AutomaticallyMapApiFields = true;
 
             ExcludeFromValidationDecoratedProperties();
         }
+
+        /// <summary>
+        /// Map between <c>ViewModel`s</c> properties and Api fields.
+        /// </summary>
+        /// <remarks>
+        /// It is used for base implementation of <c>DisplayApiErrors</c> method for attaching Api errors to the <c>ViewModel</c> property.
+        /// <code></code>
+        /// Also for auto detaching Api errors when associated property in <c>ViewModel</c> has changed.
+        /// <code></code>
+        /// Key is the property name in <c>ViewModel</c>, Value is the name of field in Api response.
+        /// </remarks>
+        [ExcludeFromValidation]
+        public Dictionary<string, string> ApiFieldsMap { get; protected set; }
 
         /// <summary>
         /// The Api errors for fields.
@@ -48,8 +51,17 @@ namespace Equality.MVVM
         [ExcludeFromValidation]
         public Dictionary<string, string> ApiErrors { get; private set; }
 
+        /// <summary>
+        /// Should Api errors automatically hiding on associated property changed.
+        /// </summary>
         [ExcludeFromValidation]
         protected bool AutomaticallyHideApiErrorsOnPropertyChanged { get; set; }
+
+        /// <summary>
+        /// Should Api errors trying to automatically map with CamelCased property on VM.
+        /// </summary>
+        [ExcludeFromValidation]
+        protected bool AutomaticallyMapApiFields { get; set; }
 
         /// <summary>
         /// Enable display of the validation errors and perform first validation.
@@ -125,16 +137,19 @@ namespace Equality.MVVM
                 return;
             }
 
-            // Remove the Api errors when the associated property has changed.
+            // Remove the Api errors when the associated and assumed property has changed.
             // Also we use check e.OldValue != e.NewValue && e.IsOldValueMeaningful,
             // so that we can see that the value has really changed by user.
             if (AutomaticallyHideApiErrorsOnPropertyChanged
                 && e.OldValue != e.NewValue
-                && e.IsOldValueMeaningful
-                && (ApiFieldsMap?.ContainsKey(e.PropertyName) ?? false)) {
-                string apiField = ApiFieldsMap[e.PropertyName];
+                && e.IsOldValueMeaningful) {
 
-                ApiErrors.Remove(apiField);
+                if (ApiFieldsMap?.ContainsKey(e.PropertyName) ?? false) {
+                    string apiField = ApiFieldsMap[e.PropertyName];
+                    ApiErrors.Remove(apiField);
+                } else {
+                    ApiErrors.Remove(PropertyToApiFieldName(e.PropertyName));
+                }
             }
 
             base.OnPropertyChanged(e);
@@ -164,9 +179,26 @@ namespace Equality.MVVM
         /// </remarks>
         protected virtual void DisplayApiErrors(List<IFieldValidationResult> validationResults)
         {
+            var errors = new Dictionary<string, string>(ApiErrors);
+
             foreach (var value in ApiFieldsMap) {
-                if (ApiErrors.ContainsKey(value.Value)) {
-                    validationResults.Add(FieldValidationResult.CreateError(value.Key, ApiErrors[value.Value]));
+                if (errors.ContainsKey(value.Value)) {
+                    validationResults.Add(FieldValidationResult.CreateError(value.Key, errors[value.Value]));
+                    errors.Remove(value.Value);
+                }
+            }
+
+            if (errors.Count == 0 || !AutomaticallyMapApiFields) {
+                return;
+            }
+
+            // Automatically map api fields with assumed properties of VM.
+            foreach (var error in errors) {
+                string assumedPropertyName = ApiFieldToPropertyName(error.Key);
+
+                if (PropertyExists(assumedPropertyName)) {
+                    validationResults.Add(FieldValidationResult.CreateError(assumedPropertyName, error.Value));
+                    errors.Remove(error.Value);
                 }
             }
         }
@@ -187,6 +219,59 @@ namespace Equality.MVVM
             }
 
             Validate(true);
+        }
+
+        /// <summary>
+        /// Check if property exists in <c>ViewModel</c>.
+        /// </summary>
+        /// <param name="propertyName">The property name.</param>
+        /// <returns>Returns true if property exists.</returns>
+        protected bool PropertyExists(string propertyName)
+            => PropertyDataManager.Default.GetCatelTypeInfo(GetType()).GetCatelProperties().ContainsKey(propertyName);
+
+        /// <summary>
+        /// Converts Api field to assumed property name.
+        /// </summary>
+        /// <param name="apiFieldKey">The Api field key.</param>
+        /// <returns>The assumed property name for Api field.</returns>
+        private protected string ApiFieldToPropertyName(string apiFieldKey)
+        {
+            Argument.IsNotNullOrEmpty(nameof(apiFieldKey), apiFieldKey);
+
+            var result = new StringBuilder();
+            string[] peaces = apiFieldKey.Split("_");
+
+            foreach (string peace in peaces) {
+                result.Append(string.Concat(peace[0].ToString().ToUpper(), peace.AsSpan(1)));
+            }
+
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// Converts property name to assumed Api field name.
+        /// </summary>
+        /// <param name="propertyName">The property name.</param>
+        /// <returns>The assumed Api field name for property.</returns>
+        private protected string PropertyToApiFieldName(string propertyName)
+        {
+            Argument.IsNotNullOrEmpty(nameof(propertyName), propertyName);
+
+            var result = new StringBuilder();
+            result.Append(char.ToLowerInvariant(propertyName[0]));
+
+            for (int i = 1; i < propertyName.Length; ++i) {
+                char c = propertyName[i];
+
+                if (char.IsUpper(c)) {
+                    result.Append('_');
+                    result.Append(char.ToLowerInvariant(c));
+                } else {
+                    result.Append(c);
+                }
+            }
+
+            return result.ToString();
         }
 
         /// <summary>
