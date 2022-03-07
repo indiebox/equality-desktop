@@ -17,11 +17,6 @@ namespace Equality.ViewModels
 
             // TODO: Rename SendForm command and OnSendFormExecute method.
             SendForm = new TaskCommand(OnSendFormExecute, () => !HasErrors);
-
-            ApiFieldsMap = new()
-            {
-                { nameof(Example), "example" },
-            };
         }
 
         #region Properties
