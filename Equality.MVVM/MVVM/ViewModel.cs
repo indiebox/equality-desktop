@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 
 using Catel;
-using Catel.Collections;
 using Catel.Data;
 using Catel.MVVM;
+
+using Equality.Validation;
 
 namespace Equality.MVVM
 {
@@ -28,7 +29,7 @@ namespace Equality.MVVM
             AutomaticallyHideApiErrorsOnPropertyChanged = true;
             AutomaticallyMapApiFields = true;
 
-            ExcludeFromValidationDecoratedProperties();
+            ExcludeNonDecoratedPropertiesFromValidation();
         }
 
         /// <summary>
@@ -78,36 +79,6 @@ namespace Equality.MVVM
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Exclude property from a validation.
-        /// </summary>
-        /// <param name="propertyName">The property name.</param>
-        /// <remarks>By default, all properties are considered validatable. 
-        /// <code></code>
-        /// It means, if any property changed, <c>ValidateFields</c> and <c>ValidateBusinessRules</c> in ViewModel would be fired.
-        /// <code></code>
-        /// It is recomended to use this method for optimization of Validate* method calls if needed.
-        /// </remarks>
-        public void ExcludeFromValidation(string propertyName)
-        {
-            PropertiesNotCausingValidation[GetType()].Add(propertyName);
-        }
-
-        /// <summary>
-        /// Exclude properties from a validation.
-        /// </summary>
-        /// <param name="propertyName">Array of the property names.</param>
-        /// <remarks>By default, all properties are considered validatable. 
-        /// <code></code>
-        /// It means, if any property changed, <c>ValidateFields</c> and <c>ValidateBusinessRules</c> in ViewModel would be fired.
-        /// <code></code>
-        /// It is recomended to use this method for optimization of Validate* method calls if needed.
-        /// </remarks>
-        public void ExcludeFromValidation(string[] propertyName)
-        {
-            PropertiesNotCausingValidation[GetType()].AddRange(propertyName);
         }
 
         /// <summary>
@@ -275,15 +246,16 @@ namespace Equality.MVVM
         }
 
         /// <summary>
-        /// Exclude all properties decorated with <see cref="ExcludeFromValidationAttribute"/> from validation.
+        /// Exclude all properties non-decorated with <see cref="ValidatableAttribute"/> from validation.
         /// </summary>
-        private void ExcludeFromValidationDecoratedProperties()
+        private void ExcludeNonDecoratedPropertiesFromValidation()
         {
+            var type = GetType();
             var properties = PropertyDataManager.Default.GetCatelTypeInfo(GetType()).GetCatelProperties();
 
             foreach (var property in properties) {
-                if (property.Value.GetPropertyInfo(GetType()).IsDecoratedWithAttribute(typeof(ExcludeFromValidationAttribute))) {
-                    ExcludeFromValidation(property.Key);
+                if (!property.Value.GetPropertyInfo(type).IsDecoratedWithAttribute(typeof(ValidatableAttribute))) {
+                    PropertiesNotCausingValidation[type].Add(property.Key);
                 }
             }
         }
