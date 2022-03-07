@@ -20,7 +20,6 @@ namespace Equality.MVVM
         public ViewModel() : base()
         {
             DeferValidationUntilFirstSaveCall = false;
-            ValidateUsingDataAnnotations = false;
             _validationToken = SuspendValidations();
 
             ApiErrors = new();
