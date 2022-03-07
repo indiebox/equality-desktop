@@ -21,6 +21,7 @@ namespace Equality.ViewModels
 
         #region Properties
 
+        [Validatable]
         public string Example { get; set; }
 
         #endregion
