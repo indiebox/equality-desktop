@@ -30,13 +30,6 @@ namespace Equality.ViewModels
             ResetPassword = new TaskCommand(OnResetPasswordExecute, () => !IsSendingRequest && !HasErrors);
 
             NavigationCompleted += OnNavigationCompleted;
-
-            ApiFieldsMap = new()
-            {
-                { nameof(Token), "token" },
-                { nameof(Password), "password" },
-                { nameof(PasswordConfirmation), "password_confirmation" },
-            };
         }
 
         public override string Title => "Изменение пароля";

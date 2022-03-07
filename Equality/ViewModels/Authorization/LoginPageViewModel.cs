@@ -32,12 +32,6 @@ namespace Equality.ViewModels
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute, () => !IsSendingRequest);
             OpenRegisterWindow = new TaskCommand(OnOpenRegisterWindowExecute);
             Login = new TaskCommand(OnLoginExecuteAsync, () => !HasErrors);
-
-            ApiFieldsMap = new()
-            {
-                { nameof(Email), "email" },
-                { nameof(Password), "password" },
-            };
         }
 
         public override string Title => "Вход";

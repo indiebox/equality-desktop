@@ -32,11 +32,6 @@ namespace Equality.ViewModels
             InviteService = inviteService;
 
             InviteUser = new TaskCommand(OnInviteUserExecute, () => !HasErrors);
-
-            ApiFieldsMap = new()
-            {
-                { nameof(Email), "email" },
-            };
         }
 
         public override string Title => "Отправить приглашение";

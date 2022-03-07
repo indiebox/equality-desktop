@@ -14,7 +14,6 @@ using Equality.Validation;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
-using Catel.IoC;
 
 namespace Equality.ViewModels
 {
@@ -32,13 +31,6 @@ namespace Equality.ViewModels
             UploadLogo = new TaskCommand(OnUploadLogoExecute);
             DeleteLogo = new TaskCommand(OnDeleteLogoExecute, () => !string.IsNullOrWhiteSpace(Logo));
             UpdateSettings = new TaskCommand(OnUpdateSettingsExecuteAsync);
-
-            ApiFieldsMap = new()
-            {
-                { nameof(Name), "name" },
-                { nameof(Description), "description" },
-                { nameof(Url), "url" },
-            };
         }
 
         #region Properties
