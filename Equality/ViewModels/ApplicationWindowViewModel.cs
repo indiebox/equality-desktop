@@ -10,6 +10,7 @@ using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
 using Equality.Data;
+using Notification.Wpf;
 
 namespace Equality.ViewModels
 {
@@ -102,6 +103,40 @@ namespace Equality.ViewModels
             await base.InitializeAsync();
 
             OnActiveTabChanged();
+
+            var notif = new NotificationManager();
+
+            var content = new NotificationContent();
+            content.Title = "Test 1";
+            content.Message = "Msg";
+            content.Type = NotificationType.Error;
+            content.Icon = new MaterialDesignThemes.Wpf.PackIcon
+            { Kind = MaterialDesignThemes.Wpf.PackIconKind.Error, Height = 25, Width = 25 };
+            notif.Show(content, "NotificationsContainer", System.TimeSpan.MaxValue);
+
+            content = new NotificationContent();
+            content.Title = "Test 2";
+            content.Message = "Msg";
+            content.Type = NotificationType.Success;
+            content.Icon = new MaterialDesignThemes.Wpf.PackIcon
+            { Kind = MaterialDesignThemes.Wpf.PackIconKind.Check, Height = 25, Width = 25 };
+            notif.Show(content, "NotificationsContainer", System.TimeSpan.MaxValue);
+
+            content = new NotificationContent();
+            content.Title = "Test 3";
+            content.Message = "Msg";
+            content.Type = NotificationType.Information;
+            content.Icon = new MaterialDesignThemes.Wpf.PackIcon
+            { Kind = MaterialDesignThemes.Wpf.PackIconKind.Information, Height = 25, Width = 25 };
+            notif.Show(content, "NotificationsContainer", System.TimeSpan.MaxValue);
+
+            content = new NotificationContent();
+            content.Title = "Test 3";
+            content.Message = "Msg";
+            content.Type = NotificationType.Warning;
+            content.Icon = new MaterialDesignThemes.Wpf.PackIcon
+            { Kind = MaterialDesignThemes.Wpf.PackIconKind.Warning, Height = 25, Width = 25 };
+            notif.Show(content, "NotificationsContainer", System.TimeSpan.MaxValue);
         }
 
         protected override async Task CloseAsync()
