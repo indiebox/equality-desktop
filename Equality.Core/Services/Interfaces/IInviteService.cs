@@ -136,7 +136,7 @@ namespace Equality.Core.Services
         /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(TTeamModel team, IInviteService.InviteFilter filter = IInviteService.InviteFilter.All);
 
-        /// <inheritdoc cref="GetTeamInvitesAsync(TTeamModel, InviteFilter)"/>
+        /// <inheritdoc cref="GetTeamInvitesAsync(TTeamModel, IInviteService.InviteFilter)"/>
         /// <param name="teamId">The team id.</param>
         /// <param name="filter">Filter.</param>
         public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ulong teamId, IInviteService.InviteFilter filter = IInviteService.InviteFilter.All);

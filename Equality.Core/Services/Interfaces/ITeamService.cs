@@ -46,7 +46,7 @@ namespace Equality.Core.Services
         /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage> GetMembersAsync(ITeam team);
 
-        /// <inheritdoc cref="GetMembersAsync(Team)"/>
+        /// <inheritdoc cref="GetMembersAsync(ITeam)"/>
         /// <param name="teamId">The team id.</param>
         public Task<ApiResponseMessage> GetMembersAsync(ulong teamId);
 
@@ -63,7 +63,7 @@ namespace Equality.Core.Services
         /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage> LeaveTeamAsync(ITeam team);
 
-        /// <inheritdoc cref="LeaveTeamAsync(Team)"/>
+        /// <inheritdoc cref="LeaveTeamAsync(ITeam)"/>
         /// <param name="teamId">The team id.</param>
         public Task<ApiResponseMessage> LeaveTeamAsync(ulong teamId);
 
@@ -81,7 +81,7 @@ namespace Equality.Core.Services
         /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage> SetLogoAsync(ITeam team, string imagePath);
 
-        /// <inheritdoc cref="SetLogoAsync(Team, string)"/>
+        /// <inheritdoc cref="SetLogoAsync(ITeam, string)"/>
         /// <param name="teamId">The team id.</param>
         /// <param name="imagePath">The path to image file.</param>
         public Task<ApiResponseMessage> SetLogoAsync(ulong teamId, string imagePath);
@@ -99,7 +99,7 @@ namespace Equality.Core.Services
         /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage> DeleteLogoAsync(ITeam team);
 
-        /// <inheritdoc cref="DeleteLogoAsync(Team)"/>
+        /// <inheritdoc cref="DeleteLogoAsync(ITeam)"/>
         /// <param name="teamId">The team id.</param>
         public Task<ApiResponseMessage> DeleteLogoAsync(ulong teamId);
 
