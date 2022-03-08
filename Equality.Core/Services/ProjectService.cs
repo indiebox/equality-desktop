@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Catel;
 
@@ -31,8 +28,5 @@ namespace Equality.Core.Services
 
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/projects");
         }
-
-        public async Task<ApiResponseMessage> GetMembersAsync() => await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync("members");
-
     }
 }

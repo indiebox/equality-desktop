@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
-using Catel;
+﻿using System.Threading.Tasks;
 
 using Equality.Data;
 using Equality.Http;
 using Equality.Models;
-using Equality.Services;
 
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 
 namespace Equality.Services
 {
@@ -27,26 +20,15 @@ namespace Equality.Services
         {
             var response = await base.GetProjectsAsync(teamId);
 
-            var members = DeserializeProjects(response.Content["data"]);
+            var projects = DeserializeRange(response.Content["data"]);
 
-            return new(members, response);
+            return new(projects, response);
         }
-        /// <summary>
-        /// Deserializes the JToken to the <c>IProject[]</c>.
-        /// </summary>
-        /// <param name="data">The JToken.</param>
-        /// <returns>Returns the <c>ITeamMember[]</c>.</returns>
-        public Project[] DeserializeProjects(JToken data)
-        {
-            Argument.IsNotNull(nameof(data), data);
 
-            return data.ToObject<Project[]>(new()
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new SnakeCaseNamingStrategy()
-                }
-            });
-        }
+        /// <inheritdoc cref="Core.Services.IDeserializeModels{T}.Deserialize(JToken)"/>
+        protected Project Deserialize(JToken data) => ((IProjectService)this).Deserialize(data);
+
+        /// <inheritdoc cref="Core.Services.IDeserializeModels{T}.DeserializeRange(JToken)"/>
+        protected Project[] DeserializeRange(JToken data) => ((IProjectService)this).DeserializeRange(data);
     }
 }
