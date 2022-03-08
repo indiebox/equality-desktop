@@ -8,6 +8,38 @@
                     xmlns:catel="http://schemas.catelproject.com"
                     xmlns:helpers="clr-namespace:Notification.Wpf.Sample.Helpers;assembly=Notification.Wpf"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <!-- Notification icons
+        They have x:Shared="False" so a new image will be created each time.
+        This is necessary for the correct display of several notifications of the same type with an icon.
+    -->
+    <Viewbox x:Key="Notification:InfoIcon"
+             x:Shared="False"
+             Height="25"
+             Width="25">
+        <materialDesign:PackIcon Kind="Information" />
+    </Viewbox>
+
+    <Viewbox x:Key="Notification:WarningIcon"
+             x:Shared="False"
+             Height="25"
+             Width="25">
+        <materialDesign:PackIcon Kind="Warning" />
+    </Viewbox>
+
+    <Viewbox x:Key="Notification:ErrorIcon"
+             x:Shared="False"
+             Height="25"
+             Width="25">
+        <materialDesign:PackIcon Kind="Error" />
+    </Viewbox>
+
+    <Viewbox x:Key="Notification:SuccessIcon"
+             x:Shared="False"
+             Height="25"
+             Width="25">
+        <materialDesign:PackIcon Kind="Check" />
+    </Viewbox>
+
     <ControlTemplate x:Key="Notification:Template"
                      TargetType="{x:Type notification:Notification}">
         <ControlTemplate.Resources>
@@ -162,6 +194,7 @@
                 </Path>
             </Viewbox>
 
+            <!-- String message template -->
             <DataTemplate DataType="{x:Type system:String}"
                           x:Key="DefaultStringTemplate">
                 <Border Background="{Binding RelativeSource={RelativeSource AncestorType=notification:Notification}, Path=Background}">
@@ -171,6 +204,7 @@
                 </Border>
             </DataTemplate>
 
+            <!-- Image message template -->
             <DataTemplate DataType="{x:Type ImageSource}"
                           x:Key="DefaultImageSourceTemplate">
                 <Border Background="{Binding RelativeSource={RelativeSource AncestorType=notification:Notification}, Path=Background}">
@@ -178,6 +212,7 @@
                 </Border>
             </DataTemplate>
 
+            <!-- NotificationContent message teamplate -->
             <DataTemplate DataType="{x:Type wpf:NotificationContent}"
                           x:Key="DefaultNotificationTemplate">
                 <Border x:Name="Border"
@@ -295,72 +330,13 @@
                     </Grid>
                 </Border>
 
-                <!-- Settings and types -->
                 <DataTemplate.Triggers>
-                    <DataTrigger Binding="{Binding TrimType}"
-                                 Value="Attach">
-                        <Setter TargetName="Attach"
-                                Property="Visibility"
-                                Value="Visible" />
-                        <Setter TargetName="MessageBox"
-                                Property="TextTrimming"
-                                Value="CharacterEllipsis" />
-                        <Setter TargetName="MessageBox"
-                                Property="LineStackingStrategy"
-                                Value="BlockLineHeight" />
-                        <Setter TargetName="MessageBox"
-                                Property="helpers:NotificationLineHeightBehavior.Lines"
-                                Value="{Binding RowsCount}" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding TrimType}"
-                                 Value="AttachIfMoreRows">
-                        <Setter TargetName="Attach"
-                                Property="Visibility"
-                                Value="{Binding Converter={converters:NotificationAttachVisibleConverter}}" />
-                        <Setter TargetName="MessageBox"
-                                Property="TextTrimming"
-                                Value="CharacterEllipsis" />
-                        <Setter TargetName="MessageBox"
-                                Property="LineStackingStrategy"
-                                Value="BlockLineHeight" />
-                        <Setter TargetName="MessageBox"
-                                Property="helpers:NotificationLineHeightBehavior.Lines"
-                                Value="{Binding RowsCount}" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding TrimType}"
-                                 Value="Trim">
-                        <Setter TargetName="Attach"
-                                Property="Visibility"
-                                Value="Collapsed" />
-                        <Setter TargetName="MessageBox"
-                                Property="TextTrimming"
-                                Value="CharacterEllipsis" />
-                        <Setter TargetName="MessageBox"
-                                Property="LineStackingStrategy"
-                                Value="BlockLineHeight" />
-                        <Setter TargetName="MessageBox"
-                                Property="helpers:NotificationLineHeightBehavior.Lines"
-                                Value="{Binding RowsCount}" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding TrimType}"
-                                 Value="NoTrim">
-                        <Setter TargetName="Attach"
-                                Property="Visibility"
-                                Value="Collapsed" />
-                        <Setter TargetName="MessageBox"
-                                Property="TextTrimming"
-                                Value="None" />
-                    </DataTrigger>
+                    <!-- Notification types -->
                     <DataTrigger Binding="{Binding Type}"
                                  Value="Notification">
                         <Setter TargetName="Icon"
-                                Property="Content">
-                            <Setter.Value>
-                                <materialDesign:PackIcon Height="25"
-                                                         Width="25"
-                                                         Kind="Information" />
-                            </Setter.Value>
-                        </Setter>
+                                Property="Content"
+                                Value="{StaticResource Notification:InfoIcon}" />
                         <Setter TargetName="Border"
                                 Property="Background"
                                 Value="{Binding Source={x:Static constants:NotificationConstants.DefaultBackgroundColor}}" />
@@ -368,13 +344,8 @@
                     <DataTrigger Binding="{Binding Type}"
                                  Value="Information">
                         <Setter TargetName="Icon"
-                                Property="Content">
-                            <Setter.Value>
-                                <materialDesign:PackIcon Height="25"
-                                                         Width="25"
-                                                         Kind="Information" />
-                            </Setter.Value>
-                        </Setter>
+                                Property="Content"
+                                Value="{StaticResource Notification:InfoIcon}" />
                         <Setter TargetName="Border"
                                 Property="Background"
                                 Value="{Binding Source={x:Static constants:NotificationConstants.InformationBackgroundColor}}" />
@@ -382,13 +353,8 @@
                     <DataTrigger Binding="{Binding Type}"
                                  Value="Success">
                         <Setter TargetName="Icon"
-                                Property="Content">
-                            <Setter.Value>
-                                <materialDesign:PackIcon Height="25"
-                                                         Width="25"
-                                                         Kind="Check" />
-                            </Setter.Value>
-                        </Setter>
+                                Property="Content"
+                                Value="{StaticResource Notification:SuccessIcon}" />
                         <Setter TargetName="Border"
                                 Property="Background"
                                 Value="{Binding Source={x:Static constants:NotificationConstants.SuccessBackgroundColor}}" />
@@ -396,13 +362,8 @@
                     <DataTrigger Binding="{Binding Type}"
                                  Value="Warning">
                         <Setter TargetName="Icon"
-                                Property="Content">
-                            <Setter.Value>
-                                <materialDesign:PackIcon Height="25"
-                                                         Width="25"
-                                                         Kind="Warning" />
-                            </Setter.Value>
-                        </Setter>
+                                Property="Content"
+                                Value="{StaticResource Notification:WarningIcon}" />
                         <Setter TargetName="Border"
                                 Property="Background"
                                 Value="{Binding Source={x:Static constants:NotificationConstants.WarningBackgroundColor}}" />
@@ -410,23 +371,22 @@
                     <DataTrigger Binding="{Binding Type}"
                                  Value="Error">
                         <Setter TargetName="Icon"
-                                Property="Content">
-                            <Setter.Value>
-                                <materialDesign:PackIcon Height="25"
-                                                         Width="25"
-                                                         Kind="Error" />
-                            </Setter.Value>
-                        </Setter>
+                                Property="Content"
+                                Value="{StaticResource Notification:ErrorIcon}" />
                         <Setter TargetName="Border"
                                 Property="Background"
                                 Value="{Binding Source={x:Static constants:NotificationConstants.ErrorBackgroundColor}}" />
                     </DataTrigger>
+
+                    <!-- Icon -->
                     <DataTrigger Binding="{Binding Icon, Converter={catel:ReferenceToBooleanConverter}, ConverterParameter=True}"
                                  Value="false">
                         <Setter TargetName="Icon"
                                 Property="Content"
                                 Value="{Binding Icon}" />
                     </DataTrigger>
+
+                    <!-- Settings -->
                     <DataTrigger Binding="{Binding Background, Converter={catel:ReferenceToBooleanConverter}, ConverterParameter=True}"
                                  Value="false">
                         <Setter TargetName="Border"
@@ -503,6 +463,61 @@
                                 Value="{Binding MessageTextSettings.Opacity}" />
                     </DataTrigger>
 
+                    <!-- Trim type -->
+                    <DataTrigger Binding="{Binding TrimType}"
+                                 Value="Attach">
+                        <Setter TargetName="Attach"
+                                Property="Visibility"
+                                Value="Visible" />
+                        <Setter TargetName="MessageBox"
+                                Property="TextTrimming"
+                                Value="CharacterEllipsis" />
+                        <Setter TargetName="MessageBox"
+                                Property="LineStackingStrategy"
+                                Value="BlockLineHeight" />
+                        <Setter TargetName="MessageBox"
+                                Property="helpers:NotificationLineHeightBehavior.Lines"
+                                Value="{Binding RowsCount}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding TrimType}"
+                                 Value="AttachIfMoreRows">
+                        <Setter TargetName="Attach"
+                                Property="Visibility"
+                                Value="{Binding Converter={converters:NotificationAttachVisibleConverter}}" />
+                        <Setter TargetName="MessageBox"
+                                Property="TextTrimming"
+                                Value="CharacterEllipsis" />
+                        <Setter TargetName="MessageBox"
+                                Property="LineStackingStrategy"
+                                Value="BlockLineHeight" />
+                        <Setter TargetName="MessageBox"
+                                Property="helpers:NotificationLineHeightBehavior.Lines"
+                                Value="{Binding RowsCount}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding TrimType}"
+                                 Value="Trim">
+                        <Setter TargetName="Attach"
+                                Property="Visibility"
+                                Value="Collapsed" />
+                        <Setter TargetName="MessageBox"
+                                Property="TextTrimming"
+                                Value="CharacterEllipsis" />
+                        <Setter TargetName="MessageBox"
+                                Property="LineStackingStrategy"
+                                Value="BlockLineHeight" />
+                        <Setter TargetName="MessageBox"
+                                Property="helpers:NotificationLineHeightBehavior.Lines"
+                                Value="{Binding RowsCount}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding TrimType}"
+                                 Value="NoTrim">
+                        <Setter TargetName="Attach"
+                                Property="Visibility"
+                                Value="Collapsed" />
+                        <Setter TargetName="MessageBox"
+                                Property="TextTrimming"
+                                Value="None" />
+                    </DataTrigger>
                 </DataTemplate.Triggers>
             </DataTemplate>
         </ControlTemplate.Resources>
