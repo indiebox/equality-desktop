@@ -54,7 +54,6 @@
                 <TextBox Grid.Column="0"
                          Width="Auto"
                          TextWrapping="Wrap"
-                         MinWidth="200"
                          Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                          materialDesign:ValidationAssist.FontSize="14"
                          materialDesign:ValidationAssist.Background="#FFCCCCCC"
