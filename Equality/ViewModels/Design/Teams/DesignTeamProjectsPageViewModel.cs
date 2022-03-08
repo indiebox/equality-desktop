@@ -10,7 +10,8 @@ namespace Equality.ViewModels.Design
         {
             Projects.AddRange(new Project[] {
                 new Project { Name = "Project I"},
-                new Project { Name = "Project II"}
+                new Project { Name = "Project II"},
+                new Project { Name = "Project III"}
             });
         }
     }
