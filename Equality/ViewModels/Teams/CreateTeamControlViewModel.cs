@@ -25,11 +25,6 @@ namespace Equality.ViewModels
 
             CreateTeam = new TaskCommand(OnCreateTeamExecute, () => !HasErrors);
             Cancel = new TaskCommand(OnCancelExecute);
-
-            ApiFieldsMap = new()
-            {
-                { nameof(Name), "name" },
-            };
         }
 
         #region Properties
@@ -38,6 +33,7 @@ namespace Equality.ViewModels
         public Team Team { get; set; } = new();
 
         [ViewModelToModel(nameof(Team))]
+        [Validatable]
         public string Name { get; set; }
 
         #endregion

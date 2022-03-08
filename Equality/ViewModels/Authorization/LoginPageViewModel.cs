@@ -32,29 +32,22 @@ namespace Equality.ViewModels
             OpenForgotPassword = new Command(OnOpenForgotPasswordExecute, () => !IsSendingRequest);
             OpenRegisterWindow = new TaskCommand(OnOpenRegisterWindowExecute);
             Login = new TaskCommand(OnLoginExecuteAsync, () => !HasErrors);
-
-            ApiFieldsMap = new()
-            {
-                { nameof(Email), "email" },
-                { nameof(Password), "password" },
-            };
         }
 
         public override string Title => "Вход";
 
         #region Properties
 
+        [Validatable]
         public string Email { get; set; }
 
+        [Validatable]
         public string Password { get; set; }
 
-        [ExcludeFromValidation]
         public bool RememberMe { get; set; } = false;
 
-        [ExcludeFromValidation]
         public string CredentialsErrorMessage { get; set; }
 
-        [ExcludeFromValidation]
         public bool IsSendingRequest { get; set; }
 
         #endregion

@@ -30,35 +30,27 @@ namespace Equality.ViewModels
             ResetPassword = new TaskCommand(OnResetPasswordExecute, () => !IsSendingRequest && !HasErrors);
 
             NavigationCompleted += OnNavigationCompleted;
-
-            ApiFieldsMap = new()
-            {
-                { nameof(Token), "token" },
-                { nameof(Password), "password" },
-                { nameof(PasswordConfirmation), "password_confirmation" },
-            };
         }
 
         public override string Title => "Изменение пароля";
 
         #region Properties
 
-        [ExcludeFromValidation]
         public string Email { get; set; }
 
+        [Validatable]
         public string Password { get; set; }
 
+        [Validatable]
         public string PasswordConfirmation { get; set; }
 
+        [Validatable]
         public string Token { get; set; }
 
-        [ExcludeFromValidation]
         public string ErrorMessage { get; set; }
 
-        [ExcludeFromValidation]
         public bool ShowSuccessMessage { get; set; } = true;
 
-        [ExcludeFromValidation]
         public bool IsSendingRequest { get; set; }
 
         #endregion
