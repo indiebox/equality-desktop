@@ -6,6 +6,9 @@ using Catel.Collections;
 using Equality.Helpers;
 using Equality.MVVM;
 using Equality.Models;
+using Equality.Services;
+using System.Net.Http;
+using System.Diagnostics;
 
 namespace Equality.ViewModels
 {
@@ -13,13 +16,17 @@ namespace Equality.ViewModels
     {
         protected Team Team;
 
-        public TeamProjectsPageViewModel()
+        protected IProjectService ProjectService;
+
+        public TeamProjectsPageViewModel(IProjectService projectService)
         {
-            Projects.AddRange(new Project[] {
-                new Project { Name = "Project I"},
-                new Project { Name = "Project II"},
-                new Project { Name = "Project III"},
-            });
+            ProjectService = projectService;
+
+            //Projects.AddRange(new Project[] {
+            //    new Project { Name = "Project I"},
+            //    new Project { Name = "Project II"},
+            //    new Project { Name = "Project III"},
+            //});
         }
 
         #region Properties
@@ -31,6 +38,22 @@ namespace Equality.ViewModels
 
         #region Commands
 
+
+
+        #endregion
+
+        #region Methods
+
+        protected async Task LoadProjectsAsync()
+        {
+            try {
+                var response = await ProjectService.GetProjectsAsync(Team);
+
+                Projects.AddRange(response.Object);
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+        }
 
 
         #endregion
