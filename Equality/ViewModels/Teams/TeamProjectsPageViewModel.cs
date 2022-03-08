@@ -21,12 +21,6 @@ namespace Equality.ViewModels
         public TeamProjectsPageViewModel(IProjectService projectService)
         {
             ProjectService = projectService;
-
-            //Projects.AddRange(new Project[] {
-            //    new Project { Name = "Project I"},
-            //    new Project { Name = "Project II"},
-            //    new Project { Name = "Project III"},
-            //});
         }
 
         #region Properties
