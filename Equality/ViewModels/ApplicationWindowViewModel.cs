@@ -10,8 +10,6 @@ using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
 using Equality.Data;
-using Notification.Wpf;
-using Catel.IoC;
 
 namespace Equality.ViewModels
 {
@@ -104,15 +102,6 @@ namespace Equality.ViewModels
             await base.InitializeAsync();
 
             OnActiveTabChanged();
-
-            var notif = ServiceLocator.Default.ResolveType<INotificationService>();
-
-            notif.Show(new NotificationContent() { Title = "Test", Message = "Test2", Type = NotificationType.Success }, System.TimeSpan.MaxValue);
-            notif.ShowError("Текст некоторого сообщения, которое в двухстрочном режие.");
-            notif.ShowSuccess("Success");
-            notif.ShowInfo("Info");
-            notif.ShowWarning("Warn");
-            notif.Show("Notif");
         }
 
         protected override async Task CloseAsync()
