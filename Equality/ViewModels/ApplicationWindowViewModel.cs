@@ -11,6 +11,7 @@ using Equality.Models;
 using Equality.Services;
 using Equality.Data;
 using Notification.Wpf;
+using Catel.IoC;
 
 namespace Equality.ViewModels
 {
@@ -104,39 +105,14 @@ namespace Equality.ViewModels
 
             OnActiveTabChanged();
 
-            var notif = new NotificationManager();
+            var notif = ServiceLocator.Default.ResolveType<INotificationService>();
 
-            var content = new NotificationContent();
-            content.Title = "Test 1";
-            content.Message = "Msg";
-            content.Type = NotificationType.Error;
-            content.Icon = new MaterialDesignThemes.Wpf.PackIcon
-            { Kind = MaterialDesignThemes.Wpf.PackIconKind.Error, Height = 25, Width = 25 };
-            notif.Show(content, "NotificationsContainer", System.TimeSpan.MaxValue);
-
-            content = new NotificationContent();
-            content.Title = "Test 2";
-            content.Message = "Msg";
-            content.Type = NotificationType.Success;
-            content.Icon = new MaterialDesignThemes.Wpf.PackIcon
-            { Kind = MaterialDesignThemes.Wpf.PackIconKind.Check, Height = 25, Width = 25 };
-            notif.Show(content, "NotificationsContainer", System.TimeSpan.MaxValue);
-
-            content = new NotificationContent();
-            content.Title = "Test 3";
-            content.Message = "Msg";
-            content.Type = NotificationType.Information;
-            content.Icon = new MaterialDesignThemes.Wpf.PackIcon
-            { Kind = MaterialDesignThemes.Wpf.PackIconKind.Information, Height = 25, Width = 25 };
-            notif.Show(content, "NotificationsContainer", System.TimeSpan.MaxValue);
-
-            content = new NotificationContent();
-            content.Title = "Test 3";
-            content.Message = "Msg";
-            content.Type = NotificationType.Warning;
-            content.Icon = new MaterialDesignThemes.Wpf.PackIcon
-            { Kind = MaterialDesignThemes.Wpf.PackIconKind.Warning, Height = 25, Width = 25 };
-            notif.Show(content, "NotificationsContainer", System.TimeSpan.MaxValue);
+            notif.Show(new NotificationContent() { Title = "Test", Message = "Test2", Type = NotificationType.Success }, System.TimeSpan.MaxValue);
+            notif.ShowError("Текст некоторого сообщения, которое в двухстрочном режие.");
+            notif.ShowSuccess("Success");
+            notif.ShowInfo("Info");
+            notif.ShowWarning("Warn");
+            notif.Show("Notif");
         }
 
         protected override async Task CloseAsync()

@@ -29,6 +29,7 @@
                                            Grid.ColumnSpan="2"
                                            Position="TopRight"
                                            Panel.ZIndex="999"
+                                           d:Panel.ZIndex="-1"
                                            Margin="20" />
 
             <ScrollViewer Grid.Column="0"
