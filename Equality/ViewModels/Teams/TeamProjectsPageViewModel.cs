@@ -63,6 +63,8 @@ namespace Equality.ViewModels
             await base.InitializeAsync();
 
             Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
+
+            await LoadProjectsAsync();
         }
 
         protected override async Task CloseAsync()
