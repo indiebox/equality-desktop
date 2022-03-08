@@ -24,6 +24,19 @@ namespace Equality.Core.Services
         /// <inheritdoc cref="GetProjectsAsync(ITeam)"/>
         /// <param name="teamId">The team id.</param>
         public Task<ApiResponseMessage> GetProjectsAsync(ulong teamId);
+
+        /// <summary>
+        /// Sends the create project for team request to the API.
+        /// </summary>
+        /// <param name="team">The team.</param>
+        /// <param name="project">The project.</param>
+        /// <returns>Returns the API response.</returns>
+        public Task<ApiResponseMessage> CreateProjectAsync(ITeam team, IProject project);
+
+        /// <inheritdoc cref="CreateProjectAsync(ITeam, IProject)"/>
+        /// <param name="teamId">The team id.</param>
+        /// <param name="project">The project.</param>
+        public Task<ApiResponseMessage> CreateProjectAsync(ulong teamId, IProject project);
     }
     public interface IProjectService<TProjectModel, TTeamModel> : IDeserializeModels<TProjectModel>
         where TProjectModel : class, new()
@@ -45,5 +58,18 @@ namespace Equality.Core.Services
         /// <inheritdoc cref="GetProjectsAsync(TTeamModel)"/>
         /// <param name="teamId">The team id.</param>
         public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ulong teamId);
+
+        /// <summary>
+        /// Sends the create project for team request to the API.
+        /// </summary>
+        /// <param name="team">The team.</param>
+        /// <param name="project">The project.</param>
+        /// <returns>Returns the API response.</returns>
+        public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(TTeamModel team, TProjectModel project);
+
+        /// <inheritdoc cref="CreateProjectAsync(TTeamModel, TProjectModel)"/>
+        /// <param name="teamId">The team id.</param>
+        /// <param name="project">The project.</param>
+        public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ulong teamId, TProjectModel project);
     }
 }

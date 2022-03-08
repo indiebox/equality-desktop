@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using Catel;
 
@@ -27,6 +28,22 @@ namespace Equality.Core.Services
             Argument.IsNotNull(nameof(teamId), teamId);
 
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/projects");
+        }
+
+        public Task<ApiResponseMessage> CreateProjectAsync(ITeam team, IProject project) => CreateProjectAsync(team.Id, project);
+
+        public async Task<ApiResponseMessage> CreateProjectAsync(ulong teamId, IProject project)
+        {
+            Argument.IsNotNull(nameof(teamId), teamId);
+            Argument.IsNotNull(nameof(project), project);
+
+            Dictionary<string, object> data = new()
+            {
+                { "name", project.Name },
+                { "description", project.Description },
+            };
+
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/projects", data);
         }
     }
 }
