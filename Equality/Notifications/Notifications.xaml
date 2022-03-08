@@ -421,19 +421,19 @@
                                 Property="Background"
                                 Value="{Binding Source={x:Static constants:NotificationConstants.ErrorBackgroundColor}}" />
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding Icon, TargetNullValue=true}"
+                    <DataTrigger Binding="{Binding Icon, Converter={catel:ReferenceToBooleanConverter}, ConverterParameter=True}"
                                  Value="false">
                         <Setter TargetName="Icon"
                                 Property="Content"
                                 Value="{Binding Icon}" />
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding Background, TargetNullValue=true}"
+                    <DataTrigger Binding="{Binding Background, Converter={catel:ReferenceToBooleanConverter}, ConverterParameter=True}"
                                  Value="false">
                         <Setter TargetName="Border"
                                 Property="Background"
                                 Value="{Binding Background}" />
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding Foreground, TargetNullValue=true}"
+                    <DataTrigger Binding="{Binding Foreground, Converter={catel:ReferenceToBooleanConverter}, ConverterParameter=True}"
                                  Value="false">
                         <Setter TargetName="TitleTxt"
                                 Property="Foreground"
@@ -448,7 +448,7 @@
                                 Property="Foreground"
                                 Value="{Binding Foreground}" />
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding TitleTextSettings, TargetNullValue=true}"
+                    <DataTrigger Binding="{Binding TitleTextSettings, Converter={catel:ReferenceToBooleanConverter}, ConverterParameter=True}"
                                  Value="false">
                         <Setter TargetName="TitleTxt"
                                 Property="FontFamily"
@@ -475,7 +475,7 @@
                                 Property="Opacity"
                                 Value="{Binding TitleTextSettings.Opacity}" />
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding MessageTextSettings, TargetNullValue=true}"
+                    <DataTrigger Binding="{Binding MessageTextSettings, Converter={catel:ReferenceToBooleanConverter}, ConverterParameter=True}"
                                  Value="false">
                         <Setter TargetName="MessageBox"
                                 Property="FontFamily"
