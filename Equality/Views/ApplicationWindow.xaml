@@ -25,8 +25,8 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <notification:NotificationArea Grid.ColumnSpan="2"
-                                           x:Name="NotificationsContainer"
+            <notification:NotificationArea x:Name="NotificationsContainer"
+                                           Grid.ColumnSpan="2"
                                            Position="TopRight"
                                            Panel.ZIndex="999"
                                            Margin="20" />
