@@ -6,6 +6,7 @@
               Background="{DynamicResource MaterialDesignPaper}"
               Width="900"
               Height="650"
+              CanCloseUsingEscape="False"
               WindowStartupLocation="CenterScreen"
               ResizeMode="NoResize">
     <Grid>
