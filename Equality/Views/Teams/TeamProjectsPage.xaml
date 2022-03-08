@@ -10,7 +10,7 @@
                FontSize="16"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DesignHeight="1080"
-               d:DesignWidth="1920"
+               d:DesignWidth="1100"
                d:DataContext="{d:DesignInstance dvm:DesignTeamProjectsPageViewModel, IsDesignTimeCreatable=True}"
                mc:Ignorable="d">
 
@@ -52,8 +52,12 @@
                                 <Rectangle Fill="Black"
                                            Opacity="0.5" />
 
-                                <TextBlock Width="200"
+                                <TextBlock MaxWidth="400"
+                                           MaxHeight="200"
+                                           Margin="20"
                                            Foreground="White"
+                                           TextWrapping="Wrap"
+                                           TextTrimming="WordEllipsis"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
                                            TextAlignment="Center"
@@ -64,31 +68,40 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
 
-                <Border HorizontalAlignment="Left"
+                <ContentControl Margin="10,0,10,20"
+                                Visibility="{Binding CreateProjectVm, Converter={catel:ReferenceToCollapsingVisibilityConverter}}"
+                                Content="{Binding CreateProjectVm, Converter={catel:ViewModelToViewConverter}}" />
+
+                <Button HorizontalAlignment="Left"
                         Width="500"
                         Height="280"
-                        Cursor="Hand"
+                        Style="{StaticResource BaseButton}"
+                        Command="{Binding OpenCreateProjectWindow}"
+                        Visibility="{Binding CreateProjectVm, Converter={catel:ReferenceToCollapsingVisibilityConverter}, ConverterParameter=True}"
                         Margin="10,0,10,20">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Background"
-                                    Value="#FFCCCCCC" />
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver"
-                                         Value="True">
-                                    <Setter Property="Background"
-                                            Value="#FFB3B3B3" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <TextBlock Width="200"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Foreground="Black"
-                               TextAlignment="Center"
-                               FontSize="24">Создать проект</TextBlock>
-                </Border>
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Background"
+                                        Value="#FFCCCCCC" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="#FFB3B3B3" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <TextBlock Width="200"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Foreground="Black"
+                                   TextAlignment="Center"
+                                   FontSize="24">Создать проект</TextBlock>
+                    </Grid>
+                </Button>
             </WrapPanel>
         </ScrollViewer>
     </Grid>
