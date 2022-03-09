@@ -4,7 +4,7 @@ using Catel.Data;
 
 namespace Equality.Models
 {
-    public class Invite : ModelBase, IEquatable<Invite>
+    public class Invite : ModelBase, IInvite<Team, User>, IEquatable<Invite>
     {
         public Invite()
         {

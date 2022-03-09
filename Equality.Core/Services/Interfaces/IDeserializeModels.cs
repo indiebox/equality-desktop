@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
-namespace Equality.Core.Services
+namespace Equality.Services
 {
     public interface IDeserializeModels<T>
         where T : new()

@@ -31,7 +31,6 @@ public static class ModuleInitializer
 
         serviceLocator.RegisterType<IUserService, UserService>();
         serviceLocator.RegisterType<ITeamService, TeamService>();
-        serviceLocator.RegisterType<IInviteService, InviteService>();
         serviceLocator.RegisterType<IProjectService, ProjectService>();
     }
 }
