@@ -7,9 +7,9 @@
               xmlns:catel="http://schemas.catelproject.com"
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
-              xmlns:local="clr-namespace:Equality.Views"
               xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
               xmlns:converters="clr-namespace:Equality.Converters;assembly=Equality.MVVM"
+              xmlns:notification="clr-namespace:Notification.Wpf.Controls;assembly=Notification.Wpf"
               TextElement.Foreground="{DynamicResource MaterialDesignBody}"
               Background="{DynamicResource MaterialDesignPaper}"
               WindowStartupLocation="CenterScreen"
@@ -25,6 +25,13 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+
+            <notification:NotificationArea x:Name="NotificationsContainer"
+                                           Grid.ColumnSpan="2"
+                                           Position="TopRight"
+                                           Panel.ZIndex="999"
+                                           d:Panel.ZIndex="-1"
+                                           Margin="20" />
 
             <ScrollViewer Grid.Column="0"
                           HorizontalScrollBarVisibility="Disabled"

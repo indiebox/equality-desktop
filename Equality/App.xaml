@@ -10,12 +10,15 @@
                                                  PrimaryColor="#FD5A2E"
                                                  SecondaryColor="#EDEDED" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+
                 <ResourceDictionary Source="Controls/Controls.xaml" />
 
-                <ResourceDictionary Source="Styles/Form.xaml" />
-                <ResourceDictionary Source="Styles/Button.xaml" />
-                <ResourceDictionary Source="Styles/ItemsPresenter.xaml" />
-                <ResourceDictionary Source="Styles/Global.xaml" />
+                <ResourceDictionary Source="Themes/Form.xaml" />
+                <ResourceDictionary Source="Themes/Button.xaml" />
+                <ResourceDictionary Source="Themes/ItemsPresenter.xaml" />
+                <ResourceDictionary Source="Themes/Global.xaml" />
+
+                <ResourceDictionary Source="Notifications/Notifications.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Customize primary colors -->

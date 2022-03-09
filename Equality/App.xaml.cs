@@ -5,6 +5,7 @@ using Catel.Logging;
 using Catel.MVVM;
 
 using Equality.Data;
+using Equality.Services;
 
 namespace Equality
 {
@@ -56,6 +57,7 @@ namespace Equality
             var serviceLocator = ServiceLocator.Default;
 
             serviceLocator.RegisterType<ITokenResolverService, TokenResolver>();
+            serviceLocator.RegisterType<INotificationService, NotificationService>();
 
             /*
             |--------------------------------------------------------------------------
