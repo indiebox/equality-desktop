@@ -7,7 +7,8 @@
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
-               xmlns:controls="clr-namespace:Equality.Controls"
+               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+               xmlns:converters="clr-namespace:Equality.Converters;assembly=Equality.MVVM"
                FontSize="16"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DesignWidth="1920"
@@ -34,28 +35,29 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Top"
-                            Margin="4,4,4,0">
-                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
-                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                                 Margin="4,4,4,0"
-                                 IsChecked="True"
+                            Margin="10,0">
+                    <StackPanel.Resources>
+                        <Style TargetType="RadioButton"
+                               BasedOn="{StaticResource MaterialDesignTabRadioButton}">
+                            <Setter Property="BorderBrush"
+                                    Value="{StaticResource PrimaryHueMidBrush}" />
+                            <Setter Property="Margin"
+                                    Value="0" />
+                            <Setter Property="Cursor"
+                                    Value="Hand" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <RadioButton IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ProjectPageViewModel+Tab.Board}}"
                                  Content="Доска" />
-                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
-                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                                 Margin="4,4,4,0"
-                                 IsChecked="False"
+                    <RadioButton IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ProjectPageViewModel+Tab.Leader}}"
                                  Content="Лидер" />
-                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
-                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                                 Margin="4,4,4,0"
-                                 IsChecked="False"
+                    <RadioButton IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ProjectPageViewModel+Tab.Settings}}"
                                  Content="Настройки" />
                 </StackPanel>
             </DockPanel>
 
-            <Frame Source="/Views/Projects/ProjectSettingsPage.xaml">
-
-            </Frame>
+            <Frame HorizontalAlignment="Stretch"
+                   VerticalAlignment="Stretch"></Frame>
         </DockPanel>
     </Grid>
 </equality:Page>
