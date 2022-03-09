@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Catel;
 
 using Equality.Data;
 using Equality.Http;
@@ -23,6 +26,26 @@ namespace Equality.Services
             var projects = DeserializeRange(response.Content["data"]);
 
             return new(projects, response);
+        }
+
+        public Task<ApiResponseMessage<Project>> CreateProjectAsync(Team team, Project project) => CreateProjectAsync(team.Id, project);
+
+        public async Task<ApiResponseMessage<Project>> CreateProjectAsync(ulong teamId, Project project)
+        {
+            Argument.IsNotNull(nameof(teamId), teamId);
+            Argument.IsNotNull(nameof(project), project);
+
+            Dictionary<string, object> data = new()
+            {
+                { "name", project.Name },
+                { "description", project.Description },
+            };
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/projects", data);
+
+            project = Deserialize(response.Content["data"]);
+
+            return new(project, response);
         }
 
         /// <inheritdoc cref="Core.Services.IDeserializeModels{T}.Deserialize(JToken)"/>

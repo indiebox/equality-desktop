@@ -13,6 +13,7 @@
               TextElement.Foreground="{DynamicResource MaterialDesignBody}"
               Background="{DynamicResource MaterialDesignPaper}"
               WindowStartupLocation="CenterScreen"
+              CanCloseUsingEscape="False"
               Width="1920"
               Height="1080"
               FontSize="16"

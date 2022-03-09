@@ -7,10 +7,12 @@
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+               xmlns:models="clr-namespace:Equality.Models;assembly=Equality.MVVM"
+               xmlns:objects="clr-namespace:Equality.Data.Wpf"
                FontSize="16"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DesignHeight="1080"
-               d:DesignWidth="1920"
+               d:DesignWidth="1100"
                d:DataContext="{d:DesignInstance dvm:DesignTeamProjectsPageViewModel, IsDesignTimeCreatable=True}"
                mc:Ignorable="d">
 
@@ -26,8 +28,7 @@
         <ScrollViewer Grid.Row="1"
                       Margin="10,0">
             <WrapPanel>
-                <ListBox materialDesign:ListBoxItemAssist.ShowSelection="False"
-                         ItemsSource="{Binding Projects}">
+                <ListBox materialDesign:ListBoxItemAssist.ShowSelection="False">
                     <ListBox.Template>
                         <ControlTemplate TargetType="ListBox">
                             <Border>
@@ -42,8 +43,9 @@
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
 
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
+                    <!-- Templates for custom objects. -->
+                    <ListBox.Resources>
+                        <DataTemplate DataType="{x:Type models:Project}">
                             <Grid Width="500"
                                   Height="280"
                                   Margin="10,0,10,20">
@@ -52,8 +54,12 @@
                                 <Rectangle Fill="Black"
                                            Opacity="0.5" />
 
-                                <TextBlock Width="200"
+                                <TextBlock MaxWidth="400"
+                                           MaxHeight="200"
+                                           Margin="20"
                                            Foreground="White"
+                                           TextWrapping="Wrap"
+                                           TextTrimming="WordEllipsis"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
                                            TextAlignment="Center"
@@ -61,34 +67,55 @@
                                            Text="{Binding Name}"></TextBlock>
                             </Grid>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
 
-                <Border HorizontalAlignment="Left"
-                        Width="500"
-                        Height="280"
-                        Cursor="Hand"
-                        Margin="10,0,10,20">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Background"
-                                    Value="#FFCCCCCC" />
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver"
-                                         Value="True">
-                                    <Setter Property="Background"
-                                            Value="#FFB3B3B3" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <TextBlock Width="200"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Foreground="Black"
-                               TextAlignment="Center"
-                               FontSize="24">Создать проект</TextBlock>
-                </Border>
+                        <DataTemplate DataType="{x:Type objects:DataObject}">
+                            <StackPanel Margin="10,0,10,20"
+                                        DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=equality:Page}}">
+                                <ContentControl Visibility="{Binding CreateProjectVm, Converter={catel:ReferenceToCollapsingVisibilityConverter}}"
+                                                Content="{Binding CreateProjectVm, Converter={catel:ViewModelToViewConverter}}" />
+
+                                <Button HorizontalAlignment="Left"
+                                        Width="500"
+                                        Height="280"
+                                        Style="{StaticResource BaseButton}"
+                                        Command="{Binding OpenCreateProjectWindow}"
+                                        Visibility="{Binding CreateProjectVm, Converter={catel:ReferenceToCollapsingVisibilityConverter}, ConverterParameter=True}">
+                                    <Grid>
+                                        <Grid.Style>
+                                            <Style TargetType="Grid">
+                                                <Setter Property="Background"
+                                                        Value="#FFCCCCCC" />
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver"
+                                                             Value="True">
+                                                        <Setter Property="Background"
+                                                                Value="#FFB3B3B3" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+
+                                        <TextBlock Width="200"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="Black"
+                                                   TextAlignment="Center"
+                                                   FontSize="24">Создать проект</TextBlock>
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+
+                        <CollectionViewSource x:Key="ProjectsCollection"
+                                              Source="{Binding Projects}" />
+                    </ListBox.Resources>
+                    <ListBox.ItemsSource>
+                        <CompositeCollection>
+                            <CollectionContainer Collection="{Binding Source={StaticResource ProjectsCollection}}" />
+                            <objects:DataObject />
+                        </CompositeCollection>
+                    </ListBox.ItemsSource>
+                </ListBox>
             </WrapPanel>
         </ScrollViewer>
     </Grid>
