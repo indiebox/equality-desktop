@@ -22,5 +22,7 @@ namespace Equality.Data
         public static User CurrentUser { get; set; }
 
         public static string ApiToken { get; set; }
+
+        public static Project OpenProject { get; set; }
     }
 }

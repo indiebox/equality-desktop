@@ -46,26 +46,32 @@
                     <!-- Templates for custom objects. -->
                     <ListBox.Resources>
                         <DataTemplate DataType="{x:Type models:Project}">
-                            <Grid Width="500"
-                                  Height="280"
-                                  Margin="10,0,10,20">
-                                <Image Stretch="UniformToFill"
-                                       Source="/Resources/Images/BackgroundImage.jpg" />
-                                <Rectangle Fill="Black"
-                                           Opacity="0.5" />
+                            <Button Width="500"
+                                    Height="280"
+                                    Margin="10,0,10,20"
+                                    Style="{StaticResource BaseButton}"
+                                    Command="{Binding DataContext.OpenProjectPage, RelativeSource={RelativeSource AncestorType=equality:Page}}"
+                                    CommandParameter="{Binding}">
+                                <Grid>
+                                    <Image Stretch="UniformToFill"
+                                           Source="/Resources/Images/BackgroundImage.jpg" />
+                                    <Rectangle Fill="Black"
+                                               Opacity="0.5" />
 
-                                <TextBlock MaxWidth="400"
-                                           MaxHeight="200"
-                                           Margin="20"
-                                           Foreground="White"
-                                           TextWrapping="Wrap"
-                                           TextTrimming="WordEllipsis"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           TextAlignment="Center"
-                                           FontSize="24"
-                                           Text="{Binding Name}"></TextBlock>
-                            </Grid>
+                                    <TextBlock MaxWidth="400"
+                                               MaxHeight="200"
+                                               Margin="20"
+                                               Foreground="White"
+                                               TextWrapping="Wrap"
+                                               TextTrimming="WordEllipsis"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               TextAlignment="Center"
+                                               FontSize="24"
+                                               Text="{Binding Name}"></TextBlock>
+                                </Grid>
+
+                            </Button>
                         </DataTemplate>
 
                         <DataTemplate DataType="{x:Type objects:DataObject}">

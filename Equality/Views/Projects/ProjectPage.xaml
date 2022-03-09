@@ -8,6 +8,8 @@
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
                xmlns:controls="clr-namespace:Equality.Controls"
+               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+               d:DataContext="{d:DesignInstance Type=viewmodels:ProjectPageViewModel}"
                FontSize="16"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DesignWidth="1920"
@@ -30,7 +32,8 @@
                             Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center"
                                Margin="10"
-                               FontSize="24">Equality</TextBlock>
+                               FontSize="24"
+                               Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Top"
@@ -52,7 +55,7 @@
                                  Content="Настройки" />
                 </StackPanel>
             </DockPanel>
-            <Frame Source="/Views/Projects/ProjectSettingsPage.xaml">
+            <Frame>
 
             </Frame>
         </DockPanel>
