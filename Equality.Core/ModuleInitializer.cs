@@ -2,7 +2,6 @@ using System.Runtime.CompilerServices;
 
 using Catel.IoC;
 
-using Equality.Core.Services;
 using Equality.Http;
 
 /// <summary>
@@ -28,7 +27,5 @@ public static class ModuleInitializer
         */
 
         serviceLocator.RegisterType<IApiClient, ApiClient>();
-
-        serviceLocator.RegisterType<IUserService, UserService>();
     }
 }

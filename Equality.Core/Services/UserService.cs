@@ -6,16 +6,20 @@ using Catel;
 
 using Equality.Data;
 using Equality.Http;
+using Equality.Models;
 
-namespace Equality.Core.Services
+using Newtonsoft.Json.Linq;
+
+namespace Equality.Services
 {
-    public class UserService : IUserService
+    public class UserServiceBase<TUserModel> : IUserServiceBase<TUserModel>
+        where TUserModel : class, IUser, new()
     {
         protected IApiClient ApiClient;
 
         protected ITokenResolverService TokenResolver;
 
-        public UserService(IApiClient apiClient, ITokenResolverService tokenResolver)
+        public UserServiceBase(IApiClient apiClient, ITokenResolverService tokenResolver)
         {
             Argument.IsNotNull(nameof(apiClient), apiClient);
             Argument.IsNotNull(nameof(tokenResolver), tokenResolver);
@@ -24,10 +28,16 @@ namespace Equality.Core.Services
             TokenResolver = tokenResolver;
         }
 
-        public async Task<ApiResponseMessage> LoadAuthUserAsync()
-            => await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync("user");
+        public async Task<ApiResponseMessage<TUserModel>> LoadAuthUserAsync()
+        {
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync("user");
 
-        public async Task<ApiResponseMessage> LoginAsync(string email, string password)
+            var user = Deserialize(response.Content["data"]);
+
+            return new(user, response);
+        }
+
+        public async Task<ApiResponseMessage<TUserModel>> LoginAsync(string email, string password)
         {
             Argument.IsNotNullOrWhitespace(nameof(email), email);
             Argument.IsNotNullOrEmpty(nameof(password), password);
@@ -39,7 +49,11 @@ namespace Equality.Core.Services
                 { "device_name", GetDeviceName() },
             };
 
-            return await ApiClient.PostAsync("login", data);
+            var response = await ApiClient.PostAsync("login", data);
+
+            var user = Deserialize(response.Content["data"]);
+
+            return new(user, response);
         }
 
         public async Task<ApiResponseMessage> LogoutAsync()
@@ -74,6 +88,12 @@ namespace Equality.Core.Services
 
             return await ApiClient.PostAsync("reset-password", data);
         }
+
+        /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
+        protected TUserModel Deserialize(JToken data) => ((IDeserializeModels<TUserModel>)this).Deserialize(data);
+
+        /// <inheritdoc cref="IDeserializeModels{T}.DeserializeRange(JToken)"/>
+        protected TUserModel[] DeserializeRange(JToken data) => ((IDeserializeModels<TUserModel>)this).DeserializeRange(data);
 
         protected string GetDeviceName()
         {

@@ -3,10 +3,12 @@ using System.Threading.Tasks;
 
 using Equality.Http;
 using Equality.Data;
+using Equality.Models;
 
-namespace Equality.Core.Services
+namespace Equality.Services
 {
-    public interface IUserService
+    public interface IUserServiceBase<TUserModel> : IDeserializeModels<TUserModel>
+        where TUserModel : class, IUser, new()
     {
         /// <summary>
         /// Sends the request to get an authenticated user to the API.
@@ -18,7 +20,7 @@ namespace Equality.Core.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> LoadAuthUserAsync();
+        public Task<ApiResponseMessage<TUserModel>> LoadAuthUserAsync();
 
         /// <summary>
         /// Sends the login request to the API.
@@ -28,7 +30,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> LoginAsync(string email, string password);
+        public Task<ApiResponseMessage<TUserModel>> LoginAsync(string email, string password);
 
         /// <summary>
         /// Sends the logout authenticated user request to the API.
@@ -62,25 +64,6 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> ResetPasswordAsync(string email, string password, string passwordConfirmation, string token);
-    }
-
-    public interface IUserService<TUserModel> : IDeserializeModels<TUserModel>
-        where TUserModel : class, new()
-    {
-        /// <inheritdoc cref="IUserService.LoadAuthUserAsync" />
-        public Task<ApiResponseMessage<TUserModel>> LoadAuthUserAsync();
-
-        /// <inheritdoc cref="IUserService.LoginAsync(string, string)" />
-        public Task<ApiResponseMessage<TUserModel>> LoginAsync(string email, string password);
-
-        /// <inheritdoc cref="IUserService.LogoutAsync" />
-        public Task<ApiResponseMessage> LogoutAsync();
-
-        /// <inheritdoc cref="IUserService.SendResetPasswordTokenAsync(string)" />
-        public Task<ApiResponseMessage> SendResetPasswordTokenAsync(string email);
-
-        /// <inheritdoc cref="IUserService.ResetPasswordAsync(string, string, string, string)" />
         public Task<ApiResponseMessage> ResetPasswordAsync(string email, string password, string passwordConfirmation, string token);
     }
 }

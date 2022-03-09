@@ -4,7 +4,7 @@ using Catel.Data;
 
 namespace Equality.Models
 {
-    public class User : ModelBase, IEquatable<User>
+    public class User : ModelBase, IUser, IEquatable<User>
     {
         public User()
         {
