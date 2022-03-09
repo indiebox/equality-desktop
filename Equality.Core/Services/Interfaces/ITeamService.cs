@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using Equality.Http;
 using Equality.Models;
+using Equality.Data;
 
 namespace Equality.Core.Services
 {
@@ -14,7 +15,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -27,7 +28,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -40,7 +41,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -57,7 +58,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -75,7 +76,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -93,7 +94,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -110,7 +111,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -121,112 +122,37 @@ namespace Equality.Core.Services
         where TTeamModel : class, new()
         where TTeamMemberModel : class, new()
     {
-        /// <summary>
-        /// Sends the get current user teams request to the API.
-        /// </summary>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
+        /// <inheritdoc cref="ITeamService.GetTeamsAsync" />
         public Task<ApiResponseMessage<TTeamModel[]>> GetTeamsAsync();
 
-        /// <summary>
-        /// Sends the create team request to the API.
-        /// </summary>
-        /// <param name="team">The team.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
+        /// <inheritdoc cref="ITeamService.CreateAsync(ITeam)" />
         public Task<ApiResponseMessage<TTeamModel>> CreateAsync(TTeamModel team);
 
-        /// <summary>
-        /// Sends the get members request to the API.
-        /// </summary>
-        /// <param name="team">The team.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
+        /// <inheritdoc cref="ITeamService.GetMembersAsync(ITeam)" />
         public Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(TTeamModel team);
 
-        /// <inheritdoc cref="GetMembersAsync(TTeamModel)"/>
-        /// <param name="teamId">The team id.</param>
+        /// <inheritdoc cref="ITeamService.GetMembersAsync(ulong)" />
         public Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(ulong teamId);
 
-        /// <summary>
-        /// Sends the leave team request to the API.
-        /// </summary>
-        /// <param name="team">The team.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
+        /// <inheritdoc cref="ITeamService.LeaveTeamAsync(ITeam)" />
         public Task<ApiResponseMessage> LeaveTeamAsync(TTeamModel team);
 
-        /// <inheritdoc cref="LeaveTeamAsync(TTeamModel)"/>
-        /// <param name="teamId">The team id.</param>
+        /// <inheritdoc cref="ITeamService.LeaveTeamAsync(ulong)" />
         public Task<ApiResponseMessage> LeaveTeamAsync(ulong teamId);
 
-        /// <summary>
-        /// Sends the set logo request to the API.
-        /// </summary>
-        /// <param name="team">The team.</param>
-        /// <param name="imagePath">The path to image file.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
+        /// <inheritdoc cref="ITeamService.SetLogoAsync(ITeam, string)" />
         public Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(TTeamModel team, string imagePath);
 
-        /// <inheritdoc cref="SetLogoAsync(TTeamModel, string)"/>
-        /// <param name="teamId">The team id.</param>
-        /// <param name="imagePath">The path to image file.</param>
+        /// <inheritdoc cref="ITeamService.SetLogoAsync(ulong, string)" />
         public Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(ulong teamId, string imagePath);
 
-        /// <summary>
-        /// Sends the delete logo request to the API.
-        /// </summary>
-        /// <param name="team">The team.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
+        /// <inheritdoc cref="ITeamService.DeleteLogoAsync(ITeam)" />
         public Task<ApiResponseMessage<TTeamModel>> DeleteLogoAsync(TTeamModel team);
 
-        /// <inheritdoc cref="DeleteLogoAsync(TTeamModel)"/>
-        /// <param name="teamId">The team id.</param>
+        /// <inheritdoc cref="ITeamService.DeleteLogoAsync(ulong)" />
         public Task<ApiResponseMessage<TTeamModel>> DeleteLogoAsync(ulong teamId);
 
-        /// <summary>
-        /// Sends the update team request to the API.
-        /// </summary>
-        /// <param name="team">The team.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
+        /// <inheritdoc cref="ITeamService.UpdateTeamAsync(ITeam)" />
         public Task<ApiResponseMessage<TTeamModel>> UpdateTeamAsync(TTeamModel team);
     }
 }

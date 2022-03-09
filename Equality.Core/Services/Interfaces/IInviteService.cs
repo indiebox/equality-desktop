@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using Equality.Http;
 using Equality.Models;
+using Equality.Data;
 
 namespace Equality.Core.Services
 {
@@ -24,7 +25,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -41,7 +42,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -55,7 +56,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -73,7 +74,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -90,7 +91,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -107,7 +108,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -122,105 +123,37 @@ namespace Equality.Core.Services
         where TInviteModel : class, new()
         where TTeamModel : class, new()
     {
-        /// <summary>
-        /// Sends the get team invites request to the API.
-        /// </summary>
-        /// <param name="team">The team.</param>
-        /// <param name="filter">Filter.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
+        /// <inheritdoc cref="IInviteService.GetTeamInvitesAsync(ITeam, IInviteService.InviteFilter)" />
         public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(TTeamModel team, IInviteService.InviteFilter filter = IInviteService.InviteFilter.All);
 
-        /// <inheritdoc cref="GetTeamInvitesAsync(TTeamModel, IInviteService.InviteFilter)"/>
-        /// <param name="teamId">The team id.</param>
-        /// <param name="filter">Filter.</param>
+        /// <inheritdoc cref="IInviteService.GetTeamInvitesAsync(ulong, IInviteService.InviteFilter)" />
         public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ulong teamId, IInviteService.InviteFilter filter = IInviteService.InviteFilter.All);
 
-        /// <summary>
-        /// Sends the get user invites request to the API.
-        /// </summary>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
+        /// <inheritdoc cref="IInviteService.GetUserInvitesAsync" />
         public Task<ApiResponseMessage<TInviteModel[]>> GetUserInvitesAsync();
 
-        /// <summary>
-        /// Sends the invite user to the team request to the API.
-        /// </summary>
-        /// <param name="team">The team.</param>
-        /// <param name="email">The user email.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
+        /// <inheritdoc cref="IInviteService.InviteUserAsync(ITeam, string)" />
         public Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(TTeamModel team, string email);
 
-        /// <inheritdoc cref="InviteUserAsync(TTeamModel, string)"/>
-        /// <param name="teamId">The team id.</param>
-        /// <param name="email">The user email.</param>
+        /// <inheritdoc cref="IInviteService.InviteUserAsync(ulong, string)" />
         public Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(ulong teamId, string email);
 
-        /// <summary>
-        /// Sends the revoke invite request to the API.
-        /// </summary>
-        /// <param name="invite">The invite.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
+        /// <inheritdoc cref="IInviteService.RevokeInviteAsync(IInvite)" />
         public Task<ApiResponseMessage> RevokeInviteAsync(TInviteModel invite);
 
-        /// <inheritdoc cref="RevokeInviteAsync(TInviteModel)"/>
-        /// <param name="inviteId">The invite id.</param>
+        /// <inheritdoc cref="IInviteService.RevokeInviteAsync(ulong)" />
         public Task<ApiResponseMessage> RevokeInviteAsync(ulong inviteId);
 
-        /// <summary>
-        /// Sends the accept invite request to the API.
-        /// </summary>
-        /// <param name="invite">The invite.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
+        /// <inheritdoc cref="IInviteService.AcceptInviteAsync(IInvite)" />
         public Task<ApiResponseMessage> AcceptInviteAsync(TInviteModel invite);
 
-        /// <inheritdoc cref="AcceptInviteAsync(TInviteModel)"/>
-        /// <param name="inviteId">The invite id.</param>
+        /// <inheritdoc cref="IInviteService.AcceptInviteAsync(ulong)" />
         public Task<ApiResponseMessage> AcceptInviteAsync(ulong inviteId);
 
-        /// <summary>
-        /// Sends the decline invite request to the API.
-        /// </summary>
-        /// <param name="invite">The invite.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
+        /// <inheritdoc cref="IInviteService.DeclineInviteAsync(IInvite)" />
         public Task<ApiResponseMessage> DeclineInviteAsync(TInviteModel invite);
 
-        /// <inheritdoc cref="DeclineInviteAsync(TInviteModel)"/>
-        /// <param name="inviteId">The invite id.</param>
+        /// <inheritdoc cref="IInviteService.DeclineInviteAsync(ulong)" />
         public Task<ApiResponseMessage> DeclineInviteAsync(ulong inviteId);
     }
 }
