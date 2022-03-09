@@ -11,8 +11,8 @@
                d:Background="Gray"
                d:DesignWidth="1800"
                d:DesignHeight="900"
+               d:DataContext="{d:DesignInstance dvm:DesignProjectSettingsPageViewModel, IsDesignTimeCreatable=True}"
                mc:Ignorable="d">
-
     <DockPanel>
         <Grid>
             <StackPanel Background="White"
@@ -23,21 +23,46 @@
                            Margin="20">Основное</TextBlock>
                 <Grid Width="500"
                       Margin="20,0,20,30">
-                    <Image Source="/Resources/Images/BackgroundImage.jpg" />
-                    <Rectangle Fill="Black"
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Image Grid.Row="0"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="3"
+                           Source="/Resources/Images/BackgroundImage.jpg" />
+                    <Rectangle Grid.Row="0"
+                               Grid.Column="0"
+                               Grid.ColumnSpan="3"
+                               Fill="Black"
                                Opacity="0.5" />
-                    <Button Width="200">Изменить изображение</Button>
+
+                    <StackPanel Grid.Column="1"
+                                VerticalAlignment="Center">
+                        <Button Command="{Binding UploadImage}"
+                                Margin="10">Изменить изображение</Button>
+                        <Button Command="{Binding DeleteImage}"
+                                Margin="10">Удалить изображение</Button>
+                    </StackPanel>
                 </Grid>
 
                 <StackPanel HorizontalAlignment="Center">
                     <Label Margin="10,0">Название</Label>
                     <TextBox Style="{StaticResource FilledTextBox}"
+                             Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                              Width="500"
                              materialDesign:HintAssist.Hint="Вставьте название проекта" />
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Center">
                     <Label Margin="10,0">Описание</Label>
                     <TextBox Style="{StaticResource OutlinedTextBox}"
+                             Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
                              Width="500"
                              materialDesign:HintAssist.Hint="Введите описание проекта" />
                 </StackPanel>
@@ -45,7 +70,8 @@
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right"
                             Margin="20,0,20,30">
-                    <Button Content="Сохранить" />
+                    <Button Command="{Binding UpdateSettings}"
+                            Content="Сохранить" />
                 </StackPanel>
             </StackPanel>
         </Grid>
