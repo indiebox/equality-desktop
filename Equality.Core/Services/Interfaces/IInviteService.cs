@@ -11,19 +11,10 @@ namespace Equality.Services
         where TInviteModel : class, IInvite, new()
         where TTeamModel : class, ITeam, new()
     {
-        public enum InviteFilter
-        {
-            All,
-            Pending,
-            Accepted,
-            Declined,
-        };
-
         /// <summary>
         /// Sends the get team invites request to the API.
         /// </summary>
         /// <param name="team">The team.</param>
-        /// <param name="filter">Filter.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -31,12 +22,11 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(TTeamModel team, InviteFilter filter = InviteFilter.All);
+        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(TTeamModel team);
 
-        /// <inheritdoc cref="GetTeamInvitesAsync(TTeamModel, InviteFilter)"/>
+        /// <inheritdoc cref="GetTeamInvitesAsync(TTeamModel)"/>
         /// <param name="teamId">The team id.</param>
-        /// <param name="filter">Filter.</param>
-        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ulong teamId, InviteFilter filter = InviteFilter.All);
+        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ulong teamId);
 
         /// <summary>
         /// Sends the get user invites request to the API.

@@ -4,7 +4,7 @@
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:converters="clr-namespace:Equality.Converters;assembly=Equality.MVVM"
-               xmlns:services="clr-namespace:Equality.Services;assembly=Equality.MVVM"
+               xmlns:vm="clr-namespace:Equality.ViewModels"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
@@ -29,13 +29,13 @@
                       materialDesign:HintAssist.Hint="Фильтры"
                       VerticalAlignment="Center"
                       Width="250">
-                <ComboBoxItem IsSelected="{Binding SelectedFilter, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static services:IInviteService+InviteFilter.All}}"
+                <ComboBoxItem IsSelected="{Binding SelectedFilter, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static vm:TeamInvitationsListViewModel+InviteFilter.All}}"
                               Content="Без фильтра" />
-                <ComboBoxItem IsSelected="{Binding SelectedFilter, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static services:IInviteService+InviteFilter.Pending}}"
+                <ComboBoxItem IsSelected="{Binding SelectedFilter, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static vm:TeamInvitationsListViewModel+InviteFilter.Pending}}"
                               Content="Ожидающие ответа" />
-                <ComboBoxItem IsSelected="{Binding SelectedFilter, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static services:IInviteService+InviteFilter.Accepted}}"
+                <ComboBoxItem IsSelected="{Binding SelectedFilter, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static vm:TeamInvitationsListViewModel+InviteFilter.Accepted}}"
                               Content="Принятые" />
-                <ComboBoxItem IsSelected="{Binding SelectedFilter, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static services:IInviteService+InviteFilter.Declined}}"
+                <ComboBoxItem IsSelected="{Binding SelectedFilter, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static vm:TeamInvitationsListViewModel+InviteFilter.Declined}}"
                               Content="Отклонённые" />
             </ComboBox>
             <Button DockPanel.Dock="Right"

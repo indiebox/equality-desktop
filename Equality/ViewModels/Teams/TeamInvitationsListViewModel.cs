@@ -12,7 +12,6 @@ using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
 using Equality.Data;
-using InviteFilter = Equality.Services.IInviteService.InviteFilter;
 
 using MaterialDesignThemes.Wpf;
 
@@ -31,6 +30,14 @@ namespace Equality.ViewModels
 
             NavigationCompleted += OnNavigated;
         }
+
+        public enum InviteFilter
+        {
+            All,
+            Pending,
+            Accepted,
+            Declined,
+        };
 
         #region Properties
 

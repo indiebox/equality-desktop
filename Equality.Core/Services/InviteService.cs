@@ -28,21 +28,13 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
-        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync
-            (TTeamModel team, IInviteServiceBase<TInviteModel, TTeamModel>.InviteFilter filter = IInviteServiceBase<TInviteModel, TTeamModel>.InviteFilter.All)
-            => GetTeamInvitesAsync(team.Id, filter);
+        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(TTeamModel team) => GetTeamInvitesAsync(team.Id);
 
-        public async Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync
-            (ulong teamId, IInviteServiceBase<TInviteModel, TTeamModel>.InviteFilter filter = IInviteServiceBase<TInviteModel, TTeamModel>.InviteFilter.All)
+        public async Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ulong teamId)
         {
             Argument.IsNotNull(nameof(teamId), teamId);
 
-            var query = ApiClient.BuildUri($"teams/{teamId}/invites", new()
-            {
-                { "filter", filter.ToString().ToLower() }
-            });
-
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/invites");
 
             var invites = DeserializeRange(response.Content["data"]);
 
