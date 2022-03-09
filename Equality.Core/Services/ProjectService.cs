@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 using Catel;
@@ -44,6 +47,20 @@ namespace Equality.Core.Services
             };
 
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/projects", data);
+        }
+
+        public async Task<ApiResponseMessage> UpdateProjectAsync(IProject project)
+        {
+            Argument.IsNotNull(nameof(project), project);
+            Argument.IsMinimal<ulong>("IProject.Id", project.Id, 1);
+
+            Dictionary<string, object> data = new()
+            {
+                { "name", project.Name },
+                { "description", project.Description },
+            };
+
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync($"projects/{project.Id}", data);
         }
     }
 }

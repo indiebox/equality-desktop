@@ -31,12 +31,23 @@ namespace Equality.Core.Services
         /// <param name="team">The team.</param>
         /// <param name="project">The project.</param>
         /// <returns>Returns the API response.</returns>
+        /// 
+        /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage> CreateProjectAsync(ITeam team, IProject project);
 
         /// <inheritdoc cref="CreateProjectAsync(ITeam, IProject)"/>
         /// <param name="teamId">The team id.</param>
         /// <param name="project">The project.</param>
         public Task<ApiResponseMessage> CreateProjectAsync(ulong teamId, IProject project);
+
+        /// <summary>
+        /// Sends the update project request to the API.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage> UpdateProjectAsync(IProject project);
     }
     public interface IProjectService<TProjectModel, TTeamModel> : IDeserializeModels<TProjectModel>
         where TProjectModel : class, new()
@@ -71,5 +82,14 @@ namespace Equality.Core.Services
         /// <param name="teamId">The team id.</param>
         /// <param name="project">The project.</param>
         public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ulong teamId, TProjectModel project);
+
+        /// <summary>
+        /// Sends the update project request to the API.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage<TProjectModel>> UpdateProjectAsync(TProjectModel project);
     }
 }

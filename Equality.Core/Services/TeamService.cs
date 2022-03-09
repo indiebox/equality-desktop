@@ -53,6 +53,15 @@ namespace Equality.Core.Services
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/members");
         }
 
+        public Task<ApiResponseMessage> LeaveTeamAsync(ITeam team) => LeaveTeamAsync(team.Id);
+
+        public async Task<ApiResponseMessage> LeaveTeamAsync(ulong teamId)
+        {
+            Argument.IsNotNull(nameof(teamId), teamId);
+
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/leave");
+        }
+
         public Task<ApiResponseMessage> SetLogoAsync(ITeam team, string imagePath) => SetLogoAsync(team.Id, imagePath);
 
         public async Task<ApiResponseMessage> SetLogoAsync(ulong teamId, string imagePath)
@@ -95,15 +104,6 @@ namespace Equality.Core.Services
             Argument.IsNotNull(nameof(teamId), teamId);
 
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"teams/{teamId}/logo");
-        }
-
-        public Task<ApiResponseMessage> LeaveTeamAsync(ITeam team) => LeaveTeamAsync(team.Id);
-
-        public async Task<ApiResponseMessage> LeaveTeamAsync(ulong teamId)
-        {
-            Argument.IsNotNull(nameof(teamId), teamId);
-
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/leave");
         }
 
         public async Task<ApiResponseMessage> UpdateTeamAsync(ITeam team)
