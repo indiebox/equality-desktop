@@ -10,15 +10,20 @@ using Equality.Data;
 using Equality.Http;
 using Equality.Models;
 
-namespace Equality.Core.Services
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
+
+namespace Equality.Services
 {
-    public class TeamService : ITeamService
+    public class TeamServiceBase<TTeamModel, TTeamMemberModel> : ITeamServiceBase<TTeamModel, TTeamMemberModel>
+        where TTeamModel : class, ITeam, new()
+        where TTeamMemberModel : class, ITeamMember, new()
     {
         protected IApiClient ApiClient;
 
         protected ITokenResolverService TokenResolver;
 
-        public TeamService(IApiClient apiClient, ITokenResolverService tokenResolver)
+        public TeamServiceBase(IApiClient apiClient, ITokenResolverService tokenResolver)
         {
             Argument.IsNotNull(nameof(apiClient), apiClient);
             Argument.IsNotNull(nameof(tokenResolver), tokenResolver);
@@ -27,10 +32,16 @@ namespace Equality.Core.Services
             TokenResolver = tokenResolver;
         }
 
-        public async Task<ApiResponseMessage> GetTeamsAsync()
-            => await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync("teams");
+        public async Task<ApiResponseMessage<TTeamModel[]>> GetTeamsAsync()
+        {
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync("teams");
 
-        public async Task<ApiResponseMessage> CreateAsync(ITeam team)
+            var teams = DeserializeRange(response.Content["data"]);
+
+            return new(teams, response);
+        }
+
+        public async Task<ApiResponseMessage<TTeamModel>> CreateAsync(TTeamModel team)
         {
             Argument.IsNotNull(nameof(team), team);
 
@@ -41,21 +52,29 @@ namespace Equality.Core.Services
                 { "url", team.Url }
             };
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync("teams", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync("teams", data);
+
+            team = Deserialize(response.Content["data"]);
+
+            return new(team, response);
         }
 
-        public Task<ApiResponseMessage> GetMembersAsync(ITeam team) => GetMembersAsync(team.Id);
+        public Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(TTeamModel team) => GetMembersAsync(team.Id);
 
-        public async Task<ApiResponseMessage> GetMembersAsync(ulong teamId)
+        public async Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(ulong teamId)
         {
             Argument.IsNotNull(nameof(teamId), teamId);
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/members");
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/members");
+
+            var members = DeserializeMembers(response.Content["data"]);
+
+            return new(members, response);
         }
 
-        public Task<ApiResponseMessage> SetLogoAsync(ITeam team, string imagePath) => SetLogoAsync(team.Id, imagePath);
+        public Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(TTeamModel team, string imagePath) => SetLogoAsync(team.Id, imagePath);
 
-        public async Task<ApiResponseMessage> SetLogoAsync(ulong teamId, string imagePath)
+        public async Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(ulong teamId, string imagePath)
         {
             Argument.IsNotNull(nameof(teamId), teamId);
             Argument.IsNotNull(nameof(imagePath), imagePath);
@@ -85,19 +104,27 @@ namespace Equality.Core.Services
                 { fieldName, content }
             };
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/logo", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/logo", data);
+
+            var team = Deserialize(response.Content["data"]);
+
+            return new(team, response);
         }
 
-        public Task<ApiResponseMessage> DeleteLogoAsync(ITeam team) => DeleteLogoAsync(team.Id);
+        public Task<ApiResponseMessage<TTeamModel>> DeleteLogoAsync(TTeamModel team) => DeleteLogoAsync(team.Id);
 
-        public async Task<ApiResponseMessage> DeleteLogoAsync(ulong teamId)
+        public async Task<ApiResponseMessage<TTeamModel>> DeleteLogoAsync(ulong teamId)
         {
             Argument.IsNotNull(nameof(teamId), teamId);
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"teams/{teamId}/logo");
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"teams/{teamId}/logo");
+
+            var team = Deserialize(response.Content["data"]);
+
+            return new(team, response);
         }
 
-        public Task<ApiResponseMessage> LeaveTeamAsync(ITeam team) => LeaveTeamAsync(team.Id);
+        public Task<ApiResponseMessage> LeaveTeamAsync(TTeamModel team) => LeaveTeamAsync(team.Id);
 
         public async Task<ApiResponseMessage> LeaveTeamAsync(ulong teamId)
         {
@@ -106,11 +133,10 @@ namespace Equality.Core.Services
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/leave");
         }
 
-        public async Task<ApiResponseMessage> UpdateTeamAsync(ITeam team)
+        public async Task<ApiResponseMessage<TTeamModel>> UpdateTeamAsync(TTeamModel team)
         {
-
             Argument.IsNotNull(nameof(team), team);
-            Argument.IsMinimal<ulong>("ITeam.Id", team.Id, 1);
+            Argument.IsMinimal<ulong>("Team.Id", team.Id, 1);
 
             Dictionary<string, object> data = new()
             {
@@ -119,7 +145,35 @@ namespace Equality.Core.Services
                 { "url", team.Url }
             };
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync($"teams/{team.Id}", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync($"teams/{team.Id}", data);
+
+            team = Deserialize(response.Content["data"]);
+
+            return new(team, response);
         }
+
+        /// <summary>
+        /// Deserializes the JToken to the <c>ITeamMember[]</c>.
+        /// </summary>
+        /// <param name="data">The JToken.</param>
+        /// <returns>Returns the <c>ITeamMember[]</c>.</returns>
+        public TTeamMemberModel[] DeserializeMembers(JToken data)
+        {
+            Argument.IsNotNull(nameof(data), data);
+
+            return data.ToObject<TTeamMemberModel[]>(new()
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                }
+            });
+        }
+
+        /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
+        protected TTeamModel Deserialize(JToken data) => ((IDeserializeModels<TTeamModel>)this).Deserialize(data);
+
+        /// <inheritdoc cref="IDeserializeModels{T}.DeserializeRange(JToken)"/>
+        protected TTeamModel[] DeserializeRange(JToken data) => ((IDeserializeModels<TTeamModel>)this).DeserializeRange(data);
     }
 }

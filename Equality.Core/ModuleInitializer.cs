@@ -30,6 +30,5 @@ public static class ModuleInitializer
         serviceLocator.RegisterType<IApiClient, ApiClient>();
 
         serviceLocator.RegisterType<IUserService, UserService>();
-        serviceLocator.RegisterType<ITeamService, TeamService>();
     }
 }

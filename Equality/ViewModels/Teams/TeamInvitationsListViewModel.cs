@@ -12,7 +12,7 @@ using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
 using Equality.Data;
-using InviteFilter = Equality.Core.Services.IInviteService.InviteFilter;
+using InviteFilter = Equality.Services.IInviteService.InviteFilter;
 
 using MaterialDesignThemes.Wpf;
 
