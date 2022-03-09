@@ -1,26 +1,63 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
 
+using Catel.Collections;
+
+using Equality.Services;
+using Equality.Models;
 using Equality.MVVM;
 
 namespace Equality.ViewModels
 {
     public class ProjectPageViewModel : ViewModel
     {
-        public ProjectPageViewModel()
+        ITeamService TeamService;
+
+        IProjectService ProjectService;
+
+        public ProjectPageViewModel(ITeamService teamService, IProjectService projectService)
         {
+            TeamService = teamService;
+
+            ProjectService = projectService;
         }
 
         public override string Title => "View model title";
 
         #region Properties
 
-
+        public ObservableCollection<Team> TeamsWithProjects { get; set; } = new();
 
         #endregion
 
         #region Commands
 
 
+
+        #endregion
+
+        #region Methods
+
+        protected async Task LoadMembersAsync()
+        {
+            try {
+                var response = await TeamService.GetTeamsAsync();
+
+                foreach (var team in response.Object) {
+
+                    var responseProjects = await ProjectService.GetProjectsAsync(team);
+
+                    team.TeamProjects = responseProjects.Object;
+
+                    TeamsWithProjects.Add(team);
+                }
+
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+        }
 
         #endregion
 

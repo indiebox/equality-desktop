@@ -152,7 +152,14 @@
                                 </Button>
 
                                 <Grid Margin="24,8,24,16">
-                                    <WrapPanel Orientation="Horizontal">
+                                    <ListBox ItemsSource="{Binding TeamProjects}">
+
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel IsItemsHost="True" />
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+
                                         <Border Margin="10">
                                             <Border.Background>
                                                 <ImageBrush Stretch="UniformToFill"
@@ -164,25 +171,10 @@
                                                            Opacity="0.5" />
                                                 <TextBlock HorizontalAlignment="Center"
                                                            VerticalAlignment="Center"
-                                                           Foreground="White"><Run Text="Progect I" /></TextBlock>
+                                                           Foreground="White"><Run Text="{Binding Name}" /></TextBlock>
                                             </Grid>
                                         </Border>
-                                        <Border Margin="10"
-                                                Width="384"
-                                                Height="216">
-                                            <Border.Background>
-                                                <ImageBrush Stretch="UniformToFill"
-                                                            ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                            </Border.Background>
-                                            <Grid>
-                                                <Rectangle Fill="Black"
-                                                           Opacity="0.5" />
-                                                <TextBlock HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"
-                                                           Foreground="White"><Run Text="Progect II" /></TextBlock>
-                                            </Grid>
-                                        </Border>
-                                    </WrapPanel>
+                                    </ListBox>
                                 </Grid>
                             </StackPanel>
                         </DataTemplate>

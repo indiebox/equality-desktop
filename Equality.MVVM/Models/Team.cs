@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 
 using Catel.Data;
 
@@ -23,6 +24,8 @@ namespace Equality.Models
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+
+        public Project[] TeamProjects { get; set; }
 
         #region Override operators
 
