@@ -13,12 +13,6 @@ namespace Equality.Models
 
         public ulong Id { get; set; }
 
-        public ITeam Team { get; set; }
-
-        public IUser Inviter { get; set; }
-
-        public IUser Invited { get; set; }
-
         public InviteStatus Status { get; set; }
 
         public DateTime? AcceptedAt { get; set; }
@@ -28,5 +22,14 @@ namespace Equality.Models
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+    }
+
+    public interface IInvite<TTeam, TUser> : IInvite
+    {
+        public TTeam Team { get; set; }
+
+        public TUser Inviter { get; set; }
+
+        public TUser Invited { get; set; }
     }
 }

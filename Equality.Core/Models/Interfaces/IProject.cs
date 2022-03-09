@@ -12,10 +12,13 @@ namespace Equality.Models
 
         public string Image { get; set; }
 
-        public ITeam Team { get; set; }
-
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+    }
+
+    public interface IProject<TTeamModel> : IProject
+    {
+        public TTeamModel Team { get; set; }
     }
 }
