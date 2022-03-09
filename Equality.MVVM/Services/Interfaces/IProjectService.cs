@@ -2,7 +2,7 @@
 
 namespace Equality.Services
 {
-    public interface IProjectService : Core.Services.IProjectService<Project, Team>
+    public interface IProjectService : IProjectServiceBase<Project, Team>
     {
     }
 }

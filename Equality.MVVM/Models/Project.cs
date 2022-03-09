@@ -4,7 +4,7 @@ using Catel.Data;
 
 namespace Equality.Models
 {
-    public class Project : ModelBase, IEquatable<Project>
+    public class Project : ModelBase, IProject<Team>, IEquatable<Project>
     {
         public ulong Id { get; set; }
 

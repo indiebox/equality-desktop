@@ -7,32 +7,40 @@ using Equality.Data;
 using Equality.Http;
 using Equality.Models;
 
-namespace Equality.Core.Services
+using Newtonsoft.Json.Linq;
+
+namespace Equality.Services
 {
-    public class ProjectService : IProjectService
+    public class ProjectServiceBase<TProjectModel, TTeamModel> : IProjectServiceBase<TProjectModel, TTeamModel>
+        where TProjectModel : class, IProject, new()
+        where TTeamModel : class, ITeam, new()
     {
         protected IApiClient ApiClient;
 
         protected ITokenResolverService TokenResolver;
 
-        public ProjectService(IApiClient apiClient, ITokenResolverService tokenResolver)
+        public ProjectServiceBase(IApiClient apiClient, ITokenResolverService tokenResolver)
         {
             ApiClient = apiClient;
             TokenResolver = tokenResolver;
         }
 
-        public Task<ApiResponseMessage> GetProjectsAsync(ITeam team) => GetProjectsAsync(team.Id);
+        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(TTeamModel team) => GetProjectsAsync(team.Id);
 
-        public async Task<ApiResponseMessage> GetProjectsAsync(ulong teamId)
+        public async Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ulong teamId)
         {
             Argument.IsNotNull(nameof(teamId), teamId);
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/projects");
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/projects");
+
+            var projects = DeserializeRange(response.Content["data"]);
+
+            return new(projects, response);
         }
 
-        public Task<ApiResponseMessage> CreateProjectAsync(ITeam team, IProject project) => CreateProjectAsync(team.Id, project);
+        public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(TTeamModel team, TProjectModel project) => CreateProjectAsync(team.Id, project);
 
-        public async Task<ApiResponseMessage> CreateProjectAsync(ulong teamId, IProject project)
+        public async Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ulong teamId, TProjectModel project)
         {
             Argument.IsNotNull(nameof(teamId), teamId);
             Argument.IsNotNull(nameof(project), project);
@@ -43,7 +51,17 @@ namespace Equality.Core.Services
                 { "description", project.Description },
             };
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/projects", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/projects", data);
+
+            project = Deserialize(response.Content["data"]);
+
+            return new(project, response);
         }
+
+        /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
+        protected TProjectModel Deserialize(JToken data) => ((IDeserializeModels<TProjectModel>)this).Deserialize(data);
+
+        /// <inheritdoc cref="IDeserializeModels{T}.DeserializeRange(JToken)"/>
+        protected TProjectModel[] DeserializeRange(JToken data) => ((IDeserializeModels<TProjectModel>)this).DeserializeRange(data);
     }
 }
