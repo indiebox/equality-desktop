@@ -10,6 +10,7 @@ using Equality.Extensions;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
+using Equality.Data;
 
 namespace Equality.ViewModels
 {
@@ -30,7 +31,7 @@ namespace Equality.ViewModels
             UploadLogo = new TaskCommand(OnUploadLogoExecute);
             DeleteLogo = new TaskCommand(OnDeleteLogoExecute, () => !string.IsNullOrWhiteSpace(Logo));
 
-            NavigationCompleted += OnNavigated;
+            Team = StateManager.SelectedTeam;
         }
 
         public enum Tab
@@ -100,11 +101,6 @@ namespace Equality.ViewModels
         #endregion
 
         #region Methods
-
-        private void OnNavigated(object sender, EventArgs e)
-        {
-            Team = NavigationContext.Values["team"] as Team;
-        }
 
         private void OnActiveTabChanged()
         {

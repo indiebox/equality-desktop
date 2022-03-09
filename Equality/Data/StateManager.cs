@@ -1,4 +1,6 @@
-﻿using Catel;
+﻿using System;
+
+using Catel;
 
 using Equality.Models;
 
@@ -12,15 +14,35 @@ namespace Equality.Data
                 CurrentUser = new User()
                 {
                     Id = 1,
-                    Name = "Logged user",
-                    Email = "example@example.org",
-                    CreatedAt = System.DateTime.Today,
+                    Name = "Indie Box",
+                    Email = "indiebox.company@gmail.com",
+                    CreatedAt = DateTime.Today,
+                };
+
+                SelectedTeam = new Team()
+                {
+                    Id = 1,
+                    Name = "Indie Box",
+                    Url = "https://indiebox.ru/",
                 };
             }
         }
 
-        public static User CurrentUser { get; set; }
+        public static event EventHandler SelectedTeamChanged;
+
+        private static Team _selectedTeam;
 
         public static string ApiToken { get; set; }
+
+        public static User CurrentUser { get; set; }
+
+        public static Team SelectedTeam
+        {
+            get { return _selectedTeam; }
+            set {
+                _selectedTeam = value;
+                SelectedTeamChanged?.Invoke(null, new EventArgs());
+            }
+        }
     }
 }

@@ -7,8 +7,8 @@ using System.Windows.Input;
 using Catel.Data;
 using Catel.MVVM;
 
+using Equality.Data;
 using Equality.Extensions;
-using Equality.Helpers;
 using Equality.Http;
 using Equality.Models;
 using Equality.MVVM;
@@ -19,8 +19,6 @@ namespace Equality.ViewModels
 {
     public class CreateProjectControlViewModel : ViewModel
     {
-        protected Team Team;
-
         protected IProjectService ProjectService;
 
         public CreateProjectControlViewModel(IProjectService projectService)
@@ -63,7 +61,7 @@ namespace Equality.ViewModels
             }
 
             try {
-                var response = await ProjectService.CreateProjectAsync(Team, Project);
+                var response = await ProjectService.CreateProjectAsync(StateManager.SelectedTeam, Project);
                 Project.SyncWith(response.Object);
 
                 await SaveViewModelAsync();
@@ -104,7 +102,7 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
+            // TODO: subcribe to events here
         }
 
         protected override async Task CloseAsync()

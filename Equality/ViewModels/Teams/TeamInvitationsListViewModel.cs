@@ -11,6 +11,7 @@ using Equality.Helpers;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
+using Equality.Data;
 using InviteFilter = Equality.Core.Services.IInviteService.InviteFilter;
 
 using MaterialDesignThemes.Wpf;
@@ -19,8 +20,6 @@ namespace Equality.ViewModels
 {
     public class TeamInvitationsListViewModel : ViewModel
     {
-        protected Team Team;
-
         protected IInviteService InviteService;
 
         public TeamInvitationsListViewModel(IInviteService inviteService)
@@ -110,7 +109,7 @@ namespace Equality.ViewModels
         protected async Task LoadInvitesAsync()
         {
             try {
-                var response = await InviteService.GetTeamInvitesAsync(Team);
+                var response = await InviteService.GetTeamInvitesAsync(StateManager.SelectedTeam);
 
                 Invites.AddRange(response.Object);
             } catch (HttpRequestException e) {
@@ -123,8 +122,6 @@ namespace Equality.ViewModels
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-
-            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
 
             await LoadInvitesAsync();
 

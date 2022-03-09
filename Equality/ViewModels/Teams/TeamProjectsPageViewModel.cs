@@ -2,21 +2,21 @@
 using System.Threading.Tasks;
 
 using Catel.Collections;
+using Catel.MVVM;
 
 using Equality.Helpers;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
+using Equality.Data;
+
 using System.Net.Http;
 using System.Diagnostics;
-using Catel.MVVM;
 
 namespace Equality.ViewModels
 {
     public class TeamProjectsPageViewModel : ViewModel
     {
-        protected Team Team;
-
         protected IProjectService ProjectService;
 
         public TeamProjectsPageViewModel(IProjectService projectService)
@@ -63,7 +63,7 @@ namespace Equality.ViewModels
         protected async Task LoadProjectsAsync()
         {
             try {
-                var response = await ProjectService.GetProjectsAsync(Team);
+                var response = await ProjectService.GetProjectsAsync(StateManager.SelectedTeam);
 
                 Projects.AddRange(response.Object);
             } catch (HttpRequestException e) {
@@ -77,8 +77,6 @@ namespace Equality.ViewModels
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-
-            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
 
             await LoadProjectsAsync();
         }

@@ -8,20 +8,18 @@ using Catel.MVVM;
 
 using Equality.Http;
 using Equality.Extensions;
-using Equality.Helpers;
 using Equality.Validation;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
 
 using MaterialDesignThemes.Wpf;
+using Equality.Data;
 
 namespace Equality.ViewModels
 {
     public class InviteUserDialogViewModel : ViewModel
     {
-        protected Team Team;
-
         protected Invite Invite;
 
         protected IInviteService InviteService;
@@ -54,7 +52,7 @@ namespace Equality.ViewModels
             }
 
             try {
-                var response = await InviteService.InviteUserAsync(Team, Email);
+                var response = await InviteService.InviteUserAsync(StateManager.SelectedTeam, Email);
 
                 Invite.SyncWith(response.Object);
 
@@ -87,7 +85,7 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
+            // TODO: subcribe to events here
         }
 
         protected override async Task CloseAsync()

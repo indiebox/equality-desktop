@@ -2,7 +2,6 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using Catel;
 using Catel.MVVM;
 using Catel.Services;
 
@@ -28,6 +27,8 @@ namespace Equality.ViewModels
             UserService = userService;
 
             Logout = new TaskCommand(OnLogoutExecute);
+
+            StateManager.SelectedTeamChanged += (_, _) => RaisePropertyChanged(nameof(SelectedTeam));
         }
 
         public override string Title => "Equality";
@@ -38,14 +39,13 @@ namespace Equality.ViewModels
             Projects,
             Team,
             Project,
-            TempProject,
         }
 
         #region Properties
 
         public Tab ActiveTab { get; set; }
 
-        public Team SelectedTeam { get; set; }
+        public Team SelectedTeam => StateManager.SelectedTeam;
 
         #endregion
 
@@ -84,13 +84,8 @@ namespace Equality.ViewModels
                 case Tab.Projects:
                     NavigationService.Navigate<ProjectsPageViewModel>();
                     break;
-                case Tab.TempProject:
-                    NavigationService.Navigate<ProjectPageViewModel>();
-                    break;
                 case Tab.Team:
-                    Argument.IsNotNull(nameof(SelectedTeam), SelectedTeam);
-
-                    NavigationService.Navigate<TeamPageViewModel>(new() { { "team", SelectedTeam } });
+                    NavigationService.Navigate<TeamPageViewModel>();
                     break;
             }
         }

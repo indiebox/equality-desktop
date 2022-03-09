@@ -10,6 +10,7 @@ using Equality.Helpers;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
+using Equality.Data;
 
 namespace Equality.ViewModels
 {
@@ -56,8 +57,9 @@ namespace Equality.ViewModels
 
         private void OnOpenTeamPageExecute(Team team)
         {
+            StateManager.SelectedTeam = team;
+
             var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
-            vm.SelectedTeam = team;
             vm.ActiveTab = ApplicationWindowViewModel.Tab.Team;
         }
 
