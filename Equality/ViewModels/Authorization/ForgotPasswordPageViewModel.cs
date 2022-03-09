@@ -54,12 +54,8 @@ namespace Equality.ViewModels
 
             try {
                 await UserService.SendResetPasswordTokenAsync(Email);
-                var parameters = new Dictionary<string, object>
-                {
-                    { "email", Email }
-                };
 
-                NavigationService.Navigate<ResetPasswordPageViewModel>(parameters);
+                NavigationService.Navigate<ResetPasswordPageViewModel>(new() { { "email", Email } });
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
             } catch (HttpRequestException e) {
