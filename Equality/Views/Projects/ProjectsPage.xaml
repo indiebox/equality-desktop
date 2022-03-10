@@ -178,14 +178,19 @@
                                                         <ImageBrush Stretch="UniformToFill"
                                                                     ImageSource="/Resources/Images/BackgroundImage.jpg" />
                                                     </Border.Background>
-                                                    <Grid Width="384"
-                                                          Height="216">
-                                                        <Rectangle Fill="Black"
-                                                                   Opacity="0.5" />
-                                                        <TextBlock HorizontalAlignment="Center"
-                                                                   VerticalAlignment="Center"
-                                                                   Foreground="White"><Run Text="{Binding Name}" /></TextBlock>
-                                                    </Grid>
+                                                    <Button Width="384"
+                                                            Height="216"
+                                                            Style="{StaticResource BaseButton}"
+                                                            Command="{Binding DataContext.OpenProjectPage, RelativeSource={RelativeSource AncestorType=equality:Page}}"
+                                                            CommandParameter="{Binding}">
+                                                        <Grid>
+                                                            <Rectangle Fill="Black"
+                                                                       Opacity="0.5" />
+                                                            <TextBlock HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center"
+                                                                       Foreground="White"><Run Text="{Binding Name}" /></TextBlock>
+                                                        </Grid>
+                                                    </Button >
                                                 </Border>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
