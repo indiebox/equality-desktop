@@ -17,13 +17,13 @@ namespace Equality.ViewModels
 {
     public class ProjectsPageViewModel : ViewModel
     {
-        ITeamService TeamService;
-
-        IProjectService ProjectService;
-
         public bool IsFiltered = false;
 
         protected IUIVisualizerService UIVisualizerService;
+
+        protected ITeamService TeamService;
+
+        protected IProjectService ProjectService;
 
         public ProjectsPageViewModel(IUIVisualizerService uIVisualizerService, ITeamService teamService, IProjectService projectService)
         {
