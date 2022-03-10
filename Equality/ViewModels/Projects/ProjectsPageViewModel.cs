@@ -56,9 +56,9 @@ namespace Equality.ViewModels
 
         private void OnOpenOpenProjectPageExecute(Project project)
         {
-            var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
             StateManager.SelectedProject = project;
-            vm.SelectedProject = project;
+
+            var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
             vm.ActiveTab = ApplicationWindowViewModel.Tab.Project;
         }
 

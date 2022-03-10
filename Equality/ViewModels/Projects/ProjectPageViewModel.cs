@@ -6,6 +6,7 @@ using Catel.Services;
 using Equality.Extensions;
 using Equality.MVVM;
 using Equality.Models;
+using Equality.Data;
 
 namespace Equality.ViewModels
 {
@@ -17,7 +18,7 @@ namespace Equality.ViewModels
         {
             NavigationService = navigationService;
 
-            NavigationCompleted += OnNavigated;
+            Project = StateManager.SelectedProject;
         }
 
         public enum Tab
@@ -43,11 +44,6 @@ namespace Equality.ViewModels
         #endregion
 
         #region Methods
-
-        private void OnNavigated(object sender, System.EventArgs e)
-        {
-            Project = NavigationContext.Values["project"] as Project;
-        }
 
         private void OnActiveTabChanged()
         {

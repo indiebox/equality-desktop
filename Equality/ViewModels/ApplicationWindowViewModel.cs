@@ -28,7 +28,8 @@ namespace Equality.ViewModels
 
             Logout = new TaskCommand(OnLogoutExecute);
 
-            StateManager.SelectedTeamChanged += (_, _) => RaisePropertyChanged(nameof(SelectedTeam));
+            StateManager.SelectedTeamChanged += SelectedTeamChangedInStateManager;
+            StateManager.SelectedProjectChanged += SelectedProjectChangedInStateManager;
         }
 
         public override string Title => "Equality";
@@ -47,7 +48,7 @@ namespace Equality.ViewModels
 
         public Team SelectedTeam => StateManager.SelectedTeam;
 
-        public Project SelectedProject { get; set; }
+        public Project SelectedProject => StateManager.SelectedProject;
 
         #endregion
 
@@ -90,11 +91,19 @@ namespace Equality.ViewModels
                     NavigationService.Navigate<TeamPageViewModel>();
                     break;
                 case Tab.Project:
-                    Argument.IsNotNull(nameof(SelectedProject), SelectedProject);
-
-                    NavigationService.Navigate<ProjectPageViewModel>(new() { { "project", SelectedProject } });
+                    NavigationService.Navigate<ProjectPageViewModel>();
                     break;
             }
+        }
+
+        private void SelectedTeamChangedInStateManager()
+        {
+            RaisePropertyChanged(nameof(SelectedTeam));
+        }
+
+        private void SelectedProjectChangedInStateManager()
+        {
+            RaisePropertyChanged(nameof(SelectedProject));
         }
 
         #endregion
@@ -108,7 +117,8 @@ namespace Equality.ViewModels
 
         protected override async Task CloseAsync()
         {
-            // TODO: unsubscribe from events here
+            StateManager.SelectedTeamChanged -= SelectedTeamChangedInStateManager;
+            StateManager.SelectedProjectChanged -= SelectedProjectChangedInStateManager;
 
             await base.CloseAsync();
         }

@@ -33,9 +33,15 @@ namespace Equality.Data
             }
         }
 
-        public static event EventHandler SelectedTeamChanged;
+        public delegate void PropertyChangedHandler();
+
+        public static event PropertyChangedHandler SelectedTeamChanged;
+
+        public static event PropertyChangedHandler SelectedProjectChanged;
 
         private static Team _selectedTeam;
+
+        private static Project _selectedProject;
 
         public static string ApiToken { get; set; }
 
@@ -46,10 +52,17 @@ namespace Equality.Data
             get { return _selectedTeam; }
             set {
                 _selectedTeam = value;
-                SelectedTeamChanged?.Invoke(null, new EventArgs());
+                SelectedTeamChanged?.Invoke();
             }
         }
 
-        public static Project SelectedProject { get; set; }
+        public static Project SelectedProject
+        {
+            get { return _selectedProject; }
+            set {
+                _selectedProject = value;
+                SelectedProjectChanged?.Invoke();
+            }
+        }
     }
 }
