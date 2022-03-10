@@ -153,37 +153,43 @@
                                 </Button>
 
                                 <Grid Margin="24,8,24,16">
-                                    <WrapPanel Orientation="Horizontal">
-                                        <Border Margin="10">
-                                            <Border.Background>
-                                                <ImageBrush Stretch="UniformToFill"
-                                                            ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                            </Border.Background>
-                                            <Grid Width="384"
-                                                  Height="216">
-                                                <Rectangle Fill="Black"
-                                                           Opacity="0.5" />
-                                                <TextBlock HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"
-                                                           Foreground="White"><Run Text="Progect I" /></TextBlock>
-                                            </Grid>
-                                        </Border>
-                                        <Border Margin="10"
-                                                Width="384"
-                                                Height="216">
-                                            <Border.Background>
-                                                <ImageBrush Stretch="UniformToFill"
-                                                            ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                            </Border.Background>
-                                            <Grid>
-                                                <Rectangle Fill="Black"
-                                                           Opacity="0.5" />
-                                                <TextBlock HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"
-                                                           Foreground="White"><Run Text="Progect II" /></TextBlock>
-                                            </Grid>
-                                        </Border>
-                                    </WrapPanel>
+                                    <ListBox ItemsSource="{Binding Projects}">
+                                        <ListBox.Resources>
+                                            <ControlTemplate x:Key="NoItemsTemplate">
+                                                <StackPanel>
+                                                    <TextBlock Background="White"
+                                                               Padding="15"
+                                                               Margin="30"
+                                                               TextWrapping="Wrap"
+                                                               FontSize="18">В этой команде нет проектов.</TextBlock>
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </ListBox.Resources>
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel IsItemsHost="True" />
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Margin="10">
+                                                    <Border.Background>
+                                                        <ImageBrush Stretch="UniformToFill"
+                                                                    ImageSource="/Resources/Images/BackgroundImage.jpg" />
+                                                    </Border.Background>
+                                                    <Grid Width="384"
+                                                          Height="216">
+                                                        <Rectangle Fill="Black"
+                                                                   Opacity="0.5" />
+                                                        <TextBlock HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"
+                                                                   Foreground="White"><Run Text="{Binding Name}" /></TextBlock>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
                                 </Grid>
                             </StackPanel>
                         </DataTemplate>
