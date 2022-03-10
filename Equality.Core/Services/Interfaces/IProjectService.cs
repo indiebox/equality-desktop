@@ -46,5 +46,42 @@ namespace Equality.Services
         /// <param name="teamId">The team id.</param>
         /// <param name="project">The project.</param>
         public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ulong teamId, TProjectModel project);
+
+        /// <summary>
+        /// Sends the set image request to the API.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="imagePath">The path to image file.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage<TProjectModel>> SetImageAsync(TProjectModel project, string imagePath);
+
+        /// <inheritdoc cref="SetImageAsync(TProjectModel, string)"/>
+        /// <param name="projectId">The project id.</param>
+        /// <param name="imagePath">The path to image file.</param>
+        public Task<ApiResponseMessage<TProjectModel>> SetImageAsync(ulong projectId, string imagePath);
+
+        /// <summary>
+        /// Sends the delete image request to the API.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage<TProjectModel>> DeleteImageAsync(TProjectModel project);
+
+        /// <inheritdoc cref="DeleteImageAsync(TProjectModel)"/>
+        /// <param name="projectId">The project id.</param>
+        public Task<ApiResponseMessage<TProjectModel>> DeleteImageAsync(ulong projectId);
+
+        /// <summary>
+        /// Sends the update project request to the API.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage<TProjectModel>> UpdateProjectAsync(TProjectModel project);
     }
 }

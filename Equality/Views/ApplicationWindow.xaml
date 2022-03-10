@@ -117,6 +117,20 @@
                                 </DockPanel>
                             </TabItem.Header>
                         </TabItem>
+                        <TabItem Width="80"
+                                 Height="80"
+                                 IsSelected="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.Project}}"
+                                 Visibility="{Binding SelectedProject, Converter={catel:ReferenceToCollapsingVisibilityConverter}}">
+                            <TabItem.Header>
+                                <DockPanel Margin="5"
+                                           LastChildFill="True">
+                                    <materialDesign:PackIcon DockPanel.Dock="Top"
+                                                             Kind="ViewDashboardVariant" />
+                                    <TextBlock TextTrimming="CharacterEllipsis"
+                                               Text="{Binding SelectedProject.Name}" />
+                                </DockPanel>
+                            </TabItem.Header>
+                        </TabItem>
                     </TabControl>
 
                     <Separator Grid.Row="1"

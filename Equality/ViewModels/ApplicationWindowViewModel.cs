@@ -47,6 +47,8 @@ namespace Equality.ViewModels
 
         public Team SelectedTeam => StateManager.SelectedTeam;
 
+        public Project SelectedProject { get; set; }
+
         #endregion
 
         #region Commands
@@ -86,6 +88,11 @@ namespace Equality.ViewModels
                     break;
                 case Tab.Team:
                     NavigationService.Navigate<TeamPageViewModel>();
+                    break;
+                case Tab.Project:
+                    Argument.IsNotNull(nameof(SelectedProject), SelectedProject);
+
+                    NavigationService.Navigate<ProjectPageViewModel>(new() { { "project", SelectedProject } });
                     break;
             }
         }

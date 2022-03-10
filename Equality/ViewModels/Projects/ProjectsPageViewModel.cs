@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Diagnostics;
 
 using Catel.Collections;
 using Catel.MVVM;
@@ -22,15 +24,20 @@ namespace Equality.ViewModels
 
         protected ITeamService TeamService;
 
-        public ProjectsPageViewModel(IUIVisualizerService uIVisualizerService, ITeamService teamService)
+        protected IProjectService ProjectService;
+
+        public ProjectsPageViewModel(IUIVisualizerService uIVisualizerService, ITeamService teamService, IProjectService projectService)
         {
             UIVisualizerService = uIVisualizerService;
             TeamService = teamService;
+            ProjectService = projectService;
 
+            OpenProjectPage = new Command<Project>(OnOpenOpenProjectPageExecute);
             OpenCreateTeamWindow = new TaskCommand(OnOpenCreateTeamWindowExecute, () => CreateTeamVm is null);
             OpenTeamPage = new Command<Team>(OnOpenTeamPageExecute);
             FilterProjects = new Command<Team>(OnFilterProjectsExecute);
             ResetFilter = new Command(OnResetFilterExecute);
+
         }
 
         #region Properties
@@ -44,6 +51,16 @@ namespace Equality.ViewModels
         #endregion
 
         #region Commands
+
+        public Command<Project> OpenProjectPage { get; private set; }
+
+        private void OnOpenOpenProjectPageExecute(Project project)
+        {
+            var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
+            StateManager.SelectedProject = project;
+            vm.SelectedProject = project;
+            vm.ActiveTab = ApplicationWindowViewModel.Tab.Project;
+        }
 
         public TaskCommand OpenCreateTeamWindow { get; private set; }
 
@@ -103,10 +120,19 @@ namespace Equality.ViewModels
 
         protected async void LoadTeamsAsync()
         {
-            var response = await TeamService.GetTeamsAsync();
+            try {
+                var response = await TeamService.GetTeamsAsync();
+                Teams.AddRange(response.Object);
+                FilteredTeams.AddRange(Teams);
 
-            Teams.AddRange(response.Object);
-            FilteredTeams.AddRange(Teams);
+                foreach (var team in response.Object) {
+                    var responseProjects = await ProjectService.GetProjectsAsync(team);
+
+                    team.Projects.AddRange(responseProjects.Object);
+                }
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
         }
 
         #endregion

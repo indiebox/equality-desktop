@@ -116,7 +116,9 @@
 
             <Grid DockPanel.Dock="Right">
                 <ListBox ItemsSource="{Binding FilteredTeams}"
-                         ItemContainerStyle="{StaticResource ListBoxItemStyle}">
+                         ItemContainerStyle="{StaticResource ListBoxItemStyle}"
+                         Margin="-2,0,2,0">
+
                     <ListBox.Resources>
                         <ControlTemplate x:Key="NoItemsTemplate">
                             <StackPanel>
@@ -152,37 +154,35 @@
                                 </Button>
 
                                 <Grid Margin="24,8,24,16">
-                                    <WrapPanel Orientation="Horizontal">
-                                        <Border Margin="10">
-                                            <Border.Background>
-                                                <ImageBrush Stretch="UniformToFill"
-                                                            ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                            </Border.Background>
-                                            <Grid Width="384"
-                                                  Height="216">
-                                                <Rectangle Fill="Black"
-                                                           Opacity="0.5" />
-                                                <TextBlock HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"
-                                                           Foreground="White"><Run Text="Progect I" /></TextBlock>
-                                            </Grid>
-                                        </Border>
-                                        <Border Margin="10"
-                                                Width="384"
-                                                Height="216">
-                                            <Border.Background>
-                                                <ImageBrush Stretch="UniformToFill"
-                                                            ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                            </Border.Background>
-                                            <Grid>
-                                                <Rectangle Fill="Black"
-                                                           Opacity="0.5" />
-                                                <TextBlock HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"
-                                                           Foreground="White"><Run Text="Progect II" /></TextBlock>
-                                            </Grid>
-                                        </Border>
-                                    </WrapPanel>
+                                    <ListBox Style="{StaticResource ListBoxWithoutScroll}"
+                                             ItemsSource="{Binding Projects}">
+                                        <ListBox.Resources>
+                                            <ControlTemplate x:Key="NoItemsTemplate">
+                                                <StackPanel>
+                                                    <TextBlock Background="White"
+                                                               Padding="15"
+                                                               TextWrapping="Wrap"
+                                                               FontSize="18">В этой команде нет проектов.</TextBlock>
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </ListBox.Resources>
+
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel IsItemsHost="True" />
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <controls:ProjectCard Margin="5"
+                                                                      Size="Medium"
+                                                                      Command="{Binding DataContext.OpenProjectPage, RelativeSource={RelativeSource AncestorType=equality:Page}}"
+                                                                      CommandParameter="{Binding}"
+                                                                      Project="{Binding}" />
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
                                 </Grid>
                             </StackPanel>
                         </DataTemplate>

@@ -72,6 +72,15 @@ namespace Equality.Services
             return new(members, response);
         }
 
+        public Task<ApiResponseMessage> LeaveTeamAsync(TTeamModel team) => LeaveTeamAsync(team.Id);
+
+        public async Task<ApiResponseMessage> LeaveTeamAsync(ulong teamId)
+        {
+            Argument.IsNotNull(nameof(teamId), teamId);
+
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/leave");
+        }
+
         public Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(TTeamModel team, string imagePath) => SetLogoAsync(team.Id, imagePath);
 
         public async Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(ulong teamId, string imagePath)
@@ -122,15 +131,6 @@ namespace Equality.Services
             var team = Deserialize(response.Content["data"]);
 
             return new(team, response);
-        }
-
-        public Task<ApiResponseMessage> LeaveTeamAsync(TTeamModel team) => LeaveTeamAsync(team.Id);
-
-        public async Task<ApiResponseMessage> LeaveTeamAsync(ulong teamId)
-        {
-            Argument.IsNotNull(nameof(teamId), teamId);
-
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/leave");
         }
 
         public async Task<ApiResponseMessage<TTeamModel>> UpdateTeamAsync(TTeamModel team)

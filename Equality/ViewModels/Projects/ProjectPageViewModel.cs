@@ -1,20 +1,38 @@
 ﻿using System.Threading.Tasks;
 
+using Catel.MVVM;
+using Catel.Services;
+
+using Equality.Extensions;
 using Equality.MVVM;
+using Equality.Models;
 
 namespace Equality.ViewModels
 {
     public class ProjectPageViewModel : ViewModel
     {
-        public ProjectPageViewModel()
+        protected INavigationService NavigationService;
+
+        public ProjectPageViewModel(INavigationService navigationService)
         {
+            NavigationService = navigationService;
+
+            NavigationCompleted += OnNavigated;
         }
 
-        public override string Title => "View model title";
+        public enum Tab
+        {
+            Board,
+            Leader,
+            Settings,
+        }
 
         #region Properties
 
+        public Tab ActiveTab { get; set; }
 
+        [Model]
+        public Project Project { get; set; }
 
         #endregion
 
@@ -24,11 +42,34 @@ namespace Equality.ViewModels
 
         #endregion
 
+        #region Methods
+
+        private void OnNavigated(object sender, System.EventArgs e)
+        {
+            Project = NavigationContext.Values["project"] as Project;
+        }
+
+        private void OnActiveTabChanged()
+        {
+            switch (ActiveTab) {
+                case Tab.Board:
+                default:
+                    break;
+                case Tab.Leader:
+                    break;
+                case Tab.Settings:
+                    NavigationService.Navigate<ProjectSettingsPageViewModel>(this);
+                    break;
+            }
+        }
+
+        #endregion
+
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
 
-            // TODO: subscribe to events here
+            OnActiveTabChanged();
         }
 
         protected override async Task CloseAsync()

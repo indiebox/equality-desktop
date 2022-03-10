@@ -25,6 +25,11 @@ namespace Equality.Data
                     Name = "Indie Box",
                     Url = "https://indiebox.ru/",
                 };
+
+                SelectedProject = new Project()
+                {
+                    Name = "Equality",
+                };
             }
         }
 
@@ -44,5 +49,7 @@ namespace Equality.Data
                 SelectedTeamChanged?.Invoke(null, new EventArgs());
             }
         }
+
+        public static Project SelectedProject { get; set; }
     }
 }
