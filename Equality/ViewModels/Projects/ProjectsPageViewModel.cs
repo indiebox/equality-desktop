@@ -10,6 +10,8 @@ using Equality.Helpers;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
+using System.Net.Http;
+using System.Diagnostics;
 
 namespace Equality.ViewModels
 {
@@ -21,15 +23,19 @@ namespace Equality.ViewModels
 
         protected ITeamService TeamService;
 
-        public ProjectsPageViewModel(IUIVisualizerService uIVisualizerService, ITeamService teamService)
+        protected IProjectService ProjectService;
+
+        public ProjectsPageViewModel(IUIVisualizerService uIVisualizerService, ITeamService teamService, IProjectService projectService)
         {
             UIVisualizerService = uIVisualizerService;
             TeamService = teamService;
+            ProjectService = projectService;
 
             OpenCreateTeamWindow = new TaskCommand(OnOpenCreateTeamWindowExecute, () => CreateTeamVm is null);
             OpenTeamPage = new Command<Team>(OnOpenTeamPageExecute);
             FilterProjects = new Command<Team>(OnFilterProjectsExecute);
             ResetFilter = new Command(OnResetFilterExecute);
+
         }
 
         #region Properties
@@ -101,9 +107,21 @@ namespace Equality.ViewModels
 
         protected async void LoadTeamsAsync()
         {
-            var response = await TeamService.GetTeamsAsync();
+            try {
+                var response = await TeamService.GetTeamsAsync();
 
-            Teams.AddRange(response.Object);
+                foreach (var team in response.Object) {
+
+                    var responseProjects = await ProjectService.GetProjectsAsync(team);
+
+                    team.Projects.AddRange(responseProjects.Object);
+
+                    Teams.Add(team);
+                }
+
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
             FilteredTeams.AddRange(Teams);
         }
 
