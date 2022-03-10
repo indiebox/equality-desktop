@@ -3,5 +3,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="InfoCard/InfoCard.xaml" />
         <ResourceDictionary Source="TeamLogo/TeamLogo.xaml" />
+        <ResourceDictionary Source="ProjectImage/ProjectImage.xaml" />
+        <ResourceDictionary Source="ProjectCard/ProjectCard.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

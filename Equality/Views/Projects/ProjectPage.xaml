@@ -9,21 +9,16 @@
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
                xmlns:controls="clr-namespace:Equality.Controls"
                xmlns:viewmodels="clr-namespace:Equality.ViewModels"
-               d:DataContext="{d:DesignInstance Type=viewmodels:ProjectPageViewModel}"
+               xmlns:converters="clr-namespace:Equality.Converters;assembly=Equality.MVVM"
                FontSize="16"
+               d:DataContext="{d:DesignInstance dvm:DesignProjectPageViewModel, IsDesignTimeCreatable=True}"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DesignWidth="1920"
                d:DesignHeight="1080"
                mc:Ignorable="d">
     <Grid>
-        <Border>
-            <Border.Background>
-                <ImageBrush Stretch="UniformToFill"
-                            ImageSource="/Resources/Images/BackgroundImage.jpg" />
-            </Border.Background>
-        </Border>
-        <Rectangle Fill="Black"
-                   Opacity="0.5" />
+        <controls:ProjectImage ImagePath="{Binding Project.Image}" />
+
         <DockPanel>
             <DockPanel Background="White"
                        DockPanel.Dock="Top">
@@ -33,31 +28,33 @@
                     <TextBlock VerticalAlignment="Center"
                                Margin="10"
                                FontSize="24"
-                               Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                               Text="{Binding Project.Name}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Top"
-                            Margin="4,4,4,0">
-                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
-                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                                 Margin="4,4,4,0"
-                                 IsChecked="True"
+                            Margin="10,0">
+                    <StackPanel.Resources>
+                        <Style TargetType="RadioButton"
+                               BasedOn="{StaticResource MaterialDesignTabRadioButton}">
+                            <Setter Property="BorderBrush"
+                                    Value="{StaticResource PrimaryHueMidBrush}" />
+                            <Setter Property="Margin"
+                                    Value="0" />
+                            <Setter Property="Cursor"
+                                    Value="Hand" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <RadioButton IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ProjectPageViewModel+Tab.Board}}"
                                  Content="Доска" />
-                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
-                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                                 Margin="4,4,4,0"
-                                 IsChecked="False"
+                    <RadioButton IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ProjectPageViewModel+Tab.Leader}}"
                                  Content="Лидер" />
-                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
-                                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                                 Margin="4,4,4,0"
-                                 IsChecked="False"
+                    <RadioButton IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ProjectPageViewModel+Tab.Settings}}"
                                  Content="Настройки" />
                 </StackPanel>
             </DockPanel>
-            <Frame>
 
-            </Frame>
+            <Frame HorizontalAlignment="Stretch"
+                   VerticalAlignment="Stretch"></Frame>
         </DockPanel>
     </Grid>
 </equality:Page>

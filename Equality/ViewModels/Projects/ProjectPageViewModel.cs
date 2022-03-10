@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Catel.MVVM;
 using Catel.Services;
@@ -9,9 +6,6 @@ using Catel.Services;
 using Equality.Extensions;
 using Equality.MVVM;
 using Equality.Models;
-using Equality.Services;
-using Catel;
-using Equality.Data;
 
 namespace Equality.ViewModels
 {
@@ -22,13 +16,14 @@ namespace Equality.ViewModels
         public ProjectPageViewModel(INavigationService navigationService)
         {
             NavigationService = navigationService;
+
             NavigationCompleted += OnNavigated;
         }
 
-        public override string Title => "View model title";
-
         public enum Tab
         {
+            Board,
+            Leader,
             Settings,
         }
 
@@ -37,10 +32,7 @@ namespace Equality.ViewModels
         public Tab ActiveTab { get; set; }
 
         [Model]
-        Project Project { get; set; }
-
-        [ViewModelToModel(nameof(Project))]
-        public string Name { get; set; }
+        public Project Project { get; set; }
 
         #endregion
 
@@ -52,7 +44,7 @@ namespace Equality.ViewModels
 
         #region Methods
 
-        private void OnNavigated(object sender, EventArgs e)
+        private void OnNavigated(object sender, System.EventArgs e)
         {
             Project = NavigationContext.Values["project"] as Project;
         }
@@ -60,11 +52,13 @@ namespace Equality.ViewModels
         private void OnActiveTabChanged()
         {
             switch (ActiveTab) {
-                case Tab.Settings:
+                case Tab.Board:
                 default:
-                    Argument.IsNotNull(nameof(Project), Project);
-
-                    NavigationService.Navigate<ProjectSettingsPageViewModel>(this, new() { { "project", Project } });
+                    break;
+                case Tab.Leader:
+                    break;
+                case Tab.Settings:
+                    NavigationService.Navigate<ProjectSettingsPageViewModel>(this);
                     break;
             }
         }
@@ -76,8 +70,6 @@ namespace Equality.ViewModels
             await base.InitializeAsync();
 
             OnActiveTabChanged();
-
-            // TODO: subscribe to events here
         }
 
         protected override async Task CloseAsync()

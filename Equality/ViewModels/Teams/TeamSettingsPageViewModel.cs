@@ -160,11 +160,6 @@ namespace Equality.ViewModels
             Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
         }
 
-        private void Team_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            Debug.WriteLine("Prop changed");
-        }
-
         protected override async Task CloseAsync()
         {
             // TODO: unsubscribe from events here

@@ -9,6 +9,7 @@
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
                xmlns:models="clr-namespace:Equality.Models;assembly=Equality.MVVM"
                xmlns:objects="clr-namespace:Equality.Data.Wpf"
+               xmlns:controls="clr-namespace:Equality.Controls"
                FontSize="16"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DesignHeight="1080"
@@ -39,32 +40,11 @@
                     <!-- Templates for custom objects. -->
                     <ListBox.Resources>
                         <DataTemplate DataType="{x:Type models:Project}">
-                            <Button Width="500"
-                                    Height="280"
-                                    Margin="10,0,10,20"
-                                    Style="{StaticResource BaseButton}"
-                                    Command="{Binding DataContext.OpenProjectPage, RelativeSource={RelativeSource AncestorType=equality:Page}}"
-                                    CommandParameter="{Binding}">
-                                <Grid>
-                                    <Image Stretch="UniformToFill"
-                                           Source="/Resources/Images/BackgroundImage.jpg" />
-                                    <Rectangle Fill="Black"
-                                               Opacity="0.5" />
-
-                                    <TextBlock MaxWidth="400"
-                                               MaxHeight="200"
-                                               Margin="20"
-                                               Foreground="White"
-                                               TextWrapping="Wrap"
-                                               TextTrimming="WordEllipsis"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               TextAlignment="Center"
-                                               FontSize="24"
-                                               Text="{Binding Name}"></TextBlock>
-                                </Grid>
-
-                            </Button>
+                            <controls:ProjectCard Margin="5,0,5,10"
+                                                  Size="Big"
+                                                  Command="{Binding DataContext.OpenProjectPage, RelativeSource={RelativeSource AncestorType=equality:Page}}"
+                                                  CommandParameter="{Binding}"
+                                                  Project="{Binding}" />
                         </DataTemplate>
 
                         <DataTemplate DataType="{x:Type objects:DataObject}">

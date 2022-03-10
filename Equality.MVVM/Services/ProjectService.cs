@@ -48,6 +48,46 @@ namespace Equality.Services
             return new(project, response);
         }
 
+        public Task<ApiResponseMessage<Project>> SetImageAsync(Project project, string imagePath) => SetImageAsync(project.Id, imagePath);
+
+        public new async Task<ApiResponseMessage<Project>> SetImageAsync(ulong projectId, string imagePath)
+        {
+            var response = await base.SetImageAsync(projectId, imagePath);
+
+            var project = Deserialize(response.Content["data"]);
+
+            return new(project, response);
+        }
+
+        public Task<ApiResponseMessage<Project>> DeleteImageAsync(Project project) => DeleteImageAsync(project.Id);
+
+        public new async Task<ApiResponseMessage<Project>> DeleteImageAsync(ulong projectId)
+        {
+            var response = await base.DeleteImageAsync(projectId);
+
+            var project = Deserialize(response.Content["data"]);
+
+            return new(project, response);
+        }
+
+        public async Task<ApiResponseMessage<Project>> UpdateProjectAsync(Project project)
+        {
+            Argument.IsNotNull(nameof(project), project);
+            Argument.IsMinimal<ulong>("IProject.Id", project.Id, 1);
+
+            Dictionary<string, object> data = new()
+            {
+                { "name", project.Name },
+                { "description", project.Description },
+            };
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync($"projects/{project.Id}", data);
+
+            project = Deserialize(response.Content["data"]);
+
+            return new(project, response);
+        }
+
         /// <inheritdoc cref="Core.Services.IDeserializeModels{T}.Deserialize(JToken)"/>
         protected Project Deserialize(JToken data) => ((IProjectService)this).Deserialize(data);
 

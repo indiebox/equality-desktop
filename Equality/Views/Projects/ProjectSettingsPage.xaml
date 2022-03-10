@@ -7,14 +7,13 @@
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
-               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
-               d:DataContext="{d:DesignInstance Type=viewmodels:ProjectSettingsPageViewModel}"
+               xmlns:controls="clr-namespace:Equality.Controls"
                FontSize="16"
                d:Background="Gray"
                d:DesignWidth="1800"
                d:DesignHeight="900"
+               d:DataContext="{d:DesignInstance dvm:DesignProjectSettingsPageViewModel, IsDesignTimeCreatable=True}"
                mc:Ignorable="d">
-
     <DockPanel>
         <Grid>
             <StackPanel Background="White"
@@ -25,10 +24,30 @@
                            Margin="20">Основное</TextBlock>
                 <Grid Width="500"
                       Margin="20,0,20,30">
-                    <Image Source="/Resources/Images/BackgroundImage.jpg" />
-                    <Rectangle Fill="Black"
-                               Opacity="0.5" />
-                    <Button Width="200">Изменить изображение</Button>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <controls:ProjectImage Grid.Row="0"
+                                           Grid.Column="0"
+                                           Grid.ColumnSpan="3"
+                                           Width="500"
+                                           Height="280"
+                                           ImagePath="{Binding Image}" />
+
+                    <StackPanel Grid.Column="1"
+                                VerticalAlignment="Center">
+                        <Button Command="{Binding UploadImage}"
+                                Margin="10">Изменить изображение</Button>
+                        <Button Command="{Binding DeleteImage}"
+                                Margin="10">Удалить изображение</Button>
+                    </StackPanel>
                 </Grid>
 
                 <StackPanel HorizontalAlignment="Center">
@@ -49,7 +68,8 @@
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right"
                             Margin="20,0,20,30">
-                    <Button Content="Сохранить" />
+                    <Button Command="{Binding UpdateSettings}"
+                            Content="Сохранить" />
                 </StackPanel>
             </StackPanel>
         </Grid>
