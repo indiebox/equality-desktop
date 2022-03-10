@@ -176,28 +176,11 @@
 
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
-                                                <Button Margin="10"
-                                                        Width="384"
-                                                        Height="216"
-                                                        Style="{StaticResource BaseButton}"
-                                                        Command="{Binding DataContext.OpenProjectPage, RelativeSource={RelativeSource AncestorType=equality:Page}}"
-                                                        CommandParameter="{Binding}">
-                                                    <Grid>
-                                                        <controls:ProjectImage ImagePath="{Binding Image}" />
-
-                                                        <TextBlock MaxWidth="300"
-                                                                   MaxHeight="140"
-                                                                   Margin="20"
-                                                                   Foreground="White"
-                                                                   TextWrapping="Wrap"
-                                                                   TextTrimming="WordEllipsis"
-                                                                   HorizontalAlignment="Center"
-                                                                   VerticalAlignment="Center"
-                                                                   TextAlignment="Center"
-                                                                   FontSize="18"
-                                                                   Text="{Binding Name}" />
-                                                    </Grid>
-                                                </Button>
+                                                <controls:ProjectCard Margin="5"
+                                                                      Size="Medium"
+                                                                      Command="{Binding DataContext.OpenProjectPage, RelativeSource={RelativeSource AncestorType=equality:Page}}"
+                                                                      CommandParameter="{Binding}"
+                                                                      Project="{Binding}" />
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                     </ListBox>
