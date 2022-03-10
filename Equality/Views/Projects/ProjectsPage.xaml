@@ -118,6 +118,7 @@
                 <ListBox ItemsSource="{Binding FilteredTeams}"
                          ItemContainerStyle="{StaticResource ListBoxItemStyle}"
                          Margin="-2,0,2,0">
+
                     <ListBox.Resources>
                         <ControlTemplate x:Key="NoItemsTemplate">
                             <StackPanel>
@@ -153,7 +154,8 @@
                                 </Button>
 
                                 <Grid Margin="24,8,24,16">
-                                    <ListBox ItemsSource="{Binding Projects}">
+                                    <ListBox Style="{StaticResource ListBoxWithoutScroll}"
+                                             ItemsSource="{Binding Projects}">
                                         <ListBox.Resources>
                                             <ControlTemplate x:Key="NoItemsTemplate">
                                                 <StackPanel>
@@ -165,6 +167,7 @@
                                                 </StackPanel>
                                             </ControlTemplate>
                                         </ListBox.Resources>
+
                                         <ListBox.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel IsItemsHost="True" />

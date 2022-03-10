@@ -28,15 +28,8 @@
         <ScrollViewer Grid.Row="1"
                       Margin="10,0">
             <WrapPanel>
-                <ListBox materialDesign:ListBoxItemAssist.ShowSelection="False">
-                    <ListBox.Template>
-                        <ControlTemplate TargetType="ListBox">
-                            <Border>
-                                <ItemsPresenter />
-                            </Border>
-                        </ControlTemplate>
-                    </ListBox.Template>
-
+                <ListBox Style="{StaticResource ListBoxWithoutScroll}"
+                         materialDesign:ListBoxItemAssist.ShowSelection="False">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel IsItemsHost="True" />
