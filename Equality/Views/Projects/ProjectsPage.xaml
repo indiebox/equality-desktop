@@ -161,7 +161,6 @@
                                                 <StackPanel>
                                                     <TextBlock Background="White"
                                                                Padding="15"
-                                                               Margin="30"
                                                                TextWrapping="Wrap"
                                                                FontSize="18">В этой команде нет проектов.</TextBlock>
                                                 </StackPanel>
