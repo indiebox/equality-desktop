@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Equality.Models
 {
@@ -17,5 +18,11 @@ namespace Equality.Models
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+    }
+
+    public interface ITeam<TProjectsCollection> : ITeam
+        where TProjectsCollection : class, IEnumerable<IProject>
+    {
+        public TProjectsCollection Projects { get; set; }
     }
 }
