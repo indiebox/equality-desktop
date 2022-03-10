@@ -153,7 +153,17 @@
 
                                 <Grid Margin="24,8,24,16">
                                     <ListBox ItemsSource="{Binding Projects}">
-
+                                        <ListBox.Resources>
+                                            <ControlTemplate x:Key="NoItemsTemplate">
+                                                <StackPanel>
+                                                    <TextBlock Background="White"
+                                                               Padding="15"
+                                                               Margin="30"
+                                                               TextWrapping="Wrap"
+                                                               FontSize="18">В этой команде нет проектов.</TextBlock>
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </ListBox.Resources>
                                         <ListBox.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel IsItemsHost="True" />
