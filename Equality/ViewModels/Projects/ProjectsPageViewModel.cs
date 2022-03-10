@@ -113,7 +113,7 @@ namespace Equality.ViewModels
 
                     var responseProjects = await ProjectService.GetProjectsAsync(team);
 
-                    team.TeamProjects = responseProjects.Object;
+                    team.Projects = responseProjects.Object;
 
                     Teams.Add(team);
                 }

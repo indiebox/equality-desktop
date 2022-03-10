@@ -25,7 +25,7 @@ namespace Equality.Models
 
         public DateTime UpdatedAt { get; set; }
 
-        public Project[] TeamProjects { get; set; }
+        public Project[] Projects { get; set; }
 
         #region Override operators
 

@@ -152,7 +152,7 @@
                                 </Button>
 
                                 <Grid Margin="24,8,24,16">
-                                    <ListBox ItemsSource="{Binding TeamProjects}">
+                                    <ListBox ItemsSource="{Binding Projects}">
 
                                         <ListBox.ItemsPanel>
                                             <ItemsPanelTemplate>
