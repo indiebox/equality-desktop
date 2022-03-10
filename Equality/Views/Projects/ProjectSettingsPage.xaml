@@ -7,6 +7,8 @@
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+               d:DataContext="{d:DesignInstance Type=viewmodels:ProjectSettingsPageViewModel}"
                FontSize="16"
                d:Background="Gray"
                d:DesignWidth="1800"
@@ -33,13 +35,15 @@
                     <Label Margin="10,0">Название</Label>
                     <TextBox Style="{StaticResource FilledTextBox}"
                              Width="500"
-                             materialDesign:HintAssist.Hint="Вставьте название проекта" />
+                             materialDesign:HintAssist.Hint="Вставьте название проекта"
+                             Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Center">
                     <Label Margin="10,0">Описание</Label>
                     <TextBox Style="{StaticResource OutlinedTextBox}"
                              Width="500"
-                             materialDesign:HintAssist.Hint="Введите описание проекта" />
+                             materialDesign:HintAssist.Hint="Введите описание проекта"
+                             Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal"

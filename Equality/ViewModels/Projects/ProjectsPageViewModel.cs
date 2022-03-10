@@ -12,6 +12,7 @@ using Equality.Models;
 using Equality.Services;
 using System.Net.Http;
 using System.Diagnostics;
+using Equality.Data;
 
 namespace Equality.ViewModels
 {
@@ -31,6 +32,7 @@ namespace Equality.ViewModels
             TeamService = teamService;
             ProjectService = projectService;
 
+            OpenProjectPage = new Command<Project>(OnOpenOpenProjectPageExecute);
             OpenCreateTeamWindow = new TaskCommand(OnOpenCreateTeamWindowExecute, () => CreateTeamVm is null);
             OpenTeamPage = new Command<Team>(OnOpenTeamPageExecute);
             FilterProjects = new Command<Team>(OnFilterProjectsExecute);
@@ -49,6 +51,16 @@ namespace Equality.ViewModels
         #endregion
 
         #region Commands
+
+        public Command<Project> OpenProjectPage { get; private set; }
+
+        private void OnOpenOpenProjectPageExecute(Project project)
+        {
+            var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
+            StateManager.SelectedProject = project;
+            vm.SelectedProject = project;
+            vm.ActiveTab = ApplicationWindowViewModel.Tab.Project;
+        }
 
         public TaskCommand OpenCreateTeamWindow { get; private set; }
 
@@ -109,20 +121,17 @@ namespace Equality.ViewModels
         {
             try {
                 var response = await TeamService.GetTeamsAsync();
+                Teams.AddRange(response.Object);
+                FilteredTeams.AddRange(Teams);
 
                 foreach (var team in response.Object) {
-
                     var responseProjects = await ProjectService.GetProjectsAsync(team);
 
                     team.Projects.AddRange(responseProjects.Object);
-
-                    Teams.Add(team);
                 }
-
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
-            FilteredTeams.AddRange(Teams);
         }
 
         #endregion

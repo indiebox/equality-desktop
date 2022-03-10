@@ -38,6 +38,20 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="ListBoxWithoutScroll"
+           TargetType="ListBox"
+           BasedOn="{StaticResource ListBoxStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBox">
+                    <Border>
+                        <ItemsPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- ScrollViewer -->
     <Style x:Key="ScrollViewerStyle"
            TargetType="ScrollViewer"
