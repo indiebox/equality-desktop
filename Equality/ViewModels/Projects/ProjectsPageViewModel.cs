@@ -57,7 +57,7 @@ namespace Equality.ViewModels
         private void OnOpenOpenProjectPageExecute(Project project)
         {
             var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
-            StateManager.OpenProject = project;
+            StateManager.SelectedProject = project;
             vm.SelectedProject = project;
             vm.ActiveTab = ApplicationWindowViewModel.Tab.Project;
         }
@@ -121,20 +121,17 @@ namespace Equality.ViewModels
         {
             try {
                 var response = await TeamService.GetTeamsAsync();
+                Teams.AddRange(response.Object);
+                FilteredTeams.AddRange(Teams);
 
                 foreach (var team in response.Object) {
-
                     var responseProjects = await ProjectService.GetProjectsAsync(team);
 
                     team.Projects.AddRange(responseProjects.Object);
-
-                    Teams.Add(team);
                 }
-
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
-            FilteredTeams.AddRange(Teams);
         }
 
         #endregion
