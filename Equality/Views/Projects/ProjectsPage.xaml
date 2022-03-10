@@ -160,20 +160,24 @@
                                             </ItemsPanelTemplate>
                                         </ListBox.ItemsPanel>
 
-                                        <Border Margin="10">
-                                            <Border.Background>
-                                                <ImageBrush Stretch="UniformToFill"
-                                                            ImageSource="/Resources/Images/BackgroundImage.jpg" />
-                                            </Border.Background>
-                                            <Grid Width="384"
-                                                  Height="216">
-                                                <Rectangle Fill="Black"
-                                                           Opacity="0.5" />
-                                                <TextBlock HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"
-                                                           Foreground="White"><Run Text="{Binding Name}" /></TextBlock>
-                                            </Grid>
-                                        </Border>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Margin="10">
+                                                    <Border.Background>
+                                                        <ImageBrush Stretch="UniformToFill"
+                                                                    ImageSource="/Resources/Images/BackgroundImage.jpg" />
+                                                    </Border.Background>
+                                                    <Grid Width="384"
+                                                          Height="216">
+                                                        <Rectangle Fill="Black"
+                                                                   Opacity="0.5" />
+                                                        <TextBlock HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"
+                                                                   Foreground="White"><Run Text="{Binding Name}" /></TextBlock>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
                                     </ListBox>
                                 </Grid>
                             </StackPanel>
