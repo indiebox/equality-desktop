@@ -14,11 +14,15 @@ namespace Equality.Models
 
         public string Image { get; set; }
 
-        public Team Team { get; set; }
-
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+
+        #region Relations
+
+        public Team Team { get; set; }
+
+        #endregion
 
         #region Override operators
 

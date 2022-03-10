@@ -8,8 +8,8 @@ using Newtonsoft.Json.Serialization;
 
 namespace Equality.Services
 {
-    public interface IDeserializeModels<T>
-        where T : new()
+    public interface IDeserializeModels<TModel>
+        where TModel : new()
     {
         /// <summary>
         /// Deserializes the JSON string to the object.
@@ -18,11 +18,11 @@ namespace Equality.Services
         /// <returns>The deserialized object.</returns>
         /// 
         /// <exception cref="ArgumentException" />
-        public T Deserialize(string data)
+        public TModel Deserialize(string data)
         {
             Argument.IsNotNullOrWhitespace(nameof(data), data);
 
-            return JsonConvert.DeserializeObject<T>(data, new JsonSerializerSettings
+            return JsonConvert.DeserializeObject<TModel>(data, new JsonSerializerSettings
             {
                 ContractResolver = new DefaultContractResolver
                 {
@@ -38,11 +38,11 @@ namespace Equality.Services
         /// <returns>The deserialized array of objects.</returns>
         /// 
         /// <exception cref="ArgumentException" />
-        public T[] DeserializeRange(string data)
+        public TModel[] DeserializeRange(string data)
         {
             Argument.IsNotNullOrWhitespace(nameof(data), data);
 
-            return JsonConvert.DeserializeObject<T[]>(data, new JsonSerializerSettings
+            return JsonConvert.DeserializeObject<TModel[]>(data, new JsonSerializerSettings
             {
                 ContractResolver = new DefaultContractResolver
                 {
@@ -58,11 +58,11 @@ namespace Equality.Services
         /// <returns>The deserialized object.</returns>
         /// 
         /// <exception cref="ArgumentException" />
-        public T Deserialize(JToken data)
+        public TModel Deserialize(JToken data)
         {
             Argument.IsNotNull(nameof(data), data);
 
-            return data.ToObject<T>(new()
+            return data.ToObject<TModel>(new()
             {
                 ContractResolver = new DefaultContractResolver
                 {
@@ -78,11 +78,11 @@ namespace Equality.Services
         /// <returns>The deserialized array of objects.</returns>
         /// 
         /// <exception cref="ArgumentException" />
-        public T[] DeserializeRange(JToken data)
+        public TModel[] DeserializeRange(JToken data)
         {
             Argument.IsNotNull(nameof(data), data);
 
-            return data.ToObject<T[]>(new()
+            return data.ToObject<TModel[]>(new()
             {
                 ContractResolver = new DefaultContractResolver
                 {

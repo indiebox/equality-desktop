@@ -12,12 +12,6 @@ namespace Equality.Models
 
         public ulong Id { get; set; }
 
-        public Team Team { get; set; }
-
-        public User Inviter { get; set; }
-
-        public User Invited { get; set; }
-
         public IInvite.InviteStatus Status { get; set; }
 
         public DateTime? AcceptedAt { get; set; }
@@ -27,6 +21,16 @@ namespace Equality.Models
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+
+        #region Relations
+
+        public Team Team { get; set; }
+
+        public User Inviter { get; set; }
+
+        public User Invited { get; set; }
+
+        #endregion
 
         #region Override operators
 
