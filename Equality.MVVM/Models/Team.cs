@@ -25,7 +25,7 @@ namespace Equality.Models
 
         public DateTime UpdatedAt { get; set; }
 
-        public Project[] Projects { get; set; }
+        public ObservableCollection<Project> Projects { get; set; } = new();
 
         #region Override operators
 

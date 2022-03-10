@@ -35,6 +35,7 @@ namespace Equality.ViewModels
             OpenTeamPage = new Command<Team>(OnOpenTeamPageExecute);
             FilterProjects = new Command<Team>(OnFilterProjectsExecute);
             ResetFilter = new Command(OnResetFilterExecute);
+
         }
 
         #region Properties
@@ -113,7 +114,7 @@ namespace Equality.ViewModels
 
                     var responseProjects = await ProjectService.GetProjectsAsync(team);
 
-                    team.Projects = responseProjects.Object;
+                    team.Projects.AddRange(responseProjects.Object);
 
                     Teams.Add(team);
                 }
