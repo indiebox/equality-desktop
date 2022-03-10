@@ -7,6 +7,7 @@ using Catel.Data;
 using Catel.MVVM;
 using Catel.Services;
 
+using Equality.Data;
 using Equality.Extensions;
 using Equality.Http;
 using Equality.Models;
@@ -30,6 +31,8 @@ namespace Equality.ViewModels
             UploadImage = new TaskCommand(OnUploadImageExecute);
             DeleteImage = new TaskCommand(OnDeleteImageExecute, () => !string.IsNullOrWhiteSpace(Image));
             UpdateSettings = new TaskCommand(OnUpdateSettingsExecuteAsync);
+
+            Project = StateManager.SelectedProject;
         }
 
         #region Properties

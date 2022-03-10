@@ -10,21 +10,15 @@
                xmlns:controls="clr-namespace:Equality.Controls"
                xmlns:viewmodels="clr-namespace:Equality.ViewModels"
                xmlns:converters="clr-namespace:Equality.Converters;assembly=Equality.MVVM"
-               d:DataContext="{d:DesignInstance Type=viewmodels:ProjectPageViewModel}"
                FontSize="16"
+               d:DataContext="{d:DesignInstance dvm:DesignProjectPageViewModel, IsDesignTimeCreatable=True}"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DesignWidth="1920"
                d:DesignHeight="1080"
                mc:Ignorable="d">
     <Grid>
-        <Border>
-            <Border.Background>
-                <ImageBrush Stretch="UniformToFill"
-                            ImageSource="/Resources/Images/BackgroundImage.jpg" />
-            </Border.Background>
-        </Border>
-        <Rectangle Fill="Black"
-                   Opacity="0.5" />
+        <controls:ProjectImage ImagePath="{Binding Project.Image}" />
+
         <DockPanel>
             <DockPanel Background="White"
                        DockPanel.Dock="Top">
@@ -34,7 +28,7 @@
                     <TextBlock VerticalAlignment="Center"
                                Margin="10"
                                FontSize="24"
-                               Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                               Text="{Binding Project.Name}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Top"

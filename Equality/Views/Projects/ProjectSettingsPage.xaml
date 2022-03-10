@@ -7,6 +7,7 @@
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+               xmlns:controls="clr-namespace:Equality.Controls"
                FontSize="16"
                d:Background="Gray"
                d:DesignWidth="1800"
@@ -33,15 +34,12 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Image Grid.Row="0"
-                           Grid.Column="0"
-                           Grid.ColumnSpan="3"
-                           Source="/Resources/Images/BackgroundImage.jpg" />
-                    <Rectangle Grid.Row="0"
-                               Grid.Column="0"
-                               Grid.ColumnSpan="3"
-                               Fill="Black"
-                               Opacity="0.5" />
+                    <controls:ProjectImage Grid.Row="0"
+                                           Grid.Column="0"
+                                           Grid.ColumnSpan="3"
+                                           Width="500"
+                                           Height="280"
+                                           ImagePath="{Binding Image}" />
 
                     <StackPanel Grid.Column="1"
                                 VerticalAlignment="Center">

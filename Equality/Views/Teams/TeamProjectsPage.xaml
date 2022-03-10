@@ -9,6 +9,7 @@
                xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
                xmlns:models="clr-namespace:Equality.Models;assembly=Equality.MVVM"
                xmlns:objects="clr-namespace:Equality.Data.Wpf"
+               xmlns:controls="clr-namespace:Equality.Controls"
                FontSize="16"
                d:Background="{StaticResource MaterialDesignPaper}"
                d:DesignHeight="1080"
@@ -46,10 +47,7 @@
                                     Command="{Binding DataContext.OpenProjectPage, RelativeSource={RelativeSource AncestorType=equality:Page}}"
                                     CommandParameter="{Binding}">
                                 <Grid>
-                                    <Image Stretch="UniformToFill"
-                                           Source="/Resources/Images/BackgroundImage.jpg" />
-                                    <Rectangle Fill="Black"
-                                               Opacity="0.5" />
+                                    <controls:ProjectImage ImagePath="{Binding Image}" />
 
                                     <TextBlock MaxWidth="400"
                                                MaxHeight="200"
@@ -63,7 +61,6 @@
                                                FontSize="24"
                                                Text="{Binding Name}"></TextBlock>
                                 </Grid>
-
                             </Button>
                         </DataTemplate>
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Catel.MVVM;
 using Catel.Services;
@@ -9,9 +6,6 @@ using Catel.Services;
 using Equality.Extensions;
 using Equality.MVVM;
 using Equality.Models;
-using Equality.Services;
-using Catel;
-using Equality.Data;
 
 namespace Equality.ViewModels
 {
@@ -22,6 +16,8 @@ namespace Equality.ViewModels
         public ProjectPageViewModel(INavigationService navigationService)
         {
             NavigationService = navigationService;
+
+            NavigationCompleted += OnNavigated;
         }
 
         public enum Tab
@@ -34,11 +30,9 @@ namespace Equality.ViewModels
         #region Properties
 
         public Tab ActiveTab { get; set; }
-        [Model]
-        Project Project { get; set; }
 
-        [ViewModelToModel(nameof(Project))]
-        public string Name { get; set; }
+        [Model]
+        public Project Project { get; set; }
 
         #endregion
 
@@ -49,6 +43,11 @@ namespace Equality.ViewModels
         #endregion
 
         #region Methods
+
+        private void OnNavigated(object sender, System.EventArgs e)
+        {
+            Project = NavigationContext.Values["project"] as Project;
+        }
 
         private void OnActiveTabChanged()
         {
