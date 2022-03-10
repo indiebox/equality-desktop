@@ -10,6 +10,7 @@ using Equality.Services;
 using System.Net.Http;
 using System.Diagnostics;
 using Catel.MVVM;
+using Equality.Data;
 
 namespace Equality.ViewModels
 {
@@ -23,6 +24,7 @@ namespace Equality.ViewModels
         {
             ProjectService = projectService;
 
+            OpenProjectPage = new Command<Project>(OnOpenOpenProjectPageExecute);
             OpenCreateProjectWindow = new TaskCommand(OnOpenCreateProjectWindowExecuteAsync);
         }
 
@@ -48,6 +50,16 @@ namespace Equality.ViewModels
 
         #region Methods
 
+        public Command<Project> OpenProjectPage { get; private set; }
+
+        private void OnOpenOpenProjectPageExecute(Project project)
+        {
+            var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
+            StateManager.SelectedProject = project;
+            vm.SelectedProject = project;
+            vm.ActiveTab = ApplicationWindowViewModel.Tab.Project;
+        }
+
         private Task CreateProjectVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
             if (e.Result ?? false) {
@@ -70,7 +82,6 @@ namespace Equality.ViewModels
                 Debug.WriteLine(e.ToString());
             }
         }
-
 
         #endregion
 

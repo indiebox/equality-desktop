@@ -6,10 +6,10 @@ namespace Equality.ViewModels.Design
 {
     public class DesignProjectsPageViewModel : ProjectsPageViewModel
     {
-        public DesignProjectsPageViewModel() : base(null, null)
+        public DesignProjectsPageViewModel() : base(null, null, null)
         {
             Teams.AddRange(new Team[] {
-                new Team() { Name = "Test dafs dfsafdsa fdsafdsafdsa"},
+                new Team() { Name = "Test dafs dfsafdsa fdsafdsafdsa", Projects = { new() { Name = "Test project" } } },
                 new Team() { Name = "Test 2"},
                 new Team() { Name = "Test 3"},
             });

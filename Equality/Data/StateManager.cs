@@ -16,11 +16,18 @@ namespace Equality.Data
                     Email = "example@example.org",
                     CreatedAt = System.DateTime.Today,
                 };
+
+                SelectedProject = new Project()
+                {
+                    Name = "Equality",
+                };
             }
         }
 
         public static User CurrentUser { get; set; }
 
         public static string ApiToken { get; set; }
+
+        public static Project SelectedProject { get; set; }
     }
 }

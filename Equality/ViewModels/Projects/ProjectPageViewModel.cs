@@ -1,9 +1,17 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
 
+using Catel.MVVM;
 using Catel.Services;
 
 using Equality.Extensions;
 using Equality.MVVM;
+using Equality.Models;
+using Equality.Services;
+using Catel;
+using Equality.Data;
 
 namespace Equality.ViewModels
 {
@@ -26,6 +34,11 @@ namespace Equality.ViewModels
         #region Properties
 
         public Tab ActiveTab { get; set; }
+        [Model]
+        Project Project { get; set; }
+
+        [ViewModelToModel(nameof(Project))]
+        public string Name { get; set; }
 
         #endregion
 
