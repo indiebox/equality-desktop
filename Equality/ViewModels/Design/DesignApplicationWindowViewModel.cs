@@ -6,7 +6,6 @@ namespace Equality.ViewModels.Design
     {
         public DesignApplicationWindowViewModel() : base(null, null, null)
         {
-            SelectedTeam = new Team() { Name = "Выбранная команда" };
         }
     }
 }

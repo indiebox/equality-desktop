@@ -2,7 +2,7 @@
 
 namespace Equality.Services
 {
-    public interface ITeamService : Core.Services.ITeamService<Team, TeamMember>
+    public interface ITeamService : ITeamServiceBase<Team, TeamMember>
     {
     }
 }

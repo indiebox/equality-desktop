@@ -1,21 +1,21 @@
-﻿<equality:Page x:Class="Equality.Views.ProjectPage"
-               xmlns:equality="clr-namespace:Equality.MVVM"
-               xmlns:catel="http://schemas.catelproject.com"
-               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-               xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
-               xmlns:controls="clr-namespace:Equality.Controls"
-               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
-               xmlns:converters="clr-namespace:Equality.Converters;assembly=Equality.MVVM"
-               FontSize="16"
-               d:DataContext="{d:DesignInstance dvm:DesignProjectPageViewModel, IsDesignTimeCreatable=True}"
-               d:Background="{StaticResource MaterialDesignPaper}"
-               d:DesignWidth="1920"
-               d:DesignHeight="1080"
-               mc:Ignorable="d">
+﻿<mvvm:Page x:Class="Equality.Views.ProjectPage"
+           xmlns:mvvm="clr-namespace:Equality.MVVM"
+           xmlns:catel="http://schemas.catelproject.com"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+           xmlns:controls="clr-namespace:Equality.Controls"
+           xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+           xmlns:equality="http://equality.indiebox.ru/schemas"
+           FontSize="16"
+           d:DataContext="{d:DesignInstance dvm:DesignProjectPageViewModel, IsDesignTimeCreatable=True}"
+           d:Background="{StaticResource MaterialDesignPaper}"
+           d:DesignWidth="1920"
+           d:DesignHeight="1080"
+           mc:Ignorable="d">
     <Grid>
         <controls:ProjectImage ImagePath="{Binding Project.Image}" />
 
@@ -44,11 +44,11 @@
                                     Value="Hand" />
                         </Style>
                     </StackPanel.Resources>
-                    <RadioButton IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ProjectPageViewModel+Tab.Board}}"
+                    <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ProjectPageViewModel+Tab.Board}}"
                                  Content="Доска" />
-                    <RadioButton IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ProjectPageViewModel+Tab.Leader}}"
+                    <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ProjectPageViewModel+Tab.Leader}}"
                                  Content="Лидер" />
-                    <RadioButton IsChecked="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ProjectPageViewModel+Tab.Settings}}"
+                    <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ProjectPageViewModel+Tab.Settings}}"
                                  Content="Настройки" />
                 </StackPanel>
             </DockPanel>
@@ -57,4 +57,4 @@
                    VerticalAlignment="Stretch"></Frame>
         </DockPanel>
     </Grid>
-</equality:Page>
+</mvvm:Page>

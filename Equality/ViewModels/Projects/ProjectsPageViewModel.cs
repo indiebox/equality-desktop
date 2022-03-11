@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Diagnostics;
 
 using Catel.Collections;
 using Catel.MVVM;
@@ -10,8 +12,6 @@ using Equality.Helpers;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
-using System.Net.Http;
-using System.Diagnostics;
 using Equality.Data;
 
 namespace Equality.ViewModels
@@ -56,9 +56,9 @@ namespace Equality.ViewModels
 
         private void OnOpenOpenProjectPageExecute(Project project)
         {
-            var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
             StateManager.SelectedProject = project;
-            vm.SelectedProject = project;
+
+            var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
             vm.ActiveTab = ApplicationWindowViewModel.Tab.Project;
         }
 
@@ -74,8 +74,9 @@ namespace Equality.ViewModels
 
         private void OnOpenTeamPageExecute(Team team)
         {
+            StateManager.SelectedTeam = team;
+
             var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
-            vm.SelectedTeam = team;
             vm.ActiveTab = ApplicationWindowViewModel.Tab.Team;
         }
 

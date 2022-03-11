@@ -9,11 +9,11 @@ using Catel.Services;
 
 using Equality.Http;
 using Equality.Extensions;
-using Equality.Helpers;
 using Equality.Validation;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
+using Equality.Data;
 
 namespace Equality.ViewModels
 {
@@ -31,6 +31,8 @@ namespace Equality.ViewModels
             UploadLogo = new TaskCommand(OnUploadLogoExecute);
             DeleteLogo = new TaskCommand(OnDeleteLogoExecute, () => !string.IsNullOrWhiteSpace(Logo));
             UpdateSettings = new TaskCommand(OnUpdateSettingsExecuteAsync);
+
+            Team = StateManager.SelectedTeam;
         }
 
         #region Properties
@@ -157,7 +159,7 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
+            // TODO: subcribe to events here
         }
 
         protected override async Task CloseAsync()

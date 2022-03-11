@@ -10,32 +10,40 @@ using Equality.Data;
 using Equality.Http;
 using Equality.Models;
 
-namespace Equality.Core.Services
+using Newtonsoft.Json.Linq;
+
+namespace Equality.Services
 {
-    public class ProjectService : IProjectService
+    public class ProjectServiceBase<TProjectModel, TTeamModel> : IProjectServiceBase<TProjectModel, TTeamModel>
+        where TProjectModel : class, IProject, new()
+        where TTeamModel : class, ITeam, new()
     {
         protected IApiClient ApiClient;
 
         protected ITokenResolverService TokenResolver;
 
-        public ProjectService(IApiClient apiClient, ITokenResolverService tokenResolver)
+        public ProjectServiceBase(IApiClient apiClient, ITokenResolverService tokenResolver)
         {
             ApiClient = apiClient;
             TokenResolver = tokenResolver;
         }
 
-        public Task<ApiResponseMessage> GetProjectsAsync(ITeam team) => GetProjectsAsync(team.Id);
+        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(TTeamModel team) => GetProjectsAsync(team.Id);
 
-        public async Task<ApiResponseMessage> GetProjectsAsync(ulong teamId)
+        public async Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ulong teamId)
         {
             Argument.IsNotNull(nameof(teamId), teamId);
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/projects");
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/projects");
+
+            var projects = DeserializeRange(response.Content["data"]);
+
+            return new(projects, response);
         }
 
-        public Task<ApiResponseMessage> CreateProjectAsync(ITeam team, IProject project) => CreateProjectAsync(team.Id, project);
+        public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(TTeamModel team, TProjectModel project) => CreateProjectAsync(team.Id, project);
 
-        public async Task<ApiResponseMessage> CreateProjectAsync(ulong teamId, IProject project)
+        public async Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ulong teamId, TProjectModel project)
         {
             Argument.IsNotNull(nameof(teamId), teamId);
             Argument.IsNotNull(nameof(project), project);
@@ -46,12 +54,16 @@ namespace Equality.Core.Services
                 { "description", project.Description },
             };
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/projects", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/projects", data);
+
+            project = Deserialize(response.Content["data"]);
+
+            return new(project, response);
         }
 
-        public Task<ApiResponseMessage> SetImageAsync(IProject project, string imagePath) => SetImageAsync(project.Id, imagePath);
+        public Task<ApiResponseMessage<TProjectModel>> SetImageAsync(TProjectModel project, string imagePath) => SetImageAsync(project.Id, imagePath);
 
-        public async Task<ApiResponseMessage> SetImageAsync(ulong projectId, string imagePath)
+        public async Task<ApiResponseMessage<TProjectModel>> SetImageAsync(ulong projectId, string imagePath)
         {
             Argument.IsNotNull(nameof(projectId), projectId);
             Argument.IsNotNull(nameof(imagePath), imagePath);
@@ -81,22 +93,30 @@ namespace Equality.Core.Services
                 { fieldName, content }
             };
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"projects/{projectId}/image", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"projects/{projectId}/image", data);
+
+            var project = Deserialize(response.Content["data"]);
+
+            return new(project, response);
         }
 
-        public Task<ApiResponseMessage> DeleteImageAsync(IProject project) => DeleteImageAsync(project.Id);
+        public Task<ApiResponseMessage<TProjectModel>> DeleteImageAsync(TProjectModel project) => DeleteImageAsync(project.Id);
 
-        public async Task<ApiResponseMessage> DeleteImageAsync(ulong projectId)
+        public async Task<ApiResponseMessage<TProjectModel>> DeleteImageAsync(ulong projectId)
         {
             Argument.IsNotNull(nameof(projectId), projectId);
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"projects/{projectId}/image");
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"projects/{projectId}/image");
+
+            var project = Deserialize(response.Content["data"]);
+
+            return new(project, response);
         }
 
-        public async Task<ApiResponseMessage> UpdateProjectAsync(IProject project)
+        public async Task<ApiResponseMessage<TProjectModel>> UpdateProjectAsync(TProjectModel project)
         {
             Argument.IsNotNull(nameof(project), project);
-            Argument.IsMinimal<ulong>("IProject.Id", project.Id, 1);
+            Argument.IsMinimal<ulong>("TProjectModel.Id", project.Id, 1);
 
             Dictionary<string, object> data = new()
             {
@@ -104,7 +124,17 @@ namespace Equality.Core.Services
                 { "description", project.Description },
             };
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync($"projects/{project.Id}", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync($"projects/{project.Id}", data);
+
+            project = Deserialize(response.Content["data"]);
+
+            return new(project, response);
         }
+
+        /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
+        protected TProjectModel Deserialize(JToken data) => ((IDeserializeModels<TProjectModel>)this).Deserialize(data);
+
+        /// <inheritdoc cref="IDeserializeModels{T}.DeserializeRange(JToken)"/>
+        protected TProjectModel[] DeserializeRange(JToken data) => ((IDeserializeModels<TProjectModel>)this).DeserializeRange(data);
     }
 }

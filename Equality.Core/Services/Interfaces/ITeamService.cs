@@ -3,10 +3,13 @@ using System.Threading.Tasks;
 
 using Equality.Http;
 using Equality.Models;
+using Equality.Data;
 
-namespace Equality.Core.Services
+namespace Equality.Services
 {
-    public interface ITeamService
+    public interface ITeamServiceBase<TTeamModel, TTeamMemberModel> : IDeserializeModels<TTeamModel>
+        where TTeamModel : class, ITeam, new()
+        where TTeamMemberModel : class, ITeamMember, new()
     {
         /// <summary>
         /// Sends the get current user teams request to the API.
@@ -14,120 +17,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> GetTeamsAsync();
-
-        /// <summary>
-        /// Sends the create team request to the API.
-        /// </summary>
-        /// <param name="team">The team.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> CreateAsync(ITeam team);
-
-        /// <summary>
-        /// Sends the get members request to the API.
-        /// </summary>
-        /// <param name="team">The team.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> GetMembersAsync(ITeam team);
-
-        /// <inheritdoc cref="GetMembersAsync(ITeam)"/>
-        /// <param name="teamId">The team id.</param>
-        public Task<ApiResponseMessage> GetMembersAsync(ulong teamId);
-
-        /// <summary>
-        /// Sends the leave team request to the API.
-        /// </summary>
-        /// <param name="team">The team.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> LeaveTeamAsync(ITeam team);
-
-        /// <inheritdoc cref="LeaveTeamAsync(ITeam)"/>
-        /// <param name="teamId">The team id.</param>
-        public Task<ApiResponseMessage> LeaveTeamAsync(ulong teamId);
-
-        /// <summary>
-        /// Sends the set logo request to the API.
-        /// </summary>
-        /// <param name="team">The team.</param>
-        /// <param name="imagePath">The path to image file.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> SetLogoAsync(ITeam team, string imagePath);
-
-        /// <inheritdoc cref="SetLogoAsync(ITeam, string)"/>
-        /// <param name="teamId">The team id.</param>
-        /// <param name="imagePath">The path to image file.</param>
-        public Task<ApiResponseMessage> SetLogoAsync(ulong teamId, string imagePath);
-
-        /// <summary>
-        /// Sends the delete logo request to the API.
-        /// </summary>
-        /// <param name="team">The team.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> DeleteLogoAsync(ITeam team);
-
-        /// <inheritdoc cref="DeleteLogoAsync(ITeam)"/>
-        /// <param name="teamId">The team id.</param>
-        public Task<ApiResponseMessage> DeleteLogoAsync(ulong teamId);
-
-        /// <summary>
-        /// Sends the update team request to the API.
-        /// </summary>
-        /// <param name="team">The team.</param>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
-        /// </remarks>
-        /// 
-        /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> UpdateTeamAsync(ITeam team);
-    }
-
-    public interface ITeamService<TTeamModel, TTeamMemberModel> : IDeserializeModels<TTeamModel>
-        where TTeamModel : class, new()
-        where TTeamMemberModel : class, new()
-    {
-        /// <summary>
-        /// Sends the get current user teams request to the API.
-        /// </summary>
-        /// <returns>Returns the API response.</returns>
-        /// 
-        /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -140,7 +30,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -153,7 +43,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -170,7 +60,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -188,7 +78,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -206,7 +96,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -223,7 +113,7 @@ namespace Equality.Core.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets token from <see cref="IStateManager.ApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />

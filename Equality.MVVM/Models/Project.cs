@@ -4,7 +4,7 @@ using Catel.Data;
 
 namespace Equality.Models
 {
-    public class Project : ModelBase, IEquatable<Project>
+    public class Project : ModelBase, IProject<Team>, IEquatable<Project>
     {
         public ulong Id { get; set; }
 
@@ -14,11 +14,15 @@ namespace Equality.Models
 
         public string Image { get; set; }
 
-        public Team Team { get; set; }
-
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+
+        #region Relations
+
+        public Team Team { get; set; }
+
+        #endregion
 
         #region Override operators
 

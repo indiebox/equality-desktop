@@ -4,19 +4,13 @@ using Catel.Data;
 
 namespace Equality.Models
 {
-    public class Invite : ModelBase, IEquatable<Invite>
+    public class Invite : ModelBase, IInvite<Team, User>, IEquatable<Invite>
     {
         public Invite()
         {
         }
 
         public ulong Id { get; set; }
-
-        public Team Team { get; set; }
-
-        public User Inviter { get; set; }
-
-        public User Invited { get; set; }
 
         public IInvite.InviteStatus Status { get; set; }
 
@@ -27,6 +21,16 @@ namespace Equality.Models
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+
+        #region Relations
+
+        public Team Team { get; set; }
+
+        public User Inviter { get; set; }
+
+        public User Invited { get; set; }
+
+        #endregion
 
         #region Override operators
 

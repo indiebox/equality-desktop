@@ -143,10 +143,14 @@ namespace Equality.ViewModels
 
         #endregion
 
+        #region Methods
+
         private void OnNavigationCompleted(object sender, System.EventArgs e)
         {
             Email = (string)NavigationContext.Values["email"];
         }
+
+        #endregion
 
         protected override async Task InitializeAsync()
         {

@@ -7,15 +7,19 @@ using Equality.Data;
 using Equality.Http;
 using Equality.Models;
 
-namespace Equality.Core.Services
+using Newtonsoft.Json.Linq;
+
+namespace Equality.Services
 {
-    public class InviteService : IInviteService
+    public class InviteServiceBase<TInviteModel, TTeamModel> : IInviteServiceBase<TInviteModel, TTeamModel>
+        where TInviteModel : class, IInvite, new()
+        where TTeamModel : class, ITeam, new()
     {
         protected IApiClient ApiClient;
 
         protected ITokenResolverService TokenResolver;
 
-        public InviteService(IApiClient apiClient, ITokenResolverService tokenResolver)
+        public InviteServiceBase(IApiClient apiClient, ITokenResolverService tokenResolver)
         {
             Argument.IsNotNull(nameof(apiClient), apiClient);
             Argument.IsNotNull(nameof(tokenResolver), tokenResolver);
@@ -24,28 +28,31 @@ namespace Equality.Core.Services
             TokenResolver = tokenResolver;
         }
 
-        public Task<ApiResponseMessage> GetTeamInvitesAsync
-            (ITeam team, IInviteService.InviteFilter filter = IInviteService.InviteFilter.All)
-            => GetTeamInvitesAsync(team.Id, filter);
+        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(TTeamModel team) => GetTeamInvitesAsync(team.Id);
 
-        public async Task<ApiResponseMessage> GetTeamInvitesAsync(ulong teamId, IInviteService.InviteFilter filter = IInviteService.InviteFilter.All)
+        public async Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ulong teamId)
         {
             Argument.IsNotNull(nameof(teamId), teamId);
 
-            var query = ApiClient.BuildUri($"teams/{teamId}/invites", new()
-            {
-                { "filter", filter.ToString().ToLower() }
-            });
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/invites");
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query);
+            var invites = DeserializeRange(response.Content["data"]);
+
+            return new(invites, response);
         }
 
-        public async Task<ApiResponseMessage> GetUserInvitesAsync()
-            => await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync("invites");
+        public async Task<ApiResponseMessage<TInviteModel[]>> GetUserInvitesAsync()
+        {
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync("invites");
 
-        public Task<ApiResponseMessage> InviteUserAsync(ITeam team, string email) => InviteUserAsync(team.Id, email);
+            var invites = DeserializeRange(response.Content["data"]);
 
-        public async Task<ApiResponseMessage> InviteUserAsync(ulong teamId, string email)
+            return new(invites, response);
+        }
+
+        public Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(TTeamModel team, string email) => InviteUserAsync(team.Id, email);
+
+        public async Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(ulong teamId, string email)
         {
             Argument.IsNotNull(nameof(teamId), teamId);
 
@@ -54,10 +61,14 @@ namespace Equality.Core.Services
                 { "email", email }
             };
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/invites", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/invites", data);
+
+            var invite = Deserialize(response.Content["data"]);
+
+            return new(invite, response);
         }
 
-        public Task<ApiResponseMessage> RevokeInviteAsync(IInvite invite) => RevokeInviteAsync(invite.Id);
+        public Task<ApiResponseMessage> RevokeInviteAsync(TInviteModel invite) => RevokeInviteAsync(invite.Id);
 
         public async Task<ApiResponseMessage> RevokeInviteAsync(ulong inviteId)
         {
@@ -66,7 +77,7 @@ namespace Equality.Core.Services
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"invites/{inviteId}");
         }
 
-        public Task<ApiResponseMessage> AcceptInviteAsync(IInvite invite) => AcceptInviteAsync(invite.Id);
+        public Task<ApiResponseMessage> AcceptInviteAsync(TInviteModel invite) => AcceptInviteAsync(invite.Id);
 
         public async Task<ApiResponseMessage> AcceptInviteAsync(ulong inviteId)
         {
@@ -75,7 +86,7 @@ namespace Equality.Core.Services
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"invites/{inviteId}/accept");
         }
 
-        public Task<ApiResponseMessage> DeclineInviteAsync(IInvite invite) => DeclineInviteAsync(invite.Id);
+        public Task<ApiResponseMessage> DeclineInviteAsync(TInviteModel invite) => DeclineInviteAsync(invite.Id);
 
         public async Task<ApiResponseMessage> DeclineInviteAsync(ulong inviteId)
         {
@@ -83,5 +94,11 @@ namespace Equality.Core.Services
 
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"invites/{inviteId}/decline");
         }
+
+        /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
+        protected TInviteModel Deserialize(JToken data) => ((IDeserializeModels<TInviteModel>)this).Deserialize(data);
+
+        /// <inheritdoc cref="IDeserializeModels{T}.DeserializeRange(JToken)"/>
+        protected TInviteModel[] DeserializeRange(JToken data) => ((IDeserializeModels<TInviteModel>)this).DeserializeRange(data);
     }
 }

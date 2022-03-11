@@ -5,7 +5,7 @@ using Catel.Data;
 
 namespace Equality.Models
 {
-    public class Team : ModelBase, IEquatable<Team>
+    public class Team : ModelBase, ITeam<ObservableCollection<Project>>, IEquatable<Team>
     {
         public Team()
         {
@@ -25,7 +25,11 @@ namespace Equality.Models
 
         public DateTime UpdatedAt { get; set; }
 
+        #region Relations
+
         public ObservableCollection<Project> Projects { get; set; } = new();
+
+        #endregion
 
         #region Override operators
 

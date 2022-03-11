@@ -2,7 +2,7 @@
 
 namespace Equality.Models
 {
-    public class TeamMember : User
+    public class TeamMember : User, ITeamMember
     {
         public DateTime JoinedAt { get; set; }
 

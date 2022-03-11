@@ -11,6 +11,7 @@ using Equality.Helpers;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
+using Equality.Data;
 
 using MaterialDesignThemes.Wpf;
 
@@ -18,8 +19,6 @@ namespace Equality.ViewModels
 {
     public class TeamMembersListViewModel : ViewModel
     {
-        protected Team Team;
-
         protected ITeamService TeamService;
 
         public TeamMembersListViewModel(ITeamService teamService)
@@ -75,7 +74,7 @@ namespace Equality.ViewModels
         protected async Task LoadMembersAsync()
         {
             try {
-                var response = await TeamService.GetMembersAsync(Team);
+                var response = await TeamService.GetMembersAsync(StateManager.SelectedTeam);
 
                 Members.AddRange(response.Object);
 
@@ -88,11 +87,12 @@ namespace Equality.ViewModels
         protected async Task LeaveTeam()
         {
             try {
-                await TeamService.LeaveTeamAsync(Team);
+                await TeamService.LeaveTeamAsync(StateManager.SelectedTeam);
+
+                StateManager.SelectedTeam = null;
 
                 var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
                 vm.ActiveTab = ApplicationWindowViewModel.Tab.Main;
-                vm.SelectedTeam = null;
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
@@ -114,8 +114,6 @@ namespace Equality.ViewModels
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-
-            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
 
             await LoadMembersAsync();
         }

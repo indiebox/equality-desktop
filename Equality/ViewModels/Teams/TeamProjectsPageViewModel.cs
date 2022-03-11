@@ -2,22 +2,21 @@
 using System.Threading.Tasks;
 
 using Catel.Collections;
+using Catel.MVVM;
 
 using Equality.Helpers;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
+using Equality.Data;
+
 using System.Net.Http;
 using System.Diagnostics;
-using Catel.MVVM;
-using Equality.Data;
 
 namespace Equality.ViewModels
 {
     public class TeamProjectsPageViewModel : ViewModel
     {
-        protected Team Team;
-
         protected IProjectService ProjectService;
 
         public TeamProjectsPageViewModel(IProjectService projectService)
@@ -54,9 +53,9 @@ namespace Equality.ViewModels
 
         private void OnOpenOpenProjectPageExecute(Project project)
         {
-            var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
             StateManager.SelectedProject = project;
-            vm.SelectedProject = project;
+
+            var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
             vm.ActiveTab = ApplicationWindowViewModel.Tab.Project;
         }
 
@@ -75,7 +74,7 @@ namespace Equality.ViewModels
         protected async Task LoadProjectsAsync()
         {
             try {
-                var response = await ProjectService.GetProjectsAsync(Team);
+                var response = await ProjectService.GetProjectsAsync(StateManager.SelectedTeam);
 
                 Projects.AddRange(response.Object);
             } catch (HttpRequestException e) {
@@ -88,8 +87,6 @@ namespace Equality.ViewModels
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-
-            Team = MvvmHelper.GetFirstInstanceOfViewModel<TeamPageViewModel>().Team;
 
             await LoadProjectsAsync();
         }
