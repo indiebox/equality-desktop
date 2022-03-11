@@ -174,6 +174,67 @@ namespace Equality.MVVM
         }
 
         /// <summary>
+        /// Invoke the specified <paramref name="action"/> in Design mode.
+        /// </summary>
+        /// <param name="action">Callback.</param>
+        /// <param name="throwsExceptionNotDesignMode">Throws exception if application not in Design mode.</param>
+        /// <returns>Returns <see langword="true"/> if application in Design mode.</returns>
+        /// 
+        /// <exception cref="InvalidOperationException">If <paramref name="throwsExceptionNotDesignMode"/> is <see langword="true"/> and application not in Design mode.</exception>
+        /// 
+        /// <example>
+        /// This method convenient to use for generating fake data during the Design mode.
+        /// <code>
+        /// class SomeViewModel : ViewModel {
+        ///     // If this constructor used not in Design mode, this means that the applicationfailed to resolve 
+        ///     // ISomeService from ServiceLocator, so thats why this method throws the exception.
+        ///     public SomeViewModel() {
+        ///         HandleDesignMode(() => {
+        ///             Name = "Fake data";
+        ///         });
+        ///     }
+        ///     
+        ///     public SomeViewModel(ISomeService service) {
+        ///         Name = "Real data";
+        ///     }
+        ///     
+        ///     public string Name { get; set; }
+        /// }
+        /// </code>
+        /// 
+        /// If your VM has empty constructor and it should be empty not in Design mode, you can pass 2rd parameter as false:
+        /// <code>
+        /// class SomeViewModel : ViewModel {
+        ///     // If this constructor used not in Design mode, this means that the applicationfailed to resolve 
+        ///     // ISomeService from ServiceLocator, so thats why this method throws the exception.
+        ///     public SomeViewModel() {
+        ///         if (HandleDesignMode(() => {
+        ///             Name = "Fake data";
+        ///         }, false)) return;
+        ///         
+        ///         Name = "Real data";
+        ///     }
+        ///     
+        ///     public string Name { get; set; }
+        /// }
+        /// </code>
+        /// 
+        /// If you dont need to generate any fake data, you should just set 'IsDesignTimeCreatable' to 'false' in xaml.
+        /// </example>
+        protected bool HandleDesignMode(Action action = null, bool throwsExceptionNotDesignMode = true)
+        {
+            if (CatelEnvironment.IsInDesignMode) {
+                action?.Invoke();
+            } else if (throwsExceptionNotDesignMode) {
+                throw new InvalidOperationException("This method is available only in Design Mode. " +
+                    "Most likely, the VM was created using the wrong constructor. " +
+                    "Perhaps this is due to the inability to resolve some dependencies.");
+            }
+
+            return CatelEnvironment.IsInDesignMode;
+        }
+
+        /// <summary>
         /// Handle Api errors and call <c>DisplayApiErrors()</c>.
         /// </summary>
         /// <param name="errors">The Api errors.</param>
