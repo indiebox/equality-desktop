@@ -6,7 +6,7 @@
            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-           xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+           xmlns:vm="clr-namespace:Equality.ViewModels"
            xmlns:equality="http://equality.indiebox.ru/schemas"
            xmlns:objects="clr-namespace:Equality.Data.Wpf"
            xmlns:controls="clr-namespace:Equality.Controls"
@@ -14,7 +14,7 @@
            d:Background="{StaticResource MaterialDesignPaper}"
            d:DesignHeight="1080"
            d:DesignWidth="1100"
-           d:DataContext="{d:DesignInstance dvm:DesignTeamProjectsPageViewModel, IsDesignTimeCreatable=True}"
+           d:DataContext="{d:DesignInstance vm:TeamProjectsPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
 
     <Grid Background="White">

@@ -14,6 +14,18 @@ namespace Equality.ViewModels
     {
         protected INavigationService NavigationService;
 
+        #region DesignModeConstructor
+
+        public ProjectPageViewModel()
+        {
+            HandleDesignMode(() =>
+            {
+                Project = StateManager.SelectedProject;
+            });
+        }
+
+        #endregion
+
         public ProjectPageViewModel(INavigationService navigationService)
         {
             NavigationService = navigationService;

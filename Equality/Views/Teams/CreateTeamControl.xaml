@@ -5,12 +5,12 @@
                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                   xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+                   xmlns:vm="clr-namespace:Equality.ViewModels"
                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                    FontSize="16"
                    mc:Ignorable="d"
                    d:Background="{StaticResource MaterialDesignPaper}"
-                   d:DataContext="{d:DesignInstance Type=dvm:DesignCreateTeamControlViewModel, IsDesignTimeCreatable=True}">
+                   d:DataContext="{d:DesignInstance Type=vm:CreateTeamControlViewModel}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

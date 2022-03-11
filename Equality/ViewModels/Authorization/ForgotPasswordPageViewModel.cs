@@ -20,6 +20,15 @@ namespace Equality.ViewModels
 
         protected IUserService UserService;
 
+        #region DesignModeConstructor
+
+        public ForgotPasswordPageViewModel()
+        {
+            HandleDesignMode();
+        }
+
+        #endregion
+
         public ForgotPasswordPageViewModel(INavigationService navigationService, IUserService userService)
         {
             NavigationService = navigationService;

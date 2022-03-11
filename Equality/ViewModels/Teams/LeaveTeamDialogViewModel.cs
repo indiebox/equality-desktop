@@ -6,6 +6,15 @@ namespace Equality.ViewModels
 {
     public class LeaveTeamDialogViewModel : ViewModel
     {
+        #region DesignModeConstructor
+
+        public LeaveTeamDialogViewModel()
+        {
+            HandleDesignMode();
+        }
+
+        #endregion
+
         public LeaveTeamDialogViewModel(bool isLastMember)
         {
             IsLastMember = isLastMember;

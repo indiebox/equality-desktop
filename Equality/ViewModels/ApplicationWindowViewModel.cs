@@ -20,6 +20,15 @@ namespace Equality.ViewModels
 
         protected IUserService UserService;
 
+        #region DesignModeConstructor
+
+        public ApplicationWindowViewModel()
+        {
+            HandleDesignMode();
+        }
+
+        #endregion
+
         public ApplicationWindowViewModel(IUIVisualizerService uIVisualizerService, INavigationService navigationService, IUserService userService)
         {
             UIVisualizerService = uIVisualizerService;

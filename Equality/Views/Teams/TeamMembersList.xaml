@@ -6,16 +6,15 @@
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:equality="http://equality.indiebox.ru/schemas"
            xmlns:converters="clr-namespace:Equality.Converters"
-           xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+           xmlns:vm="clr-namespace:Equality.ViewModels"
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            xmlns:controls="clr-namespace:Equality.Controls"
-           xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
            FontSize="16"
            d:DesignHeight="1080"
            d:DesignWidth="1920"
            d:Background="{StaticResource MaterialDesignPaper}"
-           d:DataContext="{d:DesignInstance dvm:DesignTeamMembersListViewModel, IsDesignTimeCreatable=True}"
+           d:DataContext="{d:DesignInstance vm:TeamMembersListViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>

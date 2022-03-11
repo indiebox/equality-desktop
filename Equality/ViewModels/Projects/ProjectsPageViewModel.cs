@@ -26,6 +26,24 @@ namespace Equality.ViewModels
 
         protected IProjectService ProjectService;
 
+        #region DesignModeConstructor
+
+        public ProjectsPageViewModel()
+        {
+            HandleDesignMode(() =>
+            {
+                Teams.AddRange(new Team[] {
+                    new Team() { Name = "Test dafs dfsafdsa fdsafdsafdsa", Projects = { new() { Name = "Test project" } } },
+                    new Team() { Name = "Test 2"},
+                    new Team() { Name = "Test 3"},
+                });
+
+                FilteredTeams.AddRange(Teams);
+            });
+        }
+
+        #endregion
+
         public ProjectsPageViewModel(IUIVisualizerService uIVisualizerService, ITeamService teamService, IProjectService projectService)
         {
             UIVisualizerService = uIVisualizerService;

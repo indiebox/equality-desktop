@@ -23,6 +23,18 @@ namespace Equality.ViewModels
 
         protected IProjectService ProjectService;
 
+        #region DesignModeConstructor
+
+        public ProjectSettingsPageViewModel()
+        {
+            HandleDesignMode(() =>
+            {
+                DeleteImage = new TaskCommand(() => null, () => !string.IsNullOrWhiteSpace(Image));
+            });
+        }
+
+        #endregion
+
         public ProjectSettingsPageViewModel(IOpenFileService openFileService, IProjectService projectService)
         {
             OpenFileService = openFileService;

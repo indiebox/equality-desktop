@@ -1,12 +1,23 @@
 ﻿using System.Threading.Tasks;
 
+using Catel.Services;
+
 using Equality.MVVM;
 
 namespace Equality.ViewModels
 {
     public class $safeitemname$ : ViewModel
     {
+        #region DesignModeConstructor
+
         public $safeitemname$()
+        {
+            HandleDesignMode();
+        }
+
+        #endregion
+
+        public $safeitemname$(INavigationService navigationService)
         {
         }
 
