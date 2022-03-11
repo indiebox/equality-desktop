@@ -17,6 +17,40 @@ namespace Equality.ViewModels
     {
         protected IInviteService InviteService;
 
+        #region DesignModeConstructor
+
+        public StartPageViewModel()
+        {
+            HandleDesignMode(() =>
+            {
+                Invites.AddRange(new Invite[]
+                {
+                    new Invite()
+                    {
+                        Team = new Team() { Name = "Long team name Long team name" },
+                        Inviter = new User() { Name = "Long user name Long user name" },
+                    },
+                    new Invite()
+                    {
+                        Team = new Team() { Name = "Test team" },
+                        Inviter = new User() { Name = "User 1" },
+                    },
+                    new Invite()
+                    {
+                        Team = new Team() { Name = "Test team 2" },
+                        Inviter = new User() { Name = "User 2" },
+                    },
+                    new Invite()
+                    {
+                        Team = new Team() { Name = "Test team 2" },
+                        Inviter = new User() { Name = "User 2" },
+                    },
+                });
+            });
+        }
+
+        #endregion
+
         public StartPageViewModel(IInviteService inviteService)
         {
             InviteService = inviteService;

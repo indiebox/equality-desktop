@@ -23,6 +23,18 @@ namespace Equality.ViewModels
 
         protected ITeamService TeamService;
 
+        #region DesignModeConstructor
+
+        public TeamSettingsPageViewModel()
+        {
+            HandleDesignMode(() =>
+            {
+                DeleteLogo = new TaskCommand(() => null, () => !string.IsNullOrWhiteSpace(Logo));
+            });
+        }
+
+        #endregion
+
         public TeamSettingsPageViewModel(IOpenFileService openFileService, ITeamService teamService)
         {
             OpenFileService = openFileService;

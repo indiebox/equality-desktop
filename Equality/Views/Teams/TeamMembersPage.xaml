@@ -5,14 +5,13 @@
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
            xmlns:equality="http://equality.indiebox.ru/schemas"
+           xmlns:vm="clr-namespace:Equality.ViewModels"
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-           xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
-           xmlns:viewmodels="clr-namespace:Equality.ViewModels"
            FontSize="16"
            d:Background="WhiteSmoke"
            d:DesignHeight="600"
-           d:DataContext="{d:DesignInstance Type=viewmodels:TeamMembersPageViewModel}"
+           d:DataContext="{d:DesignInstance Type=vm:TeamMembersPageViewModel}"
            d:DesignWidth="1000"
            mc:Ignorable="d">
     <DockPanel>
@@ -22,7 +21,7 @@
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                          BorderBrush="{StaticResource PrimaryHueMidBrush}"
                          Margin="4"
-                         IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:TeamMembersPageViewModel+Tab.Members}}"
+                         IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:TeamMembersPageViewModel+Tab.Members}}"
                          HorizontalContentAlignment="Left">
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="AccountGroup"
@@ -34,7 +33,7 @@
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                          BorderBrush="{StaticResource PrimaryHueMidBrush}"
                          Margin="4"
-                         IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:TeamMembersPageViewModel+Tab.Invitations}}"
+                         IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:TeamMembersPageViewModel+Tab.Invitations}}"
                          HorizontalContentAlignment="Left">
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="Invite"

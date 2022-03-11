@@ -19,6 +19,22 @@ namespace Equality.ViewModels
     {
         protected IProjectService ProjectService;
 
+        #region DesignModeConstructor
+
+        public TeamProjectsPageViewModel()
+        {
+            HandleDesignMode(() =>
+            {
+                Projects.AddRange(new Project[] {
+                    new Project { Name = "Project I"},
+                    new Project { Name = "Project II"},
+                    new Project { Name = "Project III"}
+                });
+            });
+        }
+
+        #endregion
+
         public TeamProjectsPageViewModel(IProjectService projectService)
         {
             ProjectService = projectService;

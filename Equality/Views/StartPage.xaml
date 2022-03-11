@@ -6,14 +6,14 @@
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            xmlns:controls="clr-namespace:Equality.Controls"
-           xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+           xmlns:vm="clr-namespace:Equality.ViewModels"
            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
            xmlns:equality="http://equality.indiebox.ru/schemas"
            FontSize="16"
            d:DesignHeight="600"
            d:DesignWidth="900"
            d:Background="{StaticResource MaterialDesignPaper}"
-           d:DataContext="{d:DesignInstance Type=dvm:DesignStartPageViewModel, IsDesignTimeCreatable=True}"
+           d:DataContext="{d:DesignInstance Type=vm:StartPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
 
     <StackPanel>

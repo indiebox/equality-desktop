@@ -22,6 +22,18 @@ namespace Equality.ViewModels
 
         protected ITeamService TeamService;
 
+        #region DesignModeConstructor
+
+        public TeamPageViewModel()
+        {
+            HandleDesignMode(() =>
+            {
+                Name = StateManager.SelectedTeam.Name;
+            });
+        }
+
+        #endregion
+
         public TeamPageViewModel(INavigationService navigationService, IOpenFileService openFileService, ITeamService teamService)
         {
             NavigationService = navigationService;

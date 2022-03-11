@@ -23,6 +23,18 @@ namespace Equality.ViewModels
 
         protected IUserService UserService;
 
+        #region DesignModeConstructor
+
+        public LoginPageViewModel()
+        {
+            HandleDesignMode(() =>
+            {
+                CredentialsErrorMessage = "Ошибка данных";
+            });
+        }
+
+        #endregion
+
         public LoginPageViewModel(INavigationService navigationService, IUIVisualizerService uIVisualizerService, IUserService userService)
         {
             NavigationService = navigationService;

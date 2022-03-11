@@ -3,15 +3,14 @@
            xmlns:catel="http://schemas.catelproject.com"
            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:equality="http://equality.indiebox.ru/schemas"
            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+           xmlns:controls="clr-namespace:Equality.Controls"
+           xmlns:vm="clr-namespace:Equality.ViewModels"
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-           xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
-           xmlns:controls="clr-namespace:Equality.Controls"
-           xmlns:viewmodels="clr-namespace:Equality.ViewModels"
-           xmlns:equality="http://equality.indiebox.ru/schemas"
            FontSize="16"
-           d:DataContext="{d:DesignInstance dvm:DesignProjectPageViewModel, IsDesignTimeCreatable=True}"
+           d:DataContext="{d:DesignInstance vm:ProjectPageViewModel, IsDesignTimeCreatable=True}"
            d:Background="{StaticResource MaterialDesignPaper}"
            d:DesignWidth="1920"
            d:DesignHeight="1080"
@@ -44,11 +43,11 @@
                                     Value="Hand" />
                         </Style>
                     </StackPanel.Resources>
-                    <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ProjectPageViewModel+Tab.Board}}"
+                    <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:ProjectPageViewModel+Tab.Board}}"
                                  Content="Доска" />
-                    <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ProjectPageViewModel+Tab.Leader}}"
+                    <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:ProjectPageViewModel+Tab.Leader}}"
                                  Content="Лидер" />
-                    <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ProjectPageViewModel+Tab.Settings}}"
+                    <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:ProjectPageViewModel+Tab.Settings}}"
                                  Content="Настройки" />
                 </StackPanel>
             </DockPanel>

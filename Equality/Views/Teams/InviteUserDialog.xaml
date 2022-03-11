@@ -6,12 +6,12 @@
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                    xmlns:system="clr-namespace:System;assembly=System.Runtime"
-                   xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+                   xmlns:vm="clr-namespace:Equality.ViewModels"
                    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                    Background="{DynamicResource MaterialDesignPaper}"
                    FontSize="16"
                    mc:Ignorable="d"
-                   d:DataContext="{d:DesignInstance Type=dvm:DesignInviteUserDialogViewModel, IsDesignTimeCreatable=True}">
+                   d:DataContext="{d:DesignInstance Type=vm:InviteUserDialogViewModel, IsDesignTimeCreatable=True}">
     <Grid VerticalAlignment="Center"
           HorizontalAlignment="Center"
           Margin="30">

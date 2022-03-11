@@ -7,14 +7,13 @@
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            xmlns:equality="http://equality.indiebox.ru/schemas"
-           xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+           xmlns:vm="clr-namespace:Equality.ViewModels"
            xmlns:controls="clr-namespace:Equality.Controls"
-           xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
            FontSize="16"
            d:Height="600"
            d:Width="1000"
            d:Background="{StaticResource MaterialDesignPaper}"
-           d:DataContext="{d:DesignInstance dvm:DesignProjectsPageViewModel, IsDesignTimeCreatable=True}"
+           d:DataContext="{d:DesignInstance vm:ProjectsPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
     <Grid>
         <Border>

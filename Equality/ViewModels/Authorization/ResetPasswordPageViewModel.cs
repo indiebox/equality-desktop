@@ -20,6 +20,15 @@ namespace Equality.ViewModels
 
         protected IUserService UserServise;
 
+        #region DesignModeConstructor
+
+        public ResetPasswordPageViewModel()
+        {
+            HandleDesignMode();
+        }
+
+        #endregion
+
         public ResetPasswordPageViewModel(INavigationService navigationService, IUserService userService)
         {
             NavigationService = navigationService;

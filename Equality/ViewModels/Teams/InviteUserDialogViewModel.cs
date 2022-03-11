@@ -24,6 +24,15 @@ namespace Equality.ViewModels
 
         protected IInviteService InviteService;
 
+        #region DesignModeConstructor
+
+        public InviteUserDialogViewModel()
+        {
+            HandleDesignMode();
+        }
+
+        #endregion
+
         public InviteUserDialogViewModel(Invite invite, IInviteService inviteService)
         {
             Invite = invite;
