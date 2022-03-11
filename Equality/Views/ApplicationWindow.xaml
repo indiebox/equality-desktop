@@ -8,7 +8,7 @@
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
               xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-              xmlns:converters="clr-namespace:Equality.Converters;assembly=Equality.MVVM"
+              xmlns:equality="http://equality.indiebox.ru/schemas"
               xmlns:notification="clr-namespace:Notification.Wpf.Controls;assembly=Notification.Wpf"
               TextElement.Foreground="{DynamicResource MaterialDesignBody}"
               Background="{DynamicResource MaterialDesignPaper}"
@@ -83,7 +83,7 @@
 
                         <TabItem Width="80"
                                  Height="80"
-                                 IsSelected="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.Main}}">
+                                 IsSelected="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.Main}}">
                             <TabItem.Header>
                                 <StackPanel>
                                     <materialDesign:PackIcon Kind="Home" />
@@ -94,7 +94,7 @@
 
                         <TabItem Width="80"
                                  Height="80"
-                                 IsSelected="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.Projects}}">
+                                 IsSelected="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.Projects}}">
                             <TabItem.Header>
                                 <StackPanel>
                                     <materialDesign:PackIcon Kind="ViewDashboardVariant" />
@@ -105,7 +105,7 @@
 
                         <TabItem Width="80"
                                  Height="80"
-                                 IsSelected="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.Team}}"
+                                 IsSelected="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.Team}}"
                                  Visibility="{Binding SelectedTeam, Converter={catel:ReferenceToCollapsingVisibilityConverter}}">
                             <TabItem.Header>
                                 <DockPanel Margin="5"
@@ -119,7 +119,7 @@
                         </TabItem>
                         <TabItem Width="80"
                                  Height="80"
-                                 IsSelected="{Binding ActiveTab, Converter={converters:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.Project}}"
+                                 IsSelected="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static viewmodels:ApplicationWindowViewModel+Tab.Project}}"
                                  Visibility="{Binding SelectedProject, Converter={catel:ReferenceToCollapsingVisibilityConverter}}">
                             <TabItem.Header>
                                 <DockPanel Margin="5"
