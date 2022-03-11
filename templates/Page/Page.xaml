@@ -7,13 +7,13 @@
            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-           xmlns:dvm="clr-namespace:Equality.ViewModels.Design"
+           xmlns:vm="clr-namespace:Equality.ViewModels"
            TextElement.Foreground="{DynamicResource MaterialDesignBody}"
            Background="{DynamicResource MaterialDesignPaper}"
            FontSize="16"
            d:DesignHeight="300"
            d:DesignWidth="300"
-           d:DataContext="{d:DesignInstance Type=dvm:Design$safeitemname$ViewModel, IsDesignTimeCreatable=True}"
+           d:DataContext="{d:DesignInstance Type=vm:$safeitemname$ViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
     <Grid>
         <TextBlock>Content</TextBlock>

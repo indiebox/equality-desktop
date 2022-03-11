@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using Catel.Data;
 using Catel.MVVM;
+using Catel.Services;
 
 using Equality.Validation;
 using Equality.MVVM;
@@ -11,7 +12,16 @@ namespace Equality.ViewModels
 {
     public class $safeitemname$ : ViewModel
     {
+        #region DesignModeConstructor
+
         public $safeitemname$()
+        {
+            HandleDesignMode();
+        }
+
+        #endregion
+
+        public $safeitemname$(INavigationService navigationService)
         {
 
 
