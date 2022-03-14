@@ -32,19 +32,5 @@ public static class ModuleInitializer
         // Also we register custom INavigationRootService, so we can navigate in the specified context by the NavigationServiceExtension.
         serviceLocator.RegisterType<INavigationService, NavigationService>(RegistrationType.Transient);
         serviceLocator.RegisterType<INavigationRootService, Equality.MVVM.NavigationRootService>(RegistrationType.Transient);
-
-        /*
-        |--------------------------------------------------------------------------
-        | Register types
-        |--------------------------------------------------------------------------
-        |
-        | Here we register types in the ServiceLocator for Dependency Injection.
-        |
-        */
-
-        serviceLocator.RegisterType<IUserService, UserService>();
-        serviceLocator.RegisterType<ITeamService, TeamService>();
-        serviceLocator.RegisterType<IInviteService, InviteService>();
-        serviceLocator.RegisterType<IProjectService, ProjectService>();
     }
 }

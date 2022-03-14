@@ -79,7 +79,7 @@
                                     <materialDesign:Chip.Style>
                                         <Style TargetType="materialDesign:Chip">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ., Converter={converters:IsCurrentUserConverter}}"
+                                                <DataTrigger Binding="{Binding IsCurrentUser}"
                                                              Value="False">
                                                     <Setter Property="Visibility"
                                                             Value="Collapsed" />
@@ -103,7 +103,7 @@
                                 <Style TargetType="Button"
                                        BasedOn="{StaticResource MaterialDesignOutlinedButton}">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ., Converter={converters:IsCurrentUserConverter}}"
+                                        <DataTrigger Binding="{Binding IsCurrentUser}"
                                                      Value="False">
                                             <Setter Property="Visibility"
                                                     Value="Collapsed" />

@@ -19,5 +19,4 @@ using System.Windows.Markup;
 [assembly: Guid("2547cc14-c6d6-4903-a2e5-6b3ef2852101")]
 
 [assembly: XmlnsPrefix("http://equality.indiebox.ru/schemas", "equality")]
-[assembly: XmlnsDefinition("http://equality.indiebox.ru/schemas", "Equality.Converters")]
-[assembly: XmlnsDefinition("http://equality.indiebox.ru/schemas", "Equality.Models")] 
+[assembly: XmlnsDefinition("http://equality.indiebox.ru/schemas", "Equality.Converters")] 

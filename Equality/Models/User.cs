@@ -2,6 +2,8 @@
 
 using Catel.Data;
 
+using Equality.Data;
+
 namespace Equality.Models
 {
     public class User : ModelBase, IUser, IEquatable<User>
@@ -25,6 +27,8 @@ namespace Equality.Models
         #region Custom properties
 
         public bool IsVerified => EmailVerifiedAt != null;
+
+        public bool IsCurrentUser => this == StateManager.CurrentUser;
 
         #endregion
 

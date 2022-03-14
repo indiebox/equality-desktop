@@ -30,7 +30,7 @@
         <ListBox.ItemTemplate>
             <DataTemplate>
                 <Grid Margin="0,10,0,10">
-                    <ProgressBar Value="25"
+                    <ProgressBar Value="{Binding PercentageSupport}"
                                  Height="Auto"
                                  Background="#7FFFFFFF"
                                  BorderBrush="{x:Null}"
@@ -47,7 +47,7 @@
                         </Border>
                         <TextBlock FontSize="16"
                                    Margin="10"
-                                   Text="{Binding Name}"
+                                   Text="{Binding User.Name}"
                                    VerticalAlignment="Center"
                                    DockPanel.Dock="Left" />
                         <materialDesign:PackIcon Margin="10"
