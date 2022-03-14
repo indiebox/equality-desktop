@@ -1,0 +1,65 @@
+﻿<mvvm:Page x:Class="Equality.Views.LeaderElectionPage"
+           xmlns:mvvm="clr-namespace:Equality.MVVM"
+           xmlns:catel="http://schemas.catelproject.com"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+           xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:vm="clr-namespace:Equality.ViewModels"
+           TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+           Background="{DynamicResource MaterialDesignPaper}"
+           FontSize="16"
+           d:DesignHeight="300"
+           d:DesignWidth="300"
+           d:DataContext="{d:DesignInstance Type=vm:LeaderElectionPageViewModel, IsDesignTimeCreatable=True}"
+           mc:Ignorable="d">
+    <ListBox Grid.Row="1"
+             Background="WhiteSmoke"
+             ItemsSource="{Binding NominatedMembers}">
+        <ListBox.Resources>
+            <ControlTemplate x:Key="NoItemsTemplate">
+                <TextBlock Background="WhiteSmoke"
+                           Padding="15"
+                           TextWrapping="Wrap"
+                           FontSize="18">Не найдено участников по запросу: "<Run Text="{Binding ElementName=FilterText, Path=Text}"></Run>".</TextBlock>
+            </ControlTemplate>
+        </ListBox.Resources>
+
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Grid Margin="0,10,0,10">
+                    <ProgressBar Value="25"
+                                 Height="Auto"
+                                 Background="#7FFFFFFF"
+                                 BorderBrush="{x:Null}"
+                                 Foreground="#E5FFFFFF" />
+                    <DockPanel LastChildFill="False">
+                        <Border Margin="10,10,0,10"
+                                Width="50"
+                                Height="50"
+                                CornerRadius="50">
+                            <Border.Background>
+                                <ImageBrush Stretch="Fill"
+                                            ImageSource="/Resources/Images/TeamLogo.jpg" />
+                            </Border.Background>
+                        </Border>
+                        <TextBlock FontSize="16"
+                                   Margin="10"
+                                   Text="{Binding Name}"
+                                   VerticalAlignment="Center"
+                                   DockPanel.Dock="Left" />
+                        <materialDesign:PackIcon Margin="10"
+                                                 Height="30"
+                                                 DockPanel.Dock="Right"
+                                                 Width="30"
+                                                 Kind="Check"
+                                                 VerticalAlignment="Center"
+                                                 Foreground="#FFFD5A2E" />
+                    </DockPanel>
+                </Grid>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
+</mvvm:Page>
