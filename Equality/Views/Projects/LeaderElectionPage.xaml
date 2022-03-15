@@ -13,7 +13,7 @@
            FontSize="16"
            d:DesignHeight="300"
            d:DesignWidth="300"
-           d:DataContext="{d:DesignInstance Type=vm:LeaderElectionPageViewModel, IsDesignTimeCreatable=True}"
+           d:DataContext="{d:DesignInstance Type=vm:LeaderElectionPageViewModel}"
            mc:Ignorable="d">
     <ListBox Grid.Row="1"
              Background="WhiteSmoke"
@@ -23,7 +23,7 @@
                 <TextBlock Background="WhiteSmoke"
                            Padding="15"
                            TextWrapping="Wrap"
-                           FontSize="18">Не найдено участников по запросу: "<Run Text="{Binding ElementName=FilterText, Path=Text}"></Run>".</TextBlock>
+                           FontSize="18">Участников не найдено.</TextBlock>
             </ControlTemplate>
         </ListBox.Resources>
 
@@ -31,7 +31,7 @@
             <DataTemplate>
                 <Grid Margin="0,10,0,10">
                     <ProgressBar Value="{Binding PercentageSupport}"
-                                 Height="Auto"
+                                 Height="50"
                                  Background="#7FFFFFFF"
                                  BorderBrush="{x:Null}"
                                  Foreground="#E5FFFFFF" />
@@ -56,7 +56,19 @@
                                                  Width="30"
                                                  Kind="Check"
                                                  VerticalAlignment="Center"
-                                                 Foreground="#FFFD5A2E" />
+                                                 Foreground="#FFFD5A2E">
+                            <materialDesign:PackIcon.Style>
+                                <Style TargetType="materialDesign:PackIcon">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsCurrentUserVotes}"
+                                                     Value="False">
+                                            <Setter Property="Visibility"
+                                                    Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </materialDesign:PackIcon.Style>
+                        </materialDesign:PackIcon>
                     </DockPanel>
                 </Grid>
             </DataTemplate>

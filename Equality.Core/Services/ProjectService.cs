@@ -14,7 +14,8 @@ using Newtonsoft.Json.Linq;
 
 namespace Equality.Services
 {
-    public class ProjectServiceBase<TProjectModel, TTeamModel> : IProjectServiceBase<TProjectModel, TTeamModel>
+    public class ProjectServiceBase<TProjectModel, TTeamModel, ILeaderNominationModel> : IProjectServiceBase<TProjectModel, TTeamModel, ILeaderNominationModel>
+        where ILeaderNominationModel : class, ILeaderNomination, new()
         where TProjectModel : class, IProject, new()
         where TTeamModel : class, ITeam, new()
     {
@@ -39,6 +40,19 @@ namespace Equality.Services
             var projects = DeserializeRange(response.Content["data"]);
 
             return new(projects, response);
+        }
+
+        public Task<ApiResponseMessage<ILeaderNominationModel[]>> GetNominatedUsersAsync(TProjectModel project) => GetNominatedUsersAsync(project.Id);
+
+        public async Task<ApiResponseMessage<ILeaderNominationModel[]>> GetNominatedUsersAsync(ulong projectId)
+        {
+            Argument.IsNotNull(nameof(projectId), projectId);
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"projects/{projectId}/leader-nominations");
+
+            var LeaderNominations = DeserializeNominatedUsersRange(response.Content["data"]);
+
+            return new(LeaderNominations, response);
         }
 
         public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(TTeamModel team, TProjectModel project) => CreateProjectAsync(team.Id, project);
@@ -136,5 +150,12 @@ namespace Equality.Services
 
         /// <inheritdoc cref="IDeserializeModels{T}.DeserializeRange(JToken)"/>
         protected TProjectModel[] DeserializeRange(JToken data) => ((IDeserializeModels<TProjectModel>)this).DeserializeRange(data);
+
+        /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
+        protected ILeaderNominationModel DeserializeNominatedUsers(JToken data) => ((IDeserializeModels<ILeaderNominationModel>)this).Deserialize(data);
+
+        /// <inheritdoc cref="IDeserializeModels{T}.DeserializeRange(JToken)"/>
+        protected ILeaderNominationModel[] DeserializeNominatedUsersRange(JToken data) => ((IDeserializeModels<ILeaderNominationModel>)this).DeserializeRange(data);
+
     }
 }

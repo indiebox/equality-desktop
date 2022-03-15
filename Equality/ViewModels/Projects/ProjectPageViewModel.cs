@@ -64,6 +64,7 @@ namespace Equality.ViewModels
                 default:
                     break;
                 case Tab.Leader:
+                    NavigationService.Navigate<LeaderElectionPageViewModel>(this);
                     break;
                 case Tab.Settings:
                     NavigationService.Navigate<ProjectSettingsPageViewModel>(this);
