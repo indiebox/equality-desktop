@@ -36,33 +36,19 @@
                     <ProgressBar Height="70"
                                  Value="{Binding PercentageSupport}"
                                  Background="{x:Null}"
-                                 BorderBrush="{x:Null}"
-                                 Foreground="#4DFFFFFF">
+                                 BorderBrush="{x:Null}">
                         <ProgressBar.Resources>
                             <Style TargetType="ProgressBar">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsCurrentUserVotes}"
                                                  Value="True">
-                                        <Setter Property="Visibility"
-                                                Value="Collapsed" />
+                                        <Setter Property="Foreground"
+                                                Value="White" />
                                     </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ProgressBar.Resources>
-                    </ProgressBar>
-
-                    <ProgressBar Height="70"
-                                 Value="50"
-                                 Background="{x:Null}"
-                                 BorderBrush="{x:Null}"
-                                 Foreground="White">
-                        <ProgressBar.Resources>
-                            <Style TargetType="ProgressBar">
-                                <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsCurrentUserVotes}"
                                                  Value="False">
-                                        <Setter Property="Visibility"
-                                                Value="Collapsed" />
+                                        <Setter Property="Foreground"
+                                                Value="#4DFFFFFF" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
