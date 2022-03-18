@@ -65,7 +65,7 @@ namespace Equality.ViewModels
                 var result = response.Object;
 
                 foreach (var item in result) {
-                    item.PercentageSupport = item.Count / response.Object.Length * 100;
+                    item.PercentageSupport = (double)item.Count / response.Object.Length * 100;
 
                     foreach (var voter in item.Voters) {
                         if (voter.IsCurrentUser) {
@@ -74,6 +74,9 @@ namespace Equality.ViewModels
                     }
                     NominatedMembers.Add(item);
                 }
+
+                Debug.WriteLine(NominatedMembers);
+
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
