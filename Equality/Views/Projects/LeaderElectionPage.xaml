@@ -32,17 +32,6 @@
         <ListBox.ItemTemplate>
             <DataTemplate>
                 <Grid Margin="20,10,20,10">
-                    <!--<Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50*" />
-                            <ColumnDefinition Width="40*" />
-                        </Grid.ColumnDefinitions>
-                        <Rectangle Grid.Column="0"
-                                   Fill="#B4FFFFFF"
-                                   Height="70" />
-                        <Grid Grid.Column="1">
-                        </Grid>
-                    </Grid>-->
                     <ProgressBar Height="70"
                                  Value="50"
                                  Background="{x:Null}"

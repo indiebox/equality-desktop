@@ -6,7 +6,7 @@ using Catel.MVVM.Converters;
 
 namespace Equality.MVVM.Converters
 {
-    public class PluralConverter : ValueConverterBase
+    public class VotesTextConverter : ValueConverterBase
     {
         protected override object Convert(object value, Type targetType, object parameter)
         {
