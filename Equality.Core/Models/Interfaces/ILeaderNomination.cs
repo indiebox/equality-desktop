@@ -14,10 +14,10 @@ namespace Equality.Models
         public double PercentageSupport { get; set; }
     }
 
-    public interface ILeaderNomination<TUserModel> : ILeaderNomination
+    public interface ILeaderNomination<TUserModel, TUserModelCollection> : ILeaderNomination
     {
         public TUserModel Nominated { get; set; }
 
-        public ObservableCollection<TUserModel> Voters { get; set; }
+        public TUserModelCollection Voters { get; set; }
     }
 }

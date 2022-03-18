@@ -10,7 +10,7 @@ using Equality.Models;
 
 namespace Equality.Models
 {
-    public class LeaderNomination : ModelBase, ILeaderNomination<User>
+    public class LeaderNomination : ModelBase, ILeaderNomination<User, ObservableCollection<User>>
     {
         public LeaderNomination()
         {

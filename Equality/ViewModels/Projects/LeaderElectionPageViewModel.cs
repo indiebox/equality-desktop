@@ -66,8 +66,7 @@ namespace Equality.ViewModels
                 var result = response.Object;
 
                 foreach (var item in result) {
-                    //item.PercentageSupport = item.Count / response.Object.Length * 100;
-                    item.PercentageSupport = 50;
+                    item.PercentageSupport = item.Count / response.Object.Length * 100;
                     foreach (var voter in item.Voters) {
                         if (voter.IsCurrentUser) {
                             item.IsCurrentUserVotes = true;
