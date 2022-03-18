@@ -92,7 +92,7 @@
                                    HorizontalAlignment="Center"
                                    DockPanel.Dock="Right"
                                    VerticalAlignment="Center" />
-                        <TextBlock Text="{Binding PercentageSupport, StringFormat=N2}"
+                        <TextBlock Text="{Binding PercentageSupport, StringFormat=N0}"
                                    Margin="10,10,0,10"
                                    FontSize="16"
                                    HorizontalAlignment="Center"
