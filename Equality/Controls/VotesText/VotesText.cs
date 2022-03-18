@@ -21,5 +21,7 @@ namespace Equality.Controls
         }
         public static readonly DependencyProperty VotesProperty =
           DependencyProperty.Register(nameof(Votes), typeof(string), typeof(VotesText), new PropertyMetadata("0 голосов"));
+
+        public string[] Parameter { get; set; } = { "голос", "голоса", "голосов" };
     }
 }

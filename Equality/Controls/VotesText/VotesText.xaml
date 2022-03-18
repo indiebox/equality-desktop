@@ -8,7 +8,7 @@
                 <ControlTemplate TargetType="{x:Type controls:VotesText}">
                     <TextBlock FontSize="16"
                                Margin="10"
-                               Text="{TemplateBinding Votes, Converter={converters:VotesTextConverter}}"
+                               Text="{TemplateBinding Votes, Converter={converters:PluralizeConverter One=Голос, Two=Голоса, Five=Голосов}}"
                                VerticalAlignment="Center"
                                DockPanel.Dock="Left"
                                Foreground="#7F000000" />
