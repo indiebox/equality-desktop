@@ -16,22 +16,14 @@ namespace Equality.Models
         {
         }
 
-        public User User { get; set; }
+        public User Nominated { get; set; }
 
         public int Count { get; set; }
 
-        public ObservableCollection<User> Electorate { get; set; }
+        public ObservableCollection<User> Voters { get; set; }
 
         public int PercentageSupport { get; set; }
 
-        public bool IsCurrentUserVotes()
-        {
-            foreach (var member in Electorate) {
-                if (member == StateManager.CurrentUser) {
-                    return true;
-                }
-            }
-            return false;
-        }
+        public bool IsCurrentUserVotes { get; set; } = false;
     }
 }

@@ -12,14 +12,12 @@ namespace Equality.Models
         public int Count { get; set; }
 
         public int PercentageSupport { get; set; }
-
-        public bool IsCurrentUserVotes();
     }
 
     public interface ILeaderNomination<TUserModel> : ILeaderNomination
     {
-        public TUserModel User { get; set; }
+        public TUserModel Nominated { get; set; }
 
-        public ObservableCollection<TUserModel> Electorate { get; set; }
+        public ObservableCollection<TUserModel> Voters { get; set; }
     }
 }

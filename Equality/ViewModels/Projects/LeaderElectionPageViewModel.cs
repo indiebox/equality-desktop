@@ -24,9 +24,9 @@ namespace Equality.ViewModels
             {
                 NominatedMembers.AddRange(new LeaderNomination[]
                 {
-                    new LeaderNomination() { User = new User(){ Name = "user1" }, Count = 5, PercentageSupport = 50, Electorate = { StateManager.CurrentUser } },
-                    new LeaderNomination() { User = new User(){ Name = "user2" }, Count = 3, PercentageSupport = 30, Electorate = { new User() }  },
-                    new LeaderNomination() { User = new User(){ Name = "user3" }, Count = 2, PercentageSupport = 20, Electorate = { new User() }  },
+                    new LeaderNomination() { Nominated = new User() { Name = "user1" }, Count = 5, PercentageSupport = 50},
+                    new LeaderNomination() { Nominated = new User() { Name = "user2" }, Count = 3, PercentageSupport = 30},
+                    new LeaderNomination() { Nominated = new User() { Name = "user3" }, Count = 2, PercentageSupport = 20},
                 });
             });
         }
@@ -59,7 +59,19 @@ namespace Equality.ViewModels
             try {
                 var response = await ProjectService.GetNominatedUsersAsync(StateManager.SelectedProject);
 
-                NominatedMembers.AddRange(response.Object);
+                var result = response.Object;
+
+                foreach (var item in result) {
+                    //item.PercentageSupport = item.Count / response.Object.Length * 100;
+                    item.PercentageSupport = 50;
+                    foreach (var voter in item.Voters) {
+                        if (voter.IsCurrentUser) {
+                            item.IsCurrentUserVotes = true;
+                        }
+                    }
+                    NominatedMembers.Add(item);
+                }
+                Debug.WriteLine(NominatedMembers[0]);
 
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
@@ -70,16 +82,9 @@ namespace Equality.ViewModels
 
         protected override async Task InitializeAsync()
         {
-            await base.InitializeAsync();
-
             await LoadLeaderNominationsAsync();
 
-            foreach (var member in NominatedMembers) {
-                member.PercentageSupport = member.Count / NominatedMembers.Count * 100;
-            }
-
-
-            // TODO: subscribe to events here
+            await base.InitializeAsync();
         }
 
         protected override async Task CloseAsync()
