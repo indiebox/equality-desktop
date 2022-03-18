@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Collections;
-using Catel.Services;
 
 using Equality.MVVM;
 using Equality.Models;
@@ -38,7 +37,7 @@ namespace Equality.ViewModels
 
         IProjectService ProjectService;
 
-        public LeaderNominationPageViewModel(INavigationService navigationService, IProjectService projectService)
+        public LeaderNominationPageViewModel(IProjectService projectService)
         {
             ProjectService = projectService;
         }
@@ -72,6 +71,7 @@ namespace Equality.ViewModels
                             item.IsCurrentUserVotes = true;
                         }
                     }
+
                     NominatedMembers.Add(item);
                 }
             } catch (HttpRequestException e) {

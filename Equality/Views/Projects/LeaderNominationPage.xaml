@@ -9,7 +9,7 @@
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            xmlns:vm="clr-namespace:Equality.ViewModels"
            xmlns:controls="clr-namespace:Equality.Controls"
-           xmlns:converters="clr-namespace:Equality.MVVM.Converters;assembly=Equality.MVVM"
+           xmlns:equality="http://equality.indiebox.ru/schemas"
            TextElement.Foreground="{DynamicResource MaterialDesignBody}"
            Background="{DynamicResource MaterialDesignPaper}"
            FontSize="16"
@@ -106,7 +106,7 @@
                         <TextBlock DockPanel.Dock="Right"
                                    FontSize="16"
                                    Margin="10"
-                                   Text="{Binding Count, Converter={converters:PluralizeConverter One=Голос, Two=Голоса, Five=Голосов}}"
+                                   Text="{Binding Count, Converter={equality:PluralizeConverter One=Голос, Two=Голоса, Five=Голосов}}"
                                    VerticalAlignment="Center"
                                    Foreground="#7F000000" />
                         <materialDesign:PackIcon Margin="10"
