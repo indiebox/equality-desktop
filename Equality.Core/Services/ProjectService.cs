@@ -16,9 +16,9 @@ using Newtonsoft.Json.Serialization;
 namespace Equality.Services
 {
     public class ProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel> : IProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel>
-        where TLeaderNominationModel : class, ILeaderNomination, new()
         where TProjectModel : class, IProject, new()
         where TTeamModel : class, ITeam, new()
+        where TLeaderNominationModel : class, ILeaderNomination, new()
     {
         protected IApiClient ApiClient;
 

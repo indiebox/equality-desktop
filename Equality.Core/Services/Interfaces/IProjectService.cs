@@ -8,9 +8,9 @@ using Equality.Data;
 namespace Equality.Services
 {
     public interface IProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel> : IDeserializeModels<TProjectModel>
-        where TLeaderNominationModel : class, ILeaderNomination, new()
         where TProjectModel : class, IProject, new()
         where TTeamModel : class, ITeam, new()
+        where TLeaderNominationModel : class, ILeaderNomination, new()
     {
         /// <summary>
         /// Sends the get team projects request to the API.
@@ -30,7 +30,7 @@ namespace Equality.Services
         public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ulong teamId);
 
         /// <summary>
-        /// Sends the get team nominated users request to the API.
+        /// Sends the get nominated users request to the API.
         /// </summary>
         /// <param name="project">The project.</param>
         /// <returns>Returns the API response.</returns>
@@ -43,7 +43,7 @@ namespace Equality.Services
         public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(TProjectModel project);
 
         /// <inheritdoc cref="GetNominatedUsersAsync(TProjectModel)"/>`
-        /// <param name="teamId">The project id.</param>
+        /// <param name="projectId">The project id.</param>
         public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(ulong projectId);
 
         /// <summary>
