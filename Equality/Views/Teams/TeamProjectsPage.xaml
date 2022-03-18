@@ -7,7 +7,7 @@
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            xmlns:vm="clr-namespace:Equality.ViewModels"
-           xmlns:equality="http://equality.indiebox.ru/schemas"
+           xmlns:models="clr-namespace:Equality.Models"
            xmlns:objects="clr-namespace:Equality.Data.Wpf"
            xmlns:controls="clr-namespace:Equality.Controls"
            FontSize="16"
@@ -39,7 +39,7 @@
 
                     <!-- Templates for custom objects. -->
                     <ListBox.Resources>
-                        <DataTemplate DataType="{x:Type equality:Project}">
+                        <DataTemplate DataType="{x:Type models:Project}">
                             <controls:ProjectCard Margin="5,0,5,10"
                                                   Size="Big"
                                                   Command="{Binding DataContext.OpenProjectPage, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"

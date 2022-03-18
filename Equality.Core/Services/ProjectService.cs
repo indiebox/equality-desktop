@@ -11,12 +11,14 @@ using Equality.Http;
 using Equality.Models;
 
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Equality.Services
 {
-    public class ProjectServiceBase<TProjectModel, TTeamModel> : IProjectServiceBase<TProjectModel, TTeamModel>
+    public class ProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel> : IProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel>
         where TProjectModel : class, IProject, new()
         where TTeamModel : class, ITeam, new()
+        where TLeaderNominationModel : class, ILeaderNomination, new()
     {
         protected IApiClient ApiClient;
 
@@ -39,6 +41,19 @@ namespace Equality.Services
             var projects = DeserializeRange(response.Content["data"]);
 
             return new(projects, response);
+        }
+
+        public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(TProjectModel project) => GetNominatedUsersAsync(project.Id);
+
+        public async Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(ulong projectId)
+        {
+            Argument.IsNotNull(nameof(projectId), projectId);
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"projects/{projectId}/leader-nominations");
+
+            var LeaderNominations = DeserializeLeaderNomination(response.Content["data"]);
+
+            return new(LeaderNominations, response);
         }
 
         public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(TTeamModel team, TProjectModel project) => CreateProjectAsync(team.Id, project);
@@ -129,6 +144,24 @@ namespace Equality.Services
             project = Deserialize(response.Content["data"]);
 
             return new(project, response);
+        }
+
+        /// <summary>
+        /// Deserializes the JToken to the <c>ITeamMember[]</c>.
+        /// </summary>
+        /// <param name="data">The JToken.</param>
+        /// <returns>Returns the <c>ITeamMember[]</c>.</returns>
+        public TLeaderNominationModel[] DeserializeLeaderNomination(JToken data)
+        {
+            Argument.IsNotNull(nameof(data), data);
+
+            return data.ToObject<TLeaderNominationModel[]>(new()
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                }
+            });
         }
 
         /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>

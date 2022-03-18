@@ -58,6 +58,10 @@ namespace Equality
 
             serviceLocator.RegisterType<ITokenResolverService, TokenResolver>();
             serviceLocator.RegisterType<INotificationService, NotificationService>();
+            serviceLocator.RegisterType<IUserService, UserService>();
+            serviceLocator.RegisterType<ITeamService, TeamService>();
+            serviceLocator.RegisterType<IInviteService, InviteService>();
+            serviceLocator.RegisterType<IProjectService, ProjectService>();
 
             /*
             |--------------------------------------------------------------------------
