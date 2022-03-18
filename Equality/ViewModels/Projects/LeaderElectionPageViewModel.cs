@@ -24,9 +24,9 @@ namespace Equality.ViewModels
             {
                 NominatedMembers.AddRange(new LeaderNomination[]
                 {
-                    new LeaderNomination() { Nominated = new User() { Name = "user1" }, Count = 5, PercentageSupport = 50},
-                    new LeaderNomination() { Nominated = new User() { Name = "user2" }, Count = 3, PercentageSupport = 30},
-                    new LeaderNomination() { Nominated = new User() { Name = "user3" }, Count = 2, PercentageSupport = 20},
+                    new LeaderNomination() { Nominated = new User() { Name = "user1" }, Count = 4, PercentageSupport = 50, IsCurrentUserVotes=true},
+                    new LeaderNomination() { Nominated = new User() { Name = "user2" }, Count = 2, PercentageSupport = 33.333333333333},
+                    new LeaderNomination() { Nominated = new User() { Name = "user3" }, Count = 2, PercentageSupport = 33.333333333333},
                 });
             });
         }

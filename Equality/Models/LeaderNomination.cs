@@ -22,7 +22,7 @@ namespace Equality.Models
 
         public ObservableCollection<User> Voters { get; set; }
 
-        public int PercentageSupport { get; set; }
+        public double PercentageSupport { get; set; }
 
         public bool IsCurrentUserVotes { get; set; } = false;
     }

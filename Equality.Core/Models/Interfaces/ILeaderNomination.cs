@@ -11,7 +11,7 @@ namespace Equality.Models
     {
         public int Count { get; set; }
 
-        public int PercentageSupport { get; set; }
+        public double PercentageSupport { get; set; }
     }
 
     public interface ILeaderNomination<TUserModel> : ILeaderNomination
