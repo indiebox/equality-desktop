@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-
-using Equality.Data;
+﻿using System.Collections.Generic;
 
 namespace Equality.Models
 {
     public interface ILeaderNomination
     {
         public int Count { get; set; }
-
-        public double PercentageSupport { get; set; }
     }
 
-    public interface ILeaderNomination<TUserModel, TUserModelCollection> : ILeaderNomination
+    public interface ILeaderNomination<TTeamModel, TTeamMembersCollection> : ILeaderNomination
+        where TTeamMembersCollection : class, IEnumerable<ITeamMember>
     {
-        public TUserModel Nominated { get; set; }
+        public TTeamModel Nominated { get; set; }
 
-        public TUserModelCollection Voters { get; set; }
+        public TTeamMembersCollection Voters { get; set; }
     }
 }

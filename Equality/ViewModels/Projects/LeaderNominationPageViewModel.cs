@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -24,13 +23,13 @@ namespace Equality.ViewModels
             {
                 NominatedMembers.AddRange(new LeaderNomination[]
                 {
-                    new LeaderNomination() { Nominated = new User() { Name = "user1" }, Count = 4, PercentageSupport = 50, IsCurrentUserVotes=true},
-                    new LeaderNomination() { Nominated = new User() { Name = "user2" }, Count = 3, PercentageSupport = 33},
-                    new LeaderNomination() { Nominated = new User() { Name = "user3" }, Count = 2, PercentageSupport = 10},
-                    new LeaderNomination() { Nominated = new User() { Name = "user4" }, Count = 1, PercentageSupport = 7},
-                    new LeaderNomination() { Nominated = new User() { Name = "user5" }, Count = 0, PercentageSupport = 0},
-                    new LeaderNomination() { Nominated = new User() { Name = "user6" }, Count = 0, PercentageSupport = 0},
-                    new LeaderNomination() { Nominated = new User() { Name = "user7" }, Count = 0, PercentageSupport = 0},
+                    new LeaderNomination() { Nominated = new TeamMember() { Name = "user1" }, Count = 4, PercentageSupport = 50, IsCurrentUserVotes=true},
+                    new LeaderNomination() { Nominated = new TeamMember() { Name = "user2" }, Count = 3, PercentageSupport = 33},
+                    new LeaderNomination() { Nominated = new TeamMember() { Name = "user3" }, Count = 2, PercentageSupport = 10},
+                    new LeaderNomination() { Nominated = new TeamMember() { Name = "user4" }, Count = 1, PercentageSupport = 7},
+                    new LeaderNomination() { Nominated = new TeamMember() { Name = "user5" }, Count = 0, PercentageSupport = 0},
+                    new LeaderNomination() { Nominated = new TeamMember() { Name = "user6" }, Count = 0, PercentageSupport = 0},
+                    new LeaderNomination() { Nominated = new TeamMember() { Name = "user7" }, Count = 0, PercentageSupport = 0},
                 });
             });
         }
@@ -67,6 +66,7 @@ namespace Equality.ViewModels
 
                 foreach (var item in result) {
                     item.PercentageSupport = item.Count / response.Object.Length * 100;
+
                     foreach (var voter in item.Voters) {
                         if (voter.IsCurrentUser) {
                             item.IsCurrentUserVotes = true;
@@ -74,8 +74,6 @@ namespace Equality.ViewModels
                     }
                     NominatedMembers.Add(item);
                 }
-                Debug.WriteLine(NominatedMembers[0]);
-
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
@@ -85,9 +83,9 @@ namespace Equality.ViewModels
 
         protected override async Task InitializeAsync()
         {
-            await LoadLeaderNominationsAsync();
-
             await base.InitializeAsync();
+
+            await LoadLeaderNominationsAsync();
         }
 
         protected override async Task CloseAsync()
