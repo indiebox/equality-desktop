@@ -14,11 +14,11 @@ using Equality.Data;
 
 namespace Equality.ViewModels
 {
-    public class LeaderElectionPageViewModel : ViewModel
+    public class LeaderNominationPageViewModel : ViewModel
     {
         #region DesignModeConstructor
 
-        public LeaderElectionPageViewModel()
+        public LeaderNominationPageViewModel()
         {
             HandleDesignMode(() =>
             {
@@ -39,7 +39,7 @@ namespace Equality.ViewModels
 
         IProjectService ProjectService;
 
-        public LeaderElectionPageViewModel(INavigationService navigationService, IProjectService projectService)
+        public LeaderNominationPageViewModel(INavigationService navigationService, IProjectService projectService)
         {
             ProjectService = projectService;
         }

@@ -1,8 +1,8 @@
 ﻿namespace Equality.Views
 {
-    public partial class LeaderElectionPage
+    public partial class LeaderNominationPage
     {
-        public LeaderElectionPage()
+        public LeaderNominationPage()
         {
             InitializeComponent();
         }
