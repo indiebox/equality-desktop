@@ -4,7 +4,9 @@ namespace Equality.Models
 {
     public interface ILeaderNomination
     {
-        public int Count { get; set; }
+        public bool IsLeader { get; set; }
+
+        public int VotersCount { get; set; }
     }
 
     public interface ILeaderNomination<TTeamModel, TTeamMembersCollection> : ILeaderNomination
