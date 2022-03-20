@@ -7,12 +7,17 @@ using Equality.Extensions;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Data;
+using Equality.Services;
+using System.Net.Http;
+using System.Diagnostics;
 
 namespace Equality.ViewModels
 {
     public class ProjectPageViewModel : ViewModel
     {
         protected INavigationService NavigationService;
+
+        protected IProjectService ProjectService;
 
         #region DesignModeConstructor
 
@@ -21,14 +26,17 @@ namespace Equality.ViewModels
             HandleDesignMode(() =>
             {
                 Project = StateManager.SelectedProject;
+                Leader = new User { Name = "Marshall" };
             });
         }
 
         #endregion
 
-        public ProjectPageViewModel(INavigationService navigationService)
+        public ProjectPageViewModel(INavigationService navigationService, IProjectService projectService)
         {
             NavigationService = navigationService;
+
+            ProjectService = projectService;
 
             Project = StateManager.SelectedProject;
         }
@@ -47,11 +55,24 @@ namespace Equality.ViewModels
         [Model]
         public Project Project { get; set; }
 
+        public User Leader { get; set; }
+
         #endregion
 
         #region Commands
 
+        protected async Task LoadLeaderNominationsAsync()
+        {
+            try {
+                var response = await ProjectService.GetProjectLeader(StateManager.SelectedProject);
 
+                Leader = response.Object;
+
+
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+        }
 
         #endregion
 
@@ -76,6 +97,8 @@ namespace Equality.ViewModels
 
         protected override async Task InitializeAsync()
         {
+            await LoadLeaderNominationsAsync();
+
             await base.InitializeAsync();
 
             OnActiveTabChanged();

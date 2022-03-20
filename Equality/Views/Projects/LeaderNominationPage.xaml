@@ -56,7 +56,7 @@
                     </ProgressBar>
 
 
-                    <DockPanel LastChildFill="False">
+                    <DockPanel LastChildFill="True">
                         <Border Margin="10,10,0,10"
                                 Width="50"
                                 Height="50"
@@ -114,6 +114,8 @@
                                 </Style>
                             </materialDesign:PackIcon.Style>
                         </materialDesign:PackIcon>
+                        <Border BorderBrush="#FFFD5A33"
+                                BorderThickness="1,1,1,1" />
                     </DockPanel>
                 </Grid>
             </DataTemplate>
