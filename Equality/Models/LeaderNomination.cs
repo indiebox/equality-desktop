@@ -10,7 +10,9 @@ namespace Equality.Models
         {
         }
 
-        public int Count { get; set; }
+        public bool IsLeader { get; set; }
+
+        public int VotersCount { get; set; }
 
         #region Custom properties
 

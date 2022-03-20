@@ -22,13 +22,13 @@ namespace Equality.ViewModels
             {
                 NominatedMembers.AddRange(new LeaderNomination[]
                 {
-                    new LeaderNomination() { Nominated = new TeamMember() { Name = "user1" }, Count = 4, PercentageSupport = 50},
-                    new LeaderNomination() { Nominated = new TeamMember() { Name = "user2" }, Count = 3, PercentageSupport = 33, IsCurrentUserVotes=true},
-                    new LeaderNomination() { Nominated = new TeamMember() { Name = "user3" }, Count = 2, PercentageSupport = 10},
-                    new LeaderNomination() { Nominated = new TeamMember() { Name = "user4" }, Count = 1, PercentageSupport = 7},
-                    new LeaderNomination() { Nominated = new TeamMember() { Name = "user5" }, Count = 0, PercentageSupport = 0},
-                    new LeaderNomination() { Nominated = new TeamMember() { Name = "user6" }, Count = 0, PercentageSupport = 0},
-                    new LeaderNomination() { Nominated = new TeamMember() { Name = "user7" }, Count = 0, PercentageSupport = 0},
+                    new () { Nominated = new () { Name = "user1" }, VotersCount = 4, PercentageSupport = 50},
+                    new () { Nominated = new () { Name = "user2" }, VotersCount = 3, PercentageSupport = 33, IsCurrentUserVotes=true},
+                    new () { Nominated = new () { Name = "user3" }, VotersCount = 2, PercentageSupport = 10},
+                    new () { Nominated = new () { Name = "user4" }, VotersCount = 1, PercentageSupport = 7},
+                    new () { Nominated = new () { Name = "user5" }, VotersCount = 0, PercentageSupport = 0},
+                    new () { Nominated = new () { Name = "user6" }, VotersCount = 0, PercentageSupport = 0},
+                    new () { Nominated = new () { Name = "user7" }, VotersCount = 0, PercentageSupport = 0},
                 });
             });
         }
@@ -64,7 +64,7 @@ namespace Equality.ViewModels
                 var result = response.Object;
 
                 foreach (var item in result) {
-                    item.PercentageSupport = (double)item.Count / response.Object.Length * 100;
+                    item.PercentageSupport = (double)item.VotersCount / response.Object.Length * 100;
 
                     foreach (var voter in item.Voters) {
                         if (voter.IsCurrentUser) {
