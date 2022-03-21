@@ -20,6 +20,7 @@
         <StackPanel>
             <DockPanel LastChildFill="False">
                 <Button Grid.Column="0"
+                        Command="{Binding ToBoards}"
                         Style="{StaticResource MaterialDesignIconForegroundButton}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"

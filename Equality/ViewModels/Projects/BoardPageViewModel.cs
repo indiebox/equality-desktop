@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 
+using Catel.MVVM;
+
 using Catel.Services;
 
 using Equality.MVVM;
@@ -17,8 +19,13 @@ namespace Equality.ViewModels
 
         #endregion
 
+        INavigationService NavigationService { get; set; }
+
         public BoardPageViewModel(INavigationService navigationService)
         {
+            NavigationService = navigationService;
+
+            ToBoards = new Command(OnToBoardsExecute);
         }
 
         #region Properties
@@ -30,6 +37,12 @@ namespace Equality.ViewModels
         #region Commands
 
 
+        public Command ToBoards { get; private set; }
+
+        private void OnToBoardsExecute()
+        {
+            NavigationService.Navigate<BoardsPageViewModel>();
+        }
 
         #endregion
 
