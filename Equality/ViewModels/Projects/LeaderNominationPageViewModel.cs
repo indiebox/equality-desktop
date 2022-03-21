@@ -22,7 +22,7 @@ namespace Equality.ViewModels
             {
                 NominatedMembers.AddRange(new LeaderNomination[]
                 {
-                    new () { Nominated = new () { Name = "user1" }, VotersCount = 4, PercentageSupport = 50},
+                    new () { Nominated = new () { Name = "user1" }, VotersCount = 4, PercentageSupport = 50, IsLeader=true},
                     new () { Nominated = new () { Name = "user2" }, VotersCount = 3, PercentageSupport = 33, IsCurrentUserVotes=true},
                     new () { Nominated = new () { Name = "user3" }, VotersCount = 2, PercentageSupport = 10},
                     new () { Nominated = new () { Name = "user4" }, VotersCount = 1, PercentageSupport = 7},
@@ -74,9 +74,6 @@ namespace Equality.ViewModels
 
                     NominatedMembers.Add(item);
                 }
-
-                Debug.WriteLine(NominatedMembers);
-
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }

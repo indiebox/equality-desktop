@@ -21,14 +21,31 @@
         <DockPanel>
             <DockPanel Background="White"
                        DockPanel.Dock="Top">
-                <StackPanel DockPanel.Dock="Top"
-                            HorizontalAlignment="Left"
-                            Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center"
+                <DockPanel DockPanel.Dock="Top"
+                           LastChildFill="False">
+                    <TextBlock DockPanel.Dock="Left"
+                               VerticalAlignment="Center"
                                Margin="10"
                                FontSize="24"
                                Text="{Binding Project.Name}" />
-                </StackPanel>
+                    <StackPanel DockPanel.Dock="Right"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <Border Margin="10"
+                                Width="30"
+                                Height="30"
+                                CornerRadius="50">
+                            <Border.ToolTip>
+                                <ToolTip Content="{Binding Leader.Name}"
+                                         ContentStringFormat="Лидер проекта: {0}" />
+                            </Border.ToolTip>
+                            <Border.Background>
+                                <ImageBrush Stretch="Fill"
+                                            ImageSource="/Resources/Images/TeamLogo.jpg" />
+                            </Border.Background>
+                        </Border>
+                    </StackPanel>
+                </DockPanel>
                 <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Top"
                             Margin="10,0">
