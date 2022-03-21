@@ -19,8 +19,8 @@ namespace Equality.ViewModels
             {
                 Boards.AddRange(new Board[]
                 {
-                    new Board() { Id = 1, Name = "board" },
-                    new Board() { Id = 2, Name = "board1" },
+                    new() { Id = 1, Name = "Board" },
+                    new() { Id = 2, Name = "Board1" },
                 });
                 ;
             });

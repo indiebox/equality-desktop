@@ -18,6 +18,22 @@
            mc:Ignorable="d">
     <Grid>
         <StackPanel>
+            <DockPanel LastChildFill="False">
+                <Button Grid.Column="0"
+                        Style="{StaticResource MaterialDesignIconForegroundButton}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="10"
+                        Cursor="Hand"
+                        ToolTip="К доскам">
+                    <materialDesign:PackIcon Foreground="#FFF96840"
+                                             Kind="ArrowBack" />
+                </Button>
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                        DockPanel.Dock="Right"
+                        Content="Модули"
+                        Margin="10" />
+            </DockPanel>
             <StackPanel Orientation="Horizontal">
                 <Button Margin="10"
                         Style="{StaticResource MaterialDesignPaperButton}">

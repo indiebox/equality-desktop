@@ -17,9 +17,21 @@
            mc:Ignorable="d">
     <Grid>
         <StackPanel>
-            <DockPanel Margin="10">
-                <TextBlock Text="Доски"
-                           FontSize="24" />
+            <DockPanel Margin="10"
+                       LastChildFill="False">
+                <Button DockPanel.Dock="Left"
+                        Style="{StaticResource MaterialDesignIconButton}"
+                        Command="{Binding OpenCreateTeamWindow}">
+                    <materialDesign:PackIcon Kind="Plus" />
+                </Button>
+                <TextBlock DockPanel.Dock="Left"
+                           Text="Доски"
+                           FontSize="24"
+                           VerticalAlignment="Center" />
+                <TextBlock DockPanel.Dock="Right"
+                           Text="Модули"
+                           FontSize="24"
+                           VerticalAlignment="Center" />
             </DockPanel>
             <ListBox Grid.Row="1"
                      ItemsSource="{Binding Boards}">
@@ -34,13 +46,45 @@
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <DockPanel Margin="10"
-                                   Cursor="Hand">
+                        <DockPanel Cursor="Hand"
+                                   LastChildFill="False">
                             <TextBlock FontSize="24"
-                                       Text="{Binding Name}" />
+                                       Margin="10"
+                                       Text="{Binding Name}"
+                                       DockPanel.Dock="Left" />
+                            <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                     DockPanel.Dock="Right">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel IsItemsHost="True" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBoxItem>
+                                    <materialDesign:PackIcon Kind="Gear"
+                                                             Width="30"
+                                                             Height="30"
+                                                             Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                             Margin="10" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <materialDesign:PackIcon Kind="Score"
+                                                             Width="30"
+                                                             Height="30"
+                                                             Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                             Margin="10" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <materialDesign:PackIcon Kind="Clock"
+                                                             Width="30"
+                                                             Height="30"
+                                                             Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                             Margin="10" />
+                                </ListBoxItem>
+                            </ListBox>
                         </DockPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
+
             </ListBox>
         </StackPanel>
     </Grid>
