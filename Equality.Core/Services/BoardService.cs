@@ -14,7 +14,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace Equality.Services
 {
-    public class BoardService<TBoardModel, TProjectModel> : IBoardService<TBoardModel, TProjectModel>
+    public class BoardService<TBoardModel, TProjectModel> : IBoardServiceBase<TBoardModel, TProjectModel>
         where TBoardModel : class, IBoard, new()
         where TProjectModel : class, IProject, new()
     {

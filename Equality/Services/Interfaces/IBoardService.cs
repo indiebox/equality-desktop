@@ -4,9 +4,9 @@ using System.Text;
 
 using Equality.Models;
 
-namespace Equality.Services.Interfaces
+namespace Equality.Services
 {
-    public interface IBoardService : IBoardService<Board, Project>
+    public interface IBoardService : IBoardServiceBase<Board, Project>
     {
     }
 }

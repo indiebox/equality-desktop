@@ -8,7 +8,7 @@ using Equality.Models;
 
 namespace Equality.Services
 {
-    public interface IBoardService<TBoardModel, TProjectModel>
+    public interface IBoardServiceBase<TBoardModel, TProjectModel>
         where TBoardModel : class, IBoard
         where TProjectModel : class, IProject
     {

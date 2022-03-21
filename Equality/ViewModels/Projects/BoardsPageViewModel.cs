@@ -1,11 +1,15 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Collections;
 using Catel.Services;
 
+using Equality.Data;
 using Equality.Models;
 using Equality.MVVM;
+using Equality.Services;
 
 namespace Equality.ViewModels
 {
@@ -30,9 +34,13 @@ namespace Equality.ViewModels
 
         INavigationService NavigationService;
 
-        public BoardsPageViewModel(INavigationService navigationService)
+        IBoardService BoardService;
+
+        public BoardsPageViewModel(INavigationService navigationService, IBoardService boardService)
         {
             NavigationService = navigationService;
+
+            BoardService = boardService;
         }
 
         #region Properties
@@ -47,9 +55,27 @@ namespace Equality.ViewModels
 
         #endregion
 
+        #region Methods
+
+        protected async Task LoadBoardsAsync()
+        {
+            try {
+                var response = await BoardService.GetBoardsAsync(StateManager.SelectedProject);
+
+                Boards.AddRange(response.Object);
+
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+        }
+
+        #endregion
+
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
+
+            await LoadBoardsAsync();
 
             // TODO: subscribe to events here
         }
