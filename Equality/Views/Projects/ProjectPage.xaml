@@ -30,7 +30,6 @@
                                Text="{Binding Project.Name}" />
                     <StackPanel DockPanel.Dock="Right"
                                 Orientation="Horizontal"
-                                ToolTip="{Binding Leader.Name, StringFormat=лидер проекта: {0}}"
                                 VerticalAlignment="Center">
                         <Border Margin="10"
                                 Width="30"
@@ -38,9 +37,7 @@
                                 CornerRadius="50">
                             <Border.ToolTip>
                                 <ToolTip Content="{Binding Leader.Name}"
-                                         ContentStringFormat="{}Лидер проекта: {0}" />
-
-
+                                         ContentStringFormat="Лидер проекта: {0}" />
                             </Border.ToolTip>
                             <Border.Background>
                                 <ImageBrush Stretch="Fill"

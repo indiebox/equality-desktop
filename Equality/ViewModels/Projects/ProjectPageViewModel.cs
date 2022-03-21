@@ -35,7 +35,6 @@ namespace Equality.ViewModels
         public ProjectPageViewModel(INavigationService navigationService, IProjectService projectService)
         {
             NavigationService = navigationService;
-
             ProjectService = projectService;
 
             Project = StateManager.SelectedProject;
@@ -64,11 +63,9 @@ namespace Equality.ViewModels
         protected async Task LoadLeaderNominationsAsync()
         {
             try {
-                var response = await ProjectService.GetProjectLeader(StateManager.SelectedProject);
+                var response = await ProjectService.GetProjectLeaderAsync(StateManager.SelectedProject);
 
                 Leader = response.Object;
-
-
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
@@ -97,9 +94,9 @@ namespace Equality.ViewModels
 
         protected override async Task InitializeAsync()
         {
-            await LoadLeaderNominationsAsync();
-
             await base.InitializeAsync();
+
+            await LoadLeaderNominationsAsync();
 
             OnActiveTabChanged();
         }

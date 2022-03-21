@@ -8,10 +8,10 @@ using Equality.Data;
 namespace Equality.Services
 {
     public interface IProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel, TUserModel> : IDeserializeModels<TProjectModel>
-        where TUserModel : class, IUser, new()
         where TProjectModel : class, IProject, new()
         where TTeamModel : class, ITeam, new()
         where TLeaderNominationModel : class, ILeaderNomination, new()
+        where TUserModel : class, IUser, new()
     {
         /// <summary>
         /// Sends the get team projects request to the API.
@@ -48,7 +48,7 @@ namespace Equality.Services
         public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(ulong projectId);
 
         /// <summary>
-        /// Sends the get leader project request to the API.
+        /// Sends the get project leader request to the API.
         /// </summary>
         /// <param name="project">The project.</param>
         /// <returns>Returns the API response.</returns>
@@ -58,11 +58,11 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TUserModel>> GetProjectLeader(TProjectModel project);
+        public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(TProjectModel project);
 
-        /// <inheritdoc cref="GetProjectLeader(TProjectModel)"/>`
+        /// <inheritdoc cref="GetProjectLeaderAsync(TProjectModel)"/>`
         /// <param name="projectId">The project id.</param>
-        public Task<ApiResponseMessage<TUserModel>> GetProjectLeader(ulong projectId);
+        public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(ulong projectId);
 
         /// <summary>
         /// Sends the create project for team request to the API.

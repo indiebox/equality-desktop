@@ -16,10 +16,10 @@ using Newtonsoft.Json.Serialization;
 namespace Equality.Services
 {
     public class ProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel, TUserModel> : IProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel, TUserModel>
-        where TUserModel : class, IUser, new()
         where TProjectModel : class, IProject, new()
         where TTeamModel : class, ITeam, new()
         where TLeaderNominationModel : class, ILeaderNomination, new()
+        where TUserModel : class, IUser, new()
     {
         protected IApiClient ApiClient;
 
@@ -57,9 +57,9 @@ namespace Equality.Services
             return new(LeaderNominations, response);
         }
 
-        public Task<ApiResponseMessage<TUserModel>> GetProjectLeader(TProjectModel project) => GetProjectLeader(project.Id);
+        public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(TProjectModel project) => GetProjectLeaderAsync(project.Id);
 
-        public async Task<ApiResponseMessage<TUserModel>> GetProjectLeader(ulong projectId)
+        public async Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(ulong projectId)
         {
             Argument.IsNotNull(nameof(projectId), projectId);
 

@@ -74,9 +74,6 @@ namespace Equality.ViewModels
 
                     NominatedMembers.Add(item);
                 }
-
-                Debug.WriteLine(NominatedMembers);
-
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
