@@ -1,0 +1,45 @@
+﻿<catel:UserControl x:Class="Equality.Views.CreateColumnControl"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:catel="http://schemas.catelproject.com"
+                   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:vm="clr-namespace:Equality.ViewModels"
+                   xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                   FontSize="16"
+                   mc:Ignorable="d"
+                   d:Background="{StaticResource MaterialDesignPaper}"
+                   d:DataContext="{d:DesignInstance Type=vm:CreateColumnControlViewModel}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                 Style="{StaticResource MaterialDesignTextBox}"
+                 AcceptsReturn="False"
+                 Margin="0,0,0,30"
+                 materialDesign:ValidationAssist.FontSize="14"
+                 materialDesign:ValidationAssist.UsePopup="True"
+                 materialDesign:HintAssist.Hint="Название колонки">
+            <i:Interaction.Behaviors>
+                <catel:Focus />
+            </i:Interaction.Behaviors>
+        </TextBox>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Margin="0,0,10,0">Добавить</Button>
+            <Button Grid.Column="1"
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Cursor="Hand">Отменить</Button>
+        </Grid>
+    </Grid>
+
+</catel:UserControl>
