@@ -1,0 +1,47 @@
+﻿<mvvm:Page x:Class="Equality.Views.BoardsPage"
+           xmlns:mvvm="clr-namespace:Equality.MVVM"
+           xmlns:catel="http://schemas.catelproject.com"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+           xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:vm="clr-namespace:Equality.ViewModels"
+           TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+           Background="{DynamicResource MaterialDesignPaper}"
+           FontSize="16"
+           d:DesignHeight="1080"
+           d:DesignWidth="1920"
+           d:DataContext="{d:DesignInstance vm:BoardsPageViewModel, IsDesignTimeCreatable=True}"
+           mc:Ignorable="d">
+    <Grid>
+        <StackPanel>
+            <DockPanel Margin="10">
+                <TextBlock Text="Доски"
+                           FontSize="24" />
+            </DockPanel>
+            <ListBox Grid.Row="1"
+                     ItemsSource="{Binding Boards}">
+                <ListBox.Resources>
+                    <ControlTemplate x:Key="NoItemsTemplate">
+                        <TextBlock Background="WhiteSmoke"
+                                   Padding="15"
+                                   TextWrapping="Wrap"
+                                   FontSize="18">Досок не найдено</TextBlock>
+                    </ControlTemplate>
+                </ListBox.Resources>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel Margin="10"
+                                   Cursor="Hand">
+                            <TextBlock FontSize="24"
+                                       Text="{Binding Name}" />
+                        </DockPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+    </Grid>
+</mvvm:Page>
