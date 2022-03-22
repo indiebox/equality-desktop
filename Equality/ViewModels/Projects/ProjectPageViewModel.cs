@@ -80,6 +80,7 @@ namespace Equality.ViewModels
             switch (ActiveTab) {
                 case Tab.Board:
                 default:
+                    NavigationService.Navigate<BoardPageViewModel>(this);
                     break;
                 case Tab.Leader:
                     NavigationService.Navigate<LeaderNominationPageViewModel>(this);
