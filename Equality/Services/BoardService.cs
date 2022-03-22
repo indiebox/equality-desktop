@@ -8,7 +8,7 @@ using Equality.Models;
 
 namespace Equality.Services
 {
-    public class BoardService : BoardService<Board, Project>
+    public class BoardService : BoardServiceBase<Board, Project>, IBoardService
     {
         public BoardService(IApiClient apiClient, ITokenResolverService tokenResolver) : base(apiClient, tokenResolver)
         {

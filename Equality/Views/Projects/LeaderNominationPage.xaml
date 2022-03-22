@@ -26,7 +26,7 @@
         </Border>
         <Rectangle Fill="Black"
                    Opacity="0.5" />
-        <ListBox Grid.Row="1"
+        <ListBox Margin="0,10" Grid.Row="1"
                  Background="{x:Null}"
                  ItemsSource="{Binding NominatedMembers}">
             <ListBox.Resources>

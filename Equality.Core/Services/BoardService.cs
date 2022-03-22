@@ -14,7 +14,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace Equality.Services
 {
-    public class BoardService<TBoardModel, TProjectModel> : IBoardServiceBase<TBoardModel, TProjectModel>
+    public class BoardServiceBase<TBoardModel, TProjectModel> : IBoardServiceBase<TBoardModel, TProjectModel>
         where TBoardModel : class, IBoard, new()
         where TProjectModel : class, IProject, new()
     {
@@ -23,7 +23,7 @@ namespace Equality.Services
 
         protected IApiClient ApiClient;
 
-        public BoardService(IApiClient apiClient, ITokenResolverService tokenResolver)
+        public BoardServiceBase(IApiClient apiClient, ITokenResolverService tokenResolver)
         {
             Argument.IsNotNull(nameof(apiClient), apiClient);
             Argument.IsNotNull(nameof(tokenResolver), tokenResolver);

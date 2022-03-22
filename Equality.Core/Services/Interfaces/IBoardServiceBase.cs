@@ -8,7 +8,7 @@ using Equality.Models;
 
 namespace Equality.Services
 {
-    public interface IBoardServiceBase<TBoardModel, TProjectModel>
+    public interface IBoardServiceBase<TBoardModel, TProjectModel> : IDeserializeModels<TBoardModel>
         where TBoardModel : class, IBoard, new()
         where TProjectModel : class, IProject, new()
     {

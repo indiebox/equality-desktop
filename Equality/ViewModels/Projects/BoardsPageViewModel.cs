@@ -32,14 +32,10 @@ namespace Equality.ViewModels
 
         #endregion
 
-        INavigationService NavigationService;
-
         IBoardService BoardService;
 
-        public BoardsPageViewModel(INavigationService navigationService, IBoardService boardService)
+        public BoardsPageViewModel(IBoardService boardService)
         {
-            NavigationService = navigationService;
-
             BoardService = boardService;
         }
 
