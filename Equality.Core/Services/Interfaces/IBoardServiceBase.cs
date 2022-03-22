@@ -13,7 +13,7 @@ namespace Equality.Services
         where TProjectModel : class, IProject
     {
         /// <summary>
-        /// Sends the get boards invites request to the API.
+        /// Sends the get boards request to the API.
         /// </summary>
         /// <param name="project">The project.</param>
         /// <returns>Returns the API response.</returns>
@@ -25,7 +25,7 @@ namespace Equality.Services
         /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(TProjectModel project);
 
-        /// <inheritdoc cref="GetTeamInvitesAsync(TTeamModel)"/>
+        /// <inheritdoc cref="GetBoardsAsync(TProjectModel)"/>
         /// <param name="teamId">The team id.</param>
         public Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(ulong teamId);
     }
