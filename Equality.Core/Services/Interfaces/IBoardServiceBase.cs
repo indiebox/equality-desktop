@@ -26,7 +26,7 @@ namespace Equality.Services
         public Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(TProjectModel project);
 
         /// <inheritdoc cref="GetBoardsAsync(TProjectModel)"/>
-        /// <param name="teamId">The team id.</param>
-        public Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(ulong teamId);
+        /// <param name="projectId">The team id.</param>
+        public Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(ulong projectId);
     }
 }
