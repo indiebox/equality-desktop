@@ -44,6 +44,25 @@ namespace Equality.Services
             return new(boards, response);
         }
 
+        public Task<ApiResponseMessage<TBoardModel>> CreateBoardAsync(TProjectModel project, TBoardModel board) => CreateBoardAsync(project.Id, board);
+
+        public async Task<ApiResponseMessage<TBoardModel>> CreateBoardAsync(ulong projectId, TBoardModel board)
+        {
+            Argument.IsNotNull(nameof(projectId), projectId);
+            Argument.IsNotNull(nameof(board), board);
+
+            Dictionary<string, object> data = new()
+            {
+                { "name", board.Name },
+            };
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"projects/{projectId}/boards", data);
+
+            board = Deserialize(response.Content["data"]);
+
+            return new(board, response);
+        }
+
         /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
         protected TBoardModel Deserialize(JToken data) => ((IDeserializeModels<TBoardModel>)this).Deserialize(data);
 

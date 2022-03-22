@@ -4,9 +4,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Collections;
+using Catel.MVVM;
 using Catel.Services;
 
 using Equality.Data;
+using Equality.Helpers;
 using Equality.Models;
 using Equality.MVVM;
 using Equality.Services;
@@ -37,23 +39,45 @@ namespace Equality.ViewModels
         public BoardsPageViewModel(IBoardService boardService)
         {
             BoardService = boardService;
+
+            OpenCreateBoardWindow = new TaskCommand(OnOpenCreateBoardWindowExecuteAsync, () => CreateBoardVm is null);
         }
 
         #region Properties
 
         public ObservableCollection<Board> Boards { get; set; } = new();
 
+        public CreateBoardControlViewModel CreateBoardVm { get; set; }
+
         #endregion
 
         #region Commands
 
+        public TaskCommand OpenCreateBoardWindow { get; private set; }
 
+        private async Task OnOpenCreateBoardWindowExecuteAsync()
+        {
+            CreateBoardVm = MvvmHelper.CreateViewModel<CreateBoardControlViewModel>();
+            CreateBoardVm.ClosedAsync += CreateBoardVmClosedAsync;
+        }
 
         #endregion
 
         #region Methods
 
-        protected async Task LoadBoardsAsync()
+        private Task CreateBoardVmClosedAsync(object sender, ViewModelClosedEventArgs e)
+        {
+            if (e.Result ?? false) {
+                Boards.Add(CreateBoardVm.Board);
+            }
+
+            CreateBoardVm.ClosedAsync -= CreateBoardVmClosedAsync;
+            CreateBoardVm = null;
+
+            return Task.CompletedTask;
+        }
+
+        protected async void LoadBoardsAsync()
         {
             try {
                 var response = await BoardService.GetBoardsAsync(StateManager.SelectedProject);
@@ -71,13 +95,17 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            await LoadBoardsAsync();
+            LoadBoardsAsync();
 
             // TODO: subscribe to events here
         }
 
         protected override async Task CloseAsync()
         {
+            if (CreateBoardVm != null) {
+                CreateBoardVm.ClosedAsync -= CreateBoardVmClosedAsync;
+            }
+
             // TODO: unsubscribe from events here
 
             await base.CloseAsync();

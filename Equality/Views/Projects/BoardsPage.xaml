@@ -15,93 +15,93 @@
            d:DesignWidth="1920"
            d:DataContext="{d:DesignInstance vm:BoardsPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
-    <Grid>
-        <StackPanel>
-            <DockPanel Margin="10"
-                       LastChildFill="False">
-                <Button DockPanel.Dock="Right"
-                        Style="{StaticResource MaterialDesignIconButton}"
-                        Command="{Binding OpenCreateTeamWindow}">
-                    <materialDesign:PackIcon Kind="Plus" />
-                </Button>
-                <TextBlock DockPanel.Dock="Left"
-                           Text="Доски"
-                           FontSize="16"
-                           VerticalAlignment="Center" />
-            </DockPanel>
-            <ListBox Grid.Row="1"
-                     ItemsSource="{Binding Boards}"
-                     Cursor="Hand">
-                <ListBox.Resources>
-                    <ControlTemplate x:Key="NoItemsTemplate">
-                        <TextBlock Background="WhiteSmoke"
-                                   Padding="15"
-                                   TextWrapping="Wrap"
-                                   FontSize="18">Досок не найдено</TextBlock>
-                    </ControlTemplate>
-                </ListBox.Resources>
+    <Grid VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <DockPanel Cursor="Hand"
+        <DockPanel Grid.Row="0"
+                   Margin="10"
+                   LastChildFill="False">
+            <Button DockPanel.Dock="Right"
+                    Style="{StaticResource MaterialDesignIconButton}"
+                    Command="{Binding OpenCreateBoardWindow}">
+                <materialDesign:PackIcon Kind="Plus" />
+            </Button>
+            <TextBlock DockPanel.Dock="Left"
+                       Text="Доски"
+                       FontSize="16"
+                       VerticalAlignment="Center" />
+        </DockPanel>
+        <ListBox Grid.Row="1"
+                 ItemsSource="{Binding Boards}"
+                 Cursor="Hand">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel Cursor="Hand"
+                               Margin="10"
+                               LastChildFill="False">
+                        <DockPanel.Resources>
+                            <Style TargetType="DockPanel">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="White" />
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="False">
+                                        <Setter Property="Background"
+                                                Value="#7FFFFFFF" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DockPanel.Resources>
+                        <TextBlock FontSize="16"
                                    Margin="10"
-                                   LastChildFill="False">
-                            <DockPanel.Resources>
-                                <Style TargetType="DockPanel">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver"
-                                                 Value="True">
-                                            <Setter Property="Background"
-                                                    Value="White" />
-                                        </Trigger>
-                                        <Trigger Property="IsMouseOver"
-                                                 Value="False">
-                                            <Setter Property="Background"
-                                                    Value="#7FFFFFFF" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DockPanel.Resources>
-                            <TextBlock FontSize="16"
-                                       Margin="10"
-                                       Text="{Binding Name}"
-                                       DockPanel.Dock="Left"
-                                       VerticalAlignment="Center" />
-                            <ListBox Margin="10"
-                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                     DockPanel.Dock="Right">
-                                <ListBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel IsItemsHost="True" />
-                                    </ItemsPanelTemplate>
-                                </ListBox.ItemsPanel>
-                                <ListBoxItem>
-                                    <materialDesign:PackIcon Kind="Gear"
-                                                             Width="20"
-                                                             Height="20"
-                                                             Foreground="{DynamicResource PrimaryHueMidBrush}"
-                                                             Margin="10" />
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    <materialDesign:PackIcon Kind="Score"
-                                                             Width="20"
-                                                             Height="20"
-                                                             Foreground="{DynamicResource PrimaryHueMidBrush}"
-                                                             Margin="10" />
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    <materialDesign:PackIcon Kind="Clock"
-                                                             Width="20"
-                                                             Height="20"
-                                                             Foreground="{DynamicResource PrimaryHueMidBrush}"
-                                                             Margin="10" />
-                                </ListBoxItem>
-                            </ListBox>
-                        </DockPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
+                                   Text="{Binding Name}"
+                                   DockPanel.Dock="Left"
+                                   VerticalAlignment="Center" />
+                        <ListBox Margin="10"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 DockPanel.Dock="Right">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel IsItemsHost="True" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBoxItem>
+                                <materialDesign:PackIcon Kind="Gear"
+                                                         Width="20"
+                                                         Height="20"
+                                                         Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                         Margin="10" />
+                            </ListBoxItem>
+                            <ListBoxItem>
+                                <materialDesign:PackIcon Kind="Score"
+                                                         Width="20"
+                                                         Height="20"
+                                                         Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                         Margin="10" />
+                            </ListBoxItem>
+                            <ListBoxItem>
+                                <materialDesign:PackIcon Kind="Clock"
+                                                         Width="20"
+                                                         Height="20"
+                                                         Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                         Margin="10" />
+                            </ListBoxItem>
+                        </ListBox>
+                    </DockPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
 
-            </ListBox>
-        </StackPanel>
+        </ListBox>
+        <ContentControl Grid.Row="2"
+                        Margin="20,5,0,0"
+                        Focusable="False"
+                        Content="{Binding CreateBoardVm, Converter={catel:ViewModelToViewConverter}}" />
     </Grid>
 </mvvm:Page>
