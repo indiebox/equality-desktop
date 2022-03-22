@@ -20,8 +20,8 @@ namespace Equality.Models
 
         public DateTime UpdatedAt { get; set; }
 
-        public DateTime ClosedAt { get; set; }
+        public DateTime? ClosedAt { get; set; }
 
-        public DateTime DeletedAt { get; set; }
+        public DateTime? DeletedAt { get; set; }
     }
 }
