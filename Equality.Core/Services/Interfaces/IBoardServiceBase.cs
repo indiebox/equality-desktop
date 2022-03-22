@@ -9,8 +9,8 @@ using Equality.Models;
 namespace Equality.Services
 {
     public interface IBoardServiceBase<TBoardModel, TProjectModel>
-        where TBoardModel : class, IBoard
-        where TProjectModel : class, IProject
+        where TBoardModel : class, IBoard, new()
+        where TProjectModel : class, IProject, new()
     {
         /// <summary>
         /// Sends the get boards request to the API.
