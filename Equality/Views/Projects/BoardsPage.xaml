@@ -19,22 +19,19 @@
         <StackPanel>
             <DockPanel Margin="10"
                        LastChildFill="False">
-                <Button DockPanel.Dock="Left"
+                <Button DockPanel.Dock="Right"
                         Style="{StaticResource MaterialDesignIconButton}"
                         Command="{Binding OpenCreateTeamWindow}">
                     <materialDesign:PackIcon Kind="Plus" />
                 </Button>
                 <TextBlock DockPanel.Dock="Left"
                            Text="Доски"
-                           FontSize="24"
-                           VerticalAlignment="Center" />
-                <TextBlock DockPanel.Dock="Right"
-                           Text="Модули"
-                           FontSize="24"
+                           FontSize="16"
                            VerticalAlignment="Center" />
             </DockPanel>
             <ListBox Grid.Row="1"
-                     ItemsSource="{Binding Boards}">
+                     ItemsSource="{Binding Boards}"
+                     Cursor="Hand">
                 <ListBox.Resources>
                     <ControlTemplate x:Key="NoItemsTemplate">
                         <TextBlock Background="WhiteSmoke"
@@ -47,12 +44,31 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <DockPanel Cursor="Hand"
+                                   Margin="10"
                                    LastChildFill="False">
-                            <TextBlock FontSize="24"
+                            <DockPanel.Resources>
+                                <Style TargetType="DockPanel">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="True">
+                                            <Setter Property="Background"
+                                                    Value="White" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="False">
+                                            <Setter Property="Background"
+                                                    Value="#7FFFFFFF" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DockPanel.Resources>
+                            <TextBlock FontSize="16"
                                        Margin="10"
                                        Text="{Binding Name}"
-                                       DockPanel.Dock="Left" />
-                            <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                       DockPanel.Dock="Left"
+                                       VerticalAlignment="Center" />
+                            <ListBox Margin="10"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                      DockPanel.Dock="Right">
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -61,22 +77,22 @@
                                 </ListBox.ItemsPanel>
                                 <ListBoxItem>
                                     <materialDesign:PackIcon Kind="Gear"
-                                                             Width="30"
-                                                             Height="30"
+                                                             Width="20"
+                                                             Height="20"
                                                              Foreground="{DynamicResource PrimaryHueMidBrush}"
                                                              Margin="10" />
                                 </ListBoxItem>
                                 <ListBoxItem>
                                     <materialDesign:PackIcon Kind="Score"
-                                                             Width="30"
-                                                             Height="30"
+                                                             Width="20"
+                                                             Height="20"
                                                              Foreground="{DynamicResource PrimaryHueMidBrush}"
                                                              Margin="10" />
                                 </ListBoxItem>
                                 <ListBoxItem>
                                     <materialDesign:PackIcon Kind="Clock"
-                                                             Width="30"
-                                                             Height="30"
+                                                             Width="20"
+                                                             Height="20"
                                                              Foreground="{DynamicResource PrimaryHueMidBrush}"
                                                              Margin="10" />
                                 </ListBoxItem>
