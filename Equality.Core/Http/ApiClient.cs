@@ -28,8 +28,6 @@ namespace Equality.Http
 
         public HttpClient HttpClient { get; set; }
 
-        internal static object WithTokenOnce(object p) => throw new NotImplementedException();
-
         public ApiClient WithToken(string token)
         {
             HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
