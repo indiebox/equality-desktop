@@ -36,10 +36,14 @@ namespace Equality.ViewModels
 
         IBoardService BoardService;
 
-        public BoardsPageViewModel(IBoardService boardService)
+        INavigationService NavigationService;
+
+        public BoardsPageViewModel(IBoardService boardService, INavigationService navigationService)
         {
             BoardService = boardService;
+            NavigationService = navigationService;
 
+            OpenBoardPage = new Command<Board>(OnOpenOpenBoardPageExecute);
             OpenCreateBoardWindow = new TaskCommand(OnOpenCreateBoardWindowExecuteAsync, () => CreateBoardVm is null);
         }
 
@@ -52,6 +56,16 @@ namespace Equality.ViewModels
         #endregion
 
         #region Commands
+
+        public Command<Board> OpenBoardPage { get; private set; }
+
+        private void OnOpenOpenBoardPageExecute(Board board)
+        {
+            StateManager.SelectedBoard = board;
+
+            NavigationService.Navigate<BoardPageViewModel>();
+        }
+
 
         public TaskCommand OpenCreateBoardWindow { get; private set; }
 
