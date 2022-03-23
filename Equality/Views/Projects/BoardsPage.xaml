@@ -38,21 +38,15 @@
         <ListBox Grid.Row="1"
                  ItemsSource="{Binding Boards}"
                  Cursor="Hand">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding OpenBoardPage}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
+                    <Button Style="{StaticResource BaseButton}"
+                            Command="{Binding DataContext.OpenBoardPage, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                            CommandParameter="{Binding}"
+                            Cursor="Hand">
                         <DockPanel Cursor="Hand"
                                    Margin="10"
                                    LastChildFill="False">
-                            <DockPanel.InputBindings>
-                                <MouseBinding MouseAction="LeftClick"
-                                              Command="{Binding OpenBoardPage}" />
-                            </DockPanel.InputBindings>
                             <DockPanel.Resources>
                                 <Style TargetType="DockPanel">
                                     <Style.Triggers>
@@ -105,7 +99,7 @@
                                 </ListBoxItem>
                             </ListBox>
                         </DockPanel>
-                    </Grid>
+                    </Button>
                 </DataTemplate>
             </ListBox.ItemTemplate>
 
