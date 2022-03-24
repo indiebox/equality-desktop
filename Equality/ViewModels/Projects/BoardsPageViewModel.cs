@@ -8,6 +8,7 @@ using Catel.MVVM;
 using Catel.Services;
 
 using Equality.Data;
+using Equality.Extensions;
 using Equality.Helpers;
 using Equality.Models;
 using Equality.MVVM;
@@ -63,7 +64,7 @@ namespace Equality.ViewModels
         {
             StateManager.SelectedBoard = board;
 
-            NavigationService.Navigate<BoardPageViewModel>();
+            NavigationService.Navigate<BoardPageViewModel>(MvvmHelper.GetFirstInstanceOfViewModel<ProjectPageViewModel>());
         }
 
 
