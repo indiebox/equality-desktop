@@ -9,6 +9,9 @@ using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
 using Equality.Data;
+using Catel.MVVM;
+using Equality.Helpers;
+using System.Linq;
 
 namespace Equality.ViewModels
 {
@@ -40,6 +43,8 @@ namespace Equality.ViewModels
         public LeaderNominationPageViewModel(IProjectService projectService)
         {
             ProjectService = projectService;
+
+            NominateUser = new TaskCommand<TeamMember>(OnNominateUserExecuteAsync);
         }
 
         #region Properties
@@ -50,7 +55,27 @@ namespace Equality.ViewModels
 
         #region Commands
 
+        public TaskCommand<TeamMember> NominateUser { get; private set; }
 
+        private async Task OnNominateUserExecuteAsync(TeamMember teamMember)
+        {
+            if (NominatedMembers.First(nomination => nomination.Nominated == teamMember).IsCurrentUserVotes) {
+                return;
+            }
+
+            try {
+                var response = await ProjectService.NominateUserAsync(StateManager.SelectedProject, teamMember);
+
+                var result = response.Object;
+                ProcessNominations(result);
+
+                NominatedMembers.ReplaceRange(response.Object);
+
+                MvvmHelper.GetFirstInstanceOfViewModel<ProjectPageViewModel>().Leader = result.First(nomination => nomination.IsLeader).Nominated;
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+        }
 
         #endregion
 
@@ -62,20 +87,19 @@ namespace Equality.ViewModels
                 var response = await ProjectService.GetNominatedUsersAsync(StateManager.SelectedProject);
 
                 var result = response.Object;
+                ProcessNominations(result);
 
-                foreach (var item in result) {
-                    item.PercentageSupport = (double)item.VotersCount / response.Object.Length * 100;
-
-                    foreach (var voter in item.Voters) {
-                        if (voter.IsCurrentUser) {
-                            item.IsCurrentUserVotes = true;
-                        }
-                    }
-
-                    NominatedMembers.Add(item);
-                }
+                NominatedMembers.AddRange(result);
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
+            }
+        }
+
+        protected void ProcessNominations(LeaderNomination[] nominations)
+        {
+            foreach (var item in nominations) {
+                item.PercentageSupport = (double)item.VotersCount / nominations.Length * 100;
+                item.IsCurrentUserVotes = item.Voters.Any(voter => voter.IsCurrentUser);
             }
         }
 
