@@ -60,7 +60,7 @@ namespace Equality.ViewModels
 
         #region Commands
 
-        protected async Task LoadLeaderNominationsAsync()
+        protected async Task LoadProjectLeaderAsync()
         {
             try {
                 var response = await ProjectService.GetProjectLeaderAsync(StateManager.SelectedProject);
@@ -97,7 +97,7 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            await LoadLeaderNominationsAsync();
+            await LoadProjectLeaderAsync();
 
             OnActiveTabChanged();
         }
