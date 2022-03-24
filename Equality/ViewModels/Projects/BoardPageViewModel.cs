@@ -43,7 +43,7 @@ namespace Equality.ViewModels
 
         private void OnToBoardsExecute()
         {
-            NavigationService.Navigate<BoardsPageViewModel>(MvvmHelper.GetFirstInstanceOfViewModel<ProjectPageViewModel>());
+            NavigationService.Navigate<BoardsPageViewModel, ProjectPageViewModel>();
         }
 
         #endregion

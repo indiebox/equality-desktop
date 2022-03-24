@@ -64,7 +64,7 @@ namespace Equality.ViewModels
         {
             StateManager.SelectedBoard = board;
 
-            NavigationService.Navigate<BoardPageViewModel>(MvvmHelper.GetFirstInstanceOfViewModel<ProjectPageViewModel>());
+            NavigationService.Navigate<BoardPageViewModel, ProjectPageViewModel>();
         }
 
 
