@@ -92,6 +92,7 @@ namespace Equality
             urlLocator.NamingConventions.Add("/Views/Authorization/[VM].xaml");
             urlLocator.NamingConventions.Add("/Views/Projects/[VM].xaml");
             urlLocator.NamingConventions.Add("/Views/Teams/[VM].xaml");
+            urlLocator.NamingConventions.Add("/Views/Boards/[VM].xaml");
 
             //var viewLocator = ServiceLocator.Default.ResolveType<IViewLocator>();
             //viewLocator.NamingConventions.Add("[UP].Views.Authorization.[VM]");
