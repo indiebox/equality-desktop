@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 using Equality.Http;
@@ -47,5 +45,18 @@ namespace Equality.Services
         /// <inheritdoc cref="CreateBoardAsync(TProjectModel, TBoardModel)"/>
         /// <param name="projectId">The project id.</param>
         public Task<ApiResponseMessage<TBoardModel>> CreateBoardAsync(ulong projectId, TBoardModel board);
+
+        /// <summary>
+        /// Sends the update board request to the API.
+        /// </summary>
+        /// <param name="board">The board.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage<TBoardModel>> UpdateBoardAsync(TBoardModel board);
     }
 }

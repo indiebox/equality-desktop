@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Catel;
@@ -10,7 +8,6 @@ using Equality.Http;
 using Equality.Models;
 
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 
 namespace Equality.Services
 {
@@ -57,6 +54,23 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"projects/{projectId}/boards", data);
+
+            board = Deserialize(response.Content["data"]);
+
+            return new(board, response);
+        }
+
+        public async Task<ApiResponseMessage<TBoardModel>> UpdateBoardAsync(TBoardModel board)
+        {
+            Argument.IsNotNull(nameof(board), board);
+            Argument.IsMinimal<ulong>("TBoardModel.Id", board.Id, 1);
+
+            Dictionary<string, object> data = new()
+            {
+                { "name", board.Name },
+            };
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync($"boards/{board.Id}", data);
 
             board = Deserialize(response.Content["data"]);
 
