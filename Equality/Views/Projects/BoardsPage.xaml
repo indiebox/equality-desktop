@@ -80,21 +80,21 @@
                                     <materialDesign:PackIcon Kind="Gear"
                                                              Width="20"
                                                              Height="20"
-                                                             Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                             Foreground="{StaticResource PrimaryHueMidBrush}"
                                                              Margin="10" />
                                 </ListBoxItem>
                                 <ListBoxItem>
                                     <materialDesign:PackIcon Kind="Score"
                                                              Width="20"
                                                              Height="20"
-                                                             Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                             Foreground="{StaticResource  PrimaryHueMidBrush}"
                                                              Margin="10" />
                                 </ListBoxItem>
                                 <ListBoxItem>
                                     <materialDesign:PackIcon Kind="Clock"
                                                              Width="20"
                                                              Height="20"
-                                                             Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                             Foreground="{StaticResource  PrimaryHueMidBrush}"
                                                              Margin="10" />
                                 </ListBoxItem>
                             </ListBox>
