@@ -52,9 +52,23 @@ namespace Equality.Services
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"projects/{projectId}/leader-nominations");
 
-            var LeaderNominations = DeserializeLeaderNomination(response.Content["data"]);
+            var nominations = DeserializeLeaderNominations(response.Content["data"]);
 
-            return new(LeaderNominations, response);
+            return new(nominations, response);
+        }
+
+        public Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(TProjectModel project, TUserModel user) => NominateUserAsync(project.Id, user.Id);
+
+        public async Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(ulong projectId, ulong userId)
+        {
+            Argument.IsNotNull(nameof(projectId), projectId);
+            Argument.IsNotNull(nameof(userId), userId);
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"projects/{projectId}/leader-nominations/{userId}");
+
+            var nominations = DeserializeLeaderNominations(response.Content["data"]);
+
+            return new(nominations, response);
         }
 
         public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(TProjectModel project) => GetProjectLeaderAsync(project.Id);
@@ -65,9 +79,9 @@ namespace Equality.Services
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"projects/{projectId}/leader");
 
-            var LeaderNominations = DeserializeProjectLeader(response.Content["data"]);
+            var leader = DeserializeLeader(response.Content["data"]);
 
-            return new(LeaderNominations, response);
+            return new(leader, response);
         }
 
         public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(TTeamModel team, TProjectModel project) => CreateProjectAsync(team.Id, project);
@@ -165,7 +179,7 @@ namespace Equality.Services
         /// </summary>
         /// <param name="data">The JToken.</param>
         /// <returns>Returns the <c>ITeamMember[]</c>.</returns>
-        public TLeaderNominationModel[] DeserializeLeaderNomination(JToken data)
+        public TLeaderNominationModel[] DeserializeLeaderNominations(JToken data)
         {
             Argument.IsNotNull(nameof(data), data);
 
@@ -183,7 +197,7 @@ namespace Equality.Services
         /// </summary>
         /// <param name="data">The JToken.</param>
         /// <returns>Returns the <c>IUser</c>.</returns>
-        public TUserModel DeserializeProjectLeader(JToken data)
+        public TUserModel DeserializeLeader(JToken data)
         {
             Argument.IsNotNull(nameof(data), data);
 

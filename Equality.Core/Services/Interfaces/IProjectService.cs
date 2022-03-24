@@ -48,6 +48,25 @@ namespace Equality.Services
         public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(ulong projectId);
 
         /// <summary>
+        /// Sends the nominate user request to the API.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="user">The user.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(TProjectModel project, TUserModel user);
+
+        /// <inheritdoc cref="NominateUserAsync(TProjectModel, TUserModel)"/>`
+        /// <param name="projectId">The project id.</param>
+        /// <param name="userId">The user id.</param>
+        public Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(ulong projectId, ulong userId);
+
+        /// <summary>
         /// Sends the get project leader request to the API.
         /// </summary>
         /// <param name="project">The project.</param>
