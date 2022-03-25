@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
+using Catel;
 using Catel.Data;
 using Catel.MVVM;
 
@@ -19,6 +20,8 @@ namespace Equality.ViewModels
 {
     public class CreateProjectControlViewModel : ViewModel
     {
+        protected Team Team = StateManager.SelectedTeam;
+
         protected IProjectService ProjectService;
 
         public CreateProjectControlViewModel(IProjectService projectService)
@@ -27,6 +30,12 @@ namespace Equality.ViewModels
 
             CreateProject = new TaskCommand<KeyEventArgs>(OnCreateProjectExecute);
             CloseWindow = new TaskCommand(OnCloseWindowExecute);
+        }
+
+        public CreateProjectControlViewModel(Team team, IProjectService projectService) : this(projectService)
+        {
+            Argument.IsNotNull(nameof(team), team);
+            Team = team;
         }
 
         #region Properties
@@ -61,7 +70,7 @@ namespace Equality.ViewModels
             }
 
             try {
-                var response = await ProjectService.CreateProjectAsync(StateManager.SelectedTeam, Project);
+                var response = await ProjectService.CreateProjectAsync(Team, Project);
                 Project.SyncWith(response.Object);
 
                 await SaveViewModelAsync();
