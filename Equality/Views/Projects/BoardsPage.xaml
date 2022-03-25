@@ -1,6 +1,7 @@
 ﻿<mvvm:Page x:Class="Equality.Views.BoardsPage"
            xmlns:mvvm="clr-namespace:Equality.MVVM"
            xmlns:catel="http://schemas.catelproject.com"
+           xmlns:equality="http://equality.indiebox.ru/schemas"
            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -40,61 +41,168 @@
                  Cursor="Hand">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <DockPanel Cursor="Hand"
-                               Margin="10"
-                               LastChildFill="False">
-                        <DockPanel.Resources>
-                            <Style TargetType="DockPanel">
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver"
-                                             Value="True">
-                                        <Setter Property="Background"
-                                                Value="White" />
-                                    </Trigger>
-                                    <Trigger Property="IsMouseOver"
-                                             Value="False">
-                                        <Setter Property="Background"
-                                                Value="#7FFFFFFF" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DockPanel.Resources>
-                        <TextBlock FontSize="16"
-                                   Margin="10"
-                                   Text="{Binding Name}"
-                                   DockPanel.Dock="Left"
-                                   VerticalAlignment="Center" />
-                        <ListBox Margin="10"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                 DockPanel.Dock="Right">
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel IsItemsHost="True" />
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-                            <ListBoxItem>
-                                <materialDesign:PackIcon Kind="Gear"
-                                                         Width="20"
-                                                         Height="20"
-                                                         Foreground="{DynamicResource PrimaryHueMidBrush}"
-                                                         Margin="10" />
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <materialDesign:PackIcon Kind="Score"
-                                                         Width="20"
-                                                         Height="20"
-                                                         Foreground="{DynamicResource PrimaryHueMidBrush}"
-                                                         Margin="10" />
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <materialDesign:PackIcon Kind="Clock"
-                                                         Width="20"
-                                                         Height="20"
-                                                         Foreground="{DynamicResource PrimaryHueMidBrush}"
-                                                         Margin="10" />
-                            </ListBoxItem>
-                        </ListBox>
-                    </DockPanel>
+                    <Button x:Name="Board"
+                            Style="{StaticResource BaseButton}"
+                            Command="{Binding DataContext.OpenBoardPage, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                            CommandParameter="{Binding}">
+                        <DockPanel Margin="10"
+                                   LastChildFill="False">
+                            <DockPanel.Resources>
+                                <Style TargetType="DockPanel">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="True">
+                                            <Setter Property="Background"
+                                                    Value="White" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="False">
+                                            <Setter Property="Background"
+                                                    Value="#7FFFFFFF" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DockPanel.Resources>
+
+                            <StackPanel DockPanel.Dock="Left"
+                                        Orientation="Horizontal"
+                                        VerticalAlignment="Center"
+                                        Margin="10">
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="Visibility"
+                                                    Value="Visible" />
+                                            <Style.Triggers>
+                                                <DataTrigger Value="True">
+                                                    <DataTrigger.Binding>
+                                                        <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                                            <Binding Path="." />
+                                                            <Binding Path="DataContext.EditableBoard"
+                                                                     RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
+                                                        </MultiBinding>
+                                                    </DataTrigger.Binding>
+                                                    <Setter Property="Visibility"
+                                                            Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+
+                                    <TextBlock Text="{Binding Name}"
+                                               VerticalAlignment="Center" />
+
+                                    <Button Margin="10,0"
+                                            Command="{Binding DataContext.StartEditBoardName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                            CommandParameter="{Binding}">
+                                        <Button.Style>
+                                            <Style TargetType="Button"
+                                                   BasedOn="{StaticResource MaterialDesignIconForegroundButton}">
+                                                <Setter Property="Visibility"
+                                                        Value="Hidden" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=Board}"
+                                                                 Value="True">
+                                                        <Setter Property="Visibility"
+                                                                Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+
+                                        <materialDesign:PackIcon Kind="Edit"
+                                                                 Width="20"
+                                                                 Height="20"
+                                                                 Foreground="{StaticResource PrimaryHueMidBrush}" />
+                                    </Button>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="Visibility"
+                                                    Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Value="True">
+                                                    <DataTrigger.Binding>
+                                                        <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                                            <Binding Path="." />
+                                                            <Binding Path="DataContext.EditableBoard"
+                                                                     RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
+                                                        </MultiBinding>
+                                                    </DataTrigger.Binding>
+                                                    <Setter Property="Visibility"
+                                                            Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+
+                                    <TextBox Style="{StaticResource MaterialDesignTextBox}"
+                                             Text="{Binding DataContext.NewBoardName, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                             VerticalAlignment="Center"
+                                             Width="250"
+                                             materialDesign:ValidationAssist.FontSize="14"
+                                             materialDesign:HintAssist.Hint="Название доски">
+                                        <i:Interaction.Behaviors>
+                                            <equality:FocusAndSelectText FocusMoment="PropertyChanged"
+                                                                         PropertyName="EditableBoard"
+                                                                         Source="{Binding DataContext, RelativeSource={RelativeSource AncestorType=mvvm:Page}}" />
+                                        </i:Interaction.Behaviors>
+                                    </TextBox>
+
+                                    <Button Style="{StaticResource MaterialDesignIconButton}"
+                                            Margin="10,0"
+                                            Command="{Binding DataContext.SaveNewBoardName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}">
+                                        <materialDesign:PackIcon Kind="ContentSave"
+                                                                 Width="20"
+                                                                 Height="20"
+                                                                 Foreground="{StaticResource PrimaryHueMidBrush}" />
+                                    </Button>
+
+                                    <Button Style="{StaticResource MaterialDesignIconButton}"
+                                            Margin="10,0"
+                                            Command="{Binding DataContext.CancelEditBoardName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}">
+                                        <materialDesign:PackIcon Kind="Close"
+                                                                 Width="20"
+                                                                 Height="20"
+                                                                 Foreground="{StaticResource PrimaryHueMidBrush}" />
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <ListBox Margin="10"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                     DockPanel.Dock="Right">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel IsItemsHost="True" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBoxItem>
+                                    <materialDesign:PackIcon Kind="Gear"
+                                                             Width="20"
+                                                             Height="20"
+                                                             Foreground="{StaticResource PrimaryHueMidBrush}"
+                                                             Margin="10" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <materialDesign:PackIcon Kind="Score"
+                                                             Width="20"
+                                                             Height="20"
+                                                             Foreground="{StaticResource  PrimaryHueMidBrush}"
+                                                             Margin="10" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <materialDesign:PackIcon Kind="Clock"
+                                                             Width="20"
+                                                             Height="20"
+                                                             Foreground="{StaticResource  PrimaryHueMidBrush}"
+                                                             Margin="10" />
+                                </ListBoxItem>
+                            </ListBox>
+                        </DockPanel>
+                    </Button>
                 </DataTemplate>
             </ListBox.ItemTemplate>
 

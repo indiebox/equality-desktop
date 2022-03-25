@@ -4,6 +4,8 @@ using Catel.MVVM;
 
 using Catel.Services;
 
+using Equality.Extensions;
+using Equality.Helpers;
 using Equality.MVVM;
 
 namespace Equality.ViewModels
@@ -41,7 +43,7 @@ namespace Equality.ViewModels
 
         private void OnToBoardsExecute()
         {
-            NavigationService.Navigate<BoardsPageViewModel>();
+            NavigationService.Navigate<BoardsPageViewModel, ProjectPageViewModel>();
         }
 
         #endregion

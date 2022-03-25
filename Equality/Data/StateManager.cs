@@ -64,5 +64,7 @@ namespace Equality.Data
                 SelectedProjectChanged?.Invoke();
             }
         }
+
+        public static Board SelectedBoard { get; set; }
     }
 }
