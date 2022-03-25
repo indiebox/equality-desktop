@@ -55,7 +55,7 @@ namespace Equality.ViewModels
             OpenTeamPage = new Command<Team>(OnOpenTeamPageExecute);
             FilterProjects = new Command<Team>(OnFilterProjectsExecute);
             ResetFilter = new Command(OnResetFilterExecute);
-            OpenCreateProjectWindow = new TaskCommand(OnOpenCreateProjectWindowExecuteAsync);
+            OpenCreateProjectWindow = new TaskCommand<Team>(OnOpenCreateProjectWindowExecuteAsync);
 
         }
 
@@ -69,14 +69,17 @@ namespace Equality.ViewModels
 
         public CreateProjectControlViewModel CreateProjectVm { get; set; }
 
+        public Team CreateProjectFor { get; set; }
+
         #endregion
 
         #region Commands
 
-        public TaskCommand OpenCreateProjectWindow { get; private set; }
+        public TaskCommand<Team> OpenCreateProjectWindow { get; private set; }
 
-        private async Task OnOpenCreateProjectWindowExecuteAsync()
+        private async Task OnOpenCreateProjectWindowExecuteAsync(Team team)
         {
+            CreateProjectFor = team;
             CreateProjectVm = MvvmHelper.CreateViewModel<CreateProjectControlViewModel>();
             CreateProjectVm.ClosedAsync += CreateProjectVmClosedAsync;
         }
@@ -94,11 +97,12 @@ namespace Equality.ViewModels
         private Task CreateProjectVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
             if (e.Result ?? false) {
-                Teams[0].Projects.Add(CreateProjectVm.Project);
+                CreateProjectFor.Projects.Add(CreateProjectVm.Project);
             }
 
             CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;
             CreateProjectVm = null;
+            CreateProjectFor = null;
 
             return Task.CompletedTask;
         }
