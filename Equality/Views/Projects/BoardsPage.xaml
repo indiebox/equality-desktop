@@ -1,6 +1,7 @@
 ﻿<mvvm:Page x:Class="Equality.Views.BoardsPage"
            xmlns:mvvm="clr-namespace:Equality.MVVM"
            xmlns:catel="http://schemas.catelproject.com"
+           xmlns:equality="http://equality.indiebox.ru/schemas"
            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -144,11 +145,9 @@
                                              materialDesign:ValidationAssist.FontSize="14"
                                              materialDesign:HintAssist.Hint="Название доски">
                                         <i:Interaction.Behaviors>
-                                            <catel:SelectTextOnFocus />
-                                            <catel:Focus FocusMoment="PropertyChanged"
-                                                         PropertyName="EditableBoard"
-                                                         FocusDelay="100"
-                                                         Source="{Binding DataContext, RelativeSource={RelativeSource AncestorType=mvvm:Page}}" />
+                                            <equality:FocusAndSelectText FocusMoment="PropertyChanged"
+                                                                         PropertyName="EditableBoard"
+                                                                         Source="{Binding DataContext, RelativeSource={RelativeSource AncestorType=mvvm:Page}}" />
                                         </i:Interaction.Behaviors>
                                     </TextBox>
 
