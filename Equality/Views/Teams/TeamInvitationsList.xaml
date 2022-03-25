@@ -135,23 +135,83 @@
                                         <Style TargetType="TextBlock"
                                                BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Status}"
-                                                             Value="Pending">
-                                                    <Setter Property="Text"
-                                                            Value="{Binding Inviter.Name}" />
-                                                </DataTrigger>
+                                                <!-- Pending invite -->
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Status}"
+                                                                   Value="Pending" />
+                                                        <Condition Binding="{Binding Inviter.IsCurrentUser}"
+                                                                   Value="True" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <MultiDataTrigger.Setters>
+                                                        <Setter Property="Text"
+                                                                Value="Вы" />
+                                                    </MultiDataTrigger.Setters>
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Status}"
+                                                                   Value="Pending" />
+                                                        <Condition Binding="{Binding Inviter.IsCurrentUser}"
+                                                                   Value="False" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <MultiDataTrigger.Setters>
+                                                        <Setter Property="Text"
+                                                                Value="{Binding Inviter.Name}" />
+                                                    </MultiDataTrigger.Setters>
+                                                </MultiDataTrigger>
 
-                                                <DataTrigger Binding="{Binding Status}"
-                                                             Value="Accepted">
-                                                    <Setter Property="Text"
-                                                            Value="{Binding Invited.Name}" />
-                                                </DataTrigger>
+                                                <!-- Accepted invite -->
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Status}"
+                                                                   Value="Accepted" />
+                                                        <Condition Binding="{Binding Invited.IsCurrentUser}"
+                                                                   Value="True" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <MultiDataTrigger.Setters>
+                                                        <Setter Property="Text"
+                                                                Value="Вы" />
+                                                    </MultiDataTrigger.Setters>
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Status}"
+                                                                   Value="Accepted" />
+                                                        <Condition Binding="{Binding Invited.IsCurrentUser}"
+                                                                   Value="False" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <MultiDataTrigger.Setters>
+                                                        <Setter Property="Text"
+                                                                Value="{Binding Invited.Name}" />
+                                                    </MultiDataTrigger.Setters>
+                                                </MultiDataTrigger>
 
-                                                <DataTrigger Binding="{Binding Status}"
-                                                             Value="Declined">
-                                                    <Setter Property="Text"
-                                                            Value="{Binding Invited.Name}" />
-                                                </DataTrigger>
+                                                <!-- Declined invite -->
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Status}"
+                                                                   Value="Declined" />
+                                                        <Condition Binding="{Binding Invited.IsCurrentUser}"
+                                                                   Value="True" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <MultiDataTrigger.Setters>
+                                                        <Setter Property="Text"
+                                                                Value="Вы" />
+                                                    </MultiDataTrigger.Setters>
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Status}"
+                                                                   Value="Declined" />
+                                                        <Condition Binding="{Binding Invited.IsCurrentUser}"
+                                                                   Value="False" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <MultiDataTrigger.Setters>
+                                                        <Setter Property="Text"
+                                                                Value="{Binding Invited.Name}" />
+                                                    </MultiDataTrigger.Setters>
+                                                </MultiDataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </TextBlock.Style>
@@ -163,23 +223,83 @@
                                         <Style TargetType="TextBlock"
                                                BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Status}"
-                                                             Value="Pending">
-                                                    <Setter Property="Text"
-                                                            Value=" пригласил " />
-                                                </DataTrigger>
+                                                <!-- Pending invite -->
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Status}"
+                                                                   Value="Pending" />
+                                                        <Condition Binding="{Binding Inviter.IsCurrentUser}"
+                                                                   Value="True" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <MultiDataTrigger.Setters>
+                                                        <Setter Property="Text"
+                                                                Value=" пригласили " />
+                                                    </MultiDataTrigger.Setters>
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Status}"
+                                                                   Value="Pending" />
+                                                        <Condition Binding="{Binding Inviter.IsCurrentUser}"
+                                                                   Value="False" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <MultiDataTrigger.Setters>
+                                                        <Setter Property="Text"
+                                                                Value=" пригласил " />
+                                                    </MultiDataTrigger.Setters>
+                                                </MultiDataTrigger>
 
-                                                <DataTrigger Binding="{Binding Status}"
-                                                             Value="Accepted">
-                                                    <Setter Property="Text"
-                                                            Value=" принял " />
-                                                </DataTrigger>
+                                                <!-- Accepted invite -->
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Status}"
+                                                                   Value="Accepted" />
+                                                        <Condition Binding="{Binding Invited.IsCurrentUser}"
+                                                                   Value="True" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <MultiDataTrigger.Setters>
+                                                        <Setter Property="Text"
+                                                                Value=" приняли " />
+                                                    </MultiDataTrigger.Setters>
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Status}"
+                                                                   Value="Accepted" />
+                                                        <Condition Binding="{Binding Invited.IsCurrentUser}"
+                                                                   Value="False" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <MultiDataTrigger.Setters>
+                                                        <Setter Property="Text"
+                                                                Value=" принял " />
+                                                    </MultiDataTrigger.Setters>
+                                                </MultiDataTrigger>
 
-                                                <DataTrigger Binding="{Binding Status}"
-                                                             Value="Declined">
-                                                    <Setter Property="Text"
-                                                            Value=" отклонил " />
-                                                </DataTrigger>
+                                                <!-- Declinded invite -->
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Status}"
+                                                                   Value="Declined" />
+                                                        <Condition Binding="{Binding Invited.IsCurrentUser}"
+                                                                   Value="True" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <MultiDataTrigger.Setters>
+                                                        <Setter Property="Text"
+                                                                Value=" отклонили " />
+                                                    </MultiDataTrigger.Setters>
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Status}"
+                                                                   Value="Declined" />
+                                                        <Condition Binding="{Binding Invited.IsCurrentUser}"
+                                                                   Value="False" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <MultiDataTrigger.Setters>
+                                                        <Setter Property="Text"
+                                                                Value=" отклонил " />
+                                                    </MultiDataTrigger.Setters>
+                                                </MultiDataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </TextBlock.Style>
@@ -191,6 +311,7 @@
                                         <Style TargetType="TextBlock"
                                                BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
                                             <Style.Triggers>
+                                                <!-- Pending invite -->
                                                 <DataTrigger Binding="{Binding Status}"
                                                              Value="Pending">
                                                     <Setter Property="Text"
@@ -198,13 +319,15 @@
                                                     <Setter Property="TextDecorations"
                                                             Value="Underline" />
                                                 </DataTrigger>
-
+                                                
+                                                <!-- Accepted invite -->
                                                 <DataTrigger Binding="{Binding Status}"
                                                              Value="Accepted">
                                                     <Setter Property="Text"
                                                             Value="приглашение" />
                                                 </DataTrigger>
 
+                                                <!-- Declined invite -->
                                                 <DataTrigger Binding="{Binding Status}"
                                                              Value="Declined">
                                                     <Setter Property="Text"
