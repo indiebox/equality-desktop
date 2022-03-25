@@ -38,11 +38,9 @@
         </StackPanel>
 
         <Border Grid.Row="0"
+                Grid.Column="0"
                 Grid.RowSpan="2"
-                HorizontalAlignment="Left"
-                Width="500"
-                Background="#FFCCCCCC"
-                Height="280">
+                Background="#FFCCCCCC">
             <Grid VerticalAlignment="Center"
                   HorizontalAlignment="Center"
                   Margin="10,0">

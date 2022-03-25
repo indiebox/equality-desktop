@@ -245,7 +245,7 @@
                                                                        VerticalAlignment="Center"
                                                                        Foreground="Black"
                                                                        TextAlignment="Center"
-                                                                       FontSize="24">Создать проект</TextBlock>
+                                                                       FontSize="18">Создать проект</TextBlock>
                                                         </Grid>
                                                     </Button>
                                                 </StackPanel>
