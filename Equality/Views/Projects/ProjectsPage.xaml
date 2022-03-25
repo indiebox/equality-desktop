@@ -127,6 +127,8 @@
                                            FontSize="18">Вы не состоите ни в одной команде.</TextBlock>
                             </StackPanel>
                         </ControlTemplate>
+
+                        <objects:DataObject x:Key="CreateProjectButton" />
                     </ListBox.Resources>
 
                     <ListBox.ItemTemplate>
@@ -258,7 +260,7 @@
                                         <ListBox.ItemsSource>
                                             <CompositeCollection>
                                                 <CollectionContainer Collection="{Binding Source={StaticResource ProjectsCollection}}" />
-                                                <objects:DataObject />
+                                                <StaticResource ResourceKey="CreateProjectButton" />
                                             </CompositeCollection>
                                         </ListBox.ItemsSource>
                                     </ListBox>
