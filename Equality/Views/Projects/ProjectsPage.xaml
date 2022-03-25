@@ -177,6 +177,8 @@
                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=mvvm:Page}}">
                                                     <ContentControl Width="384"
                                                                     Height="216"
+                                                                    d:Width="0"
+                                                                    d:Height="0"
                                                                     Content="{Binding CreateProjectVm, Converter={catel:ViewModelToViewConverter}}">
                                                         <ContentControl.Style>
                                                             <Style TargetType="ContentControl">
