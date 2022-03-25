@@ -97,6 +97,10 @@ namespace Equality.ViewModels
 
         private async Task OnOpenCreateProjectWindowExecuteAsync(Team team)
         {
+            if (CreateProjectVm != null) {
+                CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;
+            }
+
             CreateProjectFor = team;
             CreateProjectVm = MvvmHelper.CreateViewModel<CreateProjectControlViewModel>(team);
             CreateProjectVm.ClosedAsync += CreateProjectVmClosedAsync;
