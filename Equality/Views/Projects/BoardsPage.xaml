@@ -153,8 +153,7 @@
 
                                     <Button Style="{StaticResource MaterialDesignIconButton}"
                                             Margin="10,0"
-                                            Command="{Binding DataContext.SaveNewBoardName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
-                                            CommandParameter="{Binding}">
+                                            Command="{Binding DataContext.SaveNewBoardName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}">
                                         <materialDesign:PackIcon Kind="ContentSave"
                                                                  Width="20"
                                                                  Height="20"
@@ -163,8 +162,7 @@
 
                                     <Button Style="{StaticResource MaterialDesignIconButton}"
                                             Margin="10,0"
-                                            Command="{Binding DataContext.CancelEditBoardName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
-                                            CommandParameter="{Binding}">
+                                            Command="{Binding DataContext.CancelEditBoardName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}">
                                         <materialDesign:PackIcon Kind="Close"
                                                                  Width="20"
                                                                  Height="20"
