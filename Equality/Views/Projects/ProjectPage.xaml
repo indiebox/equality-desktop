@@ -36,8 +36,22 @@
                                 Height="30"
                                 CornerRadius="50">
                             <Border.ToolTip>
-                                <ToolTip Content="{Binding Leader.Name}"
-                                         ContentStringFormat="Лидер проекта: {0}" />
+                                <ToolTip ContentStringFormat="Лидер проекта: {0}">
+                                    <ToolTip.Style>
+                                        <Style TargetType="ToolTip"
+                                               BasedOn="{StaticResource MaterialDesignToolTip}">
+                                            <Setter Property="Content"
+                                                    Value="{Binding Leader.Name}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Leader.IsCurrentUser}"
+                                                             Value="True">
+                                                    <Setter Property="Content"
+                                                            Value="Вы" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ToolTip.Style>
+                                </ToolTip>
                             </Border.ToolTip>
                             <Border.Background>
                                 <ImageBrush Stretch="Fill"
