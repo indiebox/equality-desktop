@@ -33,9 +33,6 @@ namespace Equality.ViewModels
                     new() { Id = 1, Name = "Board" },
                     new() { Id = 2, Name = "Board1" },
                 });
-
-                EditableBoard = new Board();
-                FirstValidationHasErrors();
             });
         }
 
@@ -116,6 +113,12 @@ namespace Equality.ViewModels
         private async Task OnSaveNewBoardNameExecuteAsync()
         {
             if (FirstValidationHasErrors()) {
+                return;
+            }
+
+            if (NewBoardName == EditableBoard.Name) {
+                CancelEditBoardName.Execute();
+
                 return;
             }
 
