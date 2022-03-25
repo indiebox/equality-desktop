@@ -75,15 +75,6 @@ namespace Equality.ViewModels
 
         #region Commands
 
-        public TaskCommand<Team> OpenCreateProjectWindow { get; private set; }
-
-        private async Task OnOpenCreateProjectWindowExecuteAsync(Team team)
-        {
-            CreateProjectFor = team;
-            CreateProjectVm = MvvmHelper.CreateViewModel<CreateProjectControlViewModel>();
-            CreateProjectVm.ClosedAsync += CreateProjectVmClosedAsync;
-        }
-
         public Command<Project> OpenProjectPage { get; private set; }
 
         private void OnOpenOpenProjectPageExecute(Project project)
@@ -94,25 +85,21 @@ namespace Equality.ViewModels
             vm.ActiveTab = ApplicationWindowViewModel.Tab.Project;
         }
 
-        private Task CreateProjectVmClosedAsync(object sender, ViewModelClosedEventArgs e)
-        {
-            if (e.Result ?? false) {
-                CreateProjectFor.Projects.Add(CreateProjectVm.Project);
-            }
-
-            CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;
-            CreateProjectVm = null;
-            CreateProjectFor = null;
-
-            return Task.CompletedTask;
-        }
-
         public TaskCommand OpenCreateTeamWindow { get; private set; }
 
         private async Task OnOpenCreateTeamWindowExecute()
         {
             CreateTeamVm = MvvmHelper.CreateViewModel<CreateTeamControlViewModel>();
             CreateTeamVm.ClosedAsync += CreateTeamVmClosedAsync;
+        }
+
+        public TaskCommand<Team> OpenCreateProjectWindow { get; private set; }
+
+        private async Task OnOpenCreateProjectWindowExecuteAsync(Team team)
+        {
+            CreateProjectFor = team;
+            CreateProjectVm = MvvmHelper.CreateViewModel<CreateProjectControlViewModel>(team);
+            CreateProjectVm.ClosedAsync += CreateProjectVmClosedAsync;
         }
 
         public Command<Team> OpenTeamPage { get; private set; }
@@ -160,6 +147,19 @@ namespace Equality.ViewModels
 
             CreateTeamVm.ClosedAsync -= CreateTeamVmClosedAsync;
             CreateTeamVm = null;
+
+            return Task.CompletedTask;
+        }
+
+        private Task CreateProjectVmClosedAsync(object sender, ViewModelClosedEventArgs e)
+        {
+            if (e.Result ?? false) {
+                CreateProjectFor.Projects.Add(CreateProjectVm.Project);
+            }
+
+            CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;
+            CreateProjectVm = null;
+            CreateProjectFor = null;
 
             return Task.CompletedTask;
         }
