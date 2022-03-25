@@ -55,6 +55,7 @@ namespace Equality.ViewModels
             OpenTeamPage = new Command<Team>(OnOpenTeamPageExecute);
             FilterProjects = new Command<Team>(OnFilterProjectsExecute);
             ResetFilter = new Command(OnResetFilterExecute);
+            OpenCreateProjectWindow = new TaskCommand(OnOpenCreateProjectWindowExecuteAsync);
 
         }
 
@@ -66,9 +67,19 @@ namespace Equality.ViewModels
 
         public CreateTeamControlViewModel CreateTeamVm { get; set; }
 
+        public CreateProjectControlViewModel CreateProjectVm { get; set; }
+
         #endregion
 
         #region Commands
+
+        public TaskCommand OpenCreateProjectWindow { get; private set; }
+
+        private async Task OnOpenCreateProjectWindowExecuteAsync()
+        {
+            CreateProjectVm = MvvmHelper.CreateViewModel<CreateProjectControlViewModel>();
+            CreateProjectVm.ClosedAsync += CreateProjectVmClosedAsync;
+        }
 
         public Command<Project> OpenProjectPage { get; private set; }
 
@@ -78,6 +89,18 @@ namespace Equality.ViewModels
 
             var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
             vm.ActiveTab = ApplicationWindowViewModel.Tab.Project;
+        }
+
+        private Task CreateProjectVmClosedAsync(object sender, ViewModelClosedEventArgs e)
+        {
+            if (e.Result ?? false) {
+                Teams[0].Projects.Add(CreateProjectVm.Project);
+            }
+
+            CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;
+            CreateProjectVm = null;
+
+            return Task.CompletedTask;
         }
 
         public TaskCommand OpenCreateTeamWindow { get; private set; }
@@ -124,6 +147,7 @@ namespace Equality.ViewModels
         {
             if (e.Result ?? false) {
                 Teams.Add(CreateTeamVm.Team);
+
 
                 if (!IsFiltered) {
                     FilteredTeams.Add(CreateTeamVm.Team);
