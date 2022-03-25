@@ -188,7 +188,7 @@
                                                                             <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
                                                                                 <Binding Path="DataContext"
                                                                                          RelativeSource="{RelativeSource AncestorType=ListBox}" />
-                                                                                <Binding Path="DataContext.CreateProjectFor"
+                                                                                <Binding Path="DataContext.TeamForNewProject"
                                                                                          RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
                                                                             </MultiBinding>
                                                                         </DataTrigger.Binding>
@@ -216,7 +216,7 @@
                                                                             <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
                                                                                 <Binding Path="DataContext"
                                                                                          RelativeSource="{RelativeSource AncestorType=ListBox}" />
-                                                                                <Binding Path="DataContext.CreateProjectFor"
+                                                                                <Binding Path="DataContext.TeamForNewProject"
                                                                                          RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
                                                                             </MultiBinding>
                                                                         </DataTrigger.Binding>

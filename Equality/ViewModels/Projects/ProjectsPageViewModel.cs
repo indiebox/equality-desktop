@@ -69,7 +69,7 @@ namespace Equality.ViewModels
 
         public CreateProjectControlViewModel CreateProjectVm { get; set; }
 
-        public Team CreateProjectFor { get; set; }
+        public Team TeamForNewProject { get; set; }
 
         #endregion
 
@@ -101,7 +101,7 @@ namespace Equality.ViewModels
                 CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;
             }
 
-            CreateProjectFor = team;
+            TeamForNewProject = team;
             CreateProjectVm = MvvmHelper.CreateViewModel<CreateProjectControlViewModel>(team);
             CreateProjectVm.ClosedAsync += CreateProjectVmClosedAsync;
         }
@@ -158,12 +158,12 @@ namespace Equality.ViewModels
         private Task CreateProjectVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
             if (e.Result ?? false) {
-                CreateProjectFor.Projects.Add(CreateProjectVm.Project);
+                TeamForNewProject.Projects.Add(CreateProjectVm.Project);
             }
 
             CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;
             CreateProjectVm = null;
-            CreateProjectFor = null;
+            TeamForNewProject = null;
 
             return Task.CompletedTask;
         }
