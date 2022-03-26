@@ -26,8 +26,10 @@ namespace Equality.ViewModels
         #region Properties
 
         [Model]
-        public Team Team { get; set; } = new();
+        public Column Column { get; set; } = new();
 
+        [ViewModelToModel(nameof(Column))]
+        [Validatable]
         public string Name { get; set; }
 
         #endregion
