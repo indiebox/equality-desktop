@@ -35,8 +35,10 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Margin="0,0,10,0">Добавить</Button>
+            <Button Margin="0,0,10,0"
+                    Command="{Binding CreateBoard}">Добавить</Button>
             <Button Grid.Column="1"
+                    Command="{Binding CloseWindow}"
                     Style="{StaticResource MaterialDesignOutlinedButton}"
                     Cursor="Hand">Отменить</Button>
         </Grid>

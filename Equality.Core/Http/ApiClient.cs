@@ -35,6 +35,8 @@ namespace Equality.Http
             return this;
         }
 
+        internal static object WithTokenOnce(object p) => throw new NotImplementedException();
+
         public ApiClient WithTokenOnce(string token)
         {
             IsTemporaryToken = true;

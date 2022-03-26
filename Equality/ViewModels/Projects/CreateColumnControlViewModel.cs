@@ -14,13 +14,26 @@ using Equality.Validation;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
+using System.Windows.Input;
+using Equality.Data;
 
 namespace Equality.ViewModels
 {
     public class CreateColumnControlViewModel : ViewModel
     {
-        public CreateColumnControlViewModel()
+        Project Project = StateManager.SelectedProject;
+
+        IBoardService BoardService;
+
+        IColumnService ColumnService;
+
+        public CreateColumnControlViewModel(IBoardService boardService, IColumnService columnService)
         {
+            BoardService = boardService;
+            ColumnService = columnService;
+
+            CreateBoard = new TaskCommand<KeyEventArgs>(OnCreateBoardExecute);
+            CloseWindow = new TaskCommand(OnCloseWindowExecute);
         }
 
         #region Properties
@@ -35,6 +48,45 @@ namespace Equality.ViewModels
         #endregion
 
         #region Commands
+
+        public TaskCommand<KeyEventArgs> CreateBoard { get; private set; }
+
+        private async Task OnCreateBoardExecute(KeyEventArgs args)
+        {
+            if (args != null) {
+                if (args.Key == Key.Escape) {
+                    CloseWindow.Execute();
+                }
+
+                if (args.Key != Key.Enter) {
+                    return;
+                }
+            }
+
+            if (FirstValidationHasErrors() || HasErrors) {
+                return;
+            }
+
+            try {
+                var response = await ColumnService.CreateColumnAsync(StateManager.SelectedBoard, Column);
+                Project.SyncWith(response.Object);
+
+                await SaveViewModelAsync();
+                await CloseViewModelAsync(true);
+            } catch (UnprocessableEntityHttpException e) {
+                HandleApiErrors(e.Errors);
+            } catch (HttpRequestException e) {
+                Debug.WriteLine(e.ToString());
+            }
+        }
+
+        public TaskCommand CloseWindow { get; private set; }
+
+        private async Task OnCloseWindowExecute()
+        {
+            await CancelViewModelAsync();
+            await CloseViewModelAsync(false);
+        }
 
         #endregion
 
