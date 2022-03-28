@@ -27,7 +27,7 @@ namespace Equality.ViewModels
         {
             ColumnService = columnService;
 
-            CreateColumn = new TaskCommand(OnCreateColumnExecute, () => HasErrors);
+            CreateColumn = new TaskCommand(OnCreateColumnExecute, () => !HasErrors);
             CloseWindow = new TaskCommand(OnCloseWindowExecute);
         }
 
