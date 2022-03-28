@@ -27,7 +27,7 @@ namespace Equality.ViewModels
         {
             ColumnService = columnService;
 
-            CreateColumn = new TaskCommand<KeyEventArgs>(OnCreateColumnExecute);
+            CreateColumn = new TaskCommand(OnCreateColumnExecute, () => HasErrors);
             CloseWindow = new TaskCommand(OnCloseWindowExecute);
         }
 
@@ -44,11 +44,11 @@ namespace Equality.ViewModels
 
         #region Commands
 
-        public TaskCommand<KeyEventArgs> CreateColumn { get; private set; }
+        public TaskCommand CreateColumn { get; private set; }
 
-        private async Task OnCreateColumnExecute(KeyEventArgs args)
+        private async Task OnCreateColumnExecute()
         {
-            if (FirstValidationHasErrors() || HasErrors) {
+            if (FirstValidationHasErrors()) {
                 return;
             }
 
