@@ -18,7 +18,7 @@ namespace Equality.Http
 
         public Dictionary<string, string> Additional { get; set; }
 
-        public Uri Parse(string uri)
+        public virtual Uri Parse(string uri)
         {
             Additional ??= new();
 
@@ -34,7 +34,7 @@ namespace Equality.Http
         protected void ParseFields(Dictionary<string, string> result)
         {
             foreach (var field in Fields) {
-                result.TryAdd($"fields[{field.SourceName}]", field.SourceName + "." + string.Join($",{field.SourceName}.", field.Fields));
+                result.TryAdd($"fields[{field.SourceName}]", string.Join(',', field.Fields));
             }
         }
 

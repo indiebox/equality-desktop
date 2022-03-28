@@ -6,7 +6,7 @@
         {
         }
 
-        public Filter(string name, string[] values)
+        public Filter(string name, params string[] values)
         {
             Name = name;
             Values = values;

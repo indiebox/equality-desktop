@@ -6,7 +6,7 @@
         {
         }
 
-        public Field(string sourceName, string[] fields)
+        public Field(string sourceName, params string[] fields)
         {
             SourceName = sourceName;
             Fields = fields;
