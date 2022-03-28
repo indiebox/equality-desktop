@@ -87,6 +87,17 @@ namespace Equality.ViewModels
 
         #region Validation
 
+        protected override void ValidateFields(List<IFieldValidationResult> validationResults)
+        {
+            var validator = new Validator(validationResults);
+
+            validator.ValidateField(nameof(Name), Name, new()
+            {
+                new NotEmptyStringRule(),
+                new MaxStringLengthRule(255),
+            });
+        }
+
         #endregion
 
         protected override async Task InitializeAsync()
