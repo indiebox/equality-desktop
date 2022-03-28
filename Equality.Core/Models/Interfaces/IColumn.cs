@@ -13,5 +13,13 @@ namespace Equality.Models
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+
+
+        public int Order { get; set; }
+    }
+
+    public interface IColumn<TBoard> : IColumn
+    {
+        public TBoard Board { get; set; }
     }
 }
