@@ -48,16 +48,6 @@ namespace Equality.ViewModels
 
         private async Task OnCreateColumnExecute(KeyEventArgs args)
         {
-            if (args != null) {
-                if (args.Key == Key.Escape) {
-                    CloseWindow.Execute();
-                }
-
-                if (args.Key != Key.Enter) {
-                    return;
-                }
-            }
-
             if (FirstValidationHasErrors() || HasErrors) {
                 return;
             }
