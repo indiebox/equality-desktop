@@ -13,6 +13,23 @@ namespace Equality.Services
         where TBoardModel : class, IBoard, new()
     {
         /// <summary>
+        /// Sends the get board columns request to the API.
+        /// </summary>
+        /// <param name="board">The board.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(IBoard board);
+
+        /// <inheritdoc cref="GetColumnsAsync(ITeam)"/>
+        /// <param name="boardId">The board id.</param>
+        public Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(ulong boardId);
+
+        /// <summary>
         /// Sends the create column request to the API.
         /// </summary>
         /// <param name="board">The board.</param>

@@ -26,6 +26,19 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
+        public Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(IBoard board) => GetColumnsAsync(board.Id);
+
+        public async Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(ulong boardId)
+        {
+            Argument.IsNotNull(nameof(boardId), boardId);
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"boards/{boardId}/columns");
+
+            var columns = DeserializeRange(response.Content["data"]);
+
+            return new(columns, response);
+        }
+
         public Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(TBoardModel board, TColumnModel column) => CreateColumnAsync(board.Id, column);
 
         public async Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(ulong boardId, TColumnModel column)
@@ -38,7 +51,7 @@ namespace Equality.Services
                 { "name", column.Name },
             };
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"projects/{boardId}/boards", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"boards/{boardId}/columns", data);
 
             column = Deserialize(response.Content["data"]);
 

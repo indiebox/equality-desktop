@@ -21,15 +21,10 @@ namespace Equality.ViewModels
 {
     public class CreateColumnControlViewModel : ViewModel
     {
-        Project Project = StateManager.SelectedProject;
-
-        IBoardService BoardService;
-
         IColumnService ColumnService;
 
-        public CreateColumnControlViewModel(IBoardService boardService, IColumnService columnService)
+        public CreateColumnControlViewModel(IColumnService columnService)
         {
-            BoardService = boardService;
             ColumnService = columnService;
 
             CreateBoard = new TaskCommand<KeyEventArgs>(OnCreateBoardExecute);
@@ -69,7 +64,7 @@ namespace Equality.ViewModels
 
             try {
                 var response = await ColumnService.CreateColumnAsync(StateManager.SelectedBoard, Column);
-                Project.SyncWith(response.Object);
+                Column.SyncWith(response.Object);
 
                 await SaveViewModelAsync();
                 await CloseViewModelAsync(true);
