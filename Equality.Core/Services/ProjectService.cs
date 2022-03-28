@@ -31,26 +31,30 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
-        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(TTeamModel team) => GetProjectsAsync(team.Id);
+        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(TTeamModel team, QueryParameters query = null)
+            => GetProjectsAsync(team.Id, query);
 
-        public async Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ulong teamId)
+        public async Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ulong teamId, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(teamId), teamId);
+            query ??= new QueryParameters();
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/projects");
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"teams/{teamId}/projects"));
 
             var projects = DeserializeRange(response.Content["data"]);
 
             return new(projects, response);
         }
 
-        public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(TProjectModel project) => GetNominatedUsersAsync(project.Id);
+        public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(TProjectModel project, QueryParameters query = null)
+            => GetNominatedUsersAsync(project.Id, query);
 
-        public async Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(ulong projectId)
+        public async Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(ulong projectId, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(projectId), projectId);
+            query ??= new QueryParameters();
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"projects/{projectId}/leader-nominations");
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"projects/{projectId}/leader-nominations"));
 
             var nominations = DeserializeLeaderNominations(response.Content["data"]);
 
@@ -71,13 +75,14 @@ namespace Equality.Services
             return new(nominations, response);
         }
 
-        public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(TProjectModel project) => GetProjectLeaderAsync(project.Id);
+        public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(TProjectModel project, QueryParameters query = null) => GetProjectLeaderAsync(project.Id, query);
 
-        public async Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(ulong projectId)
+        public async Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(ulong projectId, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(projectId), projectId);
+            query ??= new QueryParameters();
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"projects/{projectId}/leader");
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"projects/{projectId}/leader"));
 
             var leader = DeserializeLeader(response.Content["data"]);
 

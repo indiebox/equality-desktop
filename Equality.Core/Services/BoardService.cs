@@ -28,13 +28,15 @@ namespace Equality.Services
             ApiClient = apiClient;
             TokenResolver = tokenResolver;
         }
-        public Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(TProjectModel project) => GetBoardsAsync(project.Id);
+        public Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(TProjectModel project, QueryParameters query = null)
+            => GetBoardsAsync(project.Id, query);
 
-        public async Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(ulong projectId)
+        public async Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(ulong projectId, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(projectId), projectId);
+            query ??= new QueryParameters();
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"projects/{projectId}/boards");
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"projects/{projectId}/boards"));
 
             var boards = DeserializeRange(response.Content["data"]);
 

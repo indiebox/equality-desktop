@@ -2,10 +2,6 @@
 {
     public class Field
     {
-        public Field(string sourceName, string field) : this(sourceName, new string[] { field })
-        {
-        }
-
         public Field(string sourceName, params string[] fields)
         {
             SourceName = sourceName;

@@ -15,6 +15,7 @@ namespace Equality.Services
         /// Sends the get team invites request to the API.
         /// </summary>
         /// <param name="team">The team.</param>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -22,15 +23,17 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(TTeamModel team);
+        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(TTeamModel team, QueryParameters query = null);
 
-        /// <inheritdoc cref="GetTeamInvitesAsync(TTeamModel)"/>
+        /// <inheritdoc cref="GetTeamInvitesAsync(TTeamModel, QueryParameters)"/>
         /// <param name="teamId">The team id.</param>
-        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ulong teamId);
+        /// <param name="query">The query parameters.</param>
+        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ulong teamId, QueryParameters query = null);
 
         /// <summary>
         /// Sends the get user invites request to the API.
         /// </summary>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -38,7 +41,7 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TInviteModel[]>> GetUserInvitesAsync();
+        public Task<ApiResponseMessage<TInviteModel[]>> GetUserInvitesAsync(QueryParameters query = null);
 
         /// <summary>
         /// Sends the invite user to the team request to the API.

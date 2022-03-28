@@ -2,10 +2,6 @@
 {
     public class Filter
     {
-        public Filter(string name, string value) : this(name, new string[] { value })
-        {
-        }
-
         public Filter(string name, params string[] values)
         {
             Name = name;

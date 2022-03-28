@@ -17,6 +17,7 @@ namespace Equality.Services
         /// Sends the get team projects request to the API.
         /// </summary>
         /// <param name="team">The team.</param>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -24,16 +25,18 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(TTeamModel team);
+        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(TTeamModel team, QueryParameters query = null);
 
-        /// <inheritdoc cref="GetProjectsAsync(ITeam)"/>
+        /// <inheritdoc cref="GetProjectsAsync(TTeamModel, QueryParameters)"/>
         /// <param name="teamId">The team id.</param>
-        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ulong teamId);
+        /// <param name="query">The query parameters.</param>
+        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ulong teamId, QueryParameters query = null);
 
         /// <summary>
         /// Sends the get nominated users request to the API.
         /// </summary>
         /// <param name="project">The project.</param>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -41,11 +44,12 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(TProjectModel project);
+        public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(TProjectModel project, QueryParameters query = null);
 
-        /// <inheritdoc cref="GetNominatedUsersAsync(TProjectModel)"/>`
+        /// <inheritdoc cref="GetNominatedUsersAsync(TProjectModel, QueryParameters)"/>`
         /// <param name="projectId">The project id.</param>
-        public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(ulong projectId);
+        /// <param name="query">The query parameters.</param>
+        public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(ulong projectId, QueryParameters query = null);
 
         /// <summary>
         /// Sends the nominate user request to the API.
@@ -70,6 +74,7 @@ namespace Equality.Services
         /// Sends the get project leader request to the API.
         /// </summary>
         /// <param name="project">The project.</param>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -77,11 +82,12 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(TProjectModel project);
+        public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(TProjectModel project, QueryParameters query = null);
 
-        /// <inheritdoc cref="GetProjectLeaderAsync(TProjectModel)"/>`
+        /// <inheritdoc cref="GetProjectLeaderAsync(TProjectModel, QueryParameters)"/>`
         /// <param name="projectId">The project id.</param>
-        public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(ulong projectId);
+        /// <param name="query">The query parameters.</param>
+        public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(ulong projectId, QueryParameters query = null);
 
         /// <summary>
         /// Sends the create project for team request to the API.

@@ -8,13 +8,13 @@ namespace Equality.Http
 {
     public class QueryParameters
     {
-        public Field[] Fields { get; set; }
+        public Field[] Fields { get; set; } = new Field[] { };
 
-        public string[] Includes { get; set; }
+        public string[] Includes { get; set; } = new string[] { };
 
-        public Sort[] Sorts { get; set; }
+        public Sort[] Sorts { get; set; } = new Sort[] { };
 
-        public Filter[] Filters { get; set; }
+        public Filter[] Filters { get; set; } = new Filter[] { };
 
         public Dictionary<string, string> Additional { get; set; }
 

@@ -15,6 +15,7 @@ namespace Equality.Services
         /// Sends the get boards request to the API.
         /// </summary>
         /// <param name="project">The project.</param>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -22,11 +23,12 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(TProjectModel project);
+        public Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(TProjectModel project, QueryParameters query = null);
 
-        /// <inheritdoc cref="GetBoardsAsync(TProjectModel)"/>
+        /// <inheritdoc cref="GetBoardsAsync(TProjectModel, QueryParameters)"/>
         /// <param name="projectId">The project id.</param>
-        public Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(ulong projectId);
+        /// <param name="query">The query parameters.</param>
+        public Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(ulong projectId, QueryParameters query = null);
 
         /// <summary>
         /// Sends the create boards request to the API.

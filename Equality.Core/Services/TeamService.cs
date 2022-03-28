@@ -32,9 +32,11 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
-        public async Task<ApiResponseMessage<TTeamModel[]>> GetTeamsAsync()
+        public async Task<ApiResponseMessage<TTeamModel[]>> GetTeamsAsync(QueryParameters query = null)
         {
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync("teams");
+            query ??= new QueryParameters();
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse("teams"));
 
             var teams = DeserializeRange(response.Content["data"]);
 
@@ -59,11 +61,12 @@ namespace Equality.Services
             return new(team, response);
         }
 
-        public Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(TTeamModel team) => GetMembersAsync(team.Id);
+        public Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(TTeamModel team, QueryParameters query = null) => GetMembersAsync(team.Id, query);
 
-        public async Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(ulong teamId)
+        public async Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(ulong teamId, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(teamId), teamId);
+            query ??= new QueryParameters();
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/members");
 

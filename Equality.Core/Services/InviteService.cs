@@ -28,22 +28,26 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
-        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(TTeamModel team) => GetTeamInvitesAsync(team.Id);
+        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(TTeamModel team, QueryParameters query = null)
+            => GetTeamInvitesAsync(team.Id, query);
 
-        public async Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ulong teamId)
+        public async Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ulong teamId, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(teamId), teamId);
+            query ??= new QueryParameters();
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/invites");
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"teams/{teamId}/invites"));
 
             var invites = DeserializeRange(response.Content["data"]);
 
             return new(invites, response);
         }
 
-        public async Task<ApiResponseMessage<TInviteModel[]>> GetUserInvitesAsync()
+        public async Task<ApiResponseMessage<TInviteModel[]>> GetUserInvitesAsync(QueryParameters query = null)
         {
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync("invites");
+            query ??= new QueryParameters();
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse("invites"));
 
             var invites = DeserializeRange(response.Content["data"]);
 
