@@ -68,7 +68,7 @@ namespace Equality.Services
             Argument.IsNotNull(nameof(teamId), teamId);
             query ??= new QueryParameters();
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/members");
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"teams/{teamId}/members"));
 
             var members = DeserializeMembers(response.Content["data"]);
 
