@@ -144,7 +144,6 @@ namespace Equality.ViewModels
             if (e.Result ?? false) {
                 Teams.Add(CreateTeamVm.Team);
 
-
                 if (!IsFiltered) {
                     FilteredTeams.Add(CreateTeamVm.Team);
                 }
