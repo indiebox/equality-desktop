@@ -27,7 +27,7 @@ namespace Equality.ViewModels
         {
             ColumnService = columnService;
 
-            CreateBoard = new TaskCommand<KeyEventArgs>(OnCreateBoardExecute);
+            CreateColumn = new TaskCommand<KeyEventArgs>(OnCreateColumnExecute);
             CloseWindow = new TaskCommand(OnCloseWindowExecute);
         }
 
@@ -44,9 +44,9 @@ namespace Equality.ViewModels
 
         #region Commands
 
-        public TaskCommand<KeyEventArgs> CreateBoard { get; private set; }
+        public TaskCommand<KeyEventArgs> CreateColumn { get; private set; }
 
-        private async Task OnCreateBoardExecute(KeyEventArgs args)
+        private async Task OnCreateColumnExecute(KeyEventArgs args)
         {
             if (args != null) {
                 if (args.Key == Key.Escape) {
