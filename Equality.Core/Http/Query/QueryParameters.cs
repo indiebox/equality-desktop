@@ -8,16 +8,36 @@ namespace Equality.Http
 {
     public class QueryParameters
     {
+        /// <summary>
+        /// List of fields to include in response.
+        /// </summary>
         public Field[] Fields { get; set; } = new Field[] { };
 
+        /// <summary>
+        /// Comma-separated list of relations to include in response.
+        /// </summary>
         public string[] Includes { get; set; } = new string[] { };
 
+        /// <summary>
+        /// List of sorts.
+        /// </summary>
         public Sort[] Sorts { get; set; } = new Sort[] { };
 
+        /// <summary>
+        /// List of filters.
+        /// </summary>
         public Filter[] Filters { get; set; } = new Filter[] { };
 
+        /// <summary>
+        /// List of additional query parameters.
+        /// </summary>
         public Dictionary<string, string> Additional { get; set; }
 
+        /// <summary>
+        /// Parse query parameters to the <see cref="Uri"/>.
+        /// </summary>
+        /// <param name="uri">The relative path(without domen).</param>
+        /// <returns>Returns the <see cref="Uri"/> with query parameters.</returns>
         public virtual Uri Parse(string uri)
         {
             Additional ??= new();

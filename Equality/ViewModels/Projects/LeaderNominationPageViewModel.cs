@@ -84,7 +84,13 @@ namespace Equality.ViewModels
         protected async Task LoadLeaderNominationsAsync()
         {
             try {
-                var response = await ProjectService.GetNominatedUsersAsync(StateManager.SelectedProject);
+                var response = await ProjectService.GetNominatedUsersAsync(StateManager.SelectedProject, new()
+                {
+                    Includes = new[]
+                    {
+                        "nominated", "voters", "voters_count",
+                    }
+                });
 
                 var result = response.Object;
                 ProcessNominations(result);
