@@ -95,7 +95,7 @@ namespace Equality.ViewModels
                 {
                     Fields = new[]
                     {
-                        new Field("projects", "id", "name", "description", "image", "created_at", "updated_at")
+                        new Field("projects", "id", "name", "description", "image")
                     }
                 });
 

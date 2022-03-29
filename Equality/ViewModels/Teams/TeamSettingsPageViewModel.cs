@@ -87,7 +87,13 @@ namespace Equality.ViewModels
                     Description = Description,
                     Url = Url,
                 };
-                var result = await TeamService.UpdateTeamAsync(team);
+                var result = await TeamService.UpdateTeamAsync(team, new()
+                {
+                    Fields = new[]
+                    {
+                        new Field("teams", "id", "name", "description", "url", "logo")
+                    }
+                });
 
                 Team.SyncWith(result.Object);
             } catch (UnprocessableEntityHttpException e) {
@@ -117,7 +123,7 @@ namespace Equality.ViewModels
             try {
                 var result = await TeamService.SetLogoAsync(Team, selectedFile.FileName);
 
-                Team.SyncWith(result.Object);
+                Team.Logo = result.Object.Logo;
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
@@ -130,7 +136,7 @@ namespace Equality.ViewModels
             try {
                 var result = await TeamService.DeleteLogoAsync(Team);
 
-                Team.SyncWith(result.Object);
+                Team.Logo = null;
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
