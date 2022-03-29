@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Equality.Models
 {
@@ -13,9 +11,6 @@ namespace Equality.Models
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
-
-
-        public int Order { get; set; }
     }
 
     public interface IColumn<TBoard> : IColumn
