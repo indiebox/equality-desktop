@@ -89,7 +89,7 @@ namespace Equality.Services
         /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(TTeamModel team, string imagePath, QueryParameters query = null);
 
-        /// <inheritdoc cref="SetLogoAsync(TTeamModel, string)"/>
+        /// <inheritdoc cref="SetLogoAsync(TTeamModel, string, QueryParameters)"/>
         /// <param name="teamId">The team id.</param>
         /// <param name="imagePath">The path to image file.</param>
         /// <param name="query">The query parameters.</param>

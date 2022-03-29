@@ -62,7 +62,8 @@ namespace Equality.Services
             return new(team, response);
         }
 
-        public Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(TTeamModel team, QueryParameters query = null) => GetMembersAsync(team.Id, query);
+        public Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(TTeamModel team, QueryParameters query = null)
+            => GetMembersAsync(team.Id, query);
 
         public async Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(ulong teamId, QueryParameters query = null)
         {

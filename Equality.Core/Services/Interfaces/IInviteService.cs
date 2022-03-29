@@ -48,6 +48,7 @@ namespace Equality.Services
         /// </summary>
         /// <param name="team">The team.</param>
         /// <param name="email">The user email.</param>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -55,12 +56,13 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(TTeamModel team, string email);
+        public Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(TTeamModel team, string email, QueryParameters query = null);
 
-        /// <inheritdoc cref="InviteUserAsync(TTeamModel, string)"/>
+        /// <inheritdoc cref="InviteUserAsync(TTeamModel, string, QueryParameters)"/>
         /// <param name="teamId">The team id.</param>
         /// <param name="email">The user email.</param>
-        public Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(ulong teamId, string email);
+        /// <param name="query">The query parameters.</param>
+        public Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(ulong teamId, string email, QueryParameters query = null);
 
         /// <summary>
         /// Sends the revoke invite request to the API.

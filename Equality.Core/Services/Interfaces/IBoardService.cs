@@ -35,6 +35,7 @@ namespace Equality.Services
         /// </summary>
         /// <param name="project">The project.</param>
         /// <param name="board">The board.</param>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -42,16 +43,18 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TBoardModel>> CreateBoardAsync(TProjectModel project, TBoardModel board);
+        public Task<ApiResponseMessage<TBoardModel>> CreateBoardAsync(TProjectModel project, TBoardModel board, QueryParameters query = null);
 
-        /// <inheritdoc cref="CreateBoardAsync(TProjectModel, TBoardModel)"/>
+        /// <inheritdoc cref="CreateBoardAsync(TProjectModel, TBoardModel, QueryParameters)"/>
         /// <param name="projectId">The project id.</param>
-        public Task<ApiResponseMessage<TBoardModel>> CreateBoardAsync(ulong projectId, TBoardModel board);
+        /// <param name="query">The query parameters.</param>
+        public Task<ApiResponseMessage<TBoardModel>> CreateBoardAsync(ulong projectId, TBoardModel board, QueryParameters query = null);
 
         /// <summary>
         /// Sends the update board request to the API.
         /// </summary>
         /// <param name="board">The board.</param>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -59,6 +62,6 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TBoardModel>> UpdateBoardAsync(TBoardModel board);
+        public Task<ApiResponseMessage<TBoardModel>> UpdateBoardAsync(TBoardModel board, QueryParameters query = null);
     }
 }

@@ -66,7 +66,7 @@ namespace Equality.Services
         /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(TProjectModel project, TUserModel user, QueryParameters query = null);
 
-        /// <inheritdoc cref="NominateUserAsync(TProjectModel, TUserModel)"/>`
+        /// <inheritdoc cref="NominateUserAsync(TProjectModel, TUserModel, QueryParameters)"/>`
         /// <param name="projectId">The project id.</param>
         /// <param name="userId">The user id.</param>
         /// <param name="query">The query parameters.</param>
@@ -106,7 +106,7 @@ namespace Equality.Services
         /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(TTeamModel team, TProjectModel project, QueryParameters query = null);
 
-        /// <inheritdoc cref="CreateProjectAsync(ITeam, IProject)"/>
+        /// <inheritdoc cref="CreateProjectAsync(TTeamModel, TProjectModel, QueryParameters)"/>
         /// <param name="teamId">The team id.</param>
         /// <param name="project">The project.</param>
         /// <param name="query">The query parameters.</param>
@@ -123,7 +123,7 @@ namespace Equality.Services
         /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage<TProjectModel>> SetImageAsync(TProjectModel project, string imagePath, QueryParameters query = null);
 
-        /// <inheritdoc cref="SetImageAsync(TProjectModel, string)"/>
+        /// <inheritdoc cref="SetImageAsync(TProjectModel, string, QueryParameters)"/>
         /// <param name="projectId">The project id.</param>
         /// <param name="imagePath">The path to image file.</param>
         /// <param name="query">The query parameters.</param>

@@ -54,18 +54,20 @@ namespace Equality.Services
             return new(invites, response);
         }
 
-        public Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(TTeamModel team, string email) => InviteUserAsync(team.Id, email);
+        public Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(TTeamModel team, string email, QueryParameters query = null)
+            => InviteUserAsync(team.Id, email, query);
 
-        public async Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(ulong teamId, string email)
+        public async Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(ulong teamId, string email, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(teamId), teamId);
+            query ??= new QueryParameters();
 
             Dictionary<string, object> data = new()
             {
                 { "email", email }
             };
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/invites", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"teams/{teamId}/invites"), data);
 
             var invite = Deserialize(response.Content["data"]);
 
