@@ -70,7 +70,13 @@ namespace Equality.ViewModels
             }
 
             try {
-                var response = await ProjectService.CreateProjectAsync(Team, Project);
+                var response = await ProjectService.CreateProjectAsync(Team, Project, new()
+                {
+                    Fields = new[]
+                    {
+                        new Field("projects", "id", "name", "description", "image")
+                    }
+                });
                 Project.SyncWith(response.Object);
 
                 await SaveViewModelAsync();

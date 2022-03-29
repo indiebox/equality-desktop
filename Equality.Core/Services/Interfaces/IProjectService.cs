@@ -56,6 +56,7 @@ namespace Equality.Services
         /// </summary>
         /// <param name="project">The project.</param>
         /// <param name="user">The user.</param>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -63,12 +64,13 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(TProjectModel project, TUserModel user);
+        public Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(TProjectModel project, TUserModel user, QueryParameters query = null);
 
         /// <inheritdoc cref="NominateUserAsync(TProjectModel, TUserModel)"/>`
         /// <param name="projectId">The project id.</param>
         /// <param name="userId">The user id.</param>
-        public Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(ulong projectId, ulong userId);
+        /// <param name="query">The query parameters.</param>
+        public Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(ulong projectId, ulong userId, QueryParameters query = null);
 
         /// <summary>
         /// Sends the get project leader request to the API.
@@ -94,6 +96,7 @@ namespace Equality.Services
         /// </summary>
         /// <param name="team">The team.</param>
         /// <param name="project">The project.</param>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -101,27 +104,30 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(TTeamModel team, TProjectModel project);
+        public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(TTeamModel team, TProjectModel project, QueryParameters query = null);
 
         /// <inheritdoc cref="CreateProjectAsync(ITeam, IProject)"/>
         /// <param name="teamId">The team id.</param>
         /// <param name="project">The project.</param>
-        public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ulong teamId, TProjectModel project);
+        /// <param name="query">The query parameters.</param>
+        public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ulong teamId, TProjectModel project, QueryParameters query = null);
 
         /// <summary>
         /// Sends the set image request to the API.
         /// </summary>
         /// <param name="project">The project.</param>
         /// <param name="imagePath">The path to image file.</param>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TProjectModel>> SetImageAsync(TProjectModel project, string imagePath);
+        public Task<ApiResponseMessage<TProjectModel>> SetImageAsync(TProjectModel project, string imagePath, QueryParameters query = null);
 
         /// <inheritdoc cref="SetImageAsync(TProjectModel, string)"/>
         /// <param name="projectId">The project id.</param>
         /// <param name="imagePath">The path to image file.</param>
-        public Task<ApiResponseMessage<TProjectModel>> SetImageAsync(ulong projectId, string imagePath);
+        /// <param name="query">The query parameters.</param>
+        public Task<ApiResponseMessage<TProjectModel>> SetImageAsync(ulong projectId, string imagePath, QueryParameters query = null);
 
         /// <summary>
         /// Sends the delete image request to the API.
@@ -130,19 +136,20 @@ namespace Equality.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TProjectModel>> DeleteImageAsync(TProjectModel project);
+        public Task<ApiResponseMessage> DeleteImageAsync(TProjectModel project);
 
         /// <inheritdoc cref="DeleteImageAsync(TProjectModel)"/>
         /// <param name="projectId">The project id.</param>
-        public Task<ApiResponseMessage<TProjectModel>> DeleteImageAsync(ulong projectId);
+        public Task<ApiResponseMessage> DeleteImageAsync(ulong projectId);
 
         /// <summary>
         /// Sends the update project request to the API.
         /// </summary>
         /// <param name="project">The project.</param>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TProjectModel>> UpdateProjectAsync(TProjectModel project);
+        public Task<ApiResponseMessage<TProjectModel>> UpdateProjectAsync(TProjectModel project, QueryParameters query = null);
     }
 }

@@ -61,21 +61,24 @@ namespace Equality.Services
             return new(nominations, response);
         }
 
-        public Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(TProjectModel project, TUserModel user) => NominateUserAsync(project.Id, user.Id);
+        public Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(TProjectModel project, TUserModel user, QueryParameters query = null)
+            => NominateUserAsync(project.Id, user.Id, query);
 
-        public async Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(ulong projectId, ulong userId)
+        public async Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(ulong projectId, ulong userId, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(projectId), projectId);
             Argument.IsNotNull(nameof(userId), userId);
+            query ??= new QueryParameters();
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"projects/{projectId}/leader-nominations/{userId}");
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"projects/{projectId}/leader-nominations/{userId}"));
 
             var nominations = DeserializeLeaderNominations(response.Content["data"]);
 
             return new(nominations, response);
         }
 
-        public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(TProjectModel project, QueryParameters query = null) => GetProjectLeaderAsync(project.Id, query);
+        public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(TProjectModel project, QueryParameters query = null)
+            => GetProjectLeaderAsync(project.Id, query);
 
         public async Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(ulong projectId, QueryParameters query = null)
         {
@@ -89,12 +92,14 @@ namespace Equality.Services
             return new(leader, response);
         }
 
-        public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(TTeamModel team, TProjectModel project) => CreateProjectAsync(team.Id, project);
+        public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(TTeamModel team, TProjectModel project, QueryParameters query = null)
+            => CreateProjectAsync(team.Id, project, query);
 
-        public async Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ulong teamId, TProjectModel project)
+        public async Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ulong teamId, TProjectModel project, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(teamId), teamId);
             Argument.IsNotNull(nameof(project), project);
+            query ??= new QueryParameters();
 
             Dictionary<string, object> data = new()
             {
@@ -102,19 +107,21 @@ namespace Equality.Services
                 { "description", project.Description },
             };
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/projects", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"teams/{teamId}/projects"), data);
 
             project = Deserialize(response.Content["data"]);
 
             return new(project, response);
         }
 
-        public Task<ApiResponseMessage<TProjectModel>> SetImageAsync(TProjectModel project, string imagePath) => SetImageAsync(project.Id, imagePath);
+        public Task<ApiResponseMessage<TProjectModel>> SetImageAsync(TProjectModel project, string imagePath, QueryParameters query = null)
+            => SetImageAsync(project.Id, imagePath, query);
 
-        public async Task<ApiResponseMessage<TProjectModel>> SetImageAsync(ulong projectId, string imagePath)
+        public async Task<ApiResponseMessage<TProjectModel>> SetImageAsync(ulong projectId, string imagePath, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(projectId), projectId);
             Argument.IsNotNull(nameof(imagePath), imagePath);
+            query ??= new QueryParameters();
 
             const string fieldName = "image";
 
@@ -141,30 +148,27 @@ namespace Equality.Services
                 { fieldName, content }
             };
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"projects/{projectId}/image", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"projects/{projectId}/image"), data);
 
             var project = Deserialize(response.Content["data"]);
 
             return new(project, response);
         }
 
-        public Task<ApiResponseMessage<TProjectModel>> DeleteImageAsync(TProjectModel project) => DeleteImageAsync(project.Id);
+        public Task<ApiResponseMessage> DeleteImageAsync(TProjectModel project) => DeleteImageAsync(project.Id);
 
-        public async Task<ApiResponseMessage<TProjectModel>> DeleteImageAsync(ulong projectId)
+        public async Task<ApiResponseMessage> DeleteImageAsync(ulong projectId)
         {
             Argument.IsNotNull(nameof(projectId), projectId);
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"projects/{projectId}/image");
-
-            var project = Deserialize(response.Content["data"]);
-
-            return new(project, response);
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"projects/{projectId}/image");
         }
 
-        public async Task<ApiResponseMessage<TProjectModel>> UpdateProjectAsync(TProjectModel project)
+        public async Task<ApiResponseMessage<TProjectModel>> UpdateProjectAsync(TProjectModel project, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(project), project);
             Argument.IsMinimal<ulong>("TProjectModel.Id", project.Id, 1);
+            query ??= new QueryParameters();
 
             Dictionary<string, object> data = new()
             {
@@ -172,7 +176,7 @@ namespace Equality.Services
                 { "description", project.Description },
             };
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync($"projects/{project.Id}", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync(query.Parse($"projects/{project.Id}"), data);
 
             project = Deserialize(response.Content["data"]);
 

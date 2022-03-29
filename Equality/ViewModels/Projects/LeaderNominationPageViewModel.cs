@@ -64,7 +64,13 @@ namespace Equality.ViewModels
             }
 
             try {
-                var response = await ProjectService.NominateUserAsync(StateManager.SelectedProject, teamMember);
+                var response = await ProjectService.NominateUserAsync(StateManager.SelectedProject, teamMember, new()
+                {
+                    Includes = new[]
+                    {
+                        "nominated", "voters", "voters_count",
+                    }
+                });
 
                 var result = response.Object;
                 ProcessNominations(result);
