@@ -56,10 +56,6 @@ namespace Equality.ViewModels
             } catch (UnauthorizedHttpException) {
                 Properties.Settings.Default.api_token = "";
                 Properties.Settings.Default.Save();
-            } catch (HttpRequestException e) {
-                if (!ExceptionHandler.HandleException(e)) {
-                    throw;
-                }
             }
 
             StateManager.ApiToken = null;

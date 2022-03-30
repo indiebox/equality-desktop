@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Windows;
 
 using Catel.IoC;
 using Catel.Services;
@@ -14,11 +13,11 @@ using Equality.ViewModels;
 
 namespace Equality.Data
 {
-    public static class ExceptionHandler
+    public static class HttpExceptionHandler
     {
         static INotificationService NotificationService;
 
-        static ExceptionHandler()
+        static HttpExceptionHandler()
         {
             NotificationService = ServiceLocator.Default.ResolveType<INotificationService>();
         }
@@ -27,6 +26,7 @@ namespace Equality.Data
         {
             var result = exception switch
             {
+                UnprocessableEntityHttpException => false,
                 UnauthorizedHttpException ex => HandleUnauthorizedException(ex),
                 ForbiddenHttpException ex => HandleForbiddenException(ex),
                 NotFoundHttpException ex => HandleNotFoundException(ex),
@@ -34,7 +34,9 @@ namespace Equality.Data
                 _ => HandleHttpRequestException(exception),
             };
 
-            Debug.WriteLine(exception.ToString());
+            if (result) {
+                Debug.WriteLine(exception.ToString());
+            }
 
             return result;
         }

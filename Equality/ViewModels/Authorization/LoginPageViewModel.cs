@@ -92,8 +92,6 @@ namespace Equality.ViewModels
                 HandleApiErrors(e.Errors);
 
                 CredentialsErrorMessage = ApiErrors.GetValueOrDefault("credentials", string.Empty);
-            } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
             }
 
             IsSendingRequest = false;

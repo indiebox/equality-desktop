@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 
 using Catel.IoC;
 using Catel.Logging;
@@ -22,8 +26,9 @@ namespace Equality
 #if DEBUG
             LogManager.AddDebugListener();
 #endif
-
             Log.Info("Starting application");
+
+            SetupExceptionHandling();
 
             // Want to improve performance? Uncomment the lines below. Note though that this will disable
             // some features. 
@@ -108,6 +113,27 @@ namespace Equality
             Log.Info("Calling base.OnStartup");
 
             base.OnStartup(e);
+        }
+
+        private void SetupExceptionHandling()
+        {
+            AppDomain.CurrentDomain.UnhandledException += (s, e) => HandleException((Exception)e.ExceptionObject);
+            Dispatcher.UnhandledException += (s, e) => e.Handled = HandleException(e.Exception);
+            TaskScheduler.UnobservedTaskException += (s, e) =>
+            {
+                if (HandleException(e.Exception)) {
+                    e.SetObserved();
+                }
+            };
+        }
+
+        bool HandleException(Exception ex)
+        {
+            if (ex is HttpRequestException e) {
+                return HttpExceptionHandler.HandleException(e);
+            }
+
+            return false;
         }
     }
 }

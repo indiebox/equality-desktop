@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Net.Http;
-using System.Diagnostics;
 
 using Catel.Collections;
 using Catel.MVVM;
@@ -56,7 +54,6 @@ namespace Equality.ViewModels
             FilterProjects = new Command<Team>(OnFilterProjectsExecute);
             ResetFilter = new Command(OnResetFilterExecute);
             OpenCreateProjectWindow = new TaskCommand<Team>(OnOpenCreateProjectWindowExecuteAsync);
-
         }
 
         #region Properties
@@ -170,20 +167,14 @@ namespace Equality.ViewModels
 
         protected async void LoadTeamsAsync()
         {
-            try {
-                var response = await TeamService.GetTeamsAsync();
-                Teams.AddRange(response.Object);
-                FilteredTeams.AddRange(Teams);
+            var response = await TeamService.GetTeamsAsync();
+            Teams.AddRange(response.Object);
+            FilteredTeams.AddRange(Teams);
 
-                foreach (var team in response.Object) {
-                    var responseProjects = await ProjectService.GetProjectsAsync(team);
+            foreach (var team in response.Object) {
+                var responseProjects = await ProjectService.GetProjectsAsync(team);
 
-                    team.Projects.AddRange(responseProjects.Object);
-                }
-            } catch (HttpRequestException e) {
-                if (!ExceptionHandler.HandleException(e)) {
-                    throw;
-                }
+                team.Projects.AddRange(responseProjects.Object);
             }
         }
 
