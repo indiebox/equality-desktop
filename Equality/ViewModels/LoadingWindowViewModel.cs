@@ -1,7 +1,8 @@
-﻿using System.Diagnostics;
-using System.Net.Http;
+﻿using System;
 using System.Threading.Tasks;
 
+using Catel.ExceptionHandling;
+using Catel.IoC;
 using Catel.Services;
 
 using Equality.Data;
@@ -56,6 +57,10 @@ namespace Equality.ViewModels
             } catch (UnauthorizedHttpException) {
                 Properties.Settings.Default.api_token = "";
                 Properties.Settings.Default.Save();
+            } catch (Exception e) {
+                var s = ServiceLocator.Default.ResolveType<IExceptionService>();
+                s.HandleException(e);
+                throw;
             }
 
             StateManager.ApiToken = null;

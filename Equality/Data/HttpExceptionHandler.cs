@@ -44,7 +44,7 @@ namespace Equality.Data
 
         #region Unauthorized
 
-        public static bool HandleUnauthorizedException(UnauthorizedHttpException exception)
+        private static bool HandleUnauthorizedException(UnauthorizedHttpException exception)
         {
             StateManager.ApiToken = null;
             StateManager.CurrentUser = null;
@@ -71,17 +71,23 @@ namespace Equality.Data
 
         #endregion
 
-        public static bool HandleForbiddenException(ForbiddenHttpException exception) => throw new NotImplementedException();
+        private static bool HandleForbiddenException(ForbiddenHttpException exception) => throw new NotImplementedException();
 
-        public static bool HandleNotFoundException(NotFoundHttpException exception) => throw new NotImplementedException();
+        private static bool HandleNotFoundException(NotFoundHttpException exception) => throw new NotImplementedException();
 
-        public static bool HandleTooManyRequestsException(TooManyRequestsHttpException exception) => throw new NotImplementedException();
+        private static bool HandleTooManyRequestsException(TooManyRequestsHttpException exception) => throw new NotImplementedException();
 
-        public static bool HandleHttpRequestException(HttpRequestException exception) => throw new NotImplementedException();
-
-        public static bool HandleServerErrorException(ServerErrorHttpException exception)
+        private static bool HandleServerErrorException(ServerErrorHttpException exception)
         {
             NotificationService.ShowError("Ошибка сервера.\nПожалуйста, попробуйте позже.");
+
+            return true;
+        }
+
+        private static bool HandleHttpRequestException(HttpRequestException exception)
+        {
+            Debug.WriteLine("tst");
+            NotificationService.ShowError($"Ошибка соединения:\n{exception.Message}");
 
             return true;
         }

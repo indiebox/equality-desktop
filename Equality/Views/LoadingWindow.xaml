@@ -2,16 +2,24 @@
                xmlns:catel="http://schemas.catelproject.com"
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
+               xmlns:notification="clr-namespace:Notification.Wpf.Controls;assembly=Notification.Wpf"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               xmlns:viewmodels="clr-namespace:Equality.ViewModels"
-               mc:Ignorable="d"
-               d:DataContext="{d:DesignInstance Type=viewmodels:LoadingWindowViewModel}"
                WindowStartupLocation="CenterScreen"
                ResizeMode="NoResize"
                Height="300"
-               Width="300">
+               Width="300"
+               d:DataContext="{d:DesignInstance Type=viewmodels:LoadingWindowViewModel}"
+               mc:Ignorable="d">
     <Grid>
+        <notification:NotificationArea x:Name="NotificationsContainer"
+                                       Grid.ColumnSpan="2"
+                                       Position="TopRight"
+                                       Panel.ZIndex="999"
+                                       d:Panel.ZIndex="-1"
+                                       Margin="5" />
+
         <TextBlock VerticalAlignment="Center"
                    HorizontalAlignment="Center">Экран загрузки...</TextBlock>
     </Grid>

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
+﻿using System.Windows;
 
 using Catel.IoC;
 using Catel.Logging;
 using Catel.MVVM;
 
 using Equality.Data;
-using Equality.Http;
 using Equality.Services;
 
 namespace Equality
@@ -27,8 +22,6 @@ namespace Equality
             LogManager.AddDebugListener();
 #endif
             Log.Info("Starting application");
-
-            SetupExceptionHandling();
 
             // Want to improve performance? Uncomment the lines below. Note though that this will disable
             // some features. 
@@ -70,6 +63,8 @@ namespace Equality
             serviceLocator.RegisterType<IProjectService, ProjectService>();
             serviceLocator.RegisterType<IBoardService, BoardService>();
             serviceLocator.RegisterType<IColumnService, ColumnService>();
+
+            serviceLocator.RegisterTypeAndInstantiate<ExceptionWatcher>();
 
             /*
             |--------------------------------------------------------------------------
@@ -113,27 +108,6 @@ namespace Equality
             Log.Info("Calling base.OnStartup");
 
             base.OnStartup(e);
-        }
-
-        private void SetupExceptionHandling()
-        {
-            AppDomain.CurrentDomain.UnhandledException += (s, e) => HandleException((Exception)e.ExceptionObject);
-            Dispatcher.UnhandledException += (s, e) => e.Handled = HandleException(e.Exception);
-            TaskScheduler.UnobservedTaskException += (s, e) =>
-            {
-                if (HandleException(e.Exception)) {
-                    e.SetObserved();
-                }
-            };
-        }
-
-        bool HandleException(Exception ex)
-        {
-            if (ex is HttpRequestException e) {
-                return HttpExceptionHandler.HandleException(e);
-            }
-
-            return false;
         }
     }
 }
