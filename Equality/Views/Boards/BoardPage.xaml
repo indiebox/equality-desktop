@@ -39,7 +39,9 @@
                         Margin="10" />
             </DockPanel>
             <StackPanel Orientation="Horizontal">
-                <ListBox ItemsSource="{Binding Columns}">
+                <ListBox x:Name="ListBoxColumns"
+                         ItemsSource="{Binding Columns}"
+                         Drop="ListBox_Drop">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel IsItemsHost="True" />
@@ -49,6 +51,7 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type models:Column}">
                             <controls:ColumnControl Column="{Binding}"
+                                                    Margin="20,0"
                                                     MouseMove="Card_MouseMove" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
