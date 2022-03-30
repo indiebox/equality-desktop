@@ -31,6 +31,7 @@ namespace Equality.Data
                 ForbiddenHttpException ex => HandleForbiddenException(ex),
                 NotFoundHttpException ex => HandleNotFoundException(ex),
                 TooManyRequestsHttpException ex => HandleTooManyRequestsException(ex),
+                ServerErrorHttpException ex => HandleServerErrorException(ex),
                 _ => HandleHttpRequestException(exception),
             };
 
@@ -78,6 +79,11 @@ namespace Equality.Data
 
         public static bool HandleHttpRequestException(HttpRequestException exception) => throw new NotImplementedException();
 
-        //public void HandleServerErrorException()
+        public static bool HandleServerErrorException(ServerErrorHttpException exception)
+        {
+            NotificationService.ShowError("Ошибка сервера.\nПожалуйста, попробуйте позже.");
+
+            return true;
+        }
     }
 }

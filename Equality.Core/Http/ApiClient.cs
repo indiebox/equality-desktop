@@ -270,6 +270,15 @@ namespace Equality.Http
                     throw new TooManyRequestsHttpException();
                 }
 
+                case HttpStatusCode.InternalServerError:
+                case HttpStatusCode.ServiceUnavailable: {
+                    if (responseData.TryGetValue("message", out JToken message)) {
+                        throw new ServerErrorHttpException(message.ToString());
+                    }
+
+                    throw new ServerErrorHttpException();
+                }
+
                 default:
                     break;
             }
