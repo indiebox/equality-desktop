@@ -8,6 +8,11 @@ namespace Equality.Http
     public interface IApiClient
     {
         /// <summary>
+        /// Gets or sets the HttpClient which perform requests.
+        /// </summary>
+        public HttpClient HttpClient { get; set; }
+
+        /// <summary>
         /// Set bearer token for all next requests.
         /// </summary>
         /// <param name="token">The api token.</param>
@@ -26,11 +31,6 @@ namespace Equality.Http
         /// </summary>
         /// <returns>Returns <see langword="this"/></returns>
         public ApiClient WithoutToken();
-
-        /// <summary>
-        /// Gets or sets the HttpClient which perform requests.
-        /// </summary>
-        public HttpClient HttpClient { get; set; }
 
         /// <inheritdoc cref="GetAsync(Uri)"/>
         public Task<ApiResponseMessage> GetAsync(string requestUri);

@@ -5,6 +5,7 @@ using Catel.Logging;
 using Catel.MVVM;
 
 using Equality.Data;
+using Equality.Http;
 using Equality.Services;
 
 namespace Equality

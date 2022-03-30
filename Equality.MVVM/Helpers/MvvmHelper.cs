@@ -67,6 +67,20 @@ namespace Equality.Helpers
         {
             var viewModel = CreateViewModel<TViewModel>(viewModelData);
 
+            return CreateViewWithViewModel(viewModel);
+        }
+
+        /// <summary>
+        /// Constructs the view with the specified view model.
+        /// First, this method tries to find view type for specified view model.
+        /// Second, this method construct view and link it to the specified view model.
+        /// </summary>
+        /// <typeparam name="TViewModel">View model.</typeparam>
+        /// <param name="viewModel">View model.</param>
+        /// <returns>The constructed view or null if it was not possible to construct the view.</returns>
+        public static FrameworkElement CreateViewWithViewModel<TViewModel>(TViewModel viewModel)
+            where TViewModel : IViewModel
+        {
             var viewLocator = ServiceLocator.Default.ResolveType<IViewLocator>();
             var view = viewLocator.ResolveView(typeof(TViewModel));
 

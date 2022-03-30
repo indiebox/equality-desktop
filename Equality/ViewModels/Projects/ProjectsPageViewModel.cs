@@ -181,7 +181,9 @@ namespace Equality.ViewModels
                     team.Projects.AddRange(responseProjects.Object);
                 }
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                if (!ExceptionHandler.HandleException(e)) {
+                    throw;
+                }
             }
         }
 
