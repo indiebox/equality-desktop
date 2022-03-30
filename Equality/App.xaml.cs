@@ -63,6 +63,7 @@ namespace Equality
             serviceLocator.RegisterType<IInviteService, InviteService>();
             serviceLocator.RegisterType<IProjectService, ProjectService>();
             serviceLocator.RegisterType<IBoardService, BoardService>();
+            serviceLocator.RegisterType<IColumnService, ColumnService>();
 
             /*
             |--------------------------------------------------------------------------
