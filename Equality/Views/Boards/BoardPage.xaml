@@ -19,6 +19,7 @@
            d:DataContext="{d:DesignInstance Type=vm:BoardPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
     <Grid>
+        <Canvas></Canvas>
         <StackPanel>
             <DockPanel LastChildFill="False">
                 <Button Grid.Column="0"
@@ -47,26 +48,8 @@
 
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type models:Column}">
-                            <materialDesign:Card Margin="20,0,0,0"
-                                                 Width="350">
-                                <StackPanel>
-                                    <TextBlock FontSize="24"
-                                               Margin="10"
-                                               Text="{Binding Name}" />
-                                    <Button Margin="10"
-                                            Style="{StaticResource MaterialDesignPaperButton}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <materialDesign:PackIcon Kind="Plus"
-                                                                     Width="20"
-                                                                     Height="20"
-                                                                     VerticalAlignment="Center"
-                                                                     Foreground="#FFF96840" />
-                                            <TextBlock FontSize="16"
-                                                       Foreground="#FFF96840">Добавить карточку</TextBlock>
-                                        </StackPanel>
-                                    </Button>
-                                </StackPanel>
-                            </materialDesign:Card>
+                            <controls:ColumnControl Column="{Binding}"
+                                                    MouseMove="Card_MouseMove" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

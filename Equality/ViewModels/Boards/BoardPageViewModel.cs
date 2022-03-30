@@ -2,12 +2,15 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 using Catel.Collections;
 using Catel.MVVM;
 
 using Catel.Services;
 
+using Equality.Controls;
 using Equality.Data;
 using Equality.Extensions;
 using Equality.Helpers;
@@ -62,7 +65,6 @@ namespace Equality.ViewModels
 
         #region Commands
 
-
         public TaskCommand OpenCreateColumnWindow { get; private set; }
 
         private async Task OnOpenCreateColumnWindowExecuteAsync()
@@ -81,6 +83,13 @@ namespace Equality.ViewModels
         #endregion
 
         #region Methods
+
+        private void Card_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (sender is ColumnControl column && e.LeftButton == MouseButtonState.Pressed) {
+
+            }
+        }
 
         protected async Task LoadColumnsAsync()
         {
