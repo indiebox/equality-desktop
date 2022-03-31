@@ -55,16 +55,18 @@ namespace Equality.ViewModels
 
                 return true;
             } catch (UnauthorizedHttpException) {
+                StateManager.ApiToken = null;
+
                 Properties.Settings.Default.api_token = "";
                 Properties.Settings.Default.Save();
             } catch (Exception e) {
+                StateManager.ApiToken = null;
+
                 // We handle any exception manually, because AppDomain.UnhandledException
                 // is not working here for some reason.
                 var s = ServiceLocator.Default.ResolveType<IExceptionService>();
                 s.HandleException(e);
                 throw;
-            } finally {
-                StateManager.ApiToken = null;
             }
 
             return true;

@@ -171,8 +171,8 @@ namespace Equality.ViewModels
             {
                 Fields = new[]
                 {
-                        new Field("teams", "id", "name", "description", "url", "logo")
-                    }
+                    new Field("teams", "id", "name", "description", "url", "logo")
+                }
             });
             Teams.AddRange(response.Object);
             FilteredTeams.AddRange(Teams);
@@ -182,8 +182,8 @@ namespace Equality.ViewModels
                 {
                     Fields = new[]
                     {
-                            new Field("projects", "id", "name", "description", "image")
-                        }
+                        new Field("projects", "id", "name", "description", "image")
+                    }
                 });
 
                 team.Projects.AddRange(responseProjects.Object);
