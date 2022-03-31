@@ -13,6 +13,7 @@ namespace Equality.Services
         /// <summary>
         /// Sends the request to get an authenticated user to the API.
         /// </summary>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -20,7 +21,7 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TUserModel>> LoadAuthUserAsync();
+        public Task<ApiResponseMessage<TUserModel>> LoadAuthUserAsync(QueryParameters query = null);
 
         /// <summary>
         /// Sends the login request to the API.

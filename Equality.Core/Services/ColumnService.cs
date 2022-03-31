@@ -13,7 +13,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Equality.Services
 {
-    public class ColumnServiceBase<TColumnModel, TBoardModel> : IColumnServiceBase<TColumnModel, TBoardModel>
+    public class ColumnServiceBase<TColumnModel, TBoardModel> : IColumnService<TColumnModel, TBoardModel>
         where TColumnModel : class, IColumn, new()
         where TBoardModel : class, IBoard, new()
     {
@@ -26,32 +26,36 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
-        public Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(IBoard board) => GetColumnsAsync(board.Id);
+        public Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(TBoardModel board, QueryParameters query = null)
+            => GetColumnsAsync(board.Id, query);
 
-        public async Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(ulong boardId)
+        public async Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(ulong boardId, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(boardId), boardId);
+            query ??= new QueryParameters();
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"boards/{boardId}/columns");
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"boards/{boardId}/columns"));
 
             var columns = DeserializeRange(response.Content["data"]);
 
             return new(columns, response);
         }
 
-        public Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(TBoardModel board, TColumnModel column) => CreateColumnAsync(board.Id, column);
+        public Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(TBoardModel board, TColumnModel column, QueryParameters query = null)
+            => CreateColumnAsync(board.Id, column, query);
 
-        public async Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(ulong boardId, TColumnModel column)
+        public async Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(ulong boardId, TColumnModel column, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(boardId), boardId);
             Argument.IsNotNull(nameof(column), column);
+            query ??= new QueryParameters();
 
             Dictionary<string, object> data = new()
             {
                 { "name", column.Name },
             };
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"boards/{boardId}/columns", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"boards/{boardId}/columns"), data);
 
             column = Deserialize(response.Content["data"]);
 

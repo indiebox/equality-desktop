@@ -6,7 +6,7 @@ using Equality.Models;
 
 namespace Equality.Services
 {
-    public interface IColumnService : IColumnServiceBase<Column, Board>
+    public interface IColumnService : IColumnService<Column, Board>
     {
     }
 }

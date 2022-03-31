@@ -12,6 +12,7 @@ using Equality.Data;
 
 using System.Net.Http;
 using System.Diagnostics;
+using Equality.Http;
 
 namespace Equality.ViewModels
 {
@@ -90,7 +91,13 @@ namespace Equality.ViewModels
         protected async Task LoadProjectsAsync()
         {
             try {
-                var response = await ProjectService.GetProjectsAsync(StateManager.SelectedTeam);
+                var response = await ProjectService.GetProjectsAsync(StateManager.SelectedTeam, new()
+                {
+                    Fields = new[]
+                    {
+                        new Field("projects", "id", "name", "description", "image")
+                    }
+                });
 
                 Projects.AddRange(response.Object);
             } catch (HttpRequestException e) {

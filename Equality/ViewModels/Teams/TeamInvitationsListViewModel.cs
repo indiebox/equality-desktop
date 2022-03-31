@@ -15,6 +15,7 @@ using Equality.Data;
 
 using MaterialDesignThemes.Wpf;
 using System;
+using Equality.Http;
 
 namespace Equality.ViewModels
 {
@@ -162,7 +163,13 @@ namespace Equality.ViewModels
         protected async Task LoadInvitesAsync()
         {
             try {
-                var response = await InviteService.GetTeamInvitesAsync(StateManager.SelectedTeam);
+                var response = await InviteService.GetTeamInvitesAsync(StateManager.SelectedTeam, new()
+                {
+                    Fields = new[]
+                    {
+                        new Field("invites", "id", "status", "accepted_at", "declined_at", "created_at")
+                    }
+                });
 
                 Invites.AddRange(response.Object);
             } catch (HttpRequestException e) {

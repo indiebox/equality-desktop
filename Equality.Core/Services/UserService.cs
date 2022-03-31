@@ -28,9 +28,11 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
-        public async Task<ApiResponseMessage<TUserModel>> LoadAuthUserAsync()
+        public async Task<ApiResponseMessage<TUserModel>> LoadAuthUserAsync(QueryParameters query = null)
         {
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync("user");
+            query ??= new QueryParameters();
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse("user"));
 
             var user = Deserialize(response.Content["data"]);
 

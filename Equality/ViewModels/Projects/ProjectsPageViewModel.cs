@@ -13,6 +13,7 @@ using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
 using Equality.Data;
+using Equality.Http;
 
 namespace Equality.ViewModels
 {
@@ -143,7 +144,6 @@ namespace Equality.ViewModels
             if (e.Result ?? false) {
                 Teams.Add(CreateTeamVm.Team);
 
-
                 if (!IsFiltered) {
                     FilteredTeams.Add(CreateTeamVm.Team);
                 }
@@ -171,12 +171,25 @@ namespace Equality.ViewModels
         protected async void LoadTeamsAsync()
         {
             try {
-                var response = await TeamService.GetTeamsAsync();
+                var response = await TeamService.GetTeamsAsync(new()
+                {
+                    Fields = new[]
+                    {
+                        new Field("teams", "id", "name", "description", "url", "logo")
+                    }
+                });
+
                 Teams.AddRange(response.Object);
                 FilteredTeams.AddRange(Teams);
 
                 foreach (var team in response.Object) {
-                    var responseProjects = await ProjectService.GetProjectsAsync(team);
+                    var responseProjects = await ProjectService.GetProjectsAsync(team, new()
+                    {
+                        Fields = new[]
+                        {
+                            new Field("projects", "id", "name", "description", "image")
+                        }
+                    });
 
                     team.Projects.AddRange(responseProjects.Object);
                 }

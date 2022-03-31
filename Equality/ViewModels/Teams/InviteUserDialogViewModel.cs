@@ -61,7 +61,13 @@ namespace Equality.ViewModels
             }
 
             try {
-                var response = await InviteService.InviteUserAsync(StateManager.SelectedTeam, Email);
+                var response = await InviteService.InviteUserAsync(StateManager.SelectedTeam, Email, new()
+                {
+                    Fields = new[]
+                    {
+                        new Field("invites", "id", "status", "accepted_at", "declined_at", "created_at")
+                    }
+                });
 
                 Invite.SyncWith(response.Object);
 

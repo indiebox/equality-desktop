@@ -49,7 +49,13 @@ namespace Equality.ViewModels
             }
 
             try {
-                var response = await TeamService.CreateAsync(Team);
+                var response = await TeamService.CreateAsync(Team, new()
+                {
+                    Fields = new[]
+                    {
+                        new Field("teams", "id", "name", "description", "url", "logo")
+                    }
+                });
                 Team.SyncWith(response.Object);
 
                 await SaveViewModelAsync();
