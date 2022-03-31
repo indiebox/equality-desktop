@@ -55,6 +55,7 @@ namespace Equality
 
             var serviceLocator = ServiceLocator.Default;
 
+            serviceLocator.RegisterTypeAndInstantiate<ExceptionHandler>();
             serviceLocator.RegisterType<ITokenResolverService, TokenResolver>();
             serviceLocator.RegisterType<INotificationService, NotificationService>();
             serviceLocator.RegisterType<IUserService, UserService>();
@@ -63,8 +64,6 @@ namespace Equality
             serviceLocator.RegisterType<IProjectService, ProjectService>();
             serviceLocator.RegisterType<IBoardService, BoardService>();
             serviceLocator.RegisterType<IColumnService, ColumnService>();
-
-            serviceLocator.RegisterTypeAndInstantiate<ExceptionWatcher>();
 
             /*
             |--------------------------------------------------------------------------

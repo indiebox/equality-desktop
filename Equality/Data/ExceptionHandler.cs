@@ -17,24 +17,37 @@ using Equality.ViewModels;
 
 namespace Equality.Data
 {
-    public class ExceptionWatcher
+    public class ExceptionHandler
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-        private readonly IExceptionService _exceptionService;
+        private static readonly IExceptionService _exceptionService;
 
         private readonly INotificationService _notificationService;
 
-        public ExceptionWatcher(IExceptionService exceptionService, INotificationService notificationService)
+        static ExceptionHandler()
         {
-            Argument.IsNotNull(nameof(exceptionService), exceptionService);
+            _exceptionService = ServiceLocator.Default.ResolveType<IExceptionService>();
+        }
+
+        public ExceptionHandler(INotificationService notificationService)
+        {
             Argument.IsNotNull(nameof(notificationService), notificationService);
 
-            _exceptionService = exceptionService;
             _notificationService = notificationService;
 
             RegisterHandlers();
             SubscribeEvents();
+        }
+
+        /// <summary>
+        /// Handle the exception.
+        /// </summary>
+        /// <param name="e">The exception.</param>
+        /// <returns>Returns <see langword="true"/> if exception is handler, <see langword="false"/> otherwise.</returns>
+        public static bool Handle(Exception e)
+        {
+            return _exceptionService.HandleException(e);
         }
 
         private void RegisterHandlers()
@@ -137,6 +150,20 @@ namespace Equality.Data
             var dispatcher = App.Current.Dispatcher;
             if (dispatcher != null) {
                 dispatcher.UnhandledException += OnDispatcherUnhandledException;
+            }
+
+            TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
+        }
+
+        private void OnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs args)
+        {
+            var exception = args.Exception;
+            if (exception != null) {
+                Log.Error(exception, "TaskScheduler.UnobservedTaskException occurred");
+
+                if (_exceptionService.HandleException(exception.InnerException)) {
+                    args.SetObserved();
+                }
             }
         }
 

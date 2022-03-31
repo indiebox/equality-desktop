@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using Catel.ExceptionHandling;
-using Catel.IoC;
 using Catel.Services;
 
 using Equality.Data;
@@ -30,15 +28,19 @@ namespace Equality.ViewModels
         {
             string apiToken = Properties.Settings.Default.api_token;
 
-            bool result = await IsValidToken(apiToken);
+            try {
+                bool result = await IsValidToken(apiToken);
 
-            if (result) {
-                OpenMainPage();
-            } else {
-                OpenAuthorizationPage();
+                if (result) {
+                    OpenMainPage();
+                } else {
+                    OpenAuthorizationPage();
+                }
+
+                await CloseViewModelAsync(true);
+            } catch (Exception e) {
+                ExceptionHandler.Handle(e);
             }
-
-            await CloseViewModelAsync(true);
         }
 
         protected async Task<bool> IsValidToken(string token)
@@ -59,17 +61,13 @@ namespace Equality.ViewModels
 
                 Properties.Settings.Default.api_token = "";
                 Properties.Settings.Default.Save();
-            } catch (Exception e) {
+
+                return false;
+            } catch {
                 StateManager.ApiToken = null;
 
-                // We handle any exception manually, because AppDomain.UnhandledException
-                // is not working here for some reason.
-                var s = ServiceLocator.Default.ResolveType<IExceptionService>();
-                s.HandleException(e);
                 throw;
             }
-
-            return true;
         }
 
         protected void OpenMainPage()
@@ -91,7 +89,7 @@ namespace Equality.ViewModels
 
         protected override async Task CloseAsync()
         {
-            // TODO: Add uninitialization logic like unsubscribing from events
+            // TODO: unsubscribe from events here
 
             await base.CloseAsync();
         }
