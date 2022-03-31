@@ -10,6 +10,9 @@ using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
 using Equality.Data;
+using Catel.IoC;
+using Catel.Services;
+using Equality.Extensions;
 
 namespace Equality.ViewModels
 {
@@ -119,6 +122,13 @@ namespace Equality.ViewModels
             await base.InitializeAsync();
 
             await LoadInvitesAsync();
+
+            // for testing purposes:
+            var teams = await ServiceLocator.Default.ResolveType<ITeamService>().GetTeamsAsync();
+            var projects = await ServiceLocator.Default.ResolveType<IProjectService>().GetProjectsAsync(teams.Object[0]);
+            var boards = await ServiceLocator.Default.ResolveType<IBoardService>().GetBoardsAsync(projects.Object[0]);
+            StateManager.SelectedBoard = boards.Object[0];
+            ServiceLocator.Default.ResolveType<INavigationService>().Navigate<BoardPageViewModel, ApplicationWindowViewModel>();
         }
 
         protected override async Task CloseAsync()
