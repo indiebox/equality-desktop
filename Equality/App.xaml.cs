@@ -55,9 +55,10 @@ namespace Equality
 
             var serviceLocator = ServiceLocator.Default;
 
-            serviceLocator.RegisterTypeAndInstantiate<ExceptionHandler>();
             serviceLocator.RegisterType<ITokenResolverService, TokenResolver>();
             serviceLocator.RegisterType<INotificationService, NotificationService>();
+            serviceLocator.RegisterTypeAndInstantiate<ExceptionHandler>();
+
             serviceLocator.RegisterType<IUserService, UserService>();
             serviceLocator.RegisterType<ITeamService, TeamService>();
             serviceLocator.RegisterType<IInviteService, InviteService>();

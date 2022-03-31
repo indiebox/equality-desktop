@@ -12,6 +12,7 @@ using Equality.Models;
 using Equality.Services;
 using Equality.Data;
 using Equality.Http;
+using System.Net.Http;
 
 namespace Equality.ViewModels
 {
@@ -167,26 +168,30 @@ namespace Equality.ViewModels
 
         protected async void LoadTeamsAsync()
         {
-            var response = await TeamService.GetTeamsAsync(new()
-            {
-                Fields = new[]
+            try {
+                var response = await TeamService.GetTeamsAsync(new()
+                {
+                    Fields = new[]
                 {
                     new Field("teams", "id", "name", "description", "url", "logo")
                 }
-            });
-            Teams.AddRange(response.Object);
-            FilteredTeams.AddRange(Teams);
+                });
+                Teams.AddRange(response.Object);
+                FilteredTeams.AddRange(Teams);
 
-            foreach (var team in response.Object) {
-                var responseProjects = await ProjectService.GetProjectsAsync(team, new()
-                {
-                    Fields = new[]
+                foreach (var team in response.Object) {
+                    var responseProjects = await ProjectService.GetProjectsAsync(team, new()
                     {
+                        Fields = new[]
+                        {
                         new Field("projects", "id", "name", "description", "image")
                     }
-                });
+                    });
 
-                team.Projects.AddRange(responseProjects.Object);
+                    team.Projects.AddRange(responseProjects.Object);
+                }
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
             }
         }
 

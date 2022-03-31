@@ -79,7 +79,7 @@ namespace Equality.ViewModels
 
                 MvvmHelper.GetFirstInstanceOfViewModel<ProjectPageViewModel>().Leader = result.First(nomination => nomination.IsLeader).Nominated;
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 
@@ -103,7 +103,7 @@ namespace Equality.ViewModels
 
                 NominatedMembers.AddRange(result);
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 

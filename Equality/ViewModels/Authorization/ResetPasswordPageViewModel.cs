@@ -11,6 +11,7 @@ using Equality.Http;
 using Equality.Validation;
 using Equality.MVVM;
 using Equality.Services;
+using Equality.Data;
 
 namespace Equality.ViewModels
 {
@@ -94,7 +95,7 @@ namespace Equality.ViewModels
                     ErrorMessage = errors["email"][0];
                 }
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
 
             IsSendingRequest = false;
@@ -117,7 +118,7 @@ namespace Equality.ViewModels
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
 
             IsSendingRequest = false;
