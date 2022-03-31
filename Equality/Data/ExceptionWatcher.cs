@@ -9,6 +9,7 @@ using Catel.IoC;
 using Catel.Logging;
 using Catel.Services;
 
+using Equality.Converters;
 using Equality.Helpers;
 using Equality.Http;
 using Equality.Services;
@@ -90,7 +91,7 @@ namespace Equality.Data
 
         private void HandleForbiddenException(ForbiddenHttpException exception)
         {
-            _notificationService.ShowError("Ошибка доступа.");
+            _notificationService.ShowError("Ошибка доступа.", TimeSpan.FromSeconds(5));
         }
 
         private void HandleNotFoundException(NotFoundHttpException exception)
@@ -98,11 +99,21 @@ namespace Equality.Data
             if (exception.Message == string.Empty) {
                 _notificationService.ShowError($"Запрашиваемой страницы не существует ({exception.Url}).");
             } else {
-                _notificationService.ShowError("Запись не найдена.");
+                _notificationService.ShowError("Запись не найдена.", TimeSpan.FromSeconds(5));
             }
         }
 
-        private void HandleTooManyRequestsException(TooManyRequestsHttpException exception) => throw new NotImplementedException();
+        private void HandleTooManyRequestsException(TooManyRequestsHttpException exception)
+        {
+            var converter = new PluralizeConverter()
+            {
+                One = "секунда",
+                Two = "секунды",
+                Five = "секунд",
+            };
+            var seconds = (string)converter.Convert(exception.RetryAfter.Value.Seconds, null, null, System.Globalization.CultureInfo.CurrentCulture);
+            _notificationService.ShowError($"Достигнут лимит запросов. Повторите через {seconds}.", TimeSpan.FromSeconds(5));
+        }
 
         private void HandleServerErrorException(ServerErrorHttpException exception)
         {
