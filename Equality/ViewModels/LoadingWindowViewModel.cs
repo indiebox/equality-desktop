@@ -58,14 +58,16 @@ namespace Equality.ViewModels
                 Properties.Settings.Default.api_token = "";
                 Properties.Settings.Default.Save();
             } catch (Exception e) {
+                // We handle any exception manually, because AppDomain.UnhandledException
+                // is not working here for some reason.
                 var s = ServiceLocator.Default.ResolveType<IExceptionService>();
                 s.HandleException(e);
                 throw;
+            } finally {
+                StateManager.ApiToken = null;
             }
 
-            StateManager.ApiToken = null;
-
-            return false;
+            return true;
         }
 
         protected void OpenMainPage()
