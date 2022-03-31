@@ -1,10 +1,18 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Threading;
 
 using Catel;
 using Catel.ExceptionHandling;
+using Catel.IoC;
 using Catel.Logging;
+using Catel.Services;
+
+using Equality.Helpers;
+using Equality.Http;
+using Equality.Services;
+using Equality.ViewModels;
 
 namespace Equality.Data
 {
@@ -14,11 +22,14 @@ namespace Equality.Data
 
         private readonly IExceptionService _exceptionService;
 
-        public ExceptionWatcher(IExceptionService exceptionService)
+        private readonly INotificationService _notificationService;
+
+        public ExceptionWatcher(IExceptionService exceptionService, INotificationService notificationService)
         {
             Argument.IsNotNull(() => exceptionService);
 
             _exceptionService = exceptionService;
+            _notificationService = notificationService;
 
             RegisterHandlers();
             SubscribeEvents();
@@ -26,13 +37,65 @@ namespace Equality.Data
 
         private void RegisterHandlers()
         {
-            _exceptionService.Register<HttpRequestException>(async exception =>
+            _exceptionService.Register<UnprocessableEntityHttpException>(e =>
             {
-                if (!HttpExceptionHandler.HandleException(exception)) {
-                    throw exception;
-                }
+                throw e;
             });
+
+            _exceptionService.Register<UnauthorizedHttpException>(HandleUnauthorizedException);
+            _exceptionService.Register<ForbiddenHttpException>(HandleForbiddenException);
+            _exceptionService.Register<NotFoundHttpException>(HandleNotFoundException);
+            _exceptionService.Register<TooManyRequestsHttpException>(HandleTooManyRequestsException);
+            _exceptionService.Register<ServerErrorHttpException>(HandleServerErrorException);
+            _exceptionService.Register<HttpRequestException>(HandleHttpRequestException);
         }
+
+        #region HttpExceptions
+
+        #region Unauthorized
+
+        private void HandleUnauthorizedException(UnauthorizedHttpException exception)
+        {
+            StateManager.ApiToken = null;
+            StateManager.CurrentUser = null;
+
+            Properties.Settings.Default.api_token = "";
+            Properties.Settings.Default.Save();
+
+            var vm = MvvmHelper.CreateViewModel<AuthorizationWindowViewModel>();
+            vm.InitializedAsync += AuthorizationWindowVmInitializedAsync;
+            ServiceLocator.Default.ResolveType<IUIVisualizerService>().ShowAsync(vm);
+        }
+
+        private Task AuthorizationWindowVmInitializedAsync(object sender, EventArgs e)
+        {
+            var vm = (AuthorizationWindowViewModel)sender;
+            vm.InitializedAsync -= AuthorizationWindowVmInitializedAsync;
+
+            _notificationService.ShowError("Ошибка авторизации.\nПожалуйста, выполните повторый вход.");
+
+            return Task.CompletedTask;
+        }
+
+        #endregion
+
+        private void HandleForbiddenException(ForbiddenHttpException exception) => throw new NotImplementedException();
+
+        private void HandleNotFoundException(NotFoundHttpException exception) => throw new NotImplementedException();
+
+        private void HandleTooManyRequestsException(TooManyRequestsHttpException exception) => throw new NotImplementedException();
+
+        private void HandleServerErrorException(ServerErrorHttpException exception)
+        {
+            _notificationService.ShowError("Ошибка сервера.\nПожалуйста, попробуйте позже.");
+        }
+
+        private void HandleHttpRequestException(HttpRequestException exception)
+        {
+            _notificationService.ShowError($"Ошибка соединения:\n{exception.Message}");
+        }
+
+        #endregion
 
         #region Subscribe to events
 

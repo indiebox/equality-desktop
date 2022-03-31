@@ -92,9 +92,9 @@ namespace Equality.ViewModels
                 HandleApiErrors(e.Errors);
 
                 CredentialsErrorMessage = ApiErrors.GetValueOrDefault("credentials", string.Empty);
+            } finally {
+                IsSendingRequest = false;
             }
-
-            IsSendingRequest = false;
         }
 
         public TaskCommand OpenRegisterWindow { get; private set; }
