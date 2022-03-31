@@ -1,11 +1,7 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
+﻿using System.Windows.Input;
 
 using Equality.Controls;
-using Equality.Models;
+using Equality.ViewModels;
 
 namespace Equality.Views
 {
@@ -14,69 +10,58 @@ namespace Equality.Views
         public BoardPage()
         {
             InitializeComponent();
+
+            DataContextChanged += BoardPage_DataContextChanged;
         }
+
+        private void BoardPage_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+        {
+            Vm = (BoardPageViewModel)DataContext;
+        }
+
+        BoardPageViewModel Vm { get; set; }
+
+        bool IsDragging => DragColumn != null;
 
         ColumnControl DragColumn { get; set; }
 
-        private void Card_MouseMove(object sender, MouseEventArgs e)
+        private void ColumnControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            ObservableCollection<Column> Columns = ((ObservableCollection<Column>)ListBoxColumns.ItemsSource);
-            if (sender is ColumnControl column && e.LeftButton == MouseButtonState.Pressed) {
-
-                if (DragColumn == null) {
-
-                    Debug.WriteLine("DO");
-                    DragColumn = column;
-                    Brush brush = new SolidColorBrush(Colors.Black);
-                    column.BorderBrush = brush;
-                    column.Column.Name = "AAAAAAAAAAAAAAAAAAAAAA";
-                    //column.BorderThickness = new Thickness(10);
-                    //Columns.Remove(column.Column);
-                } else if (DragColumn != null && DragColumn != sender) {
-
-                    //Debug.WriteLine("Drag");
-                    //int dragIndex = Columns.IndexOf(DragColumn.Column);
-                    //int senderIndex = Columns.IndexOf(column.Column);
-                    //if (dragIndex < senderIndex) {
-                    //    Columns.Insert(senderIndex + 1, DragColumn.Column);
-                    //    try {
-                    //        Columns.RemoveAt(dragIndex);
-                    //    } catch { }
-                    //} else {
-                    //    int dragIdx = dragIndex + 1;
-                    //    if (Columns.Count + 1 > dragIdx) {
-                    //        Columns.Insert(senderIndex + 1, DragColumn.Column);
-                    //        try {
-                    //            Columns.RemoveAt(dragIdx);
-                    //        } catch { }
-                    //    }
-                    //}
-                }
+            if (IsDragging || e.LeftButton != MouseButtonState.Pressed) {
+                return;
             }
+
+            DragColumn = ParseControl(sender);
+            DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
         }
 
-        private void ListBox_Drop(object sender, MouseEventArgs e)
+        private void ColumnControl_MouseEnter(object sender, MouseEventArgs e)
         {
+            if (!IsDragging) {
+                return;
+            }
+
+            var column = ParseControl(sender).Column;
+
+            int oldIndex = Vm.Columns.IndexOf(column);
+            int dragColumnIndex = Vm.Columns.IndexOf(DragColumn.Column);
+
+            Vm.Columns.Move(oldIndex, dragColumnIndex);
+        }
+
+        private ColumnControl ParseControl(object sender)
+        {
+            return sender as ColumnControl;
+        }
+
+        private void Page_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (!IsDragging) {
+                return;
+            }
+
+            DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
             DragColumn = null;
-            //DragColumn.SetCurrentValue(OpacityProperty, 1.0);
-            //Column droppedData = e.Data.GetData(typeof(Column)) as Column;
-            //Column target = ((ColumnControl)(sender)).DataContext as Column;
-
-            //int removedIdx = ListBoxColumns.Items.IndexOf(droppedData);
-            //int targetIdx = ListBoxColumns.Items.IndexOf(target);
-
-            //if (removedIdx < targetIdx) {
-            //    ListBoxColumns.Items.Insert(targetIdx + 1, droppedData);
-            //    ListBoxColumns.Items.Remove(removedIdx);
-            //    //((ObservableCollection<Column>)ListBoxColumns.InputBindings).Insert(targetIdx + 1, droppedData);
-            //    //_empList.RemoveAt(removedIdx);
-            //} else {
-            //    int remIdx = removedIdx + 1;
-            //    if (ListBoxColumns.Items.Count + 1 > remIdx) {
-            //        ListBoxColumns.Items.Insert(targetIdx, droppedData);
-            //        ListBoxColumns.Items.RemoveAt(remIdx);
-            //    }
-            //}
         }
     }
 }

@@ -14,16 +14,17 @@
            TextElement.Foreground="{DynamicResource MaterialDesignBody}"
            Background="{DynamicResource MaterialDesignPaper}"
            FontSize="16"
+           MouseUp="Page_MouseUp"
            d:DesignHeight="1080"
            d:DesignWidth="1920"
            d:DataContext="{d:DesignInstance Type=vm:BoardPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
     <Grid>
-        <Canvas>
+        <!--<Canvas>
             <controls:ColumnControl Column="{Binding}"
                                     Margin="20,0"
                                     MouseMove="Card_MouseMove" />
-        </Canvas>
+        </Canvas>-->
         <StackPanel>
             <DockPanel LastChildFill="False">
                 <Button Grid.Column="0"
@@ -44,8 +45,7 @@
             </DockPanel>
             <StackPanel Orientation="Horizontal">
                 <ListBox x:Name="ListBoxColumns"
-                         ItemsSource="{Binding Columns}"
-                         MouseUp="ListBox_Drop">
+                         ItemsSource="{Binding Columns}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel IsItemsHost="True" />
@@ -56,7 +56,8 @@
                         <DataTemplate DataType="{x:Type models:Column}">
                             <controls:ColumnControl Column="{Binding}"
                                                     Margin="20,0"
-                                                    MouseMove="Card_MouseMove" />
+                                                    MouseEnter="ColumnControl_MouseEnter"
+                                                    MouseDown="ColumnControl_MouseDown" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

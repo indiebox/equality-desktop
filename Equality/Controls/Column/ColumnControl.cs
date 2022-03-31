@@ -19,5 +19,13 @@ namespace Equality.Controls
         }
         public static readonly DependencyProperty ColumnProperty =
           DependencyProperty.Register(nameof(Column), typeof(Column), typeof(ColumnControl), new PropertyMetadata(null));
+
+        public bool IsDragging
+        {
+            get => (bool)GetValue(IsDraggingProperty);
+            set => SetValue(IsDraggingProperty, value);
+        }
+        public static readonly DependencyProperty IsDraggingProperty =
+          DependencyProperty.Register(nameof(IsDragging), typeof(bool), typeof(ColumnControl), new PropertyMetadata(false));
     }
 }
