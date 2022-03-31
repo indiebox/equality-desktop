@@ -223,6 +223,14 @@ namespace Equality.Http
         protected void HandleStatusCode(HttpResponseMessage response, JObject responseData)
         {
             switch (response.StatusCode) {
+                case HttpStatusCode.BadRequest: {
+                    if (responseData.TryGetValue("message", out JToken message)) {
+                        throw new BadRequestHttpException(message.ToString());
+                    }
+
+                    throw new BadRequestHttpException();
+                }
+
                 case HttpStatusCode.Unauthorized: {
                     if (responseData.TryGetValue("message", out JToken message)) {
                         throw new UnauthorizedHttpException(message.ToString());

@@ -42,6 +42,7 @@ namespace Equality.Data
                 throw e;
             });
 
+            _exceptionService.Register<BadRequestHttpException>(HandleBadRequestException);
             _exceptionService.Register<UnauthorizedHttpException>(HandleUnauthorizedException);
             _exceptionService.Register<ForbiddenHttpException>(HandleForbiddenException);
             _exceptionService.Register<NotFoundHttpException>(HandleNotFoundException);
@@ -51,6 +52,13 @@ namespace Equality.Data
         }
 
         #region HttpExceptions
+
+        private void HandleBadRequestException(BadRequestHttpException exception)
+        {
+            Log.Error(exception.Message);
+
+            _notificationService.ShowError("Ошибка запроса. Пожалуйста, свяжитесь с разработчиками.");
+        }
 
         #region Unauthorized
 
@@ -79,7 +87,10 @@ namespace Equality.Data
 
         #endregion
 
-        private void HandleForbiddenException(ForbiddenHttpException exception) => throw new NotImplementedException();
+        private void HandleForbiddenException(ForbiddenHttpException exception)
+        {
+            _notificationService.ShowError("Ошибка доступа.");
+        }
 
         private void HandleNotFoundException(NotFoundHttpException exception) => throw new NotImplementedException();
 
