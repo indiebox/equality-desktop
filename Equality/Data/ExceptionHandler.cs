@@ -47,6 +47,8 @@ namespace Equality.Data
         /// <returns>Returns <see langword="true"/> if exception is handler, <see langword="false"/> otherwise.</returns>
         public static bool Handle(Exception e)
         {
+            Log.Error(e);
+
             return _exceptionService.HandleException(e);
         }
 
