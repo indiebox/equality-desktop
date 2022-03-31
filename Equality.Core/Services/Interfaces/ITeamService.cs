@@ -14,6 +14,7 @@ namespace Equality.Services
         /// <summary>
         /// Sends the get current user teams request to the API.
         /// </summary>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -21,12 +22,13 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TTeamModel[]>> GetTeamsAsync();
+        public Task<ApiResponseMessage<TTeamModel[]>> GetTeamsAsync(QueryParameters query = null);
 
         /// <summary>
         /// Sends the create team request to the API.
         /// </summary>
         /// <param name="team">The team.</param>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -34,12 +36,13 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TTeamModel>> CreateAsync(TTeamModel team);
+        public Task<ApiResponseMessage<TTeamModel>> CreateAsync(TTeamModel team, QueryParameters query = null);
 
         /// <summary>
         /// Sends the get members request to the API.
         /// </summary>
         /// <param name="team">The team.</param>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -47,11 +50,12 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(TTeamModel team);
+        public Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(TTeamModel team, QueryParameters query = null);
 
-        /// <inheritdoc cref="GetMembersAsync(TTeamModel)"/>
+        /// <inheritdoc cref="GetMembersAsync(TTeamModel, QueryParameters)"/>
         /// <param name="teamId">The team id.</param>
-        public Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(ulong teamId);
+        /// <param name="query">The query parameters.</param>
+        public Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(ulong teamId, QueryParameters query = null);
 
         /// <summary>
         /// Sends the leave team request to the API.
@@ -75,6 +79,7 @@ namespace Equality.Services
         /// </summary>
         /// <param name="team">The team.</param>
         /// <param name="imagePath">The path to image file.</param>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -82,12 +87,13 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(TTeamModel team, string imagePath);
+        public Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(TTeamModel team, string imagePath, QueryParameters query = null);
 
-        /// <inheritdoc cref="SetLogoAsync(TTeamModel, string)"/>
+        /// <inheritdoc cref="SetLogoAsync(TTeamModel, string, QueryParameters)"/>
         /// <param name="teamId">The team id.</param>
         /// <param name="imagePath">The path to image file.</param>
-        public Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(ulong teamId, string imagePath);
+        /// <param name="query">The query parameters.</param>
+        public Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(ulong teamId, string imagePath, QueryParameters query = null);
 
         /// <summary>
         /// Sends the delete logo request to the API.
@@ -100,16 +106,17 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TTeamModel>> DeleteLogoAsync(TTeamModel team);
+        public Task<ApiResponseMessage> DeleteLogoAsync(TTeamModel team);
 
         /// <inheritdoc cref="DeleteLogoAsync(TTeamModel)"/>
         /// <param name="teamId">The team id.</param>
-        public Task<ApiResponseMessage<TTeamModel>> DeleteLogoAsync(ulong teamId);
+        public Task<ApiResponseMessage> DeleteLogoAsync(ulong teamId);
 
         /// <summary>
         /// Sends the update team request to the API.
         /// </summary>
         /// <param name="team">The team.</param>
+        /// <param name="query">The query parameters.</param>
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
@@ -117,6 +124,6 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TTeamModel>> UpdateTeamAsync(TTeamModel team);
+        public Task<ApiResponseMessage<TTeamModel>> UpdateTeamAsync(TTeamModel team, QueryParameters query = null);
     }
 }

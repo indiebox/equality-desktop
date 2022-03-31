@@ -82,7 +82,13 @@ namespace Equality.ViewModels
                     Name = Name,
                     Description = Description,
                 };
-                var result = await ProjectService.UpdateProjectAsync(project);
+                var result = await ProjectService.UpdateProjectAsync(project, new()
+                {
+                    Fields = new[]
+                    {
+                        new Field("projects", "id", "name", "description", "image")
+                    }
+                });
 
                 Project.SyncWith(result.Object);
             } catch (UnprocessableEntityHttpException e) {
@@ -112,7 +118,7 @@ namespace Equality.ViewModels
             try {
                 var result = await ProjectService.SetImageAsync(Project, selectedFile.FileName);
 
-                Project.SyncWith(result.Object);
+                Project.Image = result.Object.Image;
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
@@ -125,7 +131,7 @@ namespace Equality.ViewModels
             try {
                 var result = await ProjectService.DeleteImageAsync(Project);
 
-                Project.SyncWith(result.Object);
+                Project.Image = null;
             } catch (HttpRequestException e) {
                 Debug.WriteLine(e.ToString());
             }
