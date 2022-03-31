@@ -18,6 +18,7 @@
                                        Position="TopRight"
                                        Panel.ZIndex="999"
                                        d:Panel.ZIndex="-1"
+                                       Focusable="False"
                                        Margin="5" />
 
         <TextBlock VerticalAlignment="Center"

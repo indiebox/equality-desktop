@@ -26,6 +26,7 @@
                                        Position="TopRight"
                                        Panel.ZIndex="999"
                                        d:Panel.ZIndex="-1"
+                                       Focusable="False"
                                        Margin="20" />
 
         <Frame Grid.Row="0"
