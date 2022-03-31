@@ -5,16 +5,21 @@ namespace Equality.Http
 {
     public class NotFoundHttpException : HttpRequestException
     {
-        public NotFoundHttpException()
+        public NotFoundHttpException(string url)
         {
+            Url = url;
         }
 
-        public NotFoundHttpException(string message) : base(message)
+        public NotFoundHttpException(string url, string message) : base(message)
         {
+            Url = url;
         }
 
-        public NotFoundHttpException(string message, Exception inner) : base(message, inner)
+        public NotFoundHttpException(string url, string message, Exception inner) : base(message, inner)
         {
+            Url = url;
         }
+
+        public string Url { get; protected set; }
     }
 }

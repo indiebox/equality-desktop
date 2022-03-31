@@ -264,10 +264,10 @@ namespace Equality.Http
 
                 case HttpStatusCode.NotFound: {
                     if (responseData.TryGetValue("message", out JToken message)) {
-                        throw new NotFoundHttpException(message.ToString());
+                        throw new NotFoundHttpException(response.RequestMessage.RequestUri.GetLeftPart(UriPartial.Path), message.ToString());
                     }
 
-                    throw new NotFoundHttpException();
+                    throw new NotFoundHttpException(response.RequestMessage.RequestUri.GetLeftPart(UriPartial.Path));
                 }
 
                 case HttpStatusCode.TooManyRequests: {

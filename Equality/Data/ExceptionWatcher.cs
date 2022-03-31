@@ -26,7 +26,8 @@ namespace Equality.Data
 
         public ExceptionWatcher(IExceptionService exceptionService, INotificationService notificationService)
         {
-            Argument.IsNotNull(() => exceptionService);
+            Argument.IsNotNull(nameof(exceptionService), exceptionService);
+            Argument.IsNotNull(nameof(notificationService), notificationService);
 
             _exceptionService = exceptionService;
             _notificationService = notificationService;
@@ -92,7 +93,14 @@ namespace Equality.Data
             _notificationService.ShowError("Ошибка доступа.");
         }
 
-        private void HandleNotFoundException(NotFoundHttpException exception) => throw new NotImplementedException();
+        private void HandleNotFoundException(NotFoundHttpException exception)
+        {
+            if (exception.Message == string.Empty) {
+                _notificationService.ShowError($"Запрашиваемой страницы не существует ({exception.Url}).");
+            } else {
+                _notificationService.ShowError("Запись не найдена.");
+            }
+        }
 
         private void HandleTooManyRequestsException(TooManyRequestsHttpException exception) => throw new NotImplementedException();
 
