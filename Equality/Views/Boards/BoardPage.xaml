@@ -19,7 +19,11 @@
            d:DataContext="{d:DesignInstance Type=vm:BoardPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
     <Grid>
-        <Canvas></Canvas>
+        <Canvas>
+            <controls:ColumnControl Column="{Binding}"
+                                    Margin="20,0"
+                                    MouseMove="Card_MouseMove" />
+        </Canvas>
         <StackPanel>
             <DockPanel LastChildFill="False">
                 <Button Grid.Column="0"
@@ -41,7 +45,7 @@
             <StackPanel Orientation="Horizontal">
                 <ListBox x:Name="ListBoxColumns"
                          ItemsSource="{Binding Columns}"
-                         Drop="ListBox_Drop">
+                         MouseUp="ListBox_Drop">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel IsItemsHost="True" />
