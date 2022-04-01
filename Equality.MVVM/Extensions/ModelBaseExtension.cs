@@ -11,7 +11,8 @@ namespace Equality.Extensions
         /// </summary>
         /// <param name="this">The model to be synchronized.</param>
         /// <param name="source">The source model.</param>
-        public static void SyncWith<TSource>(this ModelBase @this, TSource source)
+        public static void SyncWith<TModelBase>(this TModelBase @this, TModelBase source)
+            where TModelBase : ModelBase
         {
             var sourceProps = source.GetType().GetProperties().Where(x => x.CanRead).ToList();
             var destProps = @this.GetType().GetProperties()

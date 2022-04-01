@@ -33,7 +33,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ulong teamId, QueryParameters query = null)
         {
-            Argument.IsNotNull(nameof(teamId), teamId);
+            Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
             query ??= new QueryParameters();
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"teams/{teamId}/invites"));
@@ -59,7 +59,8 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(ulong teamId, string email, QueryParameters query = null)
         {
-            Argument.IsNotNull(nameof(teamId), teamId);
+            Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
+            Argument.IsNotNullOrWhitespace(nameof(email), email);
             query ??= new QueryParameters();
 
             Dictionary<string, object> data = new()
@@ -78,7 +79,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage> RevokeInviteAsync(ulong inviteId)
         {
-            Argument.IsNotNull(nameof(inviteId), inviteId);
+            Argument.IsMinimal<ulong>(nameof(inviteId), inviteId, 1);
 
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"invites/{inviteId}");
         }
@@ -87,7 +88,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage> AcceptInviteAsync(ulong inviteId)
         {
-            Argument.IsNotNull(nameof(inviteId), inviteId);
+            Argument.IsMinimal<ulong>(nameof(inviteId), inviteId, 1);
 
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"invites/{inviteId}/accept");
         }
@@ -96,7 +97,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage> DeclineInviteAsync(ulong inviteId)
         {
-            Argument.IsNotNull(nameof(inviteId), inviteId);
+            Argument.IsMinimal<ulong>(nameof(inviteId), inviteId, 1);
 
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"invites/{inviteId}/decline");
         }

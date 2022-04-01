@@ -17,8 +17,9 @@ namespace Equality.Models
         public DateTime UpdatedAt { get; set; }
     }
 
-    public interface IProject<TTeamModel> : IProject
+    public interface IProject<TTeam> : IProject
+        where TTeam : class, ITeam, new()
     {
-        public TTeamModel Team { get; set; }
+        public TTeam Team { get; set; }
     }
 }

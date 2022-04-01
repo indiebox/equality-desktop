@@ -31,7 +31,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(ulong boardId, QueryParameters query = null)
         {
-            Argument.IsNotNull(nameof(boardId), boardId);
+            Argument.IsMinimal<ulong>(nameof(boardId), boardId, 1);
             query ??= new QueryParameters();
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"boards/{boardId}/columns"));
@@ -46,7 +46,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(ulong boardId, TColumnModel column, QueryParameters query = null)
         {
-            Argument.IsNotNull(nameof(boardId), boardId);
+            Argument.IsMinimal<ulong>(nameof(boardId), boardId, 1);
             Argument.IsNotNull(nameof(column), column);
             query ??= new QueryParameters();
 

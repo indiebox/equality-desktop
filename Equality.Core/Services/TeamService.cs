@@ -67,7 +67,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(ulong teamId, QueryParameters query = null)
         {
-            Argument.IsNotNull(nameof(teamId), teamId);
+            Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
             query ??= new QueryParameters();
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"teams/{teamId}/members"));
@@ -81,7 +81,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage> LeaveTeamAsync(ulong teamId)
         {
-            Argument.IsNotNull(nameof(teamId), teamId);
+            Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
 
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/leave");
         }
@@ -91,7 +91,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(ulong teamId, string imagePath, QueryParameters query = null)
         {
-            Argument.IsNotNull(nameof(teamId), teamId);
+            Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
             Argument.IsNotNull(nameof(imagePath), imagePath);
             query ??= new QueryParameters();
 
@@ -131,7 +131,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage> DeleteLogoAsync(ulong teamId)
         {
-            Argument.IsNotNull(nameof(teamId), teamId);
+            Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
 
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"teams/{teamId}/logo");
         }
@@ -139,7 +139,7 @@ namespace Equality.Services
         public async Task<ApiResponseMessage<TTeamModel>> UpdateTeamAsync(TTeamModel team, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(team), team);
-            Argument.IsMinimal<ulong>("Team.Id", team.Id, 1);
+            Argument.IsMinimal<ulong>("team.Id", team.Id, 1);
             query ??= new QueryParameters();
 
             Dictionary<string, object> data = new()
