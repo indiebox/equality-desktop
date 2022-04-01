@@ -16,5 +16,9 @@ namespace Equality.Http
         public TooManyRequestsHttpException(string message, Exception inner) : base(message, inner)
         {
         }
+
+        public TimeSpan? RetryAfter { get; set; }
+
+        public int Limit { get; set; }
     }
 }

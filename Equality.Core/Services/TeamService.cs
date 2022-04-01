@@ -32,18 +32,21 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
-        public async Task<ApiResponseMessage<TTeamModel[]>> GetTeamsAsync()
+        public async Task<ApiResponseMessage<TTeamModel[]>> GetTeamsAsync(QueryParameters query = null)
         {
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync("teams");
+            query ??= new QueryParameters();
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse("teams"));
 
             var teams = DeserializeRange(response.Content["data"]);
 
             return new(teams, response);
         }
 
-        public async Task<ApiResponseMessage<TTeamModel>> CreateAsync(TTeamModel team)
+        public async Task<ApiResponseMessage<TTeamModel>> CreateAsync(TTeamModel team, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(team), team);
+            query ??= new QueryParameters();
 
             Dictionary<string, object> data = new()
             {
@@ -52,20 +55,22 @@ namespace Equality.Services
                 { "url", team.Url }
             };
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync("teams", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse("teams"), data);
 
             team = Deserialize(response.Content["data"]);
 
             return new(team, response);
         }
 
-        public Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(TTeamModel team) => GetMembersAsync(team.Id);
+        public Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(TTeamModel team, QueryParameters query = null)
+            => GetMembersAsync(team.Id, query);
 
-        public async Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(ulong teamId)
+        public async Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(ulong teamId, QueryParameters query = null)
         {
-            Argument.IsNotNull(nameof(teamId), teamId);
+            Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
+            query ??= new QueryParameters();
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync($"teams/{teamId}/members");
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"teams/{teamId}/members"));
 
             var members = DeserializeMembers(response.Content["data"]);
 
@@ -76,17 +81,19 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage> LeaveTeamAsync(ulong teamId)
         {
-            Argument.IsNotNull(nameof(teamId), teamId);
+            Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
 
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/leave");
         }
 
-        public Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(TTeamModel team, string imagePath) => SetLogoAsync(team.Id, imagePath);
+        public Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(TTeamModel team, string imagePath, QueryParameters query = null)
+            => SetLogoAsync(team.Id, imagePath, query);
 
-        public async Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(ulong teamId, string imagePath)
+        public async Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(ulong teamId, string imagePath, QueryParameters query = null)
         {
-            Argument.IsNotNull(nameof(teamId), teamId);
+            Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
             Argument.IsNotNull(nameof(imagePath), imagePath);
+            query ??= new QueryParameters();
 
             const string fieldName = "logo";
 
@@ -113,30 +120,27 @@ namespace Equality.Services
                 { fieldName, content }
             };
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/logo", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"teams/{teamId}/logo"), data);
 
             var team = Deserialize(response.Content["data"]);
 
             return new(team, response);
         }
 
-        public Task<ApiResponseMessage<TTeamModel>> DeleteLogoAsync(TTeamModel team) => DeleteLogoAsync(team.Id);
+        public Task<ApiResponseMessage> DeleteLogoAsync(TTeamModel team) => DeleteLogoAsync(team.Id);
 
-        public async Task<ApiResponseMessage<TTeamModel>> DeleteLogoAsync(ulong teamId)
+        public async Task<ApiResponseMessage> DeleteLogoAsync(ulong teamId)
         {
-            Argument.IsNotNull(nameof(teamId), teamId);
+            Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"teams/{teamId}/logo");
-
-            var team = Deserialize(response.Content["data"]);
-
-            return new(team, response);
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"teams/{teamId}/logo");
         }
 
-        public async Task<ApiResponseMessage<TTeamModel>> UpdateTeamAsync(TTeamModel team)
+        public async Task<ApiResponseMessage<TTeamModel>> UpdateTeamAsync(TTeamModel team, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(team), team);
-            Argument.IsMinimal<ulong>("Team.Id", team.Id, 1);
+            Argument.IsMinimal<ulong>("team.Id", team.Id, 1);
+            query ??= new QueryParameters();
 
             Dictionary<string, object> data = new()
             {
@@ -145,7 +149,7 @@ namespace Equality.Services
                 { "url", team.Url }
             };
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync($"teams/{team.Id}", data);
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync(query.Parse($"teams/{team.Id}"), data);
 
             team = Deserialize(response.Content["data"]);
 

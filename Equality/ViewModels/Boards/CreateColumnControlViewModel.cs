@@ -61,7 +61,7 @@ namespace Equality.ViewModels
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 

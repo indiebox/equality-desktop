@@ -14,6 +14,7 @@ namespace Equality.Models
     }
 
     public interface IColumn<TBoard> : IColumn
+        where TBoard : class, IBoard, new()
     {
         public TBoard Board { get; set; }
     }

@@ -213,10 +213,7 @@
         </Resource>
     </ItemGroup>
     <ItemGroup>
-      <Page Update="Controls\Column\ColumnControl.xaml">
-        <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      </Page>
-      <Page Update="Views\Projects\CreateColumnControl.xaml">
+      <Page Update="Views\Boards\CreateColumnControl.xaml">
         <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       </Page>
     </ItemGroup>

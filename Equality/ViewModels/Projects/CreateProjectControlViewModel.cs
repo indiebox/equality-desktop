@@ -70,7 +70,13 @@ namespace Equality.ViewModels
             }
 
             try {
-                var response = await ProjectService.CreateProjectAsync(Team, Project);
+                var response = await ProjectService.CreateProjectAsync(Team, Project, new()
+                {
+                    Fields = new[]
+                    {
+                        new Field("projects", "id", "name", "description", "image")
+                    }
+                });
                 Project.SyncWith(response.Object);
 
                 await SaveViewModelAsync();
@@ -78,7 +84,7 @@ namespace Equality.ViewModels
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 

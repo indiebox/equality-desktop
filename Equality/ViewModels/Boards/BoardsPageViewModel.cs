@@ -136,6 +136,8 @@ namespace Equality.ViewModels
                 CancelEditBoardName.Execute();
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
             }
         }
 
@@ -163,7 +165,7 @@ namespace Equality.ViewModels
                 Boards.AddRange(response.Object);
 
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 

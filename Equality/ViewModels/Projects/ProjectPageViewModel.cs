@@ -67,7 +67,7 @@ namespace Equality.ViewModels
 
                 Leader = response.Object;
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 

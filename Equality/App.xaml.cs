@@ -21,7 +21,6 @@ namespace Equality
 #if DEBUG
             LogManager.AddDebugListener();
 #endif
-
             Log.Info("Starting application");
 
             // Want to improve performance? Uncomment the lines below. Note though that this will disable
@@ -58,6 +57,8 @@ namespace Equality
 
             serviceLocator.RegisterType<ITokenResolverService, TokenResolver>();
             serviceLocator.RegisterType<INotificationService, NotificationService>();
+            serviceLocator.RegisterTypeAndInstantiate<ExceptionHandler>();
+
             serviceLocator.RegisterType<IUserService, UserService>();
             serviceLocator.RegisterType<ITeamService, TeamService>();
             serviceLocator.RegisterType<IInviteService, InviteService>();

@@ -83,7 +83,7 @@ namespace Equality.ViewModels
 
                 Invites.Remove(invite);
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 
@@ -96,7 +96,7 @@ namespace Equality.ViewModels
 
                 Invites.Remove(invite);
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 
@@ -111,7 +111,7 @@ namespace Equality.ViewModels
 
                 Invites.AddRange(response.Object);
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 

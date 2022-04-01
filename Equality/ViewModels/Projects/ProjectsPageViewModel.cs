@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Net.Http;
-using System.Diagnostics;
 
 using Catel.Collections;
 using Catel.MVVM;
@@ -13,6 +11,8 @@ using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
 using Equality.Data;
+using Equality.Http;
+using System.Net.Http;
 
 namespace Equality.ViewModels
 {
@@ -142,7 +142,6 @@ namespace Equality.ViewModels
             if (e.Result ?? false) {
                 Teams.Add(CreateTeamVm.Team);
 
-
                 if (!IsFiltered) {
                     FilteredTeams.Add(CreateTeamVm.Team);
                 }
@@ -170,17 +169,29 @@ namespace Equality.ViewModels
         protected async void LoadTeamsAsync()
         {
             try {
-                var response = await TeamService.GetTeamsAsync();
+                var response = await TeamService.GetTeamsAsync(new()
+                {
+                    Fields = new[]
+                {
+                    new Field("teams", "id", "name", "description", "url", "logo")
+                }
+                });
                 Teams.AddRange(response.Object);
                 FilteredTeams.AddRange(Teams);
 
                 foreach (var team in response.Object) {
-                    var responseProjects = await ProjectService.GetProjectsAsync(team);
+                    var responseProjects = await ProjectService.GetProjectsAsync(team, new()
+                    {
+                        Fields = new[]
+                        {
+                        new Field("projects", "id", "name", "description", "image")
+                    }
+                    });
 
                     team.Projects.AddRange(responseProjects.Object);
                 }
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 

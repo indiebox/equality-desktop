@@ -25,6 +25,8 @@ namespace Equality.Models
     }
 
     public interface IInvite<TTeam, TUser> : IInvite
+        where TTeam : class, ITeam, new()
+        where TUser : class, IUser, new()
     {
         public TTeam Team { get; set; }
 

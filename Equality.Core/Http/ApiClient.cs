@@ -223,6 +223,14 @@ namespace Equality.Http
         protected void HandleStatusCode(HttpResponseMessage response, JObject responseData)
         {
             switch (response.StatusCode) {
+                case HttpStatusCode.BadRequest: {
+                    if (responseData.TryGetValue("message", out JToken message)) {
+                        throw new BadRequestHttpException(message.ToString());
+                    }
+
+                    throw new BadRequestHttpException();
+                }
+
                 case HttpStatusCode.Unauthorized: {
                     if (responseData.TryGetValue("message", out JToken message)) {
                         throw new UnauthorizedHttpException(message.ToString());
@@ -256,18 +264,51 @@ namespace Equality.Http
 
                 case HttpStatusCode.NotFound: {
                     if (responseData.TryGetValue("message", out JToken message)) {
-                        throw new NotFoundHttpException(message.ToString());
+                        throw new NotFoundHttpException(message.ToString())
+                        {
+                            Url = response.RequestMessage.RequestUri.GetLeftPart(UriPartial.Path)
+                        };
                     }
 
-                    throw new NotFoundHttpException();
+                    throw new NotFoundHttpException()
+                    {
+                        Url = response.RequestMessage.RequestUri.GetLeftPart(UriPartial.Path)
+                    };
                 }
 
                 case HttpStatusCode.TooManyRequests: {
-                    if (responseData.TryGetValue("message", out JToken message)) {
-                        throw new TooManyRequestsHttpException(message.ToString());
+                    var retryAfter = response.Headers.RetryAfter.Delta;
+                    int limit = 0;
+
+                    if (response.Headers.TryGetValues("X-RateLimit-Limit", out IEnumerable<string> values)) {
+                        var enumerator = values.GetEnumerator();
+                        if (enumerator.MoveNext()) {
+                            int.TryParse(enumerator.Current, out limit);
+                        }
                     }
 
-                    throw new TooManyRequestsHttpException();
+                    if (responseData.TryGetValue("message", out JToken message)) {
+                        throw new TooManyRequestsHttpException(message.ToString())
+                        {
+                            RetryAfter = retryAfter,
+                            Limit = limit,
+                        };
+                    }
+
+                    throw new TooManyRequestsHttpException()
+                    {
+                        RetryAfter = retryAfter,
+                        Limit = limit,
+                    };
+                }
+
+                case HttpStatusCode.InternalServerError:
+                case HttpStatusCode.ServiceUnavailable: {
+                    if (responseData.TryGetValue("message", out JToken message)) {
+                        throw new ServerErrorHttpException(message.ToString());
+                    }
+
+                    throw new ServerErrorHttpException();
                 }
 
                 default:

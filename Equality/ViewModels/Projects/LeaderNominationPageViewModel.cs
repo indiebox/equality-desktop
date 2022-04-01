@@ -64,7 +64,13 @@ namespace Equality.ViewModels
             }
 
             try {
-                var response = await ProjectService.NominateUserAsync(StateManager.SelectedProject, teamMember);
+                var response = await ProjectService.NominateUserAsync(StateManager.SelectedProject, teamMember, new()
+                {
+                    Includes = new[]
+                    {
+                        "nominated", "voters", "voters_count",
+                    }
+                });
 
                 var result = response.Object;
                 ProcessNominations(result);
@@ -73,7 +79,7 @@ namespace Equality.ViewModels
 
                 MvvmHelper.GetFirstInstanceOfViewModel<ProjectPageViewModel>().Leader = result.First(nomination => nomination.IsLeader).Nominated;
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 
@@ -84,14 +90,20 @@ namespace Equality.ViewModels
         protected async Task LoadLeaderNominationsAsync()
         {
             try {
-                var response = await ProjectService.GetNominatedUsersAsync(StateManager.SelectedProject);
+                var response = await ProjectService.GetNominatedUsersAsync(StateManager.SelectedProject, new()
+                {
+                    Includes = new[]
+                    {
+                        "nominated", "voters", "voters_count",
+                    }
+                });
 
                 var result = response.Object;
                 ProcessNominations(result);
 
                 NominatedMembers.AddRange(result);
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 

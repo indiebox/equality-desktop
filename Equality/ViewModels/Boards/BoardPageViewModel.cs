@@ -99,7 +99,7 @@ namespace Equality.ViewModels
                 Columns.AddRange(response.Object);
 
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 
