@@ -36,7 +36,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ulong teamId, QueryParameters query = null)
         {
-            Argument.IsNotNull(nameof(teamId), teamId);
+            Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
             query ??= new QueryParameters();
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"teams/{teamId}/projects"));
@@ -51,7 +51,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(ulong projectId, QueryParameters query = null)
         {
-            Argument.IsNotNull(nameof(projectId), projectId);
+            Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
             query ??= new QueryParameters();
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"projects/{projectId}/leader-nominations"));
@@ -66,8 +66,8 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(ulong projectId, ulong userId, QueryParameters query = null)
         {
-            Argument.IsNotNull(nameof(projectId), projectId);
-            Argument.IsNotNull(nameof(userId), userId);
+            Argument.IsMinimal<ulong>(nameof(projectId), projectId, 1);
+            Argument.IsMinimal<ulong>(nameof(userId), userId, 1);
             query ??= new QueryParameters();
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"projects/{projectId}/leader-nominations/{userId}"));
@@ -82,7 +82,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(ulong projectId, QueryParameters query = null)
         {
-            Argument.IsNotNull(nameof(projectId), projectId);
+            Argument.IsMinimal<ulong>(nameof(projectId), projectId, 1);
             query ??= new QueryParameters();
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"projects/{projectId}/leader"));
@@ -97,7 +97,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ulong teamId, TProjectModel project, QueryParameters query = null)
         {
-            Argument.IsNotNull(nameof(teamId), teamId);
+            Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
             Argument.IsNotNull(nameof(project), project);
             query ??= new QueryParameters();
 
@@ -119,7 +119,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage<TProjectModel>> SetImageAsync(ulong projectId, string imagePath, QueryParameters query = null)
         {
-            Argument.IsNotNull(nameof(projectId), projectId);
+            Argument.IsMinimal<ulong>(nameof(projectId), projectId, 1);
             Argument.IsNotNull(nameof(imagePath), imagePath);
             query ??= new QueryParameters();
 
@@ -159,7 +159,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage> DeleteImageAsync(ulong projectId)
         {
-            Argument.IsNotNull(nameof(projectId), projectId);
+            Argument.IsMinimal<ulong>(nameof(projectId), projectId, 1);
 
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"projects/{projectId}/image");
         }
@@ -167,7 +167,7 @@ namespace Equality.Services
         public async Task<ApiResponseMessage<TProjectModel>> UpdateProjectAsync(TProjectModel project, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(project), project);
-            Argument.IsMinimal<ulong>("TProjectModel.Id", project.Id, 1);
+            Argument.IsMinimal<ulong>("project.Id", project.Id, 1);
             query ??= new QueryParameters();
 
             Dictionary<string, object> data = new()
