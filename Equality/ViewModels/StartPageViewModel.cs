@@ -10,6 +10,9 @@ using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
 using Equality.Data;
+using Catel.IoC;
+using Catel.Services;
+using Equality.Extensions;
 
 namespace Equality.ViewModels
 {

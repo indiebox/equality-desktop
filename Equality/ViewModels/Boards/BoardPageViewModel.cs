@@ -2,12 +2,15 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 using Catel.Collections;
 using Catel.MVVM;
 
 using Catel.Services;
 
+using Equality.Controls;
 using Equality.Data;
 using Equality.Extensions;
 using Equality.Helpers;
@@ -61,7 +64,6 @@ namespace Equality.ViewModels
         #endregion
 
         #region Commands
-
 
         public TaskCommand OpenCreateColumnWindow { get; private set; }
 
