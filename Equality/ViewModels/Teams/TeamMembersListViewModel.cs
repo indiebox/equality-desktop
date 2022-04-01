@@ -101,7 +101,7 @@ namespace Equality.ViewModels
 
                 FilterMembers();
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 
@@ -115,7 +115,7 @@ namespace Equality.ViewModels
                 var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
                 vm.ActiveTab = ApplicationWindowViewModel.Tab.Main;
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 

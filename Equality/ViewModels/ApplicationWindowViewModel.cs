@@ -78,7 +78,7 @@ namespace Equality.ViewModels
 
                 await UIVisualizerService.ShowAsync<AuthorizationWindowViewModel>();
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 

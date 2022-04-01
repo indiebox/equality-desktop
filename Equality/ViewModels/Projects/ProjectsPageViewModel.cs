@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Net.Http;
-using System.Diagnostics;
 
 using Catel.Collections;
 using Catel.MVVM;
@@ -14,6 +12,7 @@ using Equality.Models;
 using Equality.Services;
 using Equality.Data;
 using Equality.Http;
+using System.Net.Http;
 
 namespace Equality.ViewModels
 {
@@ -57,7 +56,6 @@ namespace Equality.ViewModels
             FilterProjects = new Command<Team>(OnFilterProjectsExecute);
             ResetFilter = new Command(OnResetFilterExecute);
             OpenCreateProjectWindow = new TaskCommand<Team>(OnOpenCreateProjectWindowExecuteAsync);
-
         }
 
         #region Properties
@@ -174,11 +172,10 @@ namespace Equality.ViewModels
                 var response = await TeamService.GetTeamsAsync(new()
                 {
                     Fields = new[]
-                    {
-                        new Field("teams", "id", "name", "description", "url", "logo")
-                    }
+                {
+                    new Field("teams", "id", "name", "description", "url", "logo")
+                }
                 });
-
                 Teams.AddRange(response.Object);
                 FilteredTeams.AddRange(Teams);
 
@@ -187,14 +184,14 @@ namespace Equality.ViewModels
                     {
                         Fields = new[]
                         {
-                            new Field("projects", "id", "name", "description", "image")
-                        }
+                        new Field("projects", "id", "name", "description", "image")
+                    }
                     });
 
                     team.Projects.AddRange(responseProjects.Object);
                 }
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 

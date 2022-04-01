@@ -99,7 +99,7 @@ namespace Equality.ViewModels
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 
@@ -125,7 +125,7 @@ namespace Equality.ViewModels
 
                 Team.Logo = result.Object.Logo;
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 
@@ -138,7 +138,7 @@ namespace Equality.ViewModels
 
                 Team.Logo = null;
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 

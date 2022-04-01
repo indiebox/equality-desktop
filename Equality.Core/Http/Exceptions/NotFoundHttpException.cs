@@ -16,5 +16,7 @@ namespace Equality.Http
         public NotFoundHttpException(string message, Exception inner) : base(message, inner)
         {
         }
+
+        public string Url { get; set; }
     }
 }

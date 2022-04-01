@@ -101,7 +101,7 @@ namespace Equality.ViewModels
 
                 Projects.AddRange(response.Object);
             } catch (HttpRequestException e) {
-                Debug.WriteLine(e.ToString());
+                ExceptionHandler.Handle(e);
             }
         }
 
