@@ -84,13 +84,6 @@ namespace Equality.ViewModels
 
         #region Methods
 
-        private void Card_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (sender is ColumnControl column && e.LeftButton == MouseButtonState.Pressed) {
-
-            }
-        }
-
         protected async Task LoadColumnsAsync()
         {
             try {
