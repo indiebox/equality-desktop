@@ -21,7 +21,7 @@ namespace Equality.Models
     }
 
     public interface ITeam<TProjectsCollection> : ITeam
-        where TProjectsCollection : class, IEnumerable<IProject>
+        where TProjectsCollection : class, IEnumerable<IProject>, new()
     {
         public TProjectsCollection Projects { get; set; }
     }

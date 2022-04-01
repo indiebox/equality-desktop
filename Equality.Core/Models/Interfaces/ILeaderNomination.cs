@@ -9,10 +9,11 @@ namespace Equality.Models
         public int VotersCount { get; set; }
     }
 
-    public interface ILeaderNomination<TTeamModel, TTeamMembersCollection> : ILeaderNomination
-        where TTeamMembersCollection : class, IEnumerable<ITeamMember>
+    public interface ILeaderNomination<TTeamMemberModel, TTeamMembersCollection> : ILeaderNomination
+        where TTeamMemberModel : class, ITeamMember, new()
+        where TTeamMembersCollection : class, IEnumerable<TTeamMemberModel>, new()
     {
-        public TTeamModel Nominated { get; set; }
+        public TTeamMemberModel Nominated { get; set; }
 
         public TTeamMembersCollection Voters { get; set; }
     }

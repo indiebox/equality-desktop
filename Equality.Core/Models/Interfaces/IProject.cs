@@ -18,6 +18,7 @@ namespace Equality.Models
     }
 
     public interface IProject<TTeamModel> : IProject
+        where TTeamModel : class, ITeam, new()
     {
         public TTeamModel Team { get; set; }
     }
