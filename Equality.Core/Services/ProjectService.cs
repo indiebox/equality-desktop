@@ -51,7 +51,7 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(ulong projectId, QueryParameters query = null)
         {
-            Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
+            Argument.IsMinimal<ulong>(nameof(projectId), projectId, 1);
             query ??= new QueryParameters();
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"projects/{projectId}/leader-nominations"));
