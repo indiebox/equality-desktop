@@ -21,8 +21,9 @@
            mc:Ignorable="d">
 
     <Canvas>
-        <!--<controls:ColumnControl Margin="20,0"
-                                Column="{Binding ElementName=BoardPage, Path=DragColumn}" />-->
+        <controls:ColumnControl Margin="20,0"
+                                Column="{Binding DragColumn.Column}"
+                                Visibility="{Binding DragColumn, Converter={catel:ReferenceToCollapsingVisibilityConverter}, ConverterParameter=DragColumn}" />
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

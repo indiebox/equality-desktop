@@ -61,6 +61,8 @@ namespace Equality.ViewModels
 
         public CreateColumnControlViewModel CreateColumnVm { get; set; }
 
+        public ColumnControl DragColumn { get; set; }
+
         #endregion
 
         #region Commands

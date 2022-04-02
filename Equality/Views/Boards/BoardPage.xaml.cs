@@ -32,7 +32,9 @@ namespace Equality.Views
             }
 
             DragColumn = ParseControl(sender);
+            Vm.DragColumn = ParseControl(sender);
             DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
+            Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
         }
 
         private void ColumnControl_MouseEnter(object sender, MouseEventArgs e)
@@ -62,6 +64,8 @@ namespace Equality.Views
 
             DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
             DragColumn = null;
+            Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
+            Vm.DragColumn = null;
         }
     }
 }
