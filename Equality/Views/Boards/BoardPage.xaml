@@ -70,9 +70,29 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type models:Column}">
                         <controls:ColumnControl Column="{Binding}"
+                                                CreateCardCommand="{Binding DataContext.OpenCreateCardWindow, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                 Margin="20,0"
                                                 MouseEnter="ColumnControl_MouseEnter"
-                                                MouseDown="ColumnControl_MouseDown" />
+                                                MouseDown="ColumnControl_MouseDown">
+                            <controls:ColumnControl.Style>
+                                <Style TargetType="{x:Type controls:ColumnControl}"
+                                       BasedOn="{StaticResource {x:Type controls:ColumnControl}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Value="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                                    <Binding Path="." />
+                                                    <Binding Path="DataContext.ColumnForNewCard"
+                                                             RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="CreateCardVm"
+                                                    Value="{Binding DataContext.CreateCardVm, RelativeSource={RelativeSource AncestorType=mvvm:Page}}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </controls:ColumnControl.Style>
+                        </controls:ColumnControl>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

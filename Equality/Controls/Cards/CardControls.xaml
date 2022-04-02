@@ -7,7 +7,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:CardControl}">
                     <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth1">
-                        <TextBlock FontSize="24"
+                        <TextBlock FontSize="14"
                                    TextWrapping="Wrap"
                                    Margin="10"
                                    Text="{Binding Path=Card.Name, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
