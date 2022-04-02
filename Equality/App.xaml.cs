@@ -65,6 +65,7 @@ namespace Equality
             serviceLocator.RegisterType<IProjectService, ProjectService>();
             serviceLocator.RegisterType<IBoardService, BoardService>();
             serviceLocator.RegisterType<IColumnService, ColumnService>();
+            serviceLocator.RegisterType<ICardService, CardService>();
 
             /*
             |--------------------------------------------------------------------------
