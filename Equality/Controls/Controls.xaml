@@ -5,6 +5,8 @@
         <ResourceDictionary Source="TeamLogo/TeamLogo.xaml" />
         <ResourceDictionary Source="ProjectImage/ProjectImage.xaml" />
         <ResourceDictionary Source="ProjectCard/ProjectCard.xaml" />
+
+        <ResourceDictionary Source="Cards/CardControls.xaml" />
         <ResourceDictionary Source="Column/ColumnControl.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

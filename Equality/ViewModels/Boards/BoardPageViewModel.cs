@@ -1,16 +1,13 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using System.Collections;
+using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
 
 using Catel.Collections;
 using Catel.MVVM;
 
 using Catel.Services;
 
-using Equality.Controls;
 using Equality.Data;
 using Equality.Extensions;
 using Equality.Helpers;
@@ -29,8 +26,25 @@ namespace Equality.ViewModels
             HandleDesignMode(() =>
             {
                 Columns.AddRange(new Column[] {
-                    new Column() { Name = "Column1" },
-                    new Column() { Name = "Column2" },
+                    new Column()
+                    {
+                        Name = "Column1",
+                        Cards = new()
+                        {
+                            new Card() { Name = "Card 1" },
+                            new Card() { Name = "Card with very long name. Should wrap the text." },
+                        }
+                    },
+                    new Column()
+                    {
+                        Name = "Column2",
+                        Cards = new()
+                        {
+                            new Card() { Name = "Card 1" },
+                            new Card() { Name = "Card 2" },
+                            new Card() { Name = "Card 3" },
+                        }
+                    },
                 });
             });
 
@@ -38,14 +52,17 @@ namespace Equality.ViewModels
 
         #endregion
 
-        INavigationService NavigationService { get; set; }
+        protected INavigationService NavigationService { get; set; }
 
-        IColumnService ColumnService { get; set; }
+        protected IColumnService ColumnService { get; set; }
 
-        public BoardPageViewModel(INavigationService navigationService, IColumnService columnService)
+        protected ICardService CardService { get; set; }
+
+        public BoardPageViewModel(INavigationService navigationService, IColumnService columnService, ICardService cardService)
         {
             NavigationService = navigationService;
             ColumnService = columnService;
+            CardService = cardService;
 
             ToBoards = new Command(OnToBoardsExecute);
             OpenCreateColumnWindow = new TaskCommand(OnOpenCreateColumnWindowExecuteAsync);
@@ -88,8 +105,12 @@ namespace Equality.ViewModels
         {
             try {
                 var response = await ColumnService.GetColumnsAsync(StateManager.SelectedBoard);
-
                 Columns.AddRange(response.Object);
+
+                foreach (var column in Columns) {
+                    var cards = (await CardService.GetCardsAsync(column)).Object;
+                    column.Cards.AddRange(cards);
+                }
 
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
@@ -115,7 +136,6 @@ namespace Equality.ViewModels
             await base.InitializeAsync();
 
             await LoadColumnsAsync();
-            // TODO: subscribe to events here
         }
 
         protected override async Task CloseAsync()

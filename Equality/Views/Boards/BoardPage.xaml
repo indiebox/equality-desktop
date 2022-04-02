@@ -59,6 +59,7 @@
 
             <ListBox x:Name="ListBoxColumns"
                      ItemsSource="{Binding Columns}"
+                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                      VerticalContentAlignment="Stretch">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
