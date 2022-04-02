@@ -5,6 +5,12 @@
                     xmlns:models="clr-namespace:Equality.Models"
                     xmlns:objects="clr-namespace:Equality.Data.Wpf"
                     xmlns:catel="http://schemas.catelproject.com">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary>
+            <objects:DataObject x:Key="DataObject" />
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+
     <Style TargetType="{x:Type local:ColumnControl}">
         <Setter Property="Template">
             <Setter.Value>
@@ -66,7 +72,7 @@
                             <ListBox.ItemsSource>
                                 <CompositeCollection>
                                     <CollectionContainer Collection="{Binding Source={StaticResource CardsCollection}}" />
-                                    <objects:DataObject />
+                                    <StaticResource ResourceKey="DataObject" />
                                 </CompositeCollection>
                             </ListBox.ItemsSource>
                         </ListBox>
