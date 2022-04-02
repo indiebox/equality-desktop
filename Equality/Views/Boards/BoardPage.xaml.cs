@@ -23,7 +23,7 @@ namespace Equality.Views
 
         bool IsDragging => DragColumn != null;
 
-        ColumnControl DragColumn { get; set; }
+        public ColumnControl DragColumn { get; set; }
 
         private void ColumnControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
