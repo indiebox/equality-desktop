@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 using Equality.Controls;
 using Equality.ViewModels;
@@ -66,6 +68,24 @@ namespace Equality.Views
             DragColumn = null;
             Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
             Vm.DragColumn = null;
+        }
+
+        private void DraggingCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (DragColumn == null) {
+                return;
+            }
+
+            //var transform = new TranslateTransform
+            //{
+            //    X = Mouse.GetPosition(DraggingCanvas).X,
+            //    Y = Mouse.GetPosition(DraggingCanvas).Y
+            //};
+            var cursorPosition = Mouse.GetPosition(DraggingCanvas);
+
+            Canvas.SetLeft(MovingColumn, cursorPosition.X);
+            Canvas.SetTop(MovingColumn, cursorPosition.Y);
+            //MovingColumn.SetCurrentValue(RenderTransformProperty, transform);
         }
     }
 }

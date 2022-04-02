@@ -20,8 +20,10 @@
            d:DataContext="{d:DesignInstance Type=vm:BoardPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
 
-    <Canvas>
-        <controls:ColumnControl Margin="20,0"
+    <Canvas x:Name="DraggingCanvas"
+            MouseMove="DraggingCanvas_MouseMove">
+        <controls:ColumnControl x:Name="MovingColumn"
+                                Margin="20,0"
                                 Column="{Binding DragColumn.Column}"
                                 Visibility="{Binding DragColumn, Converter={catel:ReferenceToCollapsingVisibilityConverter}, ConverterParameter=DragColumn}" />
         <Grid>
