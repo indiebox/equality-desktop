@@ -14,19 +14,19 @@
            TextElement.Foreground="{DynamicResource MaterialDesignBody}"
            Background="{DynamicResource MaterialDesignPaper}"
            FontSize="16"
-           MouseUp="Page_MouseUp"
+           PreviewMouseUp="Page_MouseUp"
            d:DesignHeight="1080"
            d:DesignWidth="1920"
            d:DataContext="{d:DesignInstance Type=vm:BoardPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
     <Grid MouseMove="Grid_MouseMove">
-        <Canvas x:Name="DraggingCanvas"
-                Panel.ZIndex="1">
+        <Canvas x:Name="DraggingCanvas">
             <controls:ColumnControl x:Name="MovingColumn"
                                     Column="{Binding DragColumn.Column}"
                                     Visibility="{Binding DragColumn, Converter={catel:ReferenceToCollapsingVisibilityConverter}, ConverterParameter=DragColumn}" />
         </Canvas>
-        <Grid Panel.ZIndex="0">
+
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
