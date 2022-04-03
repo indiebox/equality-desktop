@@ -8,7 +8,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:ColumnControl}">
                     <StackPanel Width="350"
-                                Background="white">
+                                Background="Transparent">
                         <StackPanel.Style>
                             <Style TargetType="StackPanel">
                                 <Style.Triggers>
@@ -20,22 +20,28 @@
                                 </Style.Triggers>
                             </Style>
                         </StackPanel.Style>
-                        <TextBlock FontSize="24"
-                                   Margin="10"
-                                   Text="{Binding Path=Column.Name, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                        <Button Margin="10"
-                                Style="{StaticResource MaterialDesignPaperButton}">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Plus"
-                                                         Width="20"
-                                                         Height="20"
-                                                         VerticalAlignment="Center"
-                                                         Foreground="#FFF96840" />
-                                <TextBlock FontSize="16"
-                                           Foreground="#FFF96840"
-                                           Text="Add Card" />
+                        <Border CornerRadius="3"
+                                Background="#ebecf0"
+                                VerticalAlignment="Top">
+                            <StackPanel>
+                                <TextBlock FontSize="24"
+                                           Margin="20"
+                                           Text="{Binding Path=Column.Name, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Button Style="{StaticResource MaterialDesignPaperButton}"
+                                        Margin="20,0,20,20">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Plus"
+                                                                 Width="20"
+                                                                 Height="20"
+                                                                 VerticalAlignment="Center"
+                                                                 Foreground="#FFF96840" />
+                                        <TextBlock FontSize="16"
+                                                   Foreground="#FFF96840"
+                                                   Text="Add Card" />
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
-                        </Button>
+                        </Border>
                     </StackPanel>
                 </ControlTemplate>
             </Setter.Value>
