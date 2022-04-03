@@ -33,14 +33,6 @@ namespace Equality.Controls
         public static readonly DependencyProperty IsDraggingProperty =
           DependencyProperty.Register(nameof(IsDragging), typeof(bool), typeof(ColumnControl), new PropertyMetadata(false));
 
-        public ICommand CreateCardCommand
-        {
-            get => (ICommand)GetValue(CreateCardCommandProperty);
-            set => SetValue(CreateCardCommandProperty, value);
-        }
-        public static readonly DependencyProperty CreateCardCommandProperty =
-          DependencyProperty.Register(nameof(CreateCardCommand), typeof(ICommand), typeof(ColumnControl), new PropertyMetadata(null));
-
         /// <summary>
         /// View model thats represent create card view.
         /// </summary>
@@ -67,5 +59,25 @@ namespace Equality.Controls
 
             list.ScrollIntoView(list.Items[^1]);
         }
+
+        #region Commands
+
+        public ICommand CreateCardCommand
+        {
+            get => (ICommand)GetValue(CreateCardCommandProperty);
+            set => SetValue(CreateCardCommandProperty, value);
+        }
+        public static readonly DependencyProperty CreateCardCommandProperty =
+          DependencyProperty.Register(nameof(CreateCardCommand), typeof(ICommand), typeof(ColumnControl), new PropertyMetadata(null));
+
+        public ICommand DeleteCardCommand
+        {
+            get => (ICommand)GetValue(DeleteCardCommandProperty);
+            set => SetValue(DeleteCardCommandProperty, value);
+        }
+        public static readonly DependencyProperty DeleteCardCommandProperty =
+          DependencyProperty.Register(nameof(DeleteCardCommand), typeof(ICommand), typeof(ColumnControl), new PropertyMetadata(null));
+
+        #endregion
     }
 }

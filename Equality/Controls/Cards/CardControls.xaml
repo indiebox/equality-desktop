@@ -7,10 +7,56 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:CardControl}">
                     <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth1">
-                        <TextBlock FontSize="14"
-                                   TextWrapping="Wrap"
-                                   Margin="10"
-                                   Text="{Binding Path=Card.Name, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.RowSpan="2"
+                                       FontSize="14"
+                                       TextWrapping="Wrap"
+                                       Margin="10"
+                                       Text="{Binding Path=Card.Name, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+
+                            <materialDesign:PopupBox Grid.Row="0"
+                                                     Grid.Column="1"
+                                                     Margin="5,0"
+                                                     VerticalAlignment="Top"
+                                                     StaysOpen="True"
+                                                     PlacementMode="BottomAndAlignRightEdges">
+                                <materialDesign:PopupBox.ToggleContent>
+                                    <materialDesign:PackIcon Width="25"
+                                                             Height="25"
+                                                             Kind="DotsHorizontal"
+                                                             Foreground="Gray" />
+                                </materialDesign:PopupBox.ToggleContent>
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+                                    <Menu FontSize="14">
+                                        <Menu.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <VirtualizingStackPanel Orientation="Vertical" />
+                                            </ItemsPanelTemplate>
+                                        </Menu.ItemsPanel>
+
+                                        <MenuItem Command="{Binding Path=DeleteCardCommand, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                  CommandParameter="{Binding}"
+                                                  Cursor="Hand"
+                                                  Header="Удалить" />
+                                    </Menu>
+                                </Grid>
+                            </materialDesign:PopupBox>
+                        </Grid>
                     </materialDesign:Card>
                 </ControlTemplate>
             </Setter.Value>
