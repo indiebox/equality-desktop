@@ -127,10 +127,8 @@
                 </StackPanel>
                 <ContentControl Grid.Column="1"
                                 VerticalAlignment="Top"
-                                Margin="10"
                                 Focusable="False"
                                 Content="{Binding DataContext.CreateColumnVm, RelativeSource={RelativeSource AncestorType=mvvm:Page}, Converter={catel:ViewModelToViewConverter}}" />
-
 
             </Grid>
         </Grid>
