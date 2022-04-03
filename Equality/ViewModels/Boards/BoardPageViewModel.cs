@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Collections;
+using Catel.Data;
 using Catel.MVVM;
 
 using Catel.Services;
@@ -11,9 +12,11 @@ using Catel.Services;
 using Equality.Data;
 using Equality.Extensions;
 using Equality.Helpers;
+using Equality.Http;
 using Equality.Models;
 using Equality.MVVM;
 using Equality.Services;
+using Equality.Validation;
 
 namespace Equality.ViewModels
 {
@@ -67,7 +70,15 @@ namespace Equality.ViewModels
             ToBoards = new(OnToBoardsExecute);
             OpenCreateColumnWindow = new(OnOpenCreateColumnWindowExecuteAsync);
             OpenCreateCardWindow = new(OnOpenCreateCardWindowExecuteAsync);
+            StartEditCard = new(OnStartEditCardExecuteAsync);
+            CancelEditCard = new(OnCancelEditCardExecute);
+            SaveNewCardName = new(OnSaveNewCardNameExecuteAsync, () => !HasErrors);
             DeleteCard = new(OnDeleteCardExecuteAsync);
+
+            ApiFieldsMap = new Dictionary<string, string>()
+            {
+                { nameof(NewCardName), "name" },
+            };
         }
 
         #region Properties
@@ -83,6 +94,11 @@ namespace Equality.ViewModels
         public CreateCardControlViewModel CreateCardVm { get; set; }
 
         public Column ColumnForNewCard { get; set; }
+
+        public Card EditableCard { get; set; }
+
+        [Validatable]
+        public string NewCardName { get; set; }
 
         #endregion
 
@@ -150,6 +166,60 @@ namespace Equality.ViewModels
 
         #endregion CreateCard
 
+        #region EditCard
+
+        public Command<Card> StartEditCard { get; private set; }
+
+        private void OnStartEditCardExecuteAsync(Card card)
+        {
+            NewCardName = card.Name;
+            EditableCard = card;
+        }
+
+        public Command CancelEditCard { get; private set; }
+
+        private void OnCancelEditCardExecute()
+        {
+            EditableCard = null;
+            NewCardName = null;
+            Validate(true);
+        }
+
+        public TaskCommand SaveNewCardName { get; private set; }
+
+        private async Task OnSaveNewCardNameExecuteAsync()
+        {
+            if (FirstValidationHasErrors()) {
+                return;
+            }
+
+            if (NewCardName == EditableCard.Name) {
+                CancelEditCard.Execute();
+
+                return;
+            }
+
+            try {
+                Card card = new()
+                {
+                    Id = EditableCard.Id,
+                    Name = NewCardName,
+                };
+
+                var response = await CardService.UpdateCardAsync(card);
+
+                EditableCard.SyncWith(response.Object);
+
+                CancelEditCard.Execute();
+            } catch (UnprocessableEntityHttpException e) {
+                HandleApiErrors(e.Errors);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
+        #endregion EditCard
+
         #region DeleteCard
 
         public TaskCommand<Card> DeleteCard { get; private set; }
@@ -186,6 +256,23 @@ namespace Equality.ViewModels
 
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
+            }
+        }
+
+        #endregion
+
+        #region Validation
+
+        protected override void ValidateFields(List<IFieldValidationResult> validationResults)
+        {
+            var validator = new Validator(validationResults);
+
+            if (EditableCard != null) {
+                validator.ValidateField(nameof(NewCardName), NewCardName, new()
+                {
+                    new NotEmptyStringRule(),
+                    new MaxStringLengthRule(255),
+                });
             }
         }
 
