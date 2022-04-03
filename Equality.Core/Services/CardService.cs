@@ -72,6 +72,25 @@ namespace Equality.Services
             return new(card, response);
         }
 
+        public async Task<ApiResponseMessage<TCardModel>> UpdateCardAsync(TCardModel card, QueryParameters query = null)
+        {
+            Argument.IsNotNull(nameof(card), card);
+            Argument.IsMinimal<ulong>("card.Id", card.Id, 1);
+            query ??= new QueryParameters();
+
+            Dictionary<string, object> data = new()
+            {
+                { "name", card.Name },
+                { "description", card.Description },
+            };
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync(query.Parse($"cards/{card.Id}"), data);
+
+            card = Deserialize(response.Content["data"]);
+
+            return new(card, response);
+        }
+
         public Task<ApiResponseMessage> DeleteCardAsync(TCardModel card)
             => DeleteCardAsync(card.Id);
 
