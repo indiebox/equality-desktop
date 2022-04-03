@@ -87,9 +87,9 @@ namespace Equality.Views
             }
 
             var cursorPosition = Mouse.GetPosition(DraggingCanvas);
-            Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X + (DeltaMouse.X + cursorPosition.X));
-            Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y + (DeltaMouse.Y + cursorPosition.Y));
-            ColumnRelativePoint = new Point(ColumnRelativePoint.X + (DeltaMouse.X + cursorPosition.X), ColumnRelativePoint.Y + (DeltaMouse.Y + cursorPosition.Y));
+            Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X + (DeltaMouse.X - ColumnRelativePoint.X + cursorPosition.X));
+            Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y + (DeltaMouse.Y - ColumnRelativePoint.Y + cursorPosition.Y));
+            ColumnRelativePoint = new Point(ColumnRelativePoint.X + (DeltaMouse.X - ColumnRelativePoint.X + cursorPosition.X), ColumnRelativePoint.Y + (DeltaMouse.Y - ColumnRelativePoint.Y + cursorPosition.Y));
         }
     }
 }
