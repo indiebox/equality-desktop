@@ -2,7 +2,15 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     xmlns:local="clr-namespace:Equality.Controls"
-                    xmlns:models="clr-namespace:Equality.Models">
+                    xmlns:models="clr-namespace:Equality.Models"
+                    xmlns:objects="clr-namespace:Equality.Data.Wpf"
+                    xmlns:catel="http://schemas.catelproject.com">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary>
+            <objects:DataObject x:Key="DataObject" />
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+
     <Style TargetType="{x:Type local:ColumnControl}">
         <Setter Property="Template">
             <Setter.Value>
@@ -17,7 +25,7 @@
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDragging, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                    <DataTrigger Binding="{Binding IsDragging, RelativeSource={RelativeSource AncestorType=local:ColumnControl}}"
                                                  Value="True">
                                         <Setter Property="Opacity"
                                                 Value="0.5" />
@@ -26,38 +34,48 @@
                             </Style>
                         </Grid.Style>
 
-                        <TextBlock FontSize="24"
-                                   Margin="10"
-                                   Text="{Binding Path=Column.Name, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-
-                        <DockPanel Grid.Row="1"
-                                   LastChildFill="True"
-                                   VerticalAlignment="Top">
-                            <Button DockPanel.Dock="Bottom"
-                                    Margin="10"
-                                    Style="{StaticResource MaterialDesignPaperButton}">
-                                <StackPanel Orientation="Horizontal">
+                        <DockPanel LastChildFill="False">
+                            <TextBlock DockPanel.Dock="Left"
+                                       FontSize="16"
+                                       Margin="10"
+                                       Text="{Binding Path=Column.Name, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <StackPanel DockPanel.Dock="Right">
+                                <Button Command="{TemplateBinding CreateCardCommand}"
+                                        CommandParameter="{TemplateBinding Column}"
+                                        Style="{StaticResource MaterialDesignIconForegroundButton}">
                                     <materialDesign:PackIcon Kind="Plus"
-                                                             Width="20"
-                                                             Height="20"
-                                                             VerticalAlignment="Center"
-                                                             Foreground="#FFF96840" />
-                                    <TextBlock FontSize="16"
-                                               Foreground="#FFF96840"
-                                               Text="Add Card" />
-                                </StackPanel>
-                            </Button>
-
-                            <ListBox DockPanel.Dock="Top"
-                                     ItemsSource="{Binding Column.Cards, RelativeSource={RelativeSource Mode=TemplatedParent}}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type models:Card}">
-                                        <local:CardControl Card="{Binding}"
-                                                           Margin="10" />
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                                                             Foreground="Gray" />
+                                </Button>
+                            </StackPanel>
                         </DockPanel>
+
+                        <ListBox Name="CardsList"
+                                 Grid.Row="1"
+                                 VirtualizingPanel.VirtualizationMode="Standard">
+                            <!-- Templates for custom objects. -->
+                            <ListBox.Resources>
+                                <DataTemplate DataType="{x:Type models:Card}">
+                                    <local:CardControl Card="{Binding}"
+                                                       Margin="10" />
+                                </DataTemplate>
+
+                                <DataTemplate DataType="{x:Type objects:DataObject}">
+                                    <ContentControl Margin="10"
+                                                    Focusable="False"
+                                                    Content="{Binding CreateCardVm, Converter={catel:ViewModelToViewConverter}, RelativeSource={RelativeSource AncestorType=local:ColumnControl}}" />
+                                </DataTemplate>
+
+                                <CollectionViewSource x:Key="CardsCollection"
+                                                      Source="{Binding Column.Cards, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </ListBox.Resources>
+
+                            <ListBox.ItemsSource>
+                                <CompositeCollection>
+                                    <CollectionContainer Collection="{Binding Source={StaticResource CardsCollection}}" />
+                                    <StaticResource ResourceKey="DataObject" />
+                                </CompositeCollection>
+                            </ListBox.ItemsSource>
+                        </ListBox>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

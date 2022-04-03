@@ -32,7 +32,7 @@ namespace Equality.ViewModels
                         Cards = new()
                         {
                             new Card() { Name = "Card 1" },
-                            new Card() { Name = "Card with very long name. Should wrap the text." },
+                            new Card() { Name = "Card with very long name. Card with very long name. Card with very long name." },
                         }
                     },
                     new Column()
@@ -64,8 +64,9 @@ namespace Equality.ViewModels
             ColumnService = columnService;
             CardService = cardService;
 
-            ToBoards = new Command(OnToBoardsExecute);
-            OpenCreateColumnWindow = new TaskCommand(OnOpenCreateColumnWindowExecuteAsync);
+            ToBoards = new(OnToBoardsExecute);
+            OpenCreateColumnWindow = new(OnOpenCreateColumnWindowExecuteAsync);
+            OpenCreateCardWindow = new(OnOpenCreateCardWindowExecuteAsync);
         }
 
         #region Properties
@@ -78,9 +79,22 @@ namespace Equality.ViewModels
 
         public CreateColumnControlViewModel CreateColumnVm { get; set; }
 
+        public CreateCardControlViewModel CreateCardVm { get; set; }
+
+        public Column ColumnForNewCard { get; set; }
+
         #endregion
 
         #region Commands
+
+        public Command ToBoards { get; private set; }
+
+        private void OnToBoardsExecute()
+        {
+            NavigationService.Navigate<BoardsPageViewModel, ProjectPageViewModel>();
+        }
+
+        #region CreateColumn
 
         public TaskCommand OpenCreateColumnWindow { get; private set; }
 
@@ -90,12 +104,50 @@ namespace Equality.ViewModels
             CreateColumnVm.ClosedAsync += CreateColumnVmClosedAsync;
         }
 
-        public Command ToBoards { get; private set; }
-
-        private void OnToBoardsExecute()
+        private Task CreateColumnVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
-            NavigationService.Navigate<BoardsPageViewModel, ProjectPageViewModel>();
+            if (e.Result ?? false) {
+                Columns.Add(CreateColumnVm.Column);
+            }
+
+            CreateColumnVm.ClosedAsync -= CreateColumnVmClosedAsync;
+            CreateColumnVm = null;
+
+            return Task.CompletedTask;
         }
+
+        #endregion CreateColumn
+
+        #region CreateCard
+
+        public TaskCommand<Column> OpenCreateCardWindow { get; private set; }
+
+        private async Task OnOpenCreateCardWindowExecuteAsync(Column column)
+        {
+            if (CreateCardVm != null) {
+                CreateCardVm.ClosedAsync -= CreateCardVmClosedAsync;
+            }
+
+            ColumnForNewCard = column;
+
+            CreateCardVm = MvvmHelper.CreateViewModel<CreateCardControlViewModel>(ColumnForNewCard);
+            CreateCardVm.ClosedAsync += CreateCardVmClosedAsync;
+        }
+
+        private Task CreateCardVmClosedAsync(object sender, ViewModelClosedEventArgs e)
+        {
+            if (e.Result ?? false) {
+                ColumnForNewCard.Cards.Add(CreateCardVm.Card);
+            }
+
+            CreateCardVm.ClosedAsync -= CreateCardVmClosedAsync;
+            CreateCardVm = null;
+            ColumnForNewCard = null;
+
+            return Task.CompletedTask;
+        }
+
+        #endregion CreateCard
 
         #endregion
 
@@ -115,18 +167,6 @@ namespace Equality.ViewModels
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }
-        }
-
-        private Task CreateColumnVmClosedAsync(object sender, ViewModelClosedEventArgs e)
-        {
-            if (e.Result ?? false) {
-                Columns.Add(CreateColumnVm.Column);
-            }
-
-            CreateColumnVm.ClosedAsync -= CreateColumnVmClosedAsync;
-            CreateColumnVm = null;
-
-            return Task.CompletedTask;
         }
 
         #endregion

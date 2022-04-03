@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using Catel;
 
@@ -26,6 +27,7 @@ namespace Equality.Services
             ApiClient = apiClient;
             TokenResolver = tokenResolver;
         }
+
         public Task<ApiResponseMessage<TCardModel[]>> GetCardsAsync(TColumnModel column, QueryParameters query = null)
             => GetCardsAsync(column.Id, query);
 
@@ -39,6 +41,35 @@ namespace Equality.Services
             var boards = DeserializeRange(response.Content["data"]);
 
             return new(boards, response);
+        }
+
+        public Task<ApiResponseMessage<TCardModel>> CreateCardAsync(TColumnModel column, TCardModel card, QueryParameters query = null)
+            => CreateCardAsync(column.Id, card, query);
+
+        public Task<ApiResponseMessage<TCardModel>> CreateCardAsync(ulong columnId, TCardModel card, QueryParameters query = null)
+            => CreateCardAsync(columnId, card, null, query);
+
+        public async Task<ApiResponseMessage<TCardModel>> CreateCardAsync(ulong columnId, TCardModel card, ulong? afterCardId, QueryParameters query = null)
+        {
+            Argument.IsMinimal<ulong>(nameof(columnId), columnId, 1);
+            Argument.IsNotNull(nameof(card), card);
+            query ??= new QueryParameters();
+
+            Dictionary<string, object> data = new()
+            {
+                { "name", card.Name },
+                { "description", card.Description },
+            };
+
+            if (afterCardId != null) {
+                data.Add("after_card", afterCardId);
+            }
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"columns/{columnId}/cards"), data);
+
+            card = Deserialize(response.Content["data"]);
+
+            return new(card, response);
         }
 
         /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>

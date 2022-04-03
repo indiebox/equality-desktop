@@ -216,5 +216,8 @@
       <Page Update="Views\Boards\CreateColumnControl.xaml">
         <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       </Page>
+      <Page Update="Views\Cards\CreateCardControl.xaml">
+        <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      </Page>
     </ItemGroup>
 </Project>
