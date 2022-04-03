@@ -28,7 +28,7 @@
                                                      Grid.Column="1"
                                                      Margin="5,0"
                                                      VerticalAlignment="Top"
-                                                     StaysOpen="True"
+                                                     StaysOpen="False"
                                                      PlacementMode="BottomAndAlignRightEdges">
                                 <materialDesign:PopupBox.ToggleContent>
                                     <materialDesign:PackIcon Width="25"
