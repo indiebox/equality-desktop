@@ -19,14 +19,14 @@
            d:DesignWidth="1920"
            d:DataContext="{d:DesignInstance Type=vm:BoardPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
-
-    <Canvas x:Name="DraggingCanvas"
-            MouseMove="DraggingCanvas_MouseMove">
-        <controls:ColumnControl x:Name="MovingColumn"
-                                Margin="20,0"
-                                Column="{Binding DragColumn.Column}"
-                                Visibility="{Binding DragColumn, Converter={catel:ReferenceToCollapsingVisibilityConverter}, ConverterParameter=DragColumn}" />
-        <Grid>
+    <Grid MouseMove="Grid_MouseMove">
+        <Canvas x:Name="DraggingCanvas"
+                Panel.ZIndex="1">
+            <controls:ColumnControl x:Name="MovingColumn"
+                                    Column="{Binding DragColumn.Column}"
+                                    Visibility="{Binding DragColumn, Converter={catel:ReferenceToCollapsingVisibilityConverter}, ConverterParameter=DragColumn}" />
+        </Canvas>
+        <Grid Panel.ZIndex="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -103,5 +103,5 @@
 
             </Grid>
         </Grid>
-    </Canvas>
+    </Grid>
 </mvvm:Page>

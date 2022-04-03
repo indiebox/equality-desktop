@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.Diagnostics;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -27,24 +29,33 @@ namespace Equality.Views
 
         public ColumnControl DragColumn { get; set; }
 
+        public Point DeltaMouse { get; set; }
+
+        public Point ColumnRelativePoint { get; set; }
+
         private void ColumnControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (IsDragging || e.LeftButton != MouseButtonState.Pressed) {
                 return;
             }
-
             DragColumn = ParseControl(sender);
             Vm.DragColumn = ParseControl(sender);
             DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
             Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
+
+            var cursorPosition = Mouse.GetPosition(DraggingCanvas);
+            ColumnRelativePoint = DragColumn.TransformToAncestor(this).Transform(new Point(0, 0));
+            DeltaMouse = new(ColumnRelativePoint.X - cursorPosition.X, ColumnRelativePoint.Y - cursorPosition.Y);
+            Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X);
+            Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y);
+            Debug.WriteLine(DeltaMouse.X);
         }
 
-        private void ColumnControl_MouseEnter(object sender, MouseEventArgs e)
+        private async void ColumnControl_MouseEnter(object sender, MouseEventArgs e)
         {
             if (!IsDragging) {
                 return;
             }
-
             var column = ParseControl(sender).Column;
 
             int oldIndex = Vm.Columns.IndexOf(column);
@@ -63,29 +74,22 @@ namespace Equality.Views
             if (!IsDragging) {
                 return;
             }
-
             DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
             DragColumn = null;
             Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
             Vm.DragColumn = null;
         }
 
-        private void DraggingCanvas_MouseMove(object sender, MouseEventArgs e)
+        private void Grid_MouseMove(object sender, MouseEventArgs e)
         {
             if (DragColumn == null) {
                 return;
             }
 
-            //var transform = new TranslateTransform
-            //{
-            //    X = Mouse.GetPosition(DraggingCanvas).X,
-            //    Y = Mouse.GetPosition(DraggingCanvas).Y
-            //};
             var cursorPosition = Mouse.GetPosition(DraggingCanvas);
-
-            Canvas.SetLeft(MovingColumn, cursorPosition.X);
-            Canvas.SetTop(MovingColumn, cursorPosition.Y);
-            //MovingColumn.SetCurrentValue(RenderTransformProperty, transform);
+            Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X + (DeltaMouse.X + cursorPosition.X));
+            Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y + (DeltaMouse.Y + cursorPosition.Y));
+            ColumnRelativePoint = new Point(ColumnRelativePoint.X + (DeltaMouse.X + cursorPosition.X), ColumnRelativePoint.Y + (DeltaMouse.Y + cursorPosition.Y));
         }
     }
 }
