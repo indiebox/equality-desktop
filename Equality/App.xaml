@@ -16,7 +16,12 @@
                 <ResourceDictionary Source="Themes/ItemsPresenter.xaml" />
                 <ResourceDictionary Source="Themes/Global.xaml" />
 
-                <ResourceDictionary Source="Controls/Controls.xaml" />
+                <ResourceDictionary Source="Controls/InfoCard/InfoCard.xaml" />
+                <ResourceDictionary Source="Controls/TeamLogo/TeamLogo.xaml" />
+                <ResourceDictionary Source="Controls/ProjectImage/ProjectImage.xaml" />
+                <ResourceDictionary Source="Controls/ProjectCard/ProjectCard.xaml" />
+                <ResourceDictionary Source="Controls/Cards/CardControls.xaml" />
+                <ResourceDictionary Source="Controls/Column/ColumnControl.xaml" />
 
                 <ResourceDictionary Source="Notifications/Notifications.xaml" />
             </ResourceDictionary.MergedDictionaries>
