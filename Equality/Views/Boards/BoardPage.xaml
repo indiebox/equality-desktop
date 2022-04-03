@@ -79,19 +79,49 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
                 <StackPanel Grid.Column="1"
-                            VerticalAlignment="Top">
-                    <Button Margin="10"
-                            Style="{StaticResource MaterialDesignPaperButton}"
+                            VerticalAlignment="Top"
+                            Background="#00000000">
+                    <Button Padding="10"
+                            Cursor="Hand"
+                            Width="350"
+                            BorderThickness="0"
+                            Height="50"
                             Command="{Binding DataContext.OpenCreateColumnWindow, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                             Visibility="{Binding DataContext.CreateColumnVm, RelativeSource={RelativeSource AncestorType=mvvm:Page}, Converter={catel:ReferenceToCollapsingVisibilityConverter}, ConverterParameter=True}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background"
+                                        Value="#19000014" />
+
+                                <Setter Property="Template">
+                                    <Setter.Value>
+
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="#33000029" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Plus"
                                                      Width="20"
                                                      Height="20"
                                                      VerticalAlignment="Center"
-                                                     Foreground="#FFF96840" />
+                                                     Foreground="White" />
                             <TextBlock FontSize="16"
-                                       Foreground="#FFF96840">Добавить колонку</TextBlock>
+                                       Foreground="White">Добавить колонку</TextBlock>
                         </StackPanel>
                     </Button>
                 </StackPanel>
