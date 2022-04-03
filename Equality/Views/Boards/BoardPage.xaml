@@ -71,6 +71,7 @@
                     <DataTemplate DataType="{x:Type models:Column}">
                         <controls:ColumnControl Column="{Binding}"
                                                 CreateCardCommand="{Binding DataContext.OpenCreateCardWindow, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                DeleteCardCommand="{Binding DataContext.DeleteCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                 Margin="20,0"
                                                 MouseEnter="ColumnControl_MouseEnter"
                                                 MouseDown="ColumnControl_MouseDown">

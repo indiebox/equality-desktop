@@ -67,6 +67,7 @@ namespace Equality.ViewModels
             ToBoards = new(OnToBoardsExecute);
             OpenCreateColumnWindow = new(OnOpenCreateColumnWindowExecuteAsync);
             OpenCreateCardWindow = new(OnOpenCreateCardWindowExecuteAsync);
+            DeleteCard = new(OnDeleteCardExecuteAsync);
         }
 
         #region Properties
@@ -148,6 +149,25 @@ namespace Equality.ViewModels
         }
 
         #endregion CreateCard
+
+        #region DeleteCard
+
+        public TaskCommand<Card> DeleteCard { get; private set; }
+
+        private async Task OnDeleteCardExecuteAsync(Card card)
+        {
+            try {
+                await CardService.DeleteCardAsync(card);
+
+                foreach (var column in Columns) {
+                    column.Cards.Remove(card);
+                }
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
+        #endregion DeleteCard
 
         #endregion
 
