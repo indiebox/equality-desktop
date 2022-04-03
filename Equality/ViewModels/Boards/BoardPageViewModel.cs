@@ -57,6 +57,8 @@ namespace Equality.ViewModels
         [Model]
         public Board Board { get; set; }
 
+        public Project Project { get; set; } = StateManager.SelectedProject;
+
         public ObservableCollection<Column> Columns { get; set; } = new();
 
         public CreateColumnControlViewModel CreateColumnVm { get; set; }
