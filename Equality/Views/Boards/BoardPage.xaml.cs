@@ -43,12 +43,10 @@ namespace Equality.Views
             DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
             Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
 
-            var cursorPosition = Mouse.GetPosition(DraggingCanvas);
+            DeltaMouse = Mouse.GetPosition(DraggingCanvas);
             ColumnRelativePoint = DragColumn.TransformToAncestor(this).Transform(new Point(0, 0));
-            DeltaMouse = new(ColumnRelativePoint.X - cursorPosition.X, ColumnRelativePoint.Y - cursorPosition.Y);
             Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X);
             Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y);
-            Debug.WriteLine(DeltaMouse.X);
         }
 
         private async void ColumnControl_MouseEnter(object sender, MouseEventArgs e)
@@ -74,6 +72,7 @@ namespace Equality.Views
             if (!IsDragging) {
                 return;
             }
+
             DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
             DragColumn = null;
             Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
@@ -87,9 +86,8 @@ namespace Equality.Views
             }
 
             var cursorPosition = Mouse.GetPosition(DraggingCanvas);
-            Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X + (DeltaMouse.X + cursorPosition.X));
-            Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y + (DeltaMouse.Y + cursorPosition.Y));
-            ColumnRelativePoint = new Point(ColumnRelativePoint.X + (DeltaMouse.X + cursorPosition.X), ColumnRelativePoint.Y + (DeltaMouse.Y + cursorPosition.Y));
+            Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X + (cursorPosition.X - DeltaMouse.X));
+            Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y + (cursorPosition.Y - DeltaMouse.Y));
         }
     }
 }
