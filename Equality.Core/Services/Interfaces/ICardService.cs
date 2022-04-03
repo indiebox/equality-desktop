@@ -69,5 +69,22 @@ namespace Equality.Services
         /// 
         /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage<TCardModel>> CreateCardAsync(ulong columnId, TCardModel card, ulong? afterCardId, QueryParameters query = null);
+
+        /// <summary>
+        /// Sends the delete card request to the API.
+        /// </summary>
+        /// <param name="card">The card.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage> DeleteCardAsync(TCardModel card);
+
+        /// <inheritdoc cref="DeleteCardAsync(TCardModel)" />
+        /// <param name="cardId">The card id.</param>
+        public Task<ApiResponseMessage> DeleteCardAsync(ulong cardId);
     }
 }

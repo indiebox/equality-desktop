@@ -72,6 +72,14 @@ namespace Equality.Services
             return new(card, response);
         }
 
+        public Task<ApiResponseMessage> DeleteCardAsync(TCardModel card)
+            => DeleteCardAsync(card.Id);
+
+        public async Task<ApiResponseMessage> DeleteCardAsync(ulong cardId)
+        {
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"cards/{cardId}");
+        }
+
         /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
         protected TCardModel Deserialize(JToken data) => ((IDeserializeModels<TCardModel>)this).Deserialize(data);
 

@@ -24,8 +24,7 @@
                  Margin="0,0,0,30"
                  materialDesign:ValidationAssist.FontSize="14"
                  materialDesign:ValidationAssist.UsePopup="True"
-                 materialDesign:HintAssist.Hint="Содержимое карточки"
-                 Cursor="IBeam">
+                 materialDesign:HintAssist.Hint="Содержимое карточки">
             <i:Interaction.Behaviors>
                 <catel:Focus />
             </i:Interaction.Behaviors>

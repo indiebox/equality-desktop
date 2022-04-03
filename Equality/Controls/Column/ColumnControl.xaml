@@ -56,6 +56,7 @@
                             <ListBox.Resources>
                                 <DataTemplate DataType="{x:Type models:Card}">
                                     <local:CardControl Card="{Binding}"
+                                                       DeleteCardCommand="{Binding DeleteCardCommand, RelativeSource={RelativeSource AncestorType=local:ColumnControl}}"
                                                        Margin="10" />
                                 </DataTemplate>
 
