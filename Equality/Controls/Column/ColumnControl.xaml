@@ -56,8 +56,33 @@
                             <ListBox.Resources>
                                 <DataTemplate DataType="{x:Type models:Card}">
                                     <local:CardControl Card="{Binding}"
+                                                       CancelEditCardCommand="{Binding CancelEditCardCommand, RelativeSource={RelativeSource AncestorType=local:ColumnControl}}"
+                                                       SaveNewCardNameCommand="{Binding SaveNewCardNameCommand, RelativeSource={RelativeSource AncestorType=local:ColumnControl}}"
+                                                       NewCardName="{Binding NewCardName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:ColumnControl}}"
+                                                       EditCardCommand="{Binding EditCardCommand, RelativeSource={RelativeSource AncestorType=local:ColumnControl}}"
                                                        DeleteCardCommand="{Binding DeleteCardCommand, RelativeSource={RelativeSource AncestorType=local:ColumnControl}}"
-                                                       Margin="10" />
+                                                       Margin="10">
+                                        <local:CardControl.Style>
+                                            <Style TargetType="local:CardControl"
+                                                   BasedOn="{StaticResource {x:Type local:CardControl}}">
+                                                <Setter Property="IsEditable"
+                                                        Value="False" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Value="True">
+                                                        <DataTrigger.Binding>
+                                                            <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                                                <Binding Path="." />
+                                                                <Binding Path="EditableCard"
+                                                                         RelativeSource="{RelativeSource AncestorType=local:ColumnControl}" />
+                                                            </MultiBinding>
+                                                        </DataTrigger.Binding>
+                                                        <Setter Property="IsEditable"
+                                                                Value="True" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </local:CardControl.Style>
+                                    </local:CardControl>
                                 </DataTemplate>
 
                                 <DataTemplate DataType="{x:Type objects:DataObject}">
