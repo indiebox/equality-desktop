@@ -15,6 +15,7 @@
            Background="{DynamicResource MaterialDesignPaper}"
            FontSize="16"
            PreviewMouseUp="Page_MouseUp"
+           MouseLeave="Page_MouseLeave"
            d:DesignHeight="1080"
            d:DesignWidth="1920"
            d:DataContext="{d:DesignInstance Type=vm:BoardPageViewModel, IsDesignTimeCreatable=True}"
@@ -24,7 +25,7 @@
         <Canvas x:Name="DraggingCanvas">
             <controls:ColumnControl x:Name="MovingColumn"
                                     Column="{Binding DragColumn.Column}"
-                                    Visibility="{Binding DragColumn, Converter={catel:ReferenceToCollapsingVisibilityConverter}, ConverterParameter=DragColumn}" />
+                                    Visibility="{Binding DragColumn, Converter={catel:ReferenceToCollapsingVisibilityConverter}}" />
         </Canvas>
 
         <Grid>

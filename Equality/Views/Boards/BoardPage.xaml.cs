@@ -67,18 +67,6 @@ namespace Equality.Views
             return sender as ColumnControl;
         }
 
-        private void Page_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (!IsDragging) {
-                return;
-            }
-
-            DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
-            DragColumn = null;
-            Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
-            Vm.DragColumn = null;
-        }
-
         private void Grid_MouseMove(object sender, MouseEventArgs e)
         {
             if (DragColumn == null) {
@@ -89,5 +77,35 @@ namespace Equality.Views
             Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X + (cursorPosition.X - DeltaMouse.X));
             Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y + (cursorPosition.Y - DeltaMouse.Y));
         }
+
+        #region StopDrag
+
+        private void Page_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (!IsDragging) {
+                return;
+            }
+
+            StopDragging();
+        }
+
+        private void Page_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (!IsDragging) {
+                return;
+            }
+
+            StopDragging();
+        }
+
+        private void StopDragging()
+        {
+            DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
+            DragColumn = null;
+            Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
+            Vm.DragColumn = null;
+        }
+
+        #endregion
     }
 }
