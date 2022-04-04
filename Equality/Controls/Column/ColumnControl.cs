@@ -22,6 +22,22 @@ namespace Equality.Controls
         public static readonly DependencyProperty ColumnProperty =
           DependencyProperty.Register(nameof(Column), typeof(Column), typeof(ColumnControl), new PropertyMetadata(null));
 
+        public Card EditableCard
+        {
+            get => (Card)GetValue(EditableCardProperty);
+            set => SetValue(EditableCardProperty, value);
+        }
+        public static readonly DependencyProperty EditableCardProperty =
+          DependencyProperty.Register(nameof(EditableCard), typeof(Card), typeof(ColumnControl), new PropertyMetadata(null));
+
+        public string NewCardName
+        {
+            get => (string)GetValue(NewCardNameProperty);
+            set => SetValue(NewCardNameProperty, value);
+        }
+        public static readonly DependencyProperty NewCardNameProperty =
+          DependencyProperty.Register(nameof(NewCardName), typeof(string), typeof(ColumnControl), new PropertyMetadata(string.Empty));
+
         /// <summary>
         /// Does this column in 'dragging' mode.
         /// </summary>
@@ -69,6 +85,30 @@ namespace Equality.Controls
         }
         public static readonly DependencyProperty CreateCardCommandProperty =
           DependencyProperty.Register(nameof(CreateCardCommand), typeof(ICommand), typeof(ColumnControl), new PropertyMetadata(null));
+
+        public ICommand EditCardCommand
+        {
+            get => (ICommand)GetValue(EditCardCommandProperty);
+            set => SetValue(EditCardCommandProperty, value);
+        }
+        public static readonly DependencyProperty EditCardCommandProperty =
+          DependencyProperty.Register(nameof(EditCardCommand), typeof(ICommand), typeof(ColumnControl), new PropertyMetadata(null));
+
+        public ICommand SaveNewCardNameCommand
+        {
+            get => (ICommand)GetValue(SaveNewCardNameCommandProperty);
+            set => SetValue(SaveNewCardNameCommandProperty, value);
+        }
+        public static readonly DependencyProperty SaveNewCardNameCommandProperty =
+          DependencyProperty.Register(nameof(SaveNewCardNameCommand), typeof(ICommand), typeof(ColumnControl), new PropertyMetadata(null));
+
+        public ICommand CancelEditCardCommand
+        {
+            get => (ICommand)GetValue(CancelEditCardCommandProperty);
+            set => SetValue(CancelEditCardCommandProperty, value);
+        }
+        public static readonly DependencyProperty CancelEditCardCommandProperty =
+          DependencyProperty.Register(nameof(CancelEditCardCommand), typeof(ICommand), typeof(ColumnControl), new PropertyMetadata(null));
 
         public ICommand DeleteCardCommand
         {

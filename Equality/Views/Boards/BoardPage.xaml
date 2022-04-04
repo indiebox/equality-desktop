@@ -70,7 +70,12 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type models:Column}">
                         <controls:ColumnControl Column="{Binding}"
+                                                EditableCard="{Binding DataContext.EditableCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                NewCardName="{Binding DataContext.NewCardName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                CancelEditCardCommand="{Binding DataContext.CancelEditCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                SaveNewCardNameCommand="{Binding DataContext.SaveNewCardName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                 CreateCardCommand="{Binding DataContext.OpenCreateCardWindow, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                EditCardCommand="{Binding DataContext.StartEditCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                 DeleteCardCommand="{Binding DataContext.DeleteCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                 Margin="20,0"
                                                 MouseEnter="ColumnControl_MouseEnter"
