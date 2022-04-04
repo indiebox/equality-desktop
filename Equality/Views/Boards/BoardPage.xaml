@@ -22,8 +22,10 @@
            mc:Ignorable="d">
     <Grid MouseMove="Grid_MouseMove">
         <controls:ProjectImage ImagePath="{Binding Project.Image}" />
-        <Canvas x:Name="DraggingCanvas">
+        <Canvas Panel.ZIndex="1"
+                x:Name="DraggingCanvas">
             <controls:ColumnControl x:Name="MovingColumn"
+                                    IsHitTestVisible="False"
                                     Column="{Binding DragColumn.Column}"
                                     Visibility="{Binding DragColumn, Converter={catel:ReferenceToCollapsingVisibilityConverter}}" />
         </Canvas>
