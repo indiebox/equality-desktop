@@ -121,13 +121,6 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            // for testing purposes:
-            var teams = await ServiceLocator.Default.ResolveType<ITeamService>().GetTeamsAsync();
-            var projects = await ServiceLocator.Default.ResolveType<IProjectService>().GetProjectsAsync(teams.Object[0]);
-            var boards = await ServiceLocator.Default.ResolveType<IBoardService>().GetBoardsAsync(projects.Object[0]);
-            StateManager.SelectedBoard = boards.Object[0];
-            ServiceLocator.Default.ResolveType<INavigationService>().Navigate<BoardPageViewModel, ApplicationWindowViewModel>();
-
             await LoadInvitesAsync();
         }
 

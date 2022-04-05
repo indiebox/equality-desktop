@@ -25,9 +25,7 @@ namespace Equality.Views
 
         BoardPageViewModel Vm { get; set; }
 
-        bool IsDragging => DragColumn != null;
-
-        public ColumnControl DragColumn { get; set; }
+        bool IsDragging => Vm.DragColumn != null;
 
         public Point DeltaMouse { get; set; }
 
@@ -38,13 +36,11 @@ namespace Equality.Views
             if (IsDragging || e.LeftButton != MouseButtonState.Pressed) {
                 return;
             }
-            DragColumn = ParseControl(sender);
             Vm.DragColumn = ParseControl(sender);
-            DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
             Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
 
             DeltaMouse = Mouse.GetPosition(DraggingCanvas);
-            ColumnRelativePoint = DragColumn.TransformToAncestor(this).Transform(new Point(0, 0));
+            ColumnRelativePoint = Vm.DragColumn.TransformToAncestor(this).Transform(new Point(0, 0));
             Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X);
             Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y);
         }
@@ -57,7 +53,7 @@ namespace Equality.Views
             var column = ParseControl(sender).Column;
 
             int oldIndex = Vm.Columns.IndexOf(column);
-            int dragColumnIndex = Vm.Columns.IndexOf(DragColumn.Column);
+            int dragColumnIndex = Vm.Columns.IndexOf(Vm.DragColumn.Column);
 
             Vm.Columns.Move(oldIndex, dragColumnIndex);
         }
@@ -69,7 +65,7 @@ namespace Equality.Views
 
         private void Grid_MouseMove(object sender, MouseEventArgs e)
         {
-            if (DragColumn == null) {
+            if (!IsDragging) {
                 return;
             }
 
@@ -100,8 +96,6 @@ namespace Equality.Views
 
         private void StopDragging()
         {
-            DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
-            DragColumn = null;
             Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
             Vm.DragColumn = null;
         }
