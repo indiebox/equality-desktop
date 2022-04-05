@@ -61,6 +61,8 @@ namespace Equality.ViewModels
 
         #region Properties
 
+        public Project Project { get; set; } = StateManager.SelectedProject;
+
         public ObservableCollection<Board> Boards { get; set; } = new();
 
         public CreateBoardControlViewModel CreateBoardVm { get; set; }

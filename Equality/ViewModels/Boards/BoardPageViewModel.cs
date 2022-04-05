@@ -9,6 +9,7 @@ using Catel.MVVM;
 
 using Catel.Services;
 
+using Equality.Controls;
 using Equality.Data;
 using Equality.Extensions;
 using Equality.Helpers;
@@ -87,6 +88,8 @@ namespace Equality.ViewModels
         [Model]
         public Board Board { get; set; }
 
+        public Project Project { get; set; } = StateManager.SelectedProject;
+
         public ObservableCollection<Column> Columns { get; set; } = new();
 
         public CreateColumnControlViewModel CreateColumnVm { get; set; }
@@ -99,6 +102,8 @@ namespace Equality.ViewModels
 
         [Validatable]
         public string NewCardName { get; set; }
+
+        public ColumnControl DragColumn { get; set; }
 
         #endregion
 

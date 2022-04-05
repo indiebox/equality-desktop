@@ -11,37 +11,42 @@
                    mc:Ignorable="d"
                    d:Background="{StaticResource MaterialDesignPaper}"
                    d:DataContext="{d:DesignInstance Type=vm:CreateColumnControlViewModel}">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <Border CornerRadius="3"
+            Width="350"
+            Background="#ebecf0"
+            Padding="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                 Style="{StaticResource MaterialDesignTextBox}"
-                 AcceptsReturn="False"
-                 Margin="0,0,0,5"
-                 materialDesign:ValidationAssist.FontSize="14"
-                 materialDesign:ValidationAssist.UsePopup="True"
-                 materialDesign:HintAssist.Hint="Название колонки">
-            <i:Interaction.Behaviors>
-                <catel:Focus />
-            </i:Interaction.Behaviors>
-        </TextBox>
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource MaterialDesignTextBox}"
+                     AcceptsReturn="False"
+                     Margin="0,0,0,30"
+                     materialDesign:ValidationAssist.FontSize="14"
+                     materialDesign:ValidationAssist.UsePopup="True"
+                     materialDesign:HintAssist.Hint="Название колонки">
+                <i:Interaction.Behaviors>
+                    <catel:Focus />
+                </i:Interaction.Behaviors>
+            </TextBox>
 
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <Button Margin="0,0,10,0"
-                    Command="{Binding CreateColumn}">Добавить</Button>
-            <Button Grid.Column="1"
-                    Command="{Binding CloseWindow}"
-                    Style="{StaticResource MaterialDesignOutlinedButton}"
-                    Cursor="Hand">Отменить</Button>
+                <Button Margin="0,0,10,0"
+                        Command="{Binding CreateColumn}">Добавить</Button>
+                <Button Grid.Column="1"
+                        Command="{Binding CloseWindow}"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Cursor="Hand">Отменить</Button>
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 
 </catel:UserControl>
