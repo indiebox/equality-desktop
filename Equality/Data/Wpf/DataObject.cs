@@ -24,6 +24,17 @@
     //         </CompositeCollection>
     //     </ListBox.ItemsSource>
     // </ListBox>
+    // Also this object should be created at top-level ListBox.
+    //
+    // To use this in ResourceDictionaries:
+    // <ResourceDictionary xmlns = "http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    //                 xmlns:objects="clr-namespace:Equality.Data.Wpf">
+    // <ResourceDictionary.MergedDictionaries>
+    //     <ResourceDictionary>
+    //         <objects:DataObject x:Key="DataObject" />
+    //     </ResourceDictionary>
+    // </ResourceDictionary.MergedDictionaries>
+    // </ResourceDictionary>
 
     internal class DataObject
     {

@@ -1,0 +1,155 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Equality.Controls"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:catel="http://schemas.catelproject.com"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:equality="http://equality.indiebox.ru/schemas">
+    <Style TargetType="{x:Type controls:CardControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:CardControl}">
+                    <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="Visibility"
+                                                    Value="Visible" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsEditable, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                             Value="True">
+                                                    <Setter Property="Visibility"
+                                                            Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.RowSpan="2"
+                                               FontSize="14"
+                                               TextWrapping="Wrap"
+                                               Margin="10"
+                                               Text="{Binding Path=Card.Name, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+
+                                    <materialDesign:PopupBox Grid.Row="0"
+                                                             Grid.Column="1"
+                                                             Margin="5,0"
+                                                             VerticalAlignment="Top"
+                                                             StaysOpen="False"
+                                                             PlacementMode="BottomAndAlignRightEdges">
+                                        <materialDesign:PopupBox.ToggleContent>
+                                            <materialDesign:PackIcon Width="25"
+                                                                     Height="25"
+                                                                     Kind="DotsHorizontal"
+                                                                     Foreground="Gray" />
+                                        </materialDesign:PopupBox.ToggleContent>
+
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+
+                                            <Menu FontSize="14">
+                                                <Menu.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <VirtualizingStackPanel Orientation="Vertical" />
+                                                    </ItemsPanelTemplate>
+                                                </Menu.ItemsPanel>
+
+                                                <MenuItem Command="{TemplateBinding EditCardCommand}"
+                                                          CommandParameter="{Binding}"
+                                                          Cursor="Hand"
+                                                          Header="Изменить" />
+                                                <MenuItem Command="{TemplateBinding DeleteCardCommand}"
+                                                          CommandParameter="{Binding}"
+                                                          Cursor="Hand"
+                                                          Header="Удалить" />
+                                            </Menu>
+                                        </Grid>
+                                    </materialDesign:PopupBox>
+                                </Grid>
+
+                                <Grid>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="Visibility"
+                                                    Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsEditable, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                             Value="True">
+                                                    <Setter Property="Visibility"
+                                                            Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox Text="{Binding NewCardName, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                             Style="{StaticResource OutlinedTextBox}"
+                                             Margin="0"
+                                             BorderBrush="Transparent"
+                                             materialDesign:ValidationAssist.FontSize="14"
+                                             materialDesign:ValidationAssist.UsePopup="True"
+                                             materialDesign:HintAssist.Hint="Содержимое карточки">
+                                        <!--<i:Interaction.Behaviors>
+                                            <equality:FocusAndSelectText FocusMoment="PropertyChanged"
+                                                                         PropertyName="NewCardName"
+                                                                         Source="{Binding ., RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                        </i:Interaction.Behaviors>-->
+                                    </TextBox>
+
+                                    <StackPanel Grid.Column="1"
+                                                Orientation="Horizontal">
+                                        <Button VerticalAlignment="Top"
+                                                Style="{StaticResource MaterialDesignIconButton}"
+                                                Command="{TemplateBinding SaveNewCardNameCommand}">
+                                            <materialDesign:PackIcon Kind="ContentSave"
+                                                                     Width="20"
+                                                                     Height="20"
+                                                                     Foreground="{StaticResource PrimaryHueMidBrush}" />
+                                        </Button>
+                                        <Button VerticalAlignment="Top"
+                                                Style="{StaticResource MaterialDesignIconButton}"
+                                                Command="{TemplateBinding CancelEditCardCommand}">
+                                            <materialDesign:PackIcon Kind="Close"
+                                                                     Width="20"
+                                                                     Height="20"
+                                                                     Foreground="{StaticResource PrimaryHueMidBrush}" />
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </materialDesign:Card>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Focusable"
+                Value="False" />
+    </Style>
+</ResourceDictionary>

@@ -38,6 +38,8 @@
            BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
         <Setter Property="TextWrapping"
                 Value="Wrap" />
+        <Setter Property="TextAlignment"
+                Value="Left" />
         <Setter Property="VerticalScrollBarVisibility"
                 Value="Auto" />
         <Setter Property="AcceptsReturn"

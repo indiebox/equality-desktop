@@ -65,6 +65,7 @@
 
                 <ListBox x:Name="ListBoxColumns"
                          ItemsSource="{Binding Columns}"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                          VerticalContentAlignment="Stretch">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -75,14 +76,41 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type models:Column}">
                             <controls:ColumnControl Column="{Binding}"
-                                                    Margin="20,0"
+                                                    EditableCard="{Binding DataContext.EditableCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    NewCardName="{Binding DataContext.NewCardName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    CancelEditCardCommand="{Binding DataContext.CancelEditCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    SaveNewCardNameCommand="{Binding DataContext.SaveNewCardName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    CreateCardCommand="{Binding DataContext.OpenCreateCardWindow, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    EditCardCommand="{Binding DataContext.StartEditCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    DeleteCardCommand="{Binding DataContext.DeleteCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    Margin="10,0,0,0"
                                                     MouseEnter="ColumnControl_MouseEnter"
-                                                    MouseDown="ColumnControl_MouseDown" />
+                                                    MouseDown="ColumnControl_MouseDown">
+                                <controls:ColumnControl.Style>
+                                    <Style TargetType="{x:Type controls:ColumnControl}"
+                                           BasedOn="{StaticResource {x:Type controls:ColumnControl}}">
+                                        <Style.Triggers>
+                                            <DataTrigger Value="True">
+                                                <DataTrigger.Binding>
+                                                    <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                                        <Binding Path="." />
+                                                        <Binding Path="DataContext.ColumnForNewCard"
+                                                                 RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
+                                                    </MultiBinding>
+                                                </DataTrigger.Binding>
+                                                <Setter Property="CreateCardVm"
+                                                        Value="{Binding DataContext.CreateCardVm, RelativeSource={RelativeSource AncestorType=mvvm:Page}}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </controls:ColumnControl.Style>
+                            </controls:ColumnControl>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
                 <StackPanel Grid.Column="1"
                             VerticalAlignment="Top"
+                            Margin="10,0,0,0"
                             Background="#00000000">
                     <Button Padding="10"
                             Cursor="Hand"
@@ -129,6 +157,7 @@
                     </Button>
                 </StackPanel>
                 <ContentControl Grid.Column="1"
+                                Margin="10,0,0,0"
                                 VerticalAlignment="Top"
                                 Focusable="False"
                                 Content="{Binding DataContext.CreateColumnVm, RelativeSource={RelativeSource AncestorType=mvvm:Page}, Converter={catel:ViewModelToViewConverter}}" />
