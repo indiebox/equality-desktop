@@ -99,7 +99,7 @@
                                                               CommandParameter="{Binding}"
                                                               Foreground="{StaticResource DeleteItemColor}"
                                                               Cursor="Hand"
-                                                              Header="Ã“Ã¤Ã Ã«Ã¨Ã²Ã¼" />
+                                                              Header="Óäàëèòü" />
                                                 </Menu>
                                             </Grid>
                                         </materialDesign:PopupBox>
@@ -143,7 +143,7 @@
                                              materialDesign:TextFieldAssist.HasOutlinedTextField="False"
                                              materialDesign:ValidationAssist.FontSize="14"
                                              materialDesign:ValidationAssist.UsePopup="True"
-                                             materialDesign:HintAssist.Hint="Ã‘Ã®Ã¤Ã¥Ã°Ã¦Ã¨Ã¬Ã®Ã¥ ÃªÃ Ã°Ã²Ã®Ã·ÃªÃ¨">
+                                             materialDesign:HintAssist.Hint="Íàçâàíèå êîëîíêè">
                                         <i:Interaction.Behaviors>
                                             <equality:FocusAndSelectText FocusMoment="Event"
                                                                          EventName="IsVisibleChanged"
