@@ -78,6 +78,14 @@ namespace Equality.Controls
 
         #region Commands
 
+        public ICommand DeleteColumnCommand
+        {
+            get => (ICommand)GetValue(DeleteColumnCommandProperty);
+            set => SetValue(DeleteColumnCommandProperty, value);
+        }
+        public static readonly DependencyProperty DeleteColumnCommandProperty =
+          DependencyProperty.Register(nameof(DeleteColumnCommand), typeof(ICommand), typeof(ColumnControl), new PropertyMetadata(null));
+
         public ICommand CreateCardCommand
         {
             get => (ICommand)GetValue(CreateCardCommandProperty);
