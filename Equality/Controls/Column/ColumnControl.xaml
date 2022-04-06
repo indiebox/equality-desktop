@@ -99,7 +99,7 @@
                                                               CommandParameter="{Binding}"
                                                               Foreground="{StaticResource DeleteItemColor}"
                                                               Cursor="Hand"
-                                                              Header="Óäàëèòü" />
+                                                              Header="Ã“Ã¤Ã Ã«Ã¨Ã²Ã¼" />
                                                 </Menu>
                                             </Grid>
                                         </materialDesign:PopupBox>
@@ -107,8 +107,7 @@
                                     <Button Command="{TemplateBinding EditColumnCommand}"
                                             CommandParameter="{Binding}"
                                             Style="{StaticResource BaseButton}">
-                                        <TextBlock DockPanel.Dock="Left"
-                                                   FontSize="16"
+                                        <TextBlock FontSize="16"
                                                    Margin="10,10,0,10"
                                                    Text="{Binding Path=Column.Name, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                     </Button>
@@ -144,7 +143,7 @@
                                              materialDesign:TextFieldAssist.HasOutlinedTextField="False"
                                              materialDesign:ValidationAssist.FontSize="14"
                                              materialDesign:ValidationAssist.UsePopup="True"
-                                             materialDesign:HintAssist.Hint="Ñîäåðæèìîå êàðòî÷êè">
+                                             materialDesign:HintAssist.Hint="Ã‘Ã®Ã¤Ã¥Ã°Ã¦Ã¨Ã¬Ã®Ã¥ ÃªÃ Ã°Ã²Ã®Ã·ÃªÃ¨">
                                         <i:Interaction.Behaviors>
                                             <equality:FocusAndSelectText FocusMoment="Event"
                                                                          EventName="IsVisibleChanged"

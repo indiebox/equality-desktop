@@ -80,7 +80,7 @@ namespace Equality.ViewModels
             SaveNewColumnName = new(OnSaveNewColumnNameExecuteAsync, () => EditableColumn != null && GetFieldErrors("name") == string.Empty);
             CancelEditColumn = new(OnCancelEditColumnExecute);
             DeleteColumn = new(OnDeleteColumnExecuteAsync);
-
+            
             StartEditCard = new(OnStartEditCardExecuteAsync);
             SaveNewCardName = new(OnSaveNewCardNameExecuteAsync, () => EditableCard != null && GetFieldErrors("name") == string.Empty);
             CancelEditCard = new(OnCancelEditCardExecute);
