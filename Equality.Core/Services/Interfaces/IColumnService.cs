@@ -65,6 +65,7 @@ namespace Equality.Services
         /// <exception cref="ArgumentException" />
         public Task<ApiResponseMessage<TColumnModel>> UpdateColumnAsync(TColumnModel column, QueryParameters query = null);
 
+        /// <summary>
         /// Sends the update column order request to the API.
         /// </summary>
         /// <param name="column">The column.</param>
