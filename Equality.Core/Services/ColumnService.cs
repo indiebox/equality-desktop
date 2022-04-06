@@ -85,6 +85,8 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage> DeleteColumnAsync(ulong columnId)
         {
+            Argument.IsMinimal<ulong>(nameof(columnId), columnId, 1);
+
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"columns/{columnId}");
         }
 
