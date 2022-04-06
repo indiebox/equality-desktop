@@ -62,6 +62,14 @@ namespace Equality.Services
             return new(column, response);
         }
 
+        public Task<ApiResponseMessage> DeleteColumnAsync(TColumnModel column)
+            => DeleteColumnAsync(column.Id);
+
+        public async Task<ApiResponseMessage> DeleteColumnAsync(ulong columnId)
+        {
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"columns/{columnId}");
+        }
+
         /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
         protected TColumnModel Deserialize(JToken data) => ((IDeserializeModels<TColumnModel>)this).Deserialize(data);
 

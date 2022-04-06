@@ -5,12 +5,14 @@
              StartupUri="/Views/LoadingWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
+            <!-- Merge dictionaries -->
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:CustomColorTheme BaseTheme="Light"
                                                  PrimaryColor="#FD5A2E"
                                                  SecondaryColor="#EDEDED" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
 
+                <ResourceDictionary Source="Themes/Colors.xaml" />
                 <ResourceDictionary Source="Themes/Form.xaml" />
                 <ResourceDictionary Source="Themes/Button.xaml" />
                 <ResourceDictionary Source="Themes/ItemsPresenter.xaml" />
@@ -25,16 +27,6 @@
 
                 <ResourceDictionary Source="Notifications/Notifications.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <!-- Customize primary colors -->
-            <SolidColorBrush x:Key="PrimaryHueMidBrush"
-                             Color="#fd5a2e" />
-            <SolidColorBrush x:Key="PrimaryHueLightBrush"
-                             Color="#fe8c6d" />
-            <SolidColorBrush x:Key="PrimaryHueDarkBrush"
-                             Color="#5d2111" />
-            <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush"
-                             Color="White" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

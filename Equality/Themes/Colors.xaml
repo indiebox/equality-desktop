@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Customize primary colors -->
+    <SolidColorBrush x:Key="PrimaryHueMidBrush"
+                     Color="#fd5a2e" />
+    <SolidColorBrush x:Key="PrimaryHueLightBrush"
+                     Color="#fe8c6d" />
+    <SolidColorBrush x:Key="PrimaryHueDarkBrush"
+                     Color="#5d2111" />
+    <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush"
+                     Color="White" />
+
+    <!-- Additional colors -->
+    <SolidColorBrush x:Key="DeleteItemColor"
+                     Color="#FF3347" />
+</ResourceDictionary>

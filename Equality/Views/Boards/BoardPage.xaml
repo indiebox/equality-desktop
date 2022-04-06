@@ -27,7 +27,8 @@
             <controls:ColumnControl x:Name="MovingColumn"
                                     IsHitTestVisible="False"
                                     Column="{Binding DragColumn.Column}"
-                                    Visibility="{Binding DragColumn, Converter={catel:ReferenceToCollapsingVisibilityConverter}}" />
+                                    Visibility="{Binding DragColumn, Converter={catel:ReferenceToCollapsingVisibilityConverter}}"
+                                    d:Visibility="Collapsed" />
         </Canvas>
 
         <Grid>
@@ -76,6 +77,7 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type models:Column}">
                             <controls:ColumnControl Column="{Binding}"
+                                                    DeleteColumnCommand="{Binding DataContext.DeleteColumn, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                     EditableCard="{Binding DataContext.EditableCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                     NewCardName="{Binding DataContext.NewCardName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                     CancelEditCardCommand="{Binding DataContext.CancelEditCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"

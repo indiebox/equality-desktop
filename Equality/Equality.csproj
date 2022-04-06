@@ -213,10 +213,16 @@
         </Resource>
     </ItemGroup>
     <ItemGroup>
+      <Page Update="Views\Cards\DeleteCardDialog.xaml">
+        <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      </Page>
       <Page Update="Views\Columns\CreateColumnControl.xaml">
         <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       </Page>
       <Page Update="Views\Cards\CreateCardControl.xaml">
+        <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      </Page>
+      <Page Update="Views\Columns\DeleteColumnDialog.xaml">
         <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       </Page>
     </ItemGroup>
