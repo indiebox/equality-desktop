@@ -53,6 +53,20 @@ namespace Equality.Services
         public Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(ulong boardId, TColumnModel column, QueryParameters query = null);
 
         /// <summary>
+        /// Sends the update column request to the API.
+        /// </summary>
+        /// <param name="column">The column.</param>
+        /// <param name="query">The query parameters.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage<TColumnModel>> UpdateColumnAsync(TColumnModel column, QueryParameters query = null);
+
+        /// <summary>
         /// Sends the delete column request to the API.
         /// </summary>
         /// <param name="column">The column.</param>

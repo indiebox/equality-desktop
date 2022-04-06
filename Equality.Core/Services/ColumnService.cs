@@ -62,11 +62,31 @@ namespace Equality.Services
             return new(column, response);
         }
 
+        public async Task<ApiResponseMessage<TColumnModel>> UpdateColumnAsync(TColumnModel column, QueryParameters query = null)
+        {
+            Argument.IsNotNull(nameof(column), column);
+            Argument.IsMinimal<ulong>("column.Id", column.Id, 1);
+            query ??= new QueryParameters();
+
+            Dictionary<string, object> data = new()
+            {
+                { "name", column.Name },
+            };
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync(query.Parse($"columns/{column.Id}"), data);
+
+            column = Deserialize(response.Content["data"]);
+
+            return new(column, response);
+        }
+
         public Task<ApiResponseMessage> DeleteColumnAsync(TColumnModel column)
             => DeleteColumnAsync(column.Id);
 
         public async Task<ApiResponseMessage> DeleteColumnAsync(ulong columnId)
         {
+            Argument.IsMinimal<ulong>(nameof(columnId), columnId, 1);
+
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"columns/{columnId}");
         }
 

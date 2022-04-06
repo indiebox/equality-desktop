@@ -49,6 +49,10 @@ namespace Equality.ViewModels
                             new Card() { Name = "Card 3" },
                         }
                     },
+                    new Column()
+                    {
+                        Name = "Empty column",
+                    },
                 });
             });
 
@@ -71,29 +75,41 @@ namespace Equality.ViewModels
             ToBoards = new(OnToBoardsExecute);
             OpenCreateColumnWindow = new(OnOpenCreateColumnWindowExecuteAsync);
             OpenCreateCardWindow = new(OnOpenCreateCardWindowExecuteAsync);
-            DeleteColumn = new(OnDeleteColumnExecuteAsync);
-            StartEditCard = new(OnStartEditCardExecuteAsync);
-            CancelEditCard = new(OnCancelEditCardExecute);
-            SaveNewCardName = new(OnSaveNewCardNameExecuteAsync, () => !HasErrors);
-            DeleteCard = new(OnDeleteCardExecuteAsync);
 
-            ApiFieldsMap = new Dictionary<string, string>()
-            {
-                { nameof(NewCardName), "name" },
-            };
+            StartEditColumn = new(OnStartEditColumnExecuteAsync);
+            SaveNewColumnName = new(OnSaveNewColumnNameExecuteAsync, () => EditableColumn != null && GetFieldErrors("name") == string.Empty);
+            CancelEditColumn = new(OnCancelEditColumnExecute);
+            DeleteColumn = new(OnDeleteColumnExecuteAsync);
+            
+            StartEditCard = new(OnStartEditCardExecuteAsync);
+            SaveNewCardName = new(OnSaveNewCardNameExecuteAsync, () => EditableCard != null && GetFieldErrors("name") == string.Empty);
+            CancelEditCard = new(OnCancelEditCardExecute);
+            DeleteCard = new(OnDeleteCardExecuteAsync);
         }
 
         #region Properties
 
+        public Project Project { get; set; } = StateManager.SelectedProject;
 
         [Model]
         public Board Board { get; set; }
 
-        public Project Project { get; set; } = StateManager.SelectedProject;
-
         public ObservableCollection<Column> Columns { get; set; } = new();
 
+        #region ColumnProperties
+
+        public ColumnControl DragColumn { get; set; }
+
         public CreateColumnControlViewModel CreateColumnVm { get; set; }
+
+        public Column EditableColumn { get; set; }
+
+        [Validatable]
+        public string NewColumnName { get; set; }
+
+        #endregion ColumnProperties
+
+        #region CardProperties
 
         public CreateCardControlViewModel CreateCardVm { get; set; }
 
@@ -104,7 +120,7 @@ namespace Equality.ViewModels
         [Validatable]
         public string NewCardName { get; set; }
 
-        public ColumnControl DragColumn { get; set; }
+        #endregion CardProperties
 
         #endregion
 
@@ -140,6 +156,59 @@ namespace Equality.ViewModels
         }
 
         #endregion CreateColumn
+
+        #region EditColumn
+
+        public Command<Column> StartEditColumn { get; private set; }
+
+        private void OnStartEditColumnExecuteAsync(Column column)
+        {
+            NewColumnName = column.Name;
+            EditableColumn = column;
+        }
+
+        public Command CancelEditColumn { get; private set; }
+
+        private void OnCancelEditColumnExecute()
+        {
+            EditableColumn = null;
+            NewColumnName = null;
+            Validate(true);
+        }
+
+        public TaskCommand SaveNewColumnName { get; private set; }
+
+        private async Task OnSaveNewColumnNameExecuteAsync()
+        {
+            if (FirstValidationHasErrors()) {
+                return;
+            }
+
+            if (NewColumnName == EditableColumn.Name) {
+                CancelEditColumn.Execute();
+
+                return;
+            }
+
+            try {
+                Column column = new()
+                {
+                    Id = EditableColumn.Id,
+                    Name = NewColumnName,
+                };
+
+                var response = await ColumnService.UpdateColumnAsync(column);
+                EditableColumn.Name = response.Object.Name;
+
+                CancelEditColumn.Execute();
+            } catch (UnprocessableEntityHttpException e) {
+                HandleApiErrors(e.Errors);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
+        #endregion
 
         #region DeleteColumn
 
@@ -304,6 +373,14 @@ namespace Equality.ViewModels
 
             if (EditableCard != null) {
                 validator.ValidateField(nameof(NewCardName), NewCardName, new()
+                {
+                    new NotEmptyStringRule(),
+                    new MaxStringLengthRule(255),
+                });
+            }
+
+            if (EditableColumn != null) {
+                validator.ValidateField(nameof(NewColumnName), NewColumnName, new()
                 {
                     new NotEmptyStringRule(),
                     new MaxStringLengthRule(255),
