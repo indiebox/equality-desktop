@@ -77,13 +77,17 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type models:Column}">
                             <controls:ColumnControl Column="{Binding}"
+                                                    EditColumnCommand="{Binding DataContext.StartEditColumn, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    NewColumnName="{Binding DataContext.NewColumnName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    SaveNewColumnNameCommand="{Binding DataContext.SaveNewColumnName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    CancelEditColumnCommand="{Binding DataContext.CancelEditColumn, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                     DeleteColumnCommand="{Binding DataContext.DeleteColumn, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
-                                                    EditableCard="{Binding DataContext.EditableCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
-                                                    NewCardName="{Binding DataContext.NewCardName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
-                                                    CancelEditCardCommand="{Binding DataContext.CancelEditCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
-                                                    SaveNewCardNameCommand="{Binding DataContext.SaveNewCardName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                     CreateCardCommand="{Binding DataContext.OpenCreateCardWindow, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                     EditCardCommand="{Binding DataContext.StartEditCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    EditableCard="{Binding DataContext.EditableCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    NewCardName="{Binding DataContext.NewCardName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    SaveNewCardNameCommand="{Binding DataContext.SaveNewCardName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    CancelEditCardCommand="{Binding DataContext.CancelEditCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                     DeleteCardCommand="{Binding DataContext.DeleteCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                     Margin="10,0,0,0"
                                                     MouseEnter="ColumnControl_MouseEnter"
@@ -102,6 +106,18 @@
                                                 </DataTrigger.Binding>
                                                 <Setter Property="CreateCardVm"
                                                         Value="{Binding DataContext.CreateCardVm, RelativeSource={RelativeSource AncestorType=mvvm:Page}}" />
+                                            </DataTrigger>
+
+                                            <DataTrigger Value="True">
+                                                <DataTrigger.Binding>
+                                                    <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                                        <Binding Path="." />
+                                                        <Binding Path="DataContext.EditableColumn"
+                                                                 RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
+                                                    </MultiBinding>
+                                                </DataTrigger.Binding>
+                                                <Setter Property="IsEditable"
+                                                        Value="True" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

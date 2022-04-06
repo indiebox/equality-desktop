@@ -96,6 +96,8 @@ namespace Equality.Services
 
         public async Task<ApiResponseMessage> DeleteCardAsync(ulong cardId)
         {
+            Argument.IsMinimal<ulong>(nameof(cardId), cardId, 1);
+
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"cards/{cardId}");
         }
 

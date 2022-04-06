@@ -7,12 +7,25 @@ using Equality.MVVM;
 
 namespace Equality.Controls
 {
-    public sealed class ColumnControl : Control
+    public class ColumnControl : Control
     {
         static ColumnControl()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ColumnControl), new FrameworkPropertyMetadata(typeof(ColumnControl)));
         }
+
+        /// <summary>
+        /// Does this column in 'dragging' mode.
+        /// </summary>
+        public bool IsDragging
+        {
+            get => (bool)GetValue(IsDraggingProperty);
+            set => SetValue(IsDraggingProperty, value);
+        }
+        public static readonly DependencyProperty IsDraggingProperty =
+          DependencyProperty.Register(nameof(IsDragging), typeof(bool), typeof(ColumnControl), new PropertyMetadata(false));
+
+        #region ColumnProperties
 
         public Column Column
         {
@@ -21,6 +34,26 @@ namespace Equality.Controls
         }
         public static readonly DependencyProperty ColumnProperty =
           DependencyProperty.Register(nameof(Column), typeof(Column), typeof(ColumnControl), new PropertyMetadata(null));
+
+        public string NewColumnName
+        {
+            get => (string)GetValue(NewColumnNameProperty);
+            set => SetValue(NewColumnNameProperty, value);
+        }
+        public static readonly DependencyProperty NewColumnNameProperty =
+          DependencyProperty.Register(nameof(NewColumnName), typeof(string), typeof(ColumnControl), new PropertyMetadata(string.Empty));
+
+        public bool IsEditable
+        {
+            get => (bool)GetValue(IsEditableProperty);
+            set => SetValue(IsEditableProperty, value);
+        }
+        public static readonly DependencyProperty IsEditableProperty =
+          DependencyProperty.Register(nameof(IsEditable), typeof(bool), typeof(ColumnControl), new PropertyMetadata(false));
+
+        #endregion ColumnProperties
+
+        #region CardProperties
 
         public Card EditableCard
         {
@@ -37,17 +70,6 @@ namespace Equality.Controls
         }
         public static readonly DependencyProperty NewCardNameProperty =
           DependencyProperty.Register(nameof(NewCardName), typeof(string), typeof(ColumnControl), new PropertyMetadata(string.Empty));
-
-        /// <summary>
-        /// Does this column in 'dragging' mode.
-        /// </summary>
-        public bool IsDragging
-        {
-            get => (bool)GetValue(IsDraggingProperty);
-            set => SetValue(IsDraggingProperty, value);
-        }
-        public static readonly DependencyProperty IsDraggingProperty =
-          DependencyProperty.Register(nameof(IsDragging), typeof(bool), typeof(ColumnControl), new PropertyMetadata(false));
 
         /// <summary>
         /// View model thats represent create card view.
@@ -76,7 +98,33 @@ namespace Equality.Controls
             list.ScrollIntoView(list.Items[^1]);
         }
 
-        #region Commands
+        #endregion CardProperties
+
+        #region ColumnCommands
+
+        public ICommand EditColumnCommand
+        {
+            get => (ICommand)GetValue(EditColumnCommandProperty);
+            set => SetValue(EditColumnCommandProperty, value);
+        }
+        public static readonly DependencyProperty EditColumnCommandProperty =
+          DependencyProperty.Register(nameof(EditColumnCommand), typeof(ICommand), typeof(ColumnControl), new PropertyMetadata(null));
+
+        public ICommand SaveNewColumnNameCommand
+        {
+            get => (ICommand)GetValue(SaveNewColumnNameCommandProperty);
+            set => SetValue(SaveNewColumnNameCommandProperty, value);
+        }
+        public static readonly DependencyProperty SaveNewColumnNameCommandProperty =
+          DependencyProperty.Register(nameof(SaveNewColumnNameCommand), typeof(ICommand), typeof(ColumnControl), new PropertyMetadata(null));
+
+        public ICommand CancelEditColumnCommand
+        {
+            get => (ICommand)GetValue(CancelEditColumnCommandProperty);
+            set => SetValue(CancelEditColumnCommandProperty, value);
+        }
+        public static readonly DependencyProperty CancelEditColumnCommandProperty =
+          DependencyProperty.Register(nameof(CancelEditColumnCommand), typeof(ICommand), typeof(ColumnControl), new PropertyMetadata(null));
 
         public ICommand DeleteColumnCommand
         {
@@ -85,6 +133,10 @@ namespace Equality.Controls
         }
         public static readonly DependencyProperty DeleteColumnCommandProperty =
           DependencyProperty.Register(nameof(DeleteColumnCommand), typeof(ICommand), typeof(ColumnControl), new PropertyMetadata(null));
+
+        #endregion ColumnCommands
+
+        #region CardCommands
 
         public ICommand CreateCardCommand
         {
@@ -126,6 +178,6 @@ namespace Equality.Controls
         public static readonly DependencyProperty DeleteCardCommandProperty =
           DependencyProperty.Register(nameof(DeleteCardCommand), typeof(ICommand), typeof(ColumnControl), new PropertyMetadata(null));
 
-        #endregion
+        #endregion CardCommands
     }
 }
