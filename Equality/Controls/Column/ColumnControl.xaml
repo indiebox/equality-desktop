@@ -8,6 +8,8 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:catel="http://schemas.catelproject.com"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:equality="http://equality.indiebox.ru/schemas"
                     mc:Ignorable="d">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary>
@@ -46,11 +48,22 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
-                                <DockPanel LastChildFill="False">
-                                    <TextBlock DockPanel.Dock="Left"
-                                               FontSize="16"
-                                               Margin="10"
-                                               Text="{Binding Path=Column.Name, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <!-- Column name -->
+                                <DockPanel LastChildFill="True">
+                                    <DockPanel.Style>
+                                        <Style TargetType="DockPanel">
+                                            <Setter Property="Visibility"
+                                                    Value="Visible" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsEditable, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                             Value="True">
+                                                    <Setter Property="Visibility"
+                                                            Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DockPanel.Style>
+
                                     <StackPanel DockPanel.Dock="Right"
                                                 Orientation="Horizontal">
                                         <Button Command="{TemplateBinding CreateCardCommand}"
@@ -91,8 +104,76 @@
                                             </Grid>
                                         </materialDesign:PopupBox>
                                     </StackPanel>
+                                    <Button Command="{TemplateBinding EditColumnCommand}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource BaseButton}">
+                                        <TextBlock DockPanel.Dock="Left"
+                                                   FontSize="16"
+                                                   Margin="10,10,0,10"
+                                                   Text="{Binding Path=Column.Name, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                    </Button>
                                 </DockPanel>
 
+                                <!-- Edit column name -->
+                                <Grid>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="Visibility"
+                                                    Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsEditable, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                             Value="True">
+                                                    <Setter Property="Visibility"
+                                                            Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox Text="{Binding NewColumnName, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                             Style="{StaticResource OutlinedTextBox}"
+                                             BorderThickness="0"
+                                             Margin="0"
+                                             Padding="10"
+                                             materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                                             materialDesign:TextFieldAssist.HasOutlinedTextField="False"
+                                             materialDesign:ValidationAssist.FontSize="14"
+                                             materialDesign:ValidationAssist.UsePopup="True"
+                                             materialDesign:HintAssist.Hint="Содержимое карточки">
+                                        <i:Interaction.Behaviors>
+                                            <equality:FocusAndSelectText FocusMoment="Event"
+                                                                         EventName="IsVisibleChanged"
+                                                                         Source="{Binding ., RelativeSource={RelativeSource AncestorType=TextBox}}" />
+                                        </i:Interaction.Behaviors>
+                                    </TextBox>
+
+                                    <StackPanel Grid.Column="1"
+                                                Orientation="Horizontal">
+                                        <Button VerticalAlignment="Top"
+                                                Style="{StaticResource MaterialDesignIconButton}"
+                                                Command="{TemplateBinding SaveNewColumnNameCommand}">
+                                            <materialDesign:PackIcon Kind="ContentSave"
+                                                                     Width="20"
+                                                                     Height="20"
+                                                                     Foreground="{StaticResource PrimaryHueMidBrush}" />
+                                        </Button>
+                                        <Button VerticalAlignment="Top"
+                                                Style="{StaticResource MaterialDesignIconButton}"
+                                                Command="{TemplateBinding CancelEditColumnCommand}">
+                                            <materialDesign:PackIcon Kind="Close"
+                                                                     Width="20"
+                                                                     Height="20"
+                                                                     Foreground="{StaticResource PrimaryHueMidBrush}" />
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- Cards -->
                                 <ListBox Name="CardsList"
                                          Grid.Row="1"
                                          VirtualizingPanel.VirtualizationMode="Standard">
