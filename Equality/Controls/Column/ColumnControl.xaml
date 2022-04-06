@@ -84,7 +84,7 @@
 
                                                     <MenuItem Command="{TemplateBinding DeleteColumnCommand}"
                                                               CommandParameter="{Binding}"
-                                                              Foreground="#FF3347"
+                                                              Foreground="{StaticResource DeleteItemColor}"
                                                               Cursor="Hand"
                                                               Header="Удалить" />
                                                 </Menu>

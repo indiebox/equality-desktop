@@ -82,7 +82,7 @@
                                                           Header="Изменить" />
                                                 <MenuItem Command="{TemplateBinding DeleteCardCommand}"
                                                           CommandParameter="{Binding}"
-                                                          Foreground="#FF3347"
+                                                          Foreground="{StaticResource DeleteItemColor}"
                                                           Cursor="Hand"
                                                           Header="Удалить" />
                                             </Menu>

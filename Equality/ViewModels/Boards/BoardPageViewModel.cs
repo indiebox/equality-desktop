@@ -147,6 +147,13 @@ namespace Equality.ViewModels
 
         private async Task OnDeleteColumnExecuteAsync(Column column)
         {
+            var view = new Views.DeleteColumnDialog();
+            bool result = (bool)await MaterialDesignThemes.Wpf.DialogHost.Show(view);
+
+            if (!result) {
+                return;
+            }
+
             try {
                 await ColumnService.DeleteColumnAsync(column);
 
