@@ -82,7 +82,7 @@ namespace Equality.ViewModels
             CancelEditColumn = new(OnCancelEditColumnExecute);
             UpdateColumnOrder = new(OnUpdateColumnOrderExecuteAsync);
             DeleteColumn = new(OnDeleteColumnExecuteAsync);
-            
+
             StartEditCard = new(OnStartEditCardExecuteAsync);
             SaveNewCardName = new(OnSaveNewCardNameExecuteAsync, () => EditableCard != null && GetFieldErrors("name") == string.Empty);
             CancelEditCard = new(OnCancelEditCardExecute);
@@ -158,7 +158,7 @@ namespace Equality.ViewModels
         }
 
         #endregion CreateColumn
-        
+
         #region EditColumn
 
         public Command<Column> StartEditColumn { get; private set; }
@@ -211,7 +211,7 @@ namespace Equality.ViewModels
         }
 
         #endregion EditColumn
-        
+
         #region UpdateColumnOrder
 
         public TaskCommand UpdateColumnOrder { get; private set; }
@@ -221,7 +221,7 @@ namespace Equality.ViewModels
             if (DragColumn == null) {
                 return;
             }
-            
+
             try {
                 var afterColumn = Columns.Contains(DragColumn.Column)
                     ? Columns.TakeWhile(col => col.Id != DragColumn.Column.Id).LastOrDefault()
@@ -231,7 +231,7 @@ namespace Equality.ViewModels
                 ExceptionHandler.Handle(e);
             }
         }
-        
+
         #endregion UpdateColumnOrder
 
         #region DeleteColumn

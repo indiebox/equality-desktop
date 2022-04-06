@@ -52,6 +52,7 @@ namespace Equality.Services
         /// <param name="query">The query parameters.</param>
         public Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(ulong boardId, TColumnModel column, QueryParameters query = null);
 
+        /// <summary>
         /// Sends the update column request to the API.
         /// </summary>
         /// <param name="column">The column.</param>
