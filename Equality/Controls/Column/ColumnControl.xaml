@@ -95,6 +95,10 @@
                                                         </ItemsPanelTemplate>
                                                     </Menu.ItemsPanel>
 
+                                                    <MenuItem Command="{TemplateBinding EditColumnCommand}"
+                                                              CommandParameter="{Binding}"
+                                                              Cursor="Hand"
+                                                              Header="Изменить" />
                                                     <MenuItem Command="{TemplateBinding DeleteColumnCommand}"
                                                               CommandParameter="{Binding}"
                                                               Foreground="{StaticResource DeleteItemColor}"
@@ -104,13 +108,9 @@
                                             </Grid>
                                         </materialDesign:PopupBox>
                                     </StackPanel>
-                                    <Button Command="{TemplateBinding EditColumnCommand}"
-                                            CommandParameter="{Binding}"
-                                            Style="{StaticResource BaseButton}">
-                                        <TextBlock FontSize="16"
-                                                   Margin="10,10,0,10"
-                                                   Text="{Binding Path=Column.Name, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                                    </Button>
+                                    <TextBlock FontSize="16"
+                                               Margin="10,10,0,10"
+                                               Text="{Binding Path=Column.Name, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                 </DockPanel>
 
                                 <!-- Edit column name -->
