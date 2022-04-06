@@ -62,6 +62,20 @@ namespace Equality.Services
             return new(column, response);
         }
 
+        public Task<ApiResponseMessage> UpdateColumnOrderAsync(TColumnModel column, TColumnModel afterColumn)
+            => UpdateColumnOrderAsync(column.Id, afterColumn?.Id ?? 0);
+        public async Task<ApiResponseMessage> UpdateColumnOrderAsync(ulong columnId, ulong afterColumnId)
+        {
+            Argument.IsMinimal<ulong>(nameof(columnId), columnId, 1);
+
+            Dictionary<string, object> data = new()
+            {
+                { "after", afterColumnId.ToString() },
+            };
+
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"columns/{columnId}/order", data);
+        }
+
         public Task<ApiResponseMessage> DeleteColumnAsync(TColumnModel column)
             => DeleteColumnAsync(column.Id);
 

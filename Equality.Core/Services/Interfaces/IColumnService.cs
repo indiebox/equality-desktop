@@ -53,6 +53,25 @@ namespace Equality.Services
         public Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(ulong boardId, TColumnModel column, QueryParameters query = null);
 
         /// <summary>
+        /// Sends the update column order request to the API.
+        /// </summary>
+        /// <param name="column">The column.</param>
+        /// <param name="afterColumn">The column after which insert new. If null - insert column at first position.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage> UpdateColumnOrderAsync(TColumnModel column, TColumnModel afterColumn);
+
+        /// <inheritdoc cref="UpdateColumnOrderAsync(TColumnModel, TColumnModel)" />
+        /// <param name="columnId">The column id.</param>
+        /// <param name="afterColumnId">The column id after which insert new. If 0 - insert column at first position.</param>
+        public Task<ApiResponseMessage> UpdateColumnOrderAsync(ulong columnId, ulong afterColumnId);
+
+        /// <summary>
         /// Sends the delete column request to the API.
         /// </summary>
         /// <param name="column">The column.</param>
