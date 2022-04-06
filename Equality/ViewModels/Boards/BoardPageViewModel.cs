@@ -149,7 +149,6 @@ namespace Equality.ViewModels
         {
             var view = new Views.DeleteColumnDialog();
             bool result = (bool)await MaterialDesignThemes.Wpf.DialogHost.Show(view);
-
             if (!result) {
                 return;
             }
@@ -256,6 +255,12 @@ namespace Equality.ViewModels
 
         private async Task OnDeleteCardExecuteAsync(Card card)
         {
+            var view = new Views.DeleteCardDialog();
+            bool result = (bool)await MaterialDesignThemes.Wpf.DialogHost.Show(view);
+            if (!result) {
+                return;
+            }
+
             try {
                 await CardService.DeleteCardAsync(card);
 
