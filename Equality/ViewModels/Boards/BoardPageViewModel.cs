@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -71,6 +72,8 @@ namespace Equality.ViewModels
             ToBoards = new(OnToBoardsExecute);
             OpenCreateColumnWindow = new(OnOpenCreateColumnWindowExecuteAsync);
             OpenCreateCardWindow = new(OnOpenCreateCardWindowExecuteAsync);
+
+            UpdateColumnOrder = new(OnUpdateColumnOrderExecuteAsync);
             DeleteColumn = new(OnDeleteColumnExecuteAsync);
             StartEditCard = new(OnStartEditCardExecuteAsync);
             CancelEditCard = new(OnCancelEditCardExecute);
@@ -140,6 +143,28 @@ namespace Equality.ViewModels
         }
 
         #endregion CreateColumn
+
+        #region UpdateColumnOrder
+
+        public TaskCommand UpdateColumnOrder { get; private set; }
+
+        private async Task OnUpdateColumnOrderExecuteAsync()
+        {
+            if (DragColumn == null) {
+                return;
+            }
+
+            try {
+                var afterColumn = Columns.Contains(DragColumn.Column)
+                    ? Columns.TakeWhile(col => col.Id != DragColumn.Column.Id).LastOrDefault()
+                    : null;
+                await ColumnService.UpdateColumnOrderAsync(DragColumn.Column, afterColumn);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
+        #endregion
 
         #region DeleteColumn
 
