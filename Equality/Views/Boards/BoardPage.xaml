@@ -91,7 +91,7 @@
                                                     DeleteCardCommand="{Binding DataContext.DeleteCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                     Margin="10,0,0,0"
                                                     MouseEnter="ColumnControl_MouseEnter"
-                                                    PreviewMouseDown="ColumnControl_MouseDown">
+                                                    MouseDown="ColumnControl_MouseDown">
                                 <controls:ColumnControl.Style>
                                     <Style TargetType="{x:Type controls:ColumnControl}"
                                            BasedOn="{StaticResource {x:Type controls:ColumnControl}}">
