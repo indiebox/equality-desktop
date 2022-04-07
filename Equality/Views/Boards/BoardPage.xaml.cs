@@ -25,6 +25,8 @@ namespace Equality.Views
 
         BoardPageViewModel Vm { get; set; }
 
+        int DragColumnInitialPosition { get; set; }
+
         bool IsDragging => Vm.DragColumn != null;
 
         public Point DeltaMouse { get; set; }
@@ -38,6 +40,7 @@ namespace Equality.Views
             }
             Vm.DragColumn = ParseControl(sender);
             Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
+            DragColumnInitialPosition = Vm.Columns.IndexOf(Vm.DragColumn.Column);
 
             DeltaMouse = Mouse.GetPosition(DraggingCanvas);
             ColumnRelativePoint = Vm.DragColumn.TransformToAncestor(this).Transform(new Point(0, 0));
@@ -96,6 +99,10 @@ namespace Equality.Views
 
         private void StopDragging()
         {
+            if (DragColumnInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn.Column)) {
+                Vm.UpdateColumnOrder.Execute();
+            }
+
             Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
             Vm.DragColumn = null;
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -79,8 +80,9 @@ namespace Equality.ViewModels
             StartEditColumn = new(OnStartEditColumnExecuteAsync);
             SaveNewColumnName = new(OnSaveNewColumnNameExecuteAsync, () => EditableColumn != null && GetFieldErrors("name") == string.Empty);
             CancelEditColumn = new(OnCancelEditColumnExecute);
+            UpdateColumnOrder = new(OnUpdateColumnOrderExecuteAsync);
             DeleteColumn = new(OnDeleteColumnExecuteAsync);
-            
+
             StartEditCard = new(OnStartEditCardExecuteAsync);
             SaveNewCardName = new(OnSaveNewCardNameExecuteAsync, () => EditableCard != null && GetFieldErrors("name") == string.Empty);
             CancelEditCard = new(OnCancelEditCardExecute);
@@ -208,7 +210,29 @@ namespace Equality.ViewModels
             }
         }
 
-        #endregion
+        #endregion EditColumn
+
+        #region UpdateColumnOrder
+
+        public TaskCommand UpdateColumnOrder { get; private set; }
+
+        private async Task OnUpdateColumnOrderExecuteAsync()
+        {
+            if (DragColumn == null) {
+                return;
+            }
+
+            try {
+                var afterColumn = Columns.Contains(DragColumn.Column)
+                    ? Columns.TakeWhile(col => col.Id != DragColumn.Column.Id).LastOrDefault()
+                    : null;
+                await ColumnService.UpdateColumnOrderAsync(DragColumn.Column, afterColumn);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
+        #endregion UpdateColumnOrder
 
         #region DeleteColumn
 
