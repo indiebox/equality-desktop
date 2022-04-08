@@ -1,9 +1,7 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-using Equality.Controls;
 using Equality.Models;
 using Equality.ViewModels;
 
@@ -18,7 +16,7 @@ namespace Equality.Views
             DataContextChanged += BoardPage_DataContextChanged;
         }
 
-        private void BoardPage_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+        private void BoardPage_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             Vm = (BoardPageViewModel)DataContext;
         }
@@ -58,11 +56,6 @@ namespace Equality.Views
             int dragColumnIndex = Vm.Columns.IndexOf(Vm.DragColumn);
 
             Vm.Columns.Move(oldIndex, dragColumnIndex);
-        }
-
-        private ColumnControl ParseControl(object sender)
-        {
-            return sender as ColumnControl;
         }
 
         private void Grid_MouseMove(object sender, MouseEventArgs e)
