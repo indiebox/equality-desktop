@@ -195,8 +195,6 @@ namespace Equality.ViewModels
             await base.InitializeAsync();
 
             LoadBoardsAsync();
-
-            // TODO: subscribe to events here
         }
 
         protected override async Task CloseAsync()
@@ -204,8 +202,6 @@ namespace Equality.ViewModels
             if (CreateBoardVm != null) {
                 CreateBoardVm.ClosedAsync -= CreateBoardVmClosedAsync;
             }
-
-            // TODO: unsubscribe from events here
 
             await base.CloseAsync();
         }

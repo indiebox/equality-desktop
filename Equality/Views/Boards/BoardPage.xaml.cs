@@ -1,10 +1,8 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
-using Equality.Controls;
+using Equality.Models;
 using Equality.ViewModels;
 
 namespace Equality.Views
@@ -18,7 +16,7 @@ namespace Equality.Views
             DataContextChanged += BoardPage_DataContextChanged;
         }
 
-        private void BoardPage_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+        private void BoardPage_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             Vm = (BoardPageViewModel)DataContext;
         }
@@ -38,12 +36,11 @@ namespace Equality.Views
             if (IsDragging || e.LeftButton != MouseButtonState.Pressed) {
                 return;
             }
-            Vm.DragColumn = ParseControl(sender);
-            Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
-            DragColumnInitialPosition = Vm.Columns.IndexOf(Vm.DragColumn.Column);
+            Vm.DragColumn = ((ContentControl)sender).Content as Column;
+            DragColumnInitialPosition = Vm.Columns.IndexOf(Vm.DragColumn);
 
             DeltaMouse = Mouse.GetPosition(DraggingCanvas);
-            ColumnRelativePoint = Vm.DragColumn.TransformToAncestor(this).Transform(new Point(0, 0));
+            ColumnRelativePoint = ((ContentControl)sender).TransformToAncestor(this).Transform(new Point(0, 0));
             Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X);
             Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y);
         }
@@ -53,17 +50,12 @@ namespace Equality.Views
             if (!IsDragging) {
                 return;
             }
-            var column = ParseControl(sender).Column;
+            var column = ((ContentControl)sender).Content as Column;
 
             int oldIndex = Vm.Columns.IndexOf(column);
-            int dragColumnIndex = Vm.Columns.IndexOf(Vm.DragColumn.Column);
+            int dragColumnIndex = Vm.Columns.IndexOf(Vm.DragColumn);
 
             Vm.Columns.Move(oldIndex, dragColumnIndex);
-        }
-
-        private ColumnControl ParseControl(object sender)
-        {
-            return sender as ColumnControl;
         }
 
         private void Grid_MouseMove(object sender, MouseEventArgs e)
@@ -99,11 +91,10 @@ namespace Equality.Views
 
         private void StopDragging()
         {
-            if (DragColumnInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn.Column)) {
+            if (DragColumnInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn)) {
                 Vm.UpdateColumnOrder.Execute();
             }
 
-            Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
             Vm.DragColumn = null;
         }
 
