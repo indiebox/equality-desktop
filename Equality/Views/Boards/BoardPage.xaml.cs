@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
 using Equality.Controls;
 using Equality.Models;
@@ -40,7 +39,6 @@ namespace Equality.Views
                 return;
             }
             Vm.DragColumn = ((ContentControl)sender).Content as Column;
-            //Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
             DragColumnInitialPosition = Vm.Columns.IndexOf(Vm.DragColumn);
 
             DeltaMouse = Mouse.GetPosition(DraggingCanvas);
@@ -104,7 +102,6 @@ namespace Equality.Views
                 Vm.UpdateColumnOrder.Execute();
             }
 
-            //Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
             Vm.DragColumn = null;
         }
 
