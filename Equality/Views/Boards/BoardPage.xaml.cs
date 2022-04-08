@@ -33,20 +33,20 @@ namespace Equality.Views
 
         public Point ColumnRelativePoint { get; set; }
 
-        private void ColumnControl_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (IsDragging || e.LeftButton != MouseButtonState.Pressed) {
-                return;
-            }
-            Vm.DragColumn = ParseControl(sender);
-            Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
-            DragColumnInitialPosition = Vm.Columns.IndexOf(Vm.DragColumn.Column);
+        //private void ColumnControl_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (IsDragging || e.LeftButton != MouseButtonState.Pressed) {
+        //        return;
+        //    }
+        //    Vm.DragColumn = ParseControl(sender);
+        //    Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
+        //    DragColumnInitialPosition = Vm.Columns.IndexOf(Vm.DragColumn.Column);
 
-            DeltaMouse = Mouse.GetPosition(DraggingCanvas);
-            ColumnRelativePoint = Vm.DragColumn.TransformToAncestor(this).Transform(new Point(0, 0));
-            Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X);
-            Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y);
-        }
+        //    DeltaMouse = Mouse.GetPosition(DraggingCanvas);
+        //    ColumnRelativePoint = Vm.DragColumn.TransformToAncestor(this).Transform(new Point(0, 0));
+        //    Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X);
+        //    Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y);
+        //}
 
         private async void ColumnControl_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -66,16 +66,16 @@ namespace Equality.Views
             return sender as ColumnControl;
         }
 
-        private void Grid_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (!IsDragging) {
-                return;
-            }
+        //private void Grid_MouseMove(object sender, MouseEventArgs e)
+        //{
+        //    if (!IsDragging) {
+        //        return;
+        //    }
 
-            var cursorPosition = Mouse.GetPosition(DraggingCanvas);
-            Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X + (cursorPosition.X - DeltaMouse.X));
-            Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y + (cursorPosition.Y - DeltaMouse.Y));
-        }
+        //    var cursorPosition = Mouse.GetPosition(DraggingCanvas);
+        //    Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X + (cursorPosition.X - DeltaMouse.X));
+        //    Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y + (cursorPosition.Y - DeltaMouse.Y));
+        //}
 
         #region StopDrag
 
