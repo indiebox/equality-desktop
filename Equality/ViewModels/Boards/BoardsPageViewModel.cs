@@ -49,6 +49,7 @@ namespace Equality.ViewModels
 
             OpenBoardPage = new Command<Board>(OnOpenOpenBoardPageExecute);
             OpenCreateBoardWindow = new TaskCommand(OnOpenCreateBoardWindowExecuteAsync, () => CreateBoardVm is null);
+            StartDragging = new Command<Column>(OnStartDraggingExecute);
             StartEditBoardName = new Command<Board>(OnStartEditBoardNameExecuteAsync);
             SaveNewBoardName = new TaskCommand(OnSaveNewBoardNameExecuteAsync, () => GetFieldErrors(nameof(NewBoardName)) == string.Empty);
             CancelEditBoardName = new Command(OnCancelEditBoardNameExecute);
@@ -84,6 +85,14 @@ namespace Equality.ViewModels
 
             NavigationService.Navigate<BoardPageViewModel, ProjectPageViewModel>();
         }
+
+        public Command<Column> StartDragging { get; private set; }
+
+        private void OnStartDraggingExecute(Column column)
+        {
+
+        }
+
 
         public TaskCommand OpenCreateBoardWindow { get; private set; }
 
