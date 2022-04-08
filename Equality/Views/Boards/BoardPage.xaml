@@ -56,7 +56,8 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <!-- Column name -->
+
+                        <!-- Column header -->
                         <DockPanel LastChildFill="True">
                             <DockPanel.Style>
                                 <Style TargetType="DockPanel">
@@ -193,55 +194,195 @@
                         </Grid>
 
                         <!-- Cards -->
-                        <!--<ListBox Name="CardsList"
+                        <ListBox Name="CardsList"
                                  Grid.Row="1"
                                  VirtualizingPanel.VirtualizationMode="Standard">
-                            -->
-                        <!-- Templates for custom objects. -->
-                        <!--
+                            <!-- Templates for custom objects. -->
                             <ListBox.Resources>
                                 <DataTemplate DataType="{x:Type models:Card}">
-                                    <controls:CardControl Card="{Binding}"
-                                                          CancelEditCardCommand="{Binding DataContext.CancelEditCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
-                                                          SaveNewCardNameCommand="{Binding DataContext.SaveNewCardName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
-                                                          NewCardName="{Binding DataContext.NewCardName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
-                                                          EditCardCommand="{Binding DataContext.StartEditCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
-                                                          DeleteCardCommand="{Binding DataContext.DeleteCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
-                                                          Margin="10,0,10,10">
-                                        <controls:CardControl.Style>
-                                            <Style TargetType="controls:CardControl"
-                                                   BasedOn="{StaticResource {x:Type controls:CardControl}}">
-                                                <Setter Property="IsEditable"
-                                                        Value="False" />
+                                    <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                                         Margin="10,0,10,10">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel>
+                                                <Grid>
+                                                    <Grid.Style>
+                                                        <Style TargetType="Grid">
+                                                            <Setter Property="Visibility"
+                                                                    Value="Visible" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Value="True">
+                                                                    <DataTrigger.Binding>
+                                                                        <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                                                            <Binding Path="." />
+                                                                            <Binding Path="DataContext.EditableCard"
+                                                                                     RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
+                                                                        </MultiBinding>
+                                                                    </DataTrigger.Binding>
+                                                                    <Setter Property="Visibility"
+                                                                            Value="Collapsed" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Grid.Style>
+
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="*" />
+                                                    </Grid.RowDefinitions>
+
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <TextBlock Grid.RowSpan="2"
+                                                               FontSize="14"
+                                                               TextWrapping="Wrap"
+                                                               Margin="10"
+                                                               Text="{Binding Name}" />
+
+                                                    <materialDesign:PopupBox Grid.Row="0"
+                                                                             Grid.Column="1"
+                                                                             Margin="5,0"
+                                                                             VerticalAlignment="Top"
+                                                                             StaysOpen="False"
+                                                                             PlacementMode="BottomAndAlignRightEdges">
+                                                        <materialDesign:PopupBox.ToggleContent>
+                                                            <materialDesign:PackIcon Width="25"
+                                                                                     Height="25"
+                                                                                     Kind="DotsHorizontal"
+                                                                                     Foreground="Gray" />
+                                                        </materialDesign:PopupBox.ToggleContent>
+
+                                                        <Grid>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="*" />
+                                                            </Grid.RowDefinitions>
+
+                                                            <Menu FontSize="14">
+                                                                <Menu.ItemsPanel>
+                                                                    <ItemsPanelTemplate>
+                                                                        <VirtualizingStackPanel Orientation="Vertical" />
+                                                                    </ItemsPanelTemplate>
+                                                                </Menu.ItemsPanel>
+
+                                                                <MenuItem Command="{Binding DataContext.StartEditCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                                          CommandParameter="{Binding}"
+                                                                          Cursor="Hand"
+                                                                          Header="Изменить" />
+                                                                <MenuItem Command="{Binding DataContext.DeleteCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                                          CommandParameter="{Binding}"
+                                                                          Foreground="{StaticResource DeleteItemColor}"
+                                                                          Cursor="Hand"
+                                                                          Header="Удалить" />
+                                                            </Menu>
+                                                        </Grid>
+                                                    </materialDesign:PopupBox>
+                                                </Grid>
+
+                                                <Grid>
+                                                    <Grid.Style>
+                                                        <Style TargetType="Grid">
+                                                            <Setter Property="Visibility"
+                                                                    Value="Collapsed" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Value="True">
+                                                                    <DataTrigger.Binding>
+                                                                        <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                                                            <Binding Path="." />
+                                                                            <Binding Path="DataContext.EditableCard"
+                                                                                     RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
+                                                                        </MultiBinding>
+                                                                    </DataTrigger.Binding>
+                                                                    <Setter Property="Visibility"
+                                                                            Value="Visible" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Grid.Style>
+
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <TextBox Text="{Binding DataContext.NewCardName, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                             Style="{StaticResource OutlinedTextBox}"
+                                                             Margin="0"
+                                                             BorderBrush="Transparent"
+                                                             materialDesign:ValidationAssist.FontSize="14"
+                                                             materialDesign:ValidationAssist.UsePopup="True"
+                                                             materialDesign:HintAssist.Hint="Содержимое карточки">
+                                                        <i:Interaction.Behaviors>
+                                                            <equality:FocusAndSelectText FocusMoment="Event"
+                                                                                         EventName="IsVisibleChanged"
+                                                                                         Source="{Binding ., RelativeSource={RelativeSource AncestorType=TextBox}}" />
+                                                        </i:Interaction.Behaviors>
+                                                    </TextBox>
+
+                                                    <StackPanel Grid.Column="1"
+                                                                Orientation="Horizontal">
+                                                        <Button VerticalAlignment="Top"
+                                                                Style="{StaticResource MaterialDesignIconButton}"
+                                                                Command="{Binding DataContext.SaveNewCardName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}">
+                                                            <materialDesign:PackIcon Kind="ContentSave"
+                                                                                     Width="20"
+                                                                                     Height="20"
+                                                                                     Foreground="{StaticResource PrimaryHueMidBrush}" />
+                                                        </Button>
+                                                        <Button VerticalAlignment="Top"
+                                                                Style="{StaticResource MaterialDesignIconButton}"
+                                                                Command="{Binding DataContext.CancelEditCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}">
+                                                            <materialDesign:PackIcon Kind="Close"
+                                                                                     Width="20"
+                                                                                     Height="20"
+                                                                                     Foreground="{StaticResource PrimaryHueMidBrush}" />
+                                                        </Button>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+                                    </materialDesign:Card>
+                                </DataTemplate>
+
+                                <DataTemplate DataType="{x:Type objects:DataObject}">
+                                    <ContentControl Margin="10,0,10,10"
+                                                    Focusable="False"
+                                                    d:Visibility="Collapsed"
+                                                    Content="{Binding DataContext.CreateCardVm, Converter={catel:ViewModelToViewConverter}, RelativeSource={RelativeSource AncestorType=mvvm:Page}}">
+                                        <ContentControl.Style>
+                                            <Style TargetType="ContentControl">
+                                                <Setter Property="Visibility"
+                                                        Value="Collapsed" />
                                                 <Style.Triggers>
                                                     <DataTrigger Value="True">
                                                         <DataTrigger.Binding>
                                                             <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
-                                                                <Binding Path="." />
-                                                                <Binding Path="EditableCard"
-                                                                         RelativeSource="{RelativeSource AncestorType=controls:ColumnControl}" />
+                                                                <Binding Path="DataContext"
+                                                                         RelativeSource="{RelativeSource AncestorType=ListBox}" />
+                                                                <Binding Path="DataContext.ColumnForNewCard"
+                                                                         RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
                                                             </MultiBinding>
                                                         </DataTrigger.Binding>
-                                                        <Setter Property="IsEditable"
-                                                                Value="True" />
+                                                        <Setter Property="Visibility"
+                                                                Value="Visible" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
-                                        </controls:CardControl.Style>
-                                    </controls:CardControl>
-                                </DataTemplate>
-                                <DataTemplate DataType="{x:Type objects:DataObject}">
-                                    <ContentControl Margin="10,0,10,10"
-                                                    Focusable="False"
-                                                    d:Width="0"
-                                                    d:Height="0"
-                                                    Visibility="{Binding CreateCardVm, Converter={catel:ReferenceToCollapsingVisibilityConverter}, RelativeSource={RelativeSource AncestorType=controls:ColumnControl}}"
-                                                    Content="{Binding CreateCardVm, Converter={catel:ViewModelToViewConverter}, RelativeSource={RelativeSource AncestorType=controls:ColumnControl}}" />
+                                        </ContentControl.Style>
+                                    </ContentControl>
                                 </DataTemplate>
 
                                 <CollectionViewSource x:Key="CardsCollection"
                                                       Source="{Binding Cards}" />
-
                             </ListBox.Resources>
 
                             <ListBox.ItemsSource>
@@ -250,7 +391,7 @@
                                     <StaticResource ResourceKey="DataObject" />
                                 </CompositeCollection>
                             </ListBox.ItemsSource>
-                        </ListBox>-->
+                        </ListBox>
                     </Grid>
                 </Border>
             </Grid>
