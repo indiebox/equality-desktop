@@ -22,7 +22,8 @@
            d:DataContext="{d:DesignInstance Type=vm:BoardPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
     <Page.Resources>
-        <DataTemplate x:Key="Column">
+        <DataTemplate DataType="{x:Type models:Column}"
+                      x:Key="Column">
             <Grid Width="350"
                   Background="Transparent">
                 <Grid.RowDefinitions>
@@ -32,8 +33,14 @@
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsDragging}"
-                                         Value="True">
+                            <DataTrigger Value="True">
+                                <DataTrigger.Binding>
+                                    <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                        <Binding Path="." />
+                                        <Binding Path="DataContext.DragColumn"
+                                                 RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
+                                    </MultiBinding>
+                                </DataTrigger.Binding>
                                 <Setter Property="Opacity"
                                         Value="0.5" />
                             </DataTrigger>
@@ -56,14 +63,21 @@
                                     <Setter Property="Visibility"
                                             Value="Visible" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsEditable, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                                     Value="True">
+                                        <DataTrigger Value="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                                    <Binding Path="." />
+                                                    <Binding Path="DataContext.EditableColumn"
+                                                             RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
                                             <Setter Property="Visibility"
                                                     Value="Collapsed" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </DockPanel.Style>
+
                             <StackPanel DockPanel.Dock="Right"
                                         Orientation="Horizontal">
                                 <Button Command="{Binding DataContext.OpenCreateCardWindow, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
@@ -110,7 +124,7 @@
                             </StackPanel>
                             <TextBlock FontSize="16"
                                        Margin="10,10,0,10"
-                                       Text="{Binding Path=Column.Name, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                       Text="{Binding Name}" />
                         </DockPanel>
 
                         <!-- Edit column name -->
@@ -120,8 +134,14 @@
                                     <Setter Property="Visibility"
                                             Value="Collapsed" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsEditable, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                                     Value="True">
+                                        <DataTrigger Value="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                                    <Binding Path="." />
+                                                    <Binding Path="DataContext.EditableColumn"
+                                                             RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
                                             <Setter Property="Visibility"
                                                     Value="Visible" />
                                         </DataTrigger>
@@ -173,10 +193,12 @@
                         </Grid>
 
                         <!-- Cards -->
-                        <ListBox Name="CardsList"
+                        <!--<ListBox Name="CardsList"
                                  Grid.Row="1"
                                  VirtualizingPanel.VirtualizationMode="Standard">
-                            <!-- Templates for custom objects. -->
+                            -->
+                        <!-- Templates for custom objects. -->
+                        <!--
                             <ListBox.Resources>
                                 <DataTemplate DataType="{x:Type models:Card}">
                                     <controls:CardControl Card="{Binding}"
@@ -218,7 +240,7 @@
                                 </DataTemplate>
 
                                 <CollectionViewSource x:Key="CardsCollection"
-                                                      Source="{Binding Column.Cards, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                                      Source="{Binding Cards}" />
 
                             </ListBox.Resources>
 
@@ -228,7 +250,7 @@
                                     <StaticResource ResourceKey="DataObject" />
                                 </CompositeCollection>
                             </ListBox.ItemsSource>
-                        </ListBox>
+                        </ListBox>-->
                     </Grid>
                 </Border>
             </Grid>
@@ -238,7 +260,12 @@
         <controls:ProjectImage ImagePath="{Binding Project.Image}" />
         <Canvas Panel.ZIndex="1"
                 x:Name="DraggingCanvas">
-            <materialDesign:Card ContentTemplate="{StaticResource Column}" />
+            <materialDesign:Card x:Name="MovingColumn"
+                                 ContentTemplate="{StaticResource Column}"
+                                 IsHitTestVisible="False"
+                                 Content="{Binding DragColumn.Column}"
+                                 Visibility="{Binding DragColumn, Converter={catel:ReferenceToCollapsingVisibilityConverter}}"
+                                 d:Visibility="Collapsed" />
         </Canvas>
 
         <Grid>
@@ -246,6 +273,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+
             <DockPanel LastChildFill="False">
                 <Button Grid.Column="0"
                         Command="{Binding ToBoards}"
@@ -286,10 +314,11 @@
 
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type models:Column}">
-                            <materialDesign:Card ContentTemplate="{StaticResource Column}"
-                                                 Margin="10,0,0,0"
-                                                 MouseEnter="ColumnControl_MouseEnter"
-                                                 MouseDown="ColumnControl_MouseDown" />
+                            <ContentControl ContentTemplate="{StaticResource Column}"
+                                            Content="{Binding}"
+                                            Margin="10,0,0,0"
+                                            MouseEnter="ColumnControl_MouseEnter"
+                                            MouseDown="ColumnControl_MouseDown" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
