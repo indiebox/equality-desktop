@@ -40,7 +40,6 @@ namespace Equality.Views
                 return;
             }
             Vm.DragColumn = ((ContentControl)sender).Content as Column;
-            //Vm.DragColumn = ParseControl(sender);
             //Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
             DragColumnInitialPosition = Vm.Columns.IndexOf(Vm.DragColumn);
 
@@ -52,15 +51,15 @@ namespace Equality.Views
 
         private async void ColumnControl_MouseEnter(object sender, MouseEventArgs e)
         {
-            //if (!IsDragging) {
-            //    return;
-            //}
-            //var column = ParseControl(sender).Column;
+            if (!IsDragging) {
+                return;
+            }
+            var column = ((ContentControl)sender).Content as Column;
 
-            //int oldIndex = Vm.Columns.IndexOf(column);
-            //int dragColumnIndex = Vm.Columns.IndexOf(Vm.DragColumn);
+            int oldIndex = Vm.Columns.IndexOf(column);
+            int dragColumnIndex = Vm.Columns.IndexOf(Vm.DragColumn);
 
-            //Vm.Columns.Move(oldIndex, dragColumnIndex);
+            Vm.Columns.Move(oldIndex, dragColumnIndex);
         }
 
         private ColumnControl ParseControl(object sender)
