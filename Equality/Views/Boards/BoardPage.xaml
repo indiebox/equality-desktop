@@ -22,6 +22,7 @@
            d:DataContext="{d:DesignInstance Type=vm:BoardPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
     <Page.Resources>
+        <objects:DataObject x:Key="DataObject" />
         <DataTemplate DataType="{x:Type models:Column}"
                       x:Key="Column">
             <Grid Width="350"
