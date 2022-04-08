@@ -100,7 +100,7 @@ namespace Equality.ViewModels
 
         #region ColumnProperties
 
-        public ColumnControl DragColumn { get; set; }
+        public Column DragColumn { get; set; }
 
         public CreateColumnControlViewModel CreateColumnVm { get; set; }
 
@@ -223,10 +223,10 @@ namespace Equality.ViewModels
             }
 
             try {
-                var afterColumn = Columns.Contains(DragColumn.Column)
-                    ? Columns.TakeWhile(col => col.Id != DragColumn.Column.Id).LastOrDefault()
+                var afterColumn = Columns.Contains(DragColumn)
+                    ? Columns.TakeWhile(col => col.Id != DragColumn.Id).LastOrDefault()
                     : null;
-                await ColumnService.UpdateColumnOrderAsync(DragColumn.Column, afterColumn);
+                await ColumnService.UpdateColumnOrderAsync(DragColumn, afterColumn);
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }

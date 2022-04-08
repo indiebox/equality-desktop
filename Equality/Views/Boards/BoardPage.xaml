@@ -404,7 +404,7 @@
             <materialDesign:Card x:Name="MovingColumn"
                                  ContentTemplate="{StaticResource Column}"
                                  IsHitTestVisible="False"
-                                 Content="{Binding DragColumn.Column}"
+                                 Content="{Binding DragColumn}"
                                  Visibility="{Binding DragColumn, Converter={catel:ReferenceToCollapsingVisibilityConverter}}"
                                  d:Visibility="Collapsed" />
         </Canvas>

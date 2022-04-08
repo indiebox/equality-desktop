@@ -35,17 +35,17 @@ namespace Equality.Views
 
         private void ColumnControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //if (IsDragging || e.LeftButton != MouseButtonState.Pressed) {
-            //    return;
-            //}
-            //Vm.DragColumn = ParseControl(sender);
-            //Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
-            //DragColumnInitialPosition = Vm.Columns.IndexOf(Vm.DragColumn.Column);
+            if (IsDragging || e.LeftButton != MouseButtonState.Pressed) {
+                return;
+            }
+            Vm.DragColumn = ParseControl(sender);
+            Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, true);
+            DragColumnInitialPosition = Vm.Columns.IndexOf(Vm.DragColumn);
 
-            //DeltaMouse = Mouse.GetPosition(DraggingCanvas);
-            //ColumnRelativePoint = Vm.DragColumn.TransformToAncestor(this).Transform(new Point(0, 0));
-            //Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X);
-            //Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y);
+            DeltaMouse = Mouse.GetPosition(DraggingCanvas);
+            ColumnRelativePoint = Vm.DragColumn.TransformToAncestor(this).Transform(new Point(0, 0));
+            Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X);
+            Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y);
         }
 
         private async void ColumnControl_MouseEnter(object sender, MouseEventArgs e)
@@ -56,7 +56,7 @@ namespace Equality.Views
             var column = ParseControl(sender).Column;
 
             int oldIndex = Vm.Columns.IndexOf(column);
-            int dragColumnIndex = Vm.Columns.IndexOf(Vm.DragColumn.Column);
+            int dragColumnIndex = Vm.Columns.IndexOf(Vm.DragColumn);
 
             Vm.Columns.Move(oldIndex, dragColumnIndex);
         }
@@ -99,11 +99,11 @@ namespace Equality.Views
 
         private void StopDragging()
         {
-            if (DragColumnInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn.Column)) {
+            if (DragColumnInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn)) {
                 Vm.UpdateColumnOrder.Execute();
             }
 
-            Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
+            //Vm.DragColumn.SetCurrentValue(ColumnControl.IsDraggingProperty, false);
             Vm.DragColumn = null;
         }
 
