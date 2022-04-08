@@ -69,13 +69,13 @@ namespace Equality.Views
 
         private void Grid_MouseMove(object sender, MouseEventArgs e)
         {
-            //if (!IsDragging) {
-            //    return;
-            //}
+            if (!IsDragging) {
+                return;
+            }
 
-            //var cursorPosition = Mouse.GetPosition(DraggingCanvas);
-            //Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X + (cursorPosition.X - DeltaMouse.X));
-            //Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y + (cursorPosition.Y - DeltaMouse.Y));
+            var cursorPosition = Mouse.GetPosition(DraggingCanvas);
+            Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X + (cursorPosition.X - DeltaMouse.X));
+            Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y + (cursorPosition.Y - DeltaMouse.Y));
         }
 
         #region StopDrag
