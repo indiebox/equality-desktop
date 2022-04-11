@@ -6,6 +6,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
+using Catel;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -30,6 +32,8 @@ namespace Equality.Http
 
         public IApiClient WithSocketID(string socketId)
         {
+            Argument.IsNotNull(nameof(socketId), socketId);
+
             HttpClient.DefaultRequestHeaders.Add("X-Socket-ID", socketId);
 
             return this;
@@ -37,6 +41,8 @@ namespace Equality.Http
 
         public IApiClient WithToken(string token)
         {
+            Argument.IsNotNull(nameof(token), token);
+
             HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             return this;
@@ -44,6 +50,8 @@ namespace Equality.Http
 
         public IApiClient WithTokenOnce(string token)
         {
+            Argument.IsNotNull(nameof(token), token);
+
             IsTemporaryToken = true;
             OriginalToken = HttpClient.DefaultRequestHeaders.Authorization;
 
