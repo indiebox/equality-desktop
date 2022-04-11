@@ -28,14 +28,21 @@ namespace Equality.Http
 
         public HttpClient HttpClient { get; set; }
 
-        public ApiClient WithToken(string token)
+        public IApiClient WithSocketID(string socketId)
+        {
+            HttpClient.DefaultRequestHeaders.Add("X-Socket-ID", socketId);
+
+            return this;
+        }
+
+        public IApiClient WithToken(string token)
         {
             HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             return this;
         }
 
-        public ApiClient WithTokenOnce(string token)
+        public IApiClient WithTokenOnce(string token)
         {
             IsTemporaryToken = true;
             OriginalToken = HttpClient.DefaultRequestHeaders.Authorization;
@@ -43,7 +50,7 @@ namespace Equality.Http
             return WithToken(token);
         }
 
-        public ApiClient WithoutToken()
+        public IApiClient WithoutToken()
         {
             HttpClient.DefaultRequestHeaders.Authorization = null;
 
@@ -203,7 +210,7 @@ namespace Equality.Http
 
             HandleStatusCode(response, responseData);
 
-            RestoreToken();
+            RestoreHeaders();
 
             return new ApiResponseMessage(response, responseData);
         }
@@ -319,10 +326,9 @@ namespace Equality.Http
         }
 
         /// <summary>
-        /// Restore an earlier token that was set by the user.
+        /// Restore an earlier headers like bearer-token and socket-id that was set by the user.
         /// </summary>
-        /// <remarks>This method is necessary for correct implementation of method <c>WithTokenOnce()</c>.</remarks>
-        protected void RestoreToken()
+        protected void RestoreHeaders()
         {
             if (IsTemporaryToken) {
                 IsTemporaryToken = false;
@@ -330,6 +336,8 @@ namespace Equality.Http
                 HttpClient.DefaultRequestHeaders.Authorization = OriginalToken;
                 OriginalToken = null;
             }
+
+            HttpClient.DefaultRequestHeaders.Remove("X-Socket-ID");
         }
 
         /// <summary>
