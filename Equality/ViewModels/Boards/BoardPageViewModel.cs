@@ -102,6 +102,8 @@ namespace Equality.ViewModels
 
         public Column DragColumn { get; set; }
 
+        public Card DragCard { get; set; }
+
         public CreateColumnControlViewModel CreateColumnVm { get; set; }
 
         public Column EditableColumn { get; set; }

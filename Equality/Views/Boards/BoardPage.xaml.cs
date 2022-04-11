@@ -25,11 +25,15 @@ namespace Equality.Views
 
         int DragColumnInitialPosition { get; set; }
 
+        int DragCardInitialPosition { get; set; }
+
         bool IsDragging => Vm.DragColumn != null;
 
         public Point DeltaMouse { get; set; }
 
         public Point ColumnRelativePoint { get; set; }
+
+        public Point CardRelativePoint { get; set; }
 
         private void ColumnControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -43,6 +47,49 @@ namespace Equality.Views
             ColumnRelativePoint = ((ContentControl)sender).TransformToAncestor(this).Transform(new Point(0, 0));
             Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X);
             Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y);
+        }
+
+        private void Card_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (IsDragging || e.LeftButton != MouseButtonState.Pressed) {
+                return;
+            }
+            Vm.DragCard = ((ContentControl)sender).Content as Card;
+            DragCardInitialPosition = Vm.Columns.IndexOf(Vm.DragColumn);
+
+            DeltaMouse = Mouse.GetPosition(DraggingCanvas);
+            CardRelativePoint = ((ContentControl)sender).TransformToAncestor(this).Transform(new Point(0, 0));
+            Canvas.SetLeft(MovingCard, CardRelativePoint.X);
+            Canvas.SetTop(MovingCard, CardRelativePoint.Y);
+        }
+
+
+        private void MovingColumn_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (IsDragging || e.LeftButton != MouseButtonState.Pressed) {
+                return;
+            }
+            Vm.DragColumn = ((ContentControl)sender).Content as Column;
+            DragColumnInitialPosition = Vm.Columns.IndexOf(Vm.DragColumn);
+
+            DeltaMouse = Mouse.GetPosition(DraggingCanvas);
+            ColumnRelativePoint = ((ContentControl)sender).TransformToAncestor(this).Transform(new Point(0, 0));
+            Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X);
+            Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y);
+        }
+
+        private void MovingCard_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (IsDragging || e.LeftButton != MouseButtonState.Pressed) {
+                return;
+            }
+            Vm.DragCard = ((ContentControl)sender).Content as Card;
+            DragCardInitialPosition = Vm.Columns.IndexOf(Vm.DragColumn);
+
+            DeltaMouse = Mouse.GetPosition(DraggingCanvas);
+            CardRelativePoint = ((ContentControl)sender).TransformToAncestor(this).Transform(new Point(0, 0));
+            Canvas.SetLeft(MovingCard, CardRelativePoint.X);
+            Canvas.SetTop(MovingCard, CardRelativePoint.Y);
         }
 
         private async void ColumnControl_MouseEnter(object sender, MouseEventArgs e)
