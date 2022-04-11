@@ -205,7 +205,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Equality.MVVM\Equality.MVVM.csproj" />
+        <ProjectReference Include="..\Equality.MVVM\Equality.MVVM.csproj" />
     </ItemGroup>
     <ItemGroup>
         <Resource Include="Resources\Icons\Logo.ico">
@@ -213,17 +213,17 @@
         </Resource>
     </ItemGroup>
     <ItemGroup>
-      <Page Update="Views\Cards\DeleteCardDialog.xaml">
-        <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      </Page>
-      <Page Update="Views\Columns\CreateColumnControl.xaml">
-        <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      </Page>
-      <Page Update="Views\Cards\CreateCardControl.xaml">
-        <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      </Page>
-      <Page Update="Views\Columns\DeleteColumnDialog.xaml">
-        <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      </Page>
+        <Page Update="Views\Cards\DeleteCardDialog.xaml">
+            <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+        </Page>
+        <Page Update="Views\Columns\CreateColumnControl.xaml">
+            <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+        </Page>
+        <Page Update="Views\Cards\CreateCardControl.xaml">
+            <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+        </Page>
+        <Page Update="Views\Columns\DeleteColumnDialog.xaml">
+            <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+        </Page>
     </ItemGroup>
 </Project>
