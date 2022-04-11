@@ -6,7 +6,7 @@ namespace Equality.Services
 {
     public class CardService : CardServiceBase<Card, Column>, ICardService
     {
-        public CardService(IApiClient apiClient, ITokenResolverService tokenResolver) : base(apiClient, tokenResolver)
+        public CardService(IApiClient apiClient, ITokenResolver tokenResolver) : base(apiClient, tokenResolver)
         {
         }
     }

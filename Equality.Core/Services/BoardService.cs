@@ -16,11 +16,11 @@ namespace Equality.Services
         where TProjectModel : class, IProject, new()
     {
 
-        protected ITokenResolverService TokenResolver;
+        protected ITokenResolver TokenResolver;
 
         protected IApiClient ApiClient;
 
-        public BoardServiceBase(IApiClient apiClient, ITokenResolverService tokenResolver)
+        public BoardServiceBase(IApiClient apiClient, ITokenResolver tokenResolver)
         {
             Argument.IsNotNull(nameof(apiClient), apiClient);
             Argument.IsNotNull(nameof(tokenResolver), tokenResolver);
