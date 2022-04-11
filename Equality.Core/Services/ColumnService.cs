@@ -18,12 +18,14 @@ namespace Equality.Services
         where TBoardModel : class, IBoard, new()
     {
         IApiClient ApiClient;
-        ITokenResolverService TokenResolver;
+        ITokenResolver TokenResolver;
+        IWebsocketClient WebsocketClient;
 
-        public ColumnServiceBase(IApiClient apiClient, ITokenResolverService tokenResolver)
+        public ColumnServiceBase(IApiClient apiClient, ITokenResolver tokenResolver, IWebsocketClient websocketClient)
         {
             ApiClient = apiClient;
             TokenResolver = tokenResolver;
+            WebsocketClient = websocketClient;
         }
 
         public Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(TBoardModel board, QueryParameters query = null)
@@ -55,7 +57,10 @@ namespace Equality.Services
                 { "name", column.Name },
             };
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"boards/{boardId}/columns"), data);
+            var response = await ApiClient
+                .WithTokenOnce(TokenResolver.ResolveApiToken())
+                .WithSocketID(TokenResolver.ResolveSocketID())
+                .PostAsync(query.Parse($"boards/{boardId}/columns"), data);
 
             column = Deserialize(response.Content["data"]);
 
@@ -79,7 +84,7 @@ namespace Equality.Services
 
             return new(column, response);
         }
-        
+
         public Task<ApiResponseMessage> UpdateColumnOrderAsync(TColumnModel column, TColumnModel afterColumn)
             => UpdateColumnOrderAsync(column.Id, afterColumn?.Id ?? 0);
 
@@ -104,6 +109,25 @@ namespace Equality.Services
 
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"columns/{columnId}");
         }
+
+        #region Websockets
+
+        public async Task SubscribeCreateColumnAsync(IBoard board, Action<TColumnModel> action)
+        {
+            await WebsocketClient.BindEventAsync($"private-boards.{board.Id}.columns", "created", (string data) =>
+            {
+                var deserializedData = ((IDeserializeModels<TColumnModel>)this).Deserialize(data);
+
+                action.Invoke(deserializedData);
+            });
+        }
+
+        public void UnsubscribeCreateColumn(IBoard board)
+        {
+            WebsocketClient.UnbindEvent($"private-boards.{board.Id}.columns", "created");
+        }
+
+        #endregion
 
         /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
         protected TColumnModel Deserialize(JToken data) => ((IDeserializeModels<TColumnModel>)this).Deserialize(data);

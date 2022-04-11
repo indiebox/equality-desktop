@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -10,7 +11,6 @@ using Catel.MVVM;
 
 using Catel.Services;
 
-using Equality.Controls;
 using Equality.Data;
 using Equality.Extensions;
 using Equality.Helpers;
@@ -419,6 +419,16 @@ namespace Equality.ViewModels
             await base.InitializeAsync();
 
             await LoadColumnsAsync();
+
+            await ColumnService.SubscribeCreateColumnAsync(StateManager.SelectedBoard, (Column col) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                    {
+                        Columns.Add(col);
+                        Debug.WriteLine("Test");
+                    }
+                );
+            });
         }
 
         protected override async Task CloseAsync()
