@@ -14,6 +14,7 @@ namespace Equality.Http
 
         /// <summary>
         /// Set `X-Socket-ID` header for next request.
+        /// Basically, this method should be called with requests that trigger websocket events.
         /// </summary>
         /// <param name="socketID">The socket id of the connected <see cref="IWebsocketClient"/>.</param>
         /// <returns>Returns <see langword="this"/></returns>
