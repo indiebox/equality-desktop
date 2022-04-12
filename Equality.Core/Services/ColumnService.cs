@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -112,13 +113,21 @@ namespace Equality.Services
 
         #region Websockets
 
-        public async Task SubscribeCreateColumnAsync(IBoard board, Action<TColumnModel> action)
+        public async Task SubscribeCreateColumnAsync(IBoard board, Action<TColumnModel, ulong?> action)
         {
             await WebsocketClient.BindEventAsync($"private-boards.{board.Id}.columns", "created", (string data) =>
             {
-                var deserializedData = ((IDeserializeModels<TColumnModel>)this).Deserialize(data);
+                var deserializedData = Json.Deserialize<Dictionary<string, object>>(data);
+                var deserializedColumn = Json.Deserialize<TColumnModel>(deserializedData["column"].ToString());
 
-                action.Invoke(deserializedData);
+                if (
+                    deserializedData["after_column"] != null
+                    && ulong.TryParse(deserializedData["after_column"].ToString(), out ulong deserializedAfterColumnId)
+                ) {
+                    action.Invoke(deserializedColumn, deserializedAfterColumnId);
+                } else {
+                    action.Invoke(deserializedColumn, null);
+                }
             });
         }
 

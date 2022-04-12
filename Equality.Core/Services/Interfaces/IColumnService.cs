@@ -40,7 +40,7 @@ namespace Equality.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets a token using <see cref="ITokenResolver.ResolveApiToken"></see>.
+        /// Gets a <c>token</c> using <see cref="ITokenResolver.ResolveApiToken"></see> and <c>socket-id</c> using <see cref="ITokenResolver.ResolveSocketID"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -104,8 +104,20 @@ namespace Equality.Services
 
         #region Websockets
 
-        public Task SubscribeCreateColumnAsync(IBoard board, Action<TColumnModel> action);
+        /// <summary>
+        /// Subscribe to websocket event for create column.
+        /// </summary>
+        /// <param name="board">The board.</param>
+        /// <param name="action">
+        /// The actions.
+        /// First argument is created column, second is the id of column after which created column should be inserted.
+        /// </param>
+        public Task SubscribeCreateColumnAsync(IBoard board, Action<TColumnModel, ulong?> action);
 
+        /// <summary>
+        /// Unsubscribe from websocket event for create column.
+        /// </summary>
+        /// <param name="board">The board.</param>
         public void UnsubscribeCreateColumn(IBoard board);
 
         #endregion

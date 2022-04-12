@@ -387,6 +387,40 @@ namespace Equality.ViewModels
             }
         }
 
+        protected async Task SubscribePusherAsync()
+        {
+            await ColumnService.SubscribeCreateColumnAsync(StateManager.SelectedBoard, (Column col, ulong? afterColumnId) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    if (afterColumnId == null) {
+                        Columns.Add(col);
+
+                        return;
+                    }
+
+                    if (afterColumnId == 0) {
+                        Columns.Insert(0, col);
+
+                        return;
+                    }
+
+                    var afterColumn = Columns.FirstOrDefault(col => col.Id == afterColumnId);
+                    if (afterColumn == null) {
+                        Columns.Add(col);
+                    } else {
+                        Columns.Insert(Columns.IndexOf(afterColumn) + 1, col);
+                    }
+                }
+                );
+            });
+        }
+
+        protected void UnsubscribePusherAsync()
+        {
+            ColumnService.UnsubscribeCreateColumn(StateManager.SelectedBoard);
+        }
+
         #endregion
 
         #region Validation
@@ -419,21 +453,12 @@ namespace Equality.ViewModels
             await base.InitializeAsync();
 
             await LoadColumnsAsync();
-
-            await ColumnService.SubscribeCreateColumnAsync(StateManager.SelectedBoard, (Column col) =>
-            {
-                App.Current.Dispatcher.Invoke(() =>
-                    {
-                        Columns.Add(col);
-                        Debug.WriteLine("Test");
-                    }
-                );
-            });
+            await SubscribePusherAsync();
         }
 
         protected override async Task CloseAsync()
         {
-            // TODO: unsubscribe from events here
+            UnsubscribePusherAsync();
 
             await base.CloseAsync();
         }
