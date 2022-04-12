@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Equality.Http
@@ -7,7 +8,7 @@ namespace Equality.Http
     {
         public string SocketID { get; }
 
-        public Task BindEventAsync(string channelName, string eventName, Action<string> listener);
+        public Task BindEventAsync(string channelName, string eventName, Action<Dictionary<string, object>> listener);
 
         public void UnbindEvent(string channelName, string eventName);
 
