@@ -20,6 +20,43 @@ namespace Equality
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
+        public static void RegisterPusher()
+        {
+            var client = new Http.PusherClient("7c6a91460be1e040ce8c", new PusherOptions
+            {
+                Authorizer = new HttpAuthorizer("http://equality/broadcasting/auth")
+                {
+                    AuthenticationHeader = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", StateManager.ApiToken)
+                },
+                Cluster = "eu",
+                Encrypted = true,
+            });
+
+            void HandleError(object sender, PusherException error)
+            {
+                if ((int)error.PusherCode < 5000) {
+                    // Error recevied from Pusher cluster, use PusherCode to filter.
+                } else {
+                    if (error is ChannelUnauthorizedException unauthorizedAccess) {
+                        // Private and Presence channel failed authorization with Forbidden (403)
+                    } else if (error is ChannelAuthorizationFailureException httpError) {
+                        // Authorization endpoint returned an HTTP error other than Forbidden (403)
+                    } else if (error is OperationTimeoutException timeoutError) {
+                        // A client operation has timed-out. Governed by PusherOptions.ClientTimeout
+                    } else if (error is ChannelDecryptionException decryptionError) {
+                        // Failed to decrypt the data for a private encrypted channel
+                    } else {
+                        // Handle other errors
+                    }
+                }
+
+                Trace.TraceError($"{error}");
+            }
+
+            client.Error += HandleError;
+            ServiceLocator.Default.RegisterInstance<IWebsocketClient>(client);
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
 #if DEBUG
