@@ -79,7 +79,10 @@ namespace Equality.Services
                 { "name", column.Name },
             };
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync(query.Parse($"columns/{column.Id}"), data);
+            var response = await ApiClient
+                .WithTokenOnce(TokenResolver.ResolveApiToken())
+                .WithSocketID(TokenResolver.ResolveSocketID())
+                .PatchAsync(query.Parse($"columns/{column.Id}"), data);
 
             column = Deserialize(response.Content["data"]);
 
@@ -115,14 +118,13 @@ namespace Equality.Services
 
         public async Task SubscribeCreateColumnAsync(IBoard board, Action<TColumnModel, ulong?> action)
         {
-            await WebsocketClient.BindEventAsync($"private-boards.{board.Id}.columns", "created", (string data) =>
+            await WebsocketClient.BindEventAsync($"private-boards.{board.Id}.columns", "created", (data) =>
             {
-                var deserializedData = Json.Deserialize<Dictionary<string, object>>(data);
-                var deserializedColumn = Json.Deserialize<TColumnModel>(deserializedData["column"].ToString());
+                var deserializedColumn = Json.Deserialize<TColumnModel>(data["column"].ToString());
 
                 if (
-                    deserializedData["after_column"] != null
-                    && ulong.TryParse(deserializedData["after_column"].ToString(), out ulong deserializedAfterColumnId)
+                    data["after_column"] != null
+                    && ulong.TryParse(data["after_column"].ToString(), out ulong deserializedAfterColumnId)
                 ) {
                     action.Invoke(deserializedColumn, deserializedAfterColumnId);
                 } else {
@@ -134,6 +136,20 @@ namespace Equality.Services
         public void UnsubscribeCreateColumn(IBoard board)
         {
             WebsocketClient.UnbindEvent($"private-boards.{board.Id}.columns", "created");
+        }
+
+        public async Task SubscribeUpdateColumnAsync(IBoard board, Action<TColumnModel> action)
+        {
+            await WebsocketClient.BindEventAsync($"private-boards.{board.Id}.columns", "updated", (data) =>
+            {
+                var deserializedColumn = Json.Deserialize<TColumnModel>(data["column"].ToString());
+                action.Invoke(deserializedColumn);
+            });
+        }
+
+        public void UnsubscribeUpdateColumn(IBoard board)
+        {
+            WebsocketClient.UnbindEvent($"private-boards.{board.Id}.columns", "updated");
         }
 
         #endregion

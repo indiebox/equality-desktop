@@ -411,14 +411,30 @@ namespace Equality.ViewModels
                     } else {
                         Columns.Insert(Columns.IndexOf(afterColumn) + 1, col);
                     }
-                }
-                );
+                });
+            });
+
+            await ColumnService.SubscribeUpdateColumnAsync(StateManager.SelectedBoard, (Column column) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    var col = Columns.FirstOrDefault(col => col.Id == column.Id);
+                    if (col != null) {
+                        col.SyncWithOnly(column, new string[]
+                        {
+                            nameof(col.Name),
+                            nameof(col.CreatedAt),
+                            nameof(col.UpdatedAt),
+                        });
+                    }
+                });
             });
         }
 
         protected void UnsubscribePusherAsync()
         {
             ColumnService.UnsubscribeCreateColumn(StateManager.SelectedBoard);
+            ColumnService.UnsubscribeUpdateColumn(StateManager.SelectedBoard);
         }
 
         #endregion
