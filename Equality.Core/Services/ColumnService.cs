@@ -12,7 +12,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Equality.Services
 {
-    public class ColumnServiceBase<TColumnModel, TBoardModel> : IColumnService<TColumnModel, TBoardModel>
+    public partial class ColumnServiceBase<TColumnModel, TBoardModel> : IColumnService<TColumnModel, TBoardModel>
         where TColumnModel : class, IColumn, new()
         where TBoardModel : class, IBoard, new()
     {
@@ -20,18 +20,10 @@ namespace Equality.Services
 
         protected ITokenResolver TokenResolver;
 
-        protected IWebsocketClient WebsocketClient;
-
         public ColumnServiceBase(IApiClient apiClient, ITokenResolver tokenResolver)
         {
             ApiClient = apiClient;
             TokenResolver = tokenResolver;
-        }
-
-        public ColumnServiceBase(IApiClient apiClient, ITokenResolver tokenResolver, IWebsocketClient websocketClient)
-            : this(apiClient, tokenResolver)
-        {
-            WebsocketClient = websocketClient;
         }
 
         public Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(TBoardModel board, QueryParameters query = null)
@@ -124,74 +116,6 @@ namespace Equality.Services
                 .WithSocketID(TokenResolver.ResolveSocketID())
                 .DeleteAsync($"columns/{columnId}");
         }
-
-        #region Websockets
-
-        public async Task SubscribeCreateColumnAsync(IBoard board, Action<TColumnModel, ulong?> action)
-        {
-            await WebsocketClient.BindEventAsync(GetChannelName(board), "created", (data) =>
-            {
-                var deserializedColumn = Json.Deserialize<TColumnModel>(data["column"].ToString());
-
-                if (
-                    data["after_column"] != null
-                    && ulong.TryParse(data["after_column"].ToString(), out ulong deserializedAfterColumnId)
-                ) {
-                    action.Invoke(deserializedColumn, deserializedAfterColumnId);
-                } else {
-                    action.Invoke(deserializedColumn, null);
-                }
-            });
-        }
-
-        public void UnsubscribeCreateColumn(IBoard board)
-        {
-            WebsocketClient.UnbindEvent(GetChannelName(board), "created");
-        }
-
-        public async Task SubscribeUpdateColumnAsync(IBoard board, Action<TColumnModel> action)
-        {
-            await WebsocketClient.BindEventAsync(GetChannelName(board), "updated", (data) =>
-            {
-                var deserializedColumn = Json.Deserialize<TColumnModel>(data["column"].ToString());
-                action.Invoke(deserializedColumn);
-            });
-        }
-
-        public void UnsubscribeUpdateColumn(IBoard board)
-        {
-            WebsocketClient.UnbindEvent(GetChannelName(board), "updated");
-        }
-
-        public async Task SubscribeUpdateColumnOrderAsync(IBoard board, Action<ulong, ulong> action)
-        {
-            await WebsocketClient.BindEventAsync(GetChannelName(board), "order-changed", (data) =>
-            {
-                action.Invoke(ulong.Parse(data["id"].ToString()), ulong.Parse(data["after"].ToString()));
-            });
-        }
-
-        public void UnsubscribeUpdateColumnOrder(IBoard board)
-        {
-            WebsocketClient.UnbindEvent(GetChannelName(board), "order-changed");
-        }
-
-        public async Task SubscribeDeleteColumnAsync(IBoard board, Action<ulong> action)
-        {
-            await WebsocketClient.BindEventAsync(GetChannelName(board), "deleted", (data) =>
-            {
-                action.Invoke(ulong.Parse(data["id"].ToString()));
-            });
-        }
-
-        public void UnsubscribeDeleteColumn(IBoard board)
-        {
-            WebsocketClient.UnbindEvent(GetChannelName(board), "deleted");
-        }
-
-        protected string GetChannelName(IBoard board) => $"private-boards.{board.Id}.columns";
-
-        #endregion
 
         /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
         protected TColumnModel Deserialize(JToken data) => ((IDeserializeModels<TColumnModel>)this).Deserialize(data);
