@@ -139,6 +139,24 @@ namespace Equality.Services
         public void UnsubscribeUpdateColumn(IBoard board);
 
         /// <summary>
+        /// Subscribe to websocket event for update column order.
+        /// </summary>
+        /// <param name="board">The board.</param>
+        /// <param name="action">
+        /// The action.
+        /// First argument is the id of column.
+        /// Second is the id of column after which the column should be moved.
+        /// If second argument is 0 - first position.
+        /// </param>
+        public Task SubscribeUpdateColumnOrderAsync(IBoard board, Action<ulong, ulong> action);
+
+        /// <summary>
+        /// Unsubscribe from websocket event for update column order.
+        /// </summary>
+        /// <param name="board">The board.</param>
+        public void UnsubscribeUpdateColumnOrder(IBoard board);
+
+        /// <summary>
         /// Subscribe to websocket event for delete column.
         /// </summary>
         /// <param name="board">The board.</param>

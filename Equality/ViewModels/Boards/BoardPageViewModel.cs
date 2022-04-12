@@ -430,6 +430,30 @@ namespace Equality.ViewModels
                 });
             });
 
+            await ColumnService.SubscribeUpdateColumnOrderAsync(StateManager.SelectedBoard, (ulong columnId, ulong afterId) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    var currCol = Columns.FirstOrDefault(col => col.Id == columnId);
+                    if (currCol == null) {
+                        return;
+                    }
+
+                    if (afterId == 0) {
+                        Columns.Remove(currCol);
+                        Columns.Insert(0, currCol);
+
+                        return;
+                    }
+
+                    var afterCol = Columns.FirstOrDefault(col => col.Id == afterId);
+                    if (afterCol != null) {
+                        Columns.Remove(currCol);
+                        Columns.Insert(Columns.IndexOf(afterCol) + 1, currCol);
+                    }
+                });
+            });
+
             await ColumnService.SubscribeDeleteColumnAsync(StateManager.SelectedBoard, (ulong columnId) =>
             {
                 App.Current.Dispatcher.Invoke(() =>
@@ -443,6 +467,7 @@ namespace Equality.ViewModels
         {
             ColumnService.UnsubscribeCreateColumn(StateManager.SelectedBoard);
             ColumnService.UnsubscribeUpdateColumn(StateManager.SelectedBoard);
+            ColumnService.UnsubscribeUpdateColumnOrder(StateManager.SelectedBoard);
             ColumnService.UnsubscribeDeleteColumn(StateManager.SelectedBoard);
         }
 
