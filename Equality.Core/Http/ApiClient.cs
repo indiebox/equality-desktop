@@ -32,7 +32,7 @@ namespace Equality.Http
 
         public IApiClient WithSocketID(string socketId)
         {
-            if (socketId != null) {
+            if (!string.IsNullOrWhiteSpace(socketId)) {
                 HttpClient.DefaultRequestHeaders.Add("X-Socket-ID", socketId);
             }
 

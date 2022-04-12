@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
 
 using Catel;
@@ -18,14 +16,21 @@ namespace Equality.Services
         where TColumnModel : class, IColumn, new()
         where TBoardModel : class, IBoard, new()
     {
-        IApiClient ApiClient;
-        ITokenResolver TokenResolver;
-        IWebsocketClient WebsocketClient;
+        protected IApiClient ApiClient;
 
-        public ColumnServiceBase(IApiClient apiClient, ITokenResolver tokenResolver, IWebsocketClient websocketClient)
+        protected ITokenResolver TokenResolver;
+
+        protected IWebsocketClient WebsocketClient;
+
+        public ColumnServiceBase(IApiClient apiClient, ITokenResolver tokenResolver)
         {
             ApiClient = apiClient;
             TokenResolver = tokenResolver;
+        }
+
+        public ColumnServiceBase(IApiClient apiClient, ITokenResolver tokenResolver, IWebsocketClient websocketClient)
+            : this(apiClient, tokenResolver)
+        {
             WebsocketClient = websocketClient;
         }
 

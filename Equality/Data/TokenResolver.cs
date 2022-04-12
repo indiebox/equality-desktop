@@ -8,6 +8,11 @@ namespace Equality.Data
     {
         public string ResolveApiToken() => StateManager.ApiToken;
 
-        public string ResolveSocketID() => this.GetDependencyResolver().Resolve<IWebsocketClient>().SocketID;
+        public string ResolveSocketID()
+        {
+            var client = this.GetDependencyResolver().TryResolve<IWebsocketClient>();
+
+            return client is IWebsocketClient websocket ? websocket.SocketID : null;
+        }
     }
 }
