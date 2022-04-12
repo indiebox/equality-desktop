@@ -152,6 +152,19 @@ namespace Equality.Services
             WebsocketClient.UnbindEvent($"private-boards.{board.Id}.columns", "updated");
         }
 
+        public async Task SubscribeDeleteColumnAsync(IBoard board, Action<ulong> action)
+        {
+            await WebsocketClient.BindEventAsync($"private-boards.{board.Id}.columns", "deleted", (data) =>
+            {
+                action.Invoke(ulong.Parse(data["id"].ToString()));
+            });
+        }
+
+        public void UnsubscribeDeleteColumn(IBoard board)
+        {
+            WebsocketClient.UnbindEvent($"private-boards.{board.Id}.columns", "deleted");
+        }
+
         #endregion
 
         /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>

@@ -429,12 +429,21 @@ namespace Equality.ViewModels
                     }
                 });
             });
+
+            await ColumnService.SubscribeDeleteColumnAsync(StateManager.SelectedBoard, (ulong columnId) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    Columns.Remove(Columns.FirstOrDefault(col => col.Id == columnId));
+                });
+            });
         }
 
         protected void UnsubscribePusherAsync()
         {
             ColumnService.UnsubscribeCreateColumn(StateManager.SelectedBoard);
             ColumnService.UnsubscribeUpdateColumn(StateManager.SelectedBoard);
+            ColumnService.UnsubscribeDeleteColumn(StateManager.SelectedBoard);
         }
 
         #endregion

@@ -109,7 +109,7 @@ namespace Equality.Services
         /// </summary>
         /// <param name="board">The board.</param>
         /// <param name="action">
-        /// The actions.
+        /// The action.
         /// First argument is the created column.
         /// Second is the id of column after which the created column should be inserted.
         /// If second argument is null - last position. If 0 - first position.
@@ -127,7 +127,7 @@ namespace Equality.Services
         /// </summary>
         /// <param name="board">The board.</param>
         /// <param name="action">
-        /// The actions.
+        /// The action.
         /// First argument is the updated column.
         /// </param>
         public Task SubscribeUpdateColumnAsync(IBoard board, Action<TColumnModel> action);
@@ -137,6 +137,22 @@ namespace Equality.Services
         /// </summary>
         /// <param name="board">The board.</param>
         public void UnsubscribeUpdateColumn(IBoard board);
+
+        /// <summary>
+        /// Subscribe to websocket event for delete column.
+        /// </summary>
+        /// <param name="board">The board.</param>
+        /// <param name="action">
+        /// The action.
+        /// First argument is the id of deleted column.
+        /// </param>
+        public Task SubscribeDeleteColumnAsync(IBoard board, Action<ulong> action);
+
+        /// <summary>
+        /// Unsubscribe from websocket event for delete column.
+        /// </summary>
+        /// <param name="board">The board.</param>
+        public void UnsubscribeDeleteColumn(IBoard board);
 
         #endregion
     }
