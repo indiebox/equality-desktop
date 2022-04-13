@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,8 +7,8 @@ using System.Threading.Tasks;
 using Catel.Collections;
 using Catel.Data;
 using Catel.MVVM;
-
 using Catel.Services;
+using Catel.ExceptionHandling;
 
 using Equality.Data;
 using Equality.Extensions;
@@ -206,7 +205,7 @@ namespace Equality.ViewModels
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
             } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
+                Data.ExceptionHandler.Handle(e);
             }
         }
 
@@ -228,7 +227,7 @@ namespace Equality.ViewModels
                     : null;
                 await ColumnService.UpdateColumnOrderAsync(DragColumn, afterColumn);
             } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
+                Data.ExceptionHandler.Handle(e);
             }
         }
 
@@ -251,7 +250,7 @@ namespace Equality.ViewModels
 
                 Columns.Remove(column);
             } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
+                Data.ExceptionHandler.Handle(e);
             }
         }
 
@@ -336,7 +335,7 @@ namespace Equality.ViewModels
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
             } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
+                Data.ExceptionHandler.Handle(e);
             }
         }
 
@@ -361,7 +360,7 @@ namespace Equality.ViewModels
                     column.Cards.Remove(card);
                 }
             } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
+                Data.ExceptionHandler.Handle(e);
             }
         }
 
@@ -383,7 +382,7 @@ namespace Equality.ViewModels
                 }
 
             } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
+                Data.ExceptionHandler.Handle(e);
             }
         }
 
@@ -503,7 +502,7 @@ namespace Equality.ViewModels
             await base.InitializeAsync();
 
             await LoadColumnsAsync();
-            await SubscribePusherAsync();
+            await Data.ExceptionHandler.Service.ProcessWithRetryAsync(SubscribePusherAsync);
         }
 
         protected override async Task CloseAsync()

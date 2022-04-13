@@ -15,6 +15,8 @@ using Equality.Http;
 using Equality.Services;
 using Equality.ViewModels;
 
+using PusherClient;
+
 namespace Equality.Data
 {
     public class ExceptionHandler
@@ -39,6 +41,8 @@ namespace Equality.Data
             RegisterHandlers();
             SubscribeEvents();
         }
+
+        public static IExceptionService Service => _exceptionService;
 
         /// <summary>
         /// Handle the exception.
@@ -66,6 +70,9 @@ namespace Equality.Data
             _exceptionService.Register<TooManyRequestsHttpException>(HandleTooManyRequestsException);
             _exceptionService.Register<ServerErrorHttpException>(HandleServerErrorException);
             _exceptionService.Register<HttpRequestException>(HandleHttpRequestException);
+
+            _exceptionService.Register<PusherException>(HandlePusherException)
+                .OnErrorRetry(3, TimeSpan.FromSeconds(1));
         }
 
         #region HttpExceptions
@@ -138,6 +145,17 @@ namespace Equality.Data
         private void HandleHttpRequestException(HttpRequestException exception)
         {
             _notificationService.ShowError($"Ошибка соединения:\n{exception.Message}");
+        }
+
+        #endregion
+
+        #region PusherExceptions
+
+        private void HandlePusherException(PusherException exception)
+        {
+            Log.Warning(exception);
+
+            _notificationService.ShowWarning($"Ошибка подключения к Pusher: {exception.Message}");
         }
 
         #endregion
