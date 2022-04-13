@@ -31,7 +31,9 @@ namespace Equality.Views
 
         int DragCardInitialPosition { get; set; }
 
-        bool IsDragging => Vm.DragColumn != null || Vm.DragCard != null; //split
+        bool IsDraggingColumn => Vm.DragColumn != null;
+
+        bool IsDraggingCard => Vm.DragCard != null;
 
         public Point DeltaMouse { get; set; }
 
@@ -41,7 +43,7 @@ namespace Equality.Views
 
         private void ColumnControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (IsDragging || e.LeftButton != MouseButtonState.Pressed) {
+            if (IsDraggingColumn || e.LeftButton != MouseButtonState.Pressed) {
                 return;
             }
             Vm.DragColumn = ((ContentControl)sender).Content as Column;
@@ -55,7 +57,7 @@ namespace Equality.Views
 
         private void Card_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (IsDragging || e.LeftButton != MouseButtonState.Pressed) {
+            if (IsDraggingCard || e.LeftButton != MouseButtonState.Pressed) {
                 return;
             }
             Vm.DragCard = ((ContentControl)sender).Content as Card;
@@ -72,7 +74,7 @@ namespace Equality.Views
 
         private async void ColumnControl_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (!IsDragging) {
+            if (!IsDraggingColumn) {
                 return;
             }
             var column = ((ContentControl)sender).Content as Column;
@@ -85,7 +87,7 @@ namespace Equality.Views
 
         private async void CardControl_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (!IsDragging) {
+            if (!IsDraggingCard) {
                 return;
             }
             var card = ((ContentControl)sender).Content as Card;
@@ -106,14 +108,11 @@ namespace Equality.Views
 
         private void Grid_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!IsDragging) {
-                return;
-            }
-            if (Vm.DragCard != null) {
+            if (IsDraggingCard) {
                 var cursorPosition = Mouse.GetPosition(DraggingCanvas);
                 Canvas.SetLeft(MovingCard, CardRelativePoint.X + (cursorPosition.X - DeltaMouse.X));
                 Canvas.SetTop(MovingCard, CardRelativePoint.Y + (cursorPosition.Y - DeltaMouse.Y));
-            } else {
+            } else if (IsDraggingColumn) {
                 var cursorPosition = Mouse.GetPosition(DraggingCanvas);
                 Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X + (cursorPosition.X - DeltaMouse.X));
                 Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y + (cursorPosition.Y - DeltaMouse.Y));
@@ -124,7 +123,7 @@ namespace Equality.Views
 
         private void Page_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (!IsDragging) {
+            if (!IsDraggingColumn && !IsDraggingCard) {
                 return;
             }
 
@@ -133,7 +132,7 @@ namespace Equality.Views
 
         private void Page_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (!IsDragging) {
+            if (!IsDraggingColumn && !IsDraggingCard) {
                 return;
             }
 
@@ -145,13 +144,11 @@ namespace Equality.Views
             if (DragColumnInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn)) {
                 Vm.UpdateColumnOrder.Execute();
             }
-            try {
-                if (DragCardInitialPosition != (from column in Vm.Columns
-                                                where column.Cards.Contains(Vm.DragCard)
-                                                select column.Cards).First().IndexOf(Vm.DragCard)) {
-                    Vm.UpdateCardOrder.Execute();
-                }
-            } catch { }
+            if (DragCardInitialPosition != (from column in Vm.Columns
+                                            where column.Cards.Contains(Vm.DragCard)
+                                            select column.Cards).First().IndexOf(Vm.DragCard)) {
+                Vm.UpdateCardOrder.Execute();
+            }
 
             Vm.DragColumn = null;
             Vm.DragCard = null;
