@@ -31,7 +31,7 @@ namespace Equality.Views
 
         int DragCardInitialPosition { get; set; }
 
-        bool IsDragging => Vm.DragColumn != null || Vm.DragCard != null;
+        bool IsDragging => Vm.DragColumn != null || Vm.DragCard != null; //split
 
         public Point DeltaMouse { get; set; }
 
@@ -64,7 +64,6 @@ namespace Equality.Views
                                        select column.Cards.IndexOf(Vm.DragCard))
                                       .First();
 
-
             DeltaMouse = Mouse.GetPosition(DraggingCanvas);
             CardRelativePoint = ((ContentControl)sender).TransformToAncestor(this).Transform(new Point(0, 0));
             Canvas.SetLeft(MovingCard, CardRelativePoint.X);
@@ -87,7 +86,6 @@ namespace Equality.Views
         private async void CardControl_MouseEnter(object sender, MouseEventArgs e)
         {
             if (!IsDragging) {
-                Debug.Write("test");
                 return;
             }
             var card = ((ContentControl)sender).Content as Card;

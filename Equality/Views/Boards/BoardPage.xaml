@@ -25,8 +25,7 @@
         <objects:DataObject x:Key="DataObject" />
         <DataTemplate DataType="{x:Type models:Card}"
                       x:Key="Card">
-            <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                                 Margin="10,0,10,10">
+            <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth1">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -35,6 +34,24 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
+
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Value="True">
+                                    <DataTrigger.Binding>
+                                        <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                            <Binding Path="." />
+                                            <Binding Path="DataContext.DragCard"
+                                                     RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
+                                        </MultiBinding>
+                                    </DataTrigger.Binding>
+                                    <Setter Property="Opacity"
+                                            Value="0.5" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
 
                     <StackPanel>
                         <Grid>
@@ -358,6 +375,8 @@
                                 <DataTemplate DataType="{x:Type models:Card}">
                                     <ContentControl ContentTemplate="{StaticResource Card}"
                                                     MouseDown="Card_MouseDown"
+                                                    Margin="10,0,10,10"
+                                                    MouseEnter="CardControl_MouseEnter"
                                                     Content="{Binding}">
 
                                     </ContentControl>
@@ -367,7 +386,6 @@
                                     <ContentControl Margin="10,0,10,10"
                                                     Focusable="False"
                                                     d:Visibility="Collapsed"
-                                                    MouseEnter="CardControl_MouseEnter"
                                                     Content="{Binding DataContext.CreateCardVm, Converter={catel:ViewModelToViewConverter}, RelativeSource={RelativeSource AncestorType=mvvm:Page}}">
                                         <ContentControl.Style>
                                             <Style TargetType="ContentControl">
