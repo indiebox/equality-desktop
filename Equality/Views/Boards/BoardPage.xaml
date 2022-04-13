@@ -367,6 +367,7 @@
                                     <ContentControl Margin="10,0,10,10"
                                                     Focusable="False"
                                                     d:Visibility="Collapsed"
+                                                    MouseEnter="CardControl_MouseEnter"
                                                     Content="{Binding DataContext.CreateCardVm, Converter={catel:ViewModelToViewConverter}, RelativeSource={RelativeSource AncestorType=mvvm:Page}}">
                                         <ContentControl.Style>
                                             <Style TargetType="ContentControl">

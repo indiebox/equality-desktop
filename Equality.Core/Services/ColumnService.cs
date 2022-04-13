@@ -79,7 +79,7 @@ namespace Equality.Services
 
             return new(column, response);
         }
-        
+
         public Task<ApiResponseMessage> UpdateColumnOrderAsync(TColumnModel column, TColumnModel afterColumn)
             => UpdateColumnOrderAsync(column.Id, afterColumn?.Id ?? 0);
 

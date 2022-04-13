@@ -91,6 +91,21 @@ namespace Equality.Services
             return new(card, response);
         }
 
+        public Task<ApiResponseMessage> UpdateCardOrderAsync(TCardModel card, TCardModel afterCard)
+    => UpdateCardOrderAsync(card.Id, afterCard?.Id ?? 0);
+
+        public async Task<ApiResponseMessage> UpdateCardOrderAsync(ulong cardId, ulong afterCardId)
+        {
+            Argument.IsMinimal<ulong>(nameof(cardId), cardId, 1);
+
+            Dictionary<string, object> data = new()
+            {
+                { "after", afterCardId.ToString() },
+            };
+
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"columns/{cardId}/order", data);
+        }
+
         public Task<ApiResponseMessage> DeleteCardAsync(TCardModel card)
             => DeleteCardAsync(card.Id);
 
