@@ -93,36 +93,27 @@ namespace Equality.Views
 
         protected double ScrollInitialPosition { get; set; }
 
-        protected double ScrollInitialOffset { get; set; }
-
         protected ScrollViewer ColumnsScrollViewer { get; set; }
 
         protected bool IsScrolling { get; set; }
 
-        private void ListBoxColumns_MouseDown(object sender, MouseButtonEventArgs e)
+        private void StartScrollColumns(object sender, MouseButtonEventArgs e)
         {
+            // We check that the mouse is pointed at the main parent element of the ListBox, and not at the inner elements.
             if (Mouse.DirectlyOver is not Grid grid || grid.Parent != null) {
                 return;
             }
 
             IsScrolling = true;
-            ScrollInitialPosition = Mouse.GetPosition(this).X;
             ColumnsScrollViewer = (VisualTreeHelper.GetChild(ListBoxColumns, 0) as Decorator).Child as ScrollViewer;
-            ScrollInitialOffset = ColumnsScrollViewer.HorizontalOffset;
+            ScrollInitialPosition = Mouse.GetPosition(this).X + ColumnsScrollViewer.HorizontalOffset;
+
+            ListBoxColumns.MouseMove += ScrollColumns;
         }
 
-        private void ListBoxColumns_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        private void ScrollColumns(object sender, MouseEventArgs e)
         {
-            StopScrolling();
-        }
-
-        private void ListBoxColumns_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (!IsScrolling) {
-                return;
-            }
-
-            ColumnsScrollViewer.ScrollToHorizontalOffset(ScrollInitialOffset + ScrollInitialPosition - Mouse.GetPosition(this).X);
+            ColumnsScrollViewer.ScrollToHorizontalOffset(ScrollInitialPosition - Mouse.GetPosition(this).X);
         }
 
         private void StopScrolling()
@@ -132,6 +123,7 @@ namespace Equality.Views
             }
 
             IsScrolling = false;
+            ListBoxColumns.MouseMove -= ScrollColumns;
         }
 
         #endregion

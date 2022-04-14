@@ -450,8 +450,7 @@
                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
                          ScrollViewer.CanContentScroll="False"
                          VerticalContentAlignment="Stretch"
-                         PreviewMouseDown="ListBoxColumns_MouseDown"
-                         MouseMove="ListBoxColumns_MouseMove">
+                         PreviewMouseDown="StartScrollColumns">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
