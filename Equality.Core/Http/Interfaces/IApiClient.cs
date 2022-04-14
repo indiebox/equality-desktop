@@ -13,24 +13,32 @@ namespace Equality.Http
         public HttpClient HttpClient { get; set; }
 
         /// <summary>
+        /// Set `X-Socket-ID` header for next request.
+        /// Basically, this method should be called with requests that trigger websocket events.
+        /// </summary>
+        /// <param name="socketID">The socket id of the connected <see cref="IWebsocketClient"/>.</param>
+        /// <returns>Returns <see langword="this"/></returns>
+        public IApiClient WithSocketID(string socketID);
+
+        /// <summary>
         /// Set bearer token for all next requests.
         /// </summary>
         /// <param name="token">The api token.</param>
         /// <returns>Returns <see langword="this"/></returns>
-        public ApiClient WithToken(string token);
+        public IApiClient WithToken(string token);
 
         /// <summary>
         /// Set bearer token only for one next request.
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public ApiClient WithTokenOnce(string token);
+        public IApiClient WithTokenOnce(string token);
 
         /// <summary>
         /// Remove bearer token from all next requests.
         /// </summary>
         /// <returns>Returns <see langword="this"/></returns>
-        public ApiClient WithoutToken();
+        public IApiClient WithoutToken();
 
         /// <inheritdoc cref="GetAsync(Uri)"/>
         public Task<ApiResponseMessage> GetAsync(string requestUri);

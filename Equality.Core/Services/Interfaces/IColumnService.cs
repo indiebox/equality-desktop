@@ -8,7 +8,7 @@ using Equality.Data;
 
 namespace Equality.Services
 {
-    public interface IColumnService<TColumnModel, TBoardModel> : IDeserializeModels<TColumnModel>
+    public partial interface IColumnService<TColumnModel, TBoardModel> : IDeserializeModels<TColumnModel>
         where TColumnModel : class, IColumn, new()
         where TBoardModel : class, IBoard, new()
     {
@@ -20,7 +20,7 @@ namespace Equality.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolver.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -40,7 +40,7 @@ namespace Equality.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
+        /// Gets a <c>token</c> using <see cref="ITokenResolver.ResolveApiToken"></see> and <c>socket-id</c> using <see cref="ITokenResolver.ResolveSocketID"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -60,7 +60,7 @@ namespace Equality.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolver.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -74,7 +74,7 @@ namespace Equality.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolver.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -92,7 +92,7 @@ namespace Equality.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolver.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />

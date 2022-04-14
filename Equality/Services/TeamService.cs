@@ -6,7 +6,7 @@ namespace Equality.Services
 {
     public class TeamService : TeamServiceBase<Team, TeamMember>, ITeamService
     {
-        public TeamService(IApiClient apiClient, ITokenResolverService tokenResolver) : base(apiClient, tokenResolver)
+        public TeamService(IApiClient apiClient, ITokenResolver tokenResolver) : base(apiClient, tokenResolver)
         {
         }
     }

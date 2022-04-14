@@ -17,7 +17,7 @@ namespace Equality.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
+        /// Gets a token using <see cref="ITokenResolver.ResolveApiToken"></see>.
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
@@ -39,7 +39,7 @@ namespace Equality.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <remarks>
-        /// <para>Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.</para>
+        /// <para>Gets a token using <see cref="ITokenResolver.ResolveApiToken"></see>.</para>
         /// After this request this token will be invalid.
         /// </remarks>
         /// 

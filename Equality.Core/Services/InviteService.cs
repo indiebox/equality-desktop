@@ -17,9 +17,9 @@ namespace Equality.Services
     {
         protected IApiClient ApiClient;
 
-        protected ITokenResolverService TokenResolver;
+        protected ITokenResolver TokenResolver;
 
-        public InviteServiceBase(IApiClient apiClient, ITokenResolverService tokenResolver)
+        public InviteServiceBase(IApiClient apiClient, ITokenResolver tokenResolver)
         {
             Argument.IsNotNull(nameof(apiClient), apiClient);
             Argument.IsNotNull(nameof(tokenResolver), tokenResolver);

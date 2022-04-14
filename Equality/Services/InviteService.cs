@@ -7,7 +7,7 @@ namespace Equality.Services
 {
     public class InviteService : InviteServiceBase<Invite, Team>, IInviteService
     {
-        public InviteService(IApiClient apiClient, ITokenResolverService tokenResolver) : base(apiClient, tokenResolver)
+        public InviteService(IApiClient apiClient, ITokenResolver tokenResolver) : base(apiClient, tokenResolver)
         {
         }
     }
