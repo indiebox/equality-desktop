@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -16,20 +15,26 @@ namespace Equality.Views
             InitializeComponent();
 
             DataContextChanged += BoardPage_DataContextChanged;
+            ListBoxColumns.Loaded += ListBoxColumns_Loaded;
         }
+
+        protected BoardPageViewModel Vm { get; set; }
 
         private void BoardPage_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             Vm = (BoardPageViewModel)DataContext;
         }
 
+        private void ListBoxColumns_Loaded(object sender, RoutedEventArgs e)
+        {
+            ColumnsScrollViewer = (VisualTreeHelper.GetChild(ListBoxColumns, 0) as Decorator).Child as ScrollViewer;
+        }
+
         #region Drag&Drop
 
-        BoardPageViewModel Vm { get; set; }
+        protected int DragColumnInitialPosition { get; set; }
 
-        int DragColumnInitialPosition { get; set; }
-
-        bool IsDragging => Vm.DragColumn != null;
+        protected bool IsDragging => Vm.DragColumn != null;
 
         public Point DeltaMouse { get; set; }
 
@@ -46,8 +51,11 @@ namespace Equality.Views
 
             DeltaMouse = Mouse.GetPosition(DraggingCanvas);
             ColumnRelativePoint = ((FrameworkElement)sender).TransformToAncestor(this).Transform(new Point(0, 0));
+
             Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X);
             Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y);
+
+            ListBoxColumns.MouseMove += ScrollListBoxOnDragging;
         }
 
         private async void ColumnControl_MouseEnter(object sender, MouseEventArgs e)
@@ -85,6 +93,27 @@ namespace Equality.Views
             }
 
             Vm.DragColumn = null;
+
+            ListBoxColumns.MouseMove -= ScrollListBoxOnDragging;
+        }
+
+        /// <summary>
+        /// Called when mouse move inside columns list box.
+        /// This handler used for automaticall scroll to left/right on drag and drop columns.
+        /// </summary>
+        private void ScrollListBoxOnDragging(object sender, MouseEventArgs e)
+        {
+            var li = sender as ListBox;
+
+            double horizontalPos = e.GetPosition(li).X;
+            double tolerance = 100;
+            double offset = 1;
+
+            if (horizontalPos < tolerance) {
+                ColumnsScrollViewer.ScrollToHorizontalOffset(ColumnsScrollViewer.HorizontalOffset - offset);
+            } else if (horizontalPos > li.ActualWidth - tolerance) {
+                ColumnsScrollViewer.ScrollToHorizontalOffset(ColumnsScrollViewer.HorizontalOffset + offset);
+            }
         }
 
         #endregion
@@ -105,7 +134,6 @@ namespace Equality.Views
             }
 
             IsScrolling = true;
-            ColumnsScrollViewer = (VisualTreeHelper.GetChild(ListBoxColumns, 0) as Decorator).Child as ScrollViewer;
             ScrollInitialPosition = Mouse.GetPosition(this).X + ColumnsScrollViewer.HorizontalOffset;
 
             ListBoxColumns.MouseMove += ScrollColumns;
@@ -128,6 +156,8 @@ namespace Equality.Views
 
         #endregion
 
+        #region Common handlers
+
         private void Page_MouseUp(object sender, MouseButtonEventArgs e)
         {
             StopDragging();
@@ -139,5 +169,7 @@ namespace Equality.Views
             StopDragging();
             StopScrolling();
         }
+
+        #endregion
     }
 }
