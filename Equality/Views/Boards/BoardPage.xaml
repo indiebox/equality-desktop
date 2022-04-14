@@ -451,7 +451,6 @@
                          ScrollViewer.CanContentScroll="False"
                          VerticalContentAlignment="Stretch"
                          PreviewMouseDown="ListBoxColumns_MouseDown"
-                         PreviewMouseUp="ListBoxColumns_PreviewMouseUp"
                          MouseMove="ListBoxColumns_MouseMove">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>

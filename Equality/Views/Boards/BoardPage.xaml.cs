@@ -74,28 +74,12 @@ namespace Equality.Views
             Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y + (cursorPosition.Y - DeltaMouse.Y));
         }
 
-        #region StopDrag
-
-        private void Page_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (!IsDragging) {
-                return;
-            }
-
-            StopDragging();
-        }
-
-        private void Page_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (!IsDragging) {
-                return;
-            }
-
-            StopDragging();
-        }
-
         private void StopDragging()
         {
+            if (!IsDragging) {
+                return;
+            }
+
             if (DragColumnInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn)) {
                 Vm.UpdateColumnOrder.Execute();
             }
@@ -103,19 +87,17 @@ namespace Equality.Views
             Vm.DragColumn = null;
         }
 
-        #endregion StopDrag
-
         #endregion
 
         #region Horizontal scroll
 
-        protected double ScrollInitialPosition { get; set; } = -1;
+        protected double ScrollInitialPosition { get; set; }
 
-        protected double ScrollInitialOffset { get; set; } = 0;
+        protected double ScrollInitialOffset { get; set; }
 
         protected ScrollViewer ColumnsScrollViewer { get; set; }
 
-        protected bool IsScrolling => ScrollInitialPosition != -1;
+        protected bool IsScrolling { get; set; }
 
         private void ListBoxColumns_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -123,30 +105,47 @@ namespace Equality.Views
                 return;
             }
 
+            IsScrolling = true;
             ScrollInitialPosition = Mouse.GetPosition(this).X;
-            Decorator border = VisualTreeHelper.GetChild(ListBoxColumns, 0) as Decorator;
-            if (border != null) {
-                ColumnsScrollViewer = border.Child as ScrollViewer;
-                ScrollInitialOffset = ColumnsScrollViewer.HorizontalOffset;
-            }
+            ColumnsScrollViewer = (VisualTreeHelper.GetChild(ListBoxColumns, 0) as Decorator).Child as ScrollViewer;
+            ScrollInitialOffset = ColumnsScrollViewer.HorizontalOffset;
         }
 
         private void ListBoxColumns_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
-            ScrollInitialPosition = -1;
-            ColumnsScrollViewer = null;
-            ScrollInitialOffset = 0;
+            StopScrolling();
         }
 
         private void ListBoxColumns_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!IsScrolling || ColumnsScrollViewer == null) {
+            if (!IsScrolling) {
                 return;
             }
 
             ColumnsScrollViewer.ScrollToHorizontalOffset(ScrollInitialOffset + ScrollInitialPosition - Mouse.GetPosition(this).X);
         }
 
+        private void StopScrolling()
+        {
+            if (!IsScrolling) {
+                return;
+            }
+
+            IsScrolling = false;
+        }
+
         #endregion
+
+        private void Page_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            StopDragging();
+            StopScrolling();
+        }
+
+        private void Page_MouseLeave(object sender, MouseEventArgs e)
+        {
+            StopDragging();
+            StopScrolling();
+        }
     }
 }
