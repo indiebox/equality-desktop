@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 using Equality.Models;
 using Equality.ViewModels;
@@ -21,6 +23,8 @@ namespace Equality.Views
             Vm = (BoardPageViewModel)DataContext;
         }
 
+        #region Drag&Drop
+
         BoardPageViewModel Vm { get; set; }
 
         int DragColumnInitialPosition { get; set; }
@@ -36,11 +40,12 @@ namespace Equality.Views
             if (IsDragging || e.LeftButton != MouseButtonState.Pressed) {
                 return;
             }
-            Vm.DragColumn = ((ContentControl)sender).Content as Column;
+
+            Vm.DragColumn = ((FrameworkElement)sender).DataContext as Column;
             DragColumnInitialPosition = Vm.Columns.IndexOf(Vm.DragColumn);
 
             DeltaMouse = Mouse.GetPosition(DraggingCanvas);
-            ColumnRelativePoint = ((ContentControl)sender).TransformToAncestor(this).Transform(new Point(0, 0));
+            ColumnRelativePoint = ((FrameworkElement)sender).TransformToAncestor(this).Transform(new Point(0, 0));
             Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X);
             Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y);
         }
@@ -50,8 +55,8 @@ namespace Equality.Views
             if (!IsDragging) {
                 return;
             }
-            var column = ((ContentControl)sender).Content as Column;
 
+            var column = ((FrameworkElement)sender).DataContext as Column;
             int oldIndex = Vm.Columns.IndexOf(column);
             int dragColumnIndex = Vm.Columns.IndexOf(Vm.DragColumn);
 
@@ -96,6 +101,50 @@ namespace Equality.Views
             }
 
             Vm.DragColumn = null;
+        }
+
+        #endregion StopDrag
+
+        #endregion
+
+        #region Horizontal scroll
+
+        protected double ScrollInitialPosition { get; set; } = -1;
+
+        protected double ScrollInitialOffset { get; set; } = 0;
+
+        protected ScrollViewer ColumnsScrollViewer { get; set; }
+
+        protected bool IsScrolling => ScrollInitialPosition != -1;
+
+        private void ListBoxColumns_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Mouse.DirectlyOver is not Grid grid || grid.Parent != null) {
+                return;
+            }
+
+            ScrollInitialPosition = Mouse.GetPosition(this).X;
+            Decorator border = VisualTreeHelper.GetChild(ListBoxColumns, 0) as Decorator;
+            if (border != null) {
+                ColumnsScrollViewer = border.Child as ScrollViewer;
+                ScrollInitialOffset = ColumnsScrollViewer.HorizontalOffset;
+            }
+        }
+
+        private void ListBoxColumns_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            ScrollInitialPosition = -1;
+            ColumnsScrollViewer = null;
+            ScrollInitialOffset = 0;
+        }
+
+        private void ListBoxColumns_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!IsScrolling || ColumnsScrollViewer == null) {
+                return;
+            }
+
+            ColumnsScrollViewer.ScrollToHorizontalOffset(ScrollInitialOffset + ScrollInitialPosition - Mouse.GetPosition(this).X);
         }
 
         #endregion

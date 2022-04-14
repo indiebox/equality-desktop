@@ -51,7 +51,8 @@
 
                 <Border CornerRadius="3"
                         Background="#ebecf0"
-                        VerticalAlignment="Top">
+                        VerticalAlignment="Top"
+                        MouseDown="ColumnControl_MouseDown">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -448,7 +449,10 @@
                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
                          ScrollViewer.CanContentScroll="False"
-                         VerticalContentAlignment="Stretch">
+                         VerticalContentAlignment="Stretch"
+                         PreviewMouseDown="ListBoxColumns_MouseDown"
+                         PreviewMouseUp="ListBoxColumns_PreviewMouseUp"
+                         MouseMove="ListBoxColumns_MouseMove">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
@@ -460,8 +464,7 @@
                             <ContentControl ContentTemplate="{StaticResource Column}"
                                             Content="{Binding}"
                                             Margin="10,0,0,0"
-                                            MouseEnter="ColumnControl_MouseEnter"
-                                            MouseDown="ColumnControl_MouseDown" />
+                                            MouseEnter="ColumnControl_MouseEnter" />
                         </DataTemplate>
 
                         <DataTemplate DataType="{x:Type objects:DataObject}">
