@@ -143,10 +143,9 @@ namespace Equality.Views
         {
             if (DragColumnInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn)) {
                 Vm.UpdateColumnOrder.Execute();
-            }
-            if (DragCardInitialPosition != (from column in Vm.Columns
-                                            where column.Cards.Contains(Vm.DragCard)
-                                            select column.Cards).First().IndexOf(Vm.DragCard)) {
+            } else if (DragCardInitialPosition != (from column in Vm.Columns
+                                                   where column.Cards.Contains(Vm.DragCard)
+                                                   select column.Cards).First().IndexOf(Vm.DragCard)) {
                 Vm.UpdateCardOrder.Execute();
             }
 

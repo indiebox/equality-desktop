@@ -103,7 +103,7 @@ namespace Equality.Services
                 { "after", afterCardId.ToString() },
             };
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"columns/{cardId}/order", data);
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"cards/{cardId}/order", data);
         }
 
         public Task<ApiResponseMessage> DeleteCardAsync(TCardModel card)
