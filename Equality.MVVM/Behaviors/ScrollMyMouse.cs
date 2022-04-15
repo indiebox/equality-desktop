@@ -130,10 +130,10 @@ namespace Equality.Behaviors
 
                 if (position < tolerance) {
                     double offset = Math.Min(maxStep, tolerance / position - 0.95);
-                    ScrollViewer.ScrollToVerticalOffset(ScrollViewer.HorizontalOffset - offset);
-                } else if (position > AssociatedObject.ActualWidth - tolerance) {
-                    double offset = Math.Min(maxStep, tolerance / (AssociatedObject.ActualWidth - position) - 0.95);
-                    ScrollViewer.ScrollToVerticalOffset(ScrollViewer.HorizontalOffset + offset);
+                    ScrollViewer.ScrollToVerticalOffset(ScrollViewer.VerticalOffset - offset);
+                } else if (position > AssociatedObject.ActualHeight - tolerance) {
+                    double offset = Math.Min(maxStep, tolerance / (AssociatedObject.ActualHeight - position) - 0.95);
+                    ScrollViewer.ScrollToVerticalOffset(ScrollViewer.VerticalOffset + offset);
                 }
             }
         }

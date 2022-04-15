@@ -372,6 +372,10 @@
                                  Grid.Row="1"
                                  VirtualizingPanel.VirtualizationMode="Standard">
                             <i:Interaction.Behaviors>
+                                <equality:ScrollByMouse Orientation="Vertical"
+                                                        Tolerance="50"
+                                                        MaxStep="1"
+                                                        IsScrollEnabled="{Binding DataContext.DragCard, Converter={catel:ReferenceToBooleanConverter}, RelativeSource={RelativeSource AncestorType=mvvm:Page}}" />
                                 <equality:AutoScrollOnCommandExecuted Position="Bottom"
                                                                       Command="{Binding DataContext.OpenCreateCardWindow, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                                       CommandParameter="{Binding}" />
