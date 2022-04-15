@@ -41,8 +41,7 @@
                            VerticalAlignment="Center" />
             </DockPanel>
             <ListBox Grid.Row="1"
-                     ItemsSource="{Binding Boards}"
-                     Cursor="Hand">
+                     ItemsSource="{Binding Boards}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Button x:Name="Board"
