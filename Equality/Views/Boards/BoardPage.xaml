@@ -472,6 +472,10 @@
                          ScrollViewer.CanContentScroll="False"
                          VerticalContentAlignment="Stretch"
                          PreviewMouseDown="StartScrollColumns">
+                    <i:Interaction.Behaviors>
+                        <equality:ScrollByMouse Orientation="Horizontal"
+                                                IsScrollEnabled="{Binding DragColumn, Converter={catel:ReferenceToBooleanConverter}}" />
+                    </i:Interaction.Behaviors>
                     <ListBox.Style>
                         <Style TargetType="ListBox"
                                BasedOn="{StaticResource ListBoxStyle}">

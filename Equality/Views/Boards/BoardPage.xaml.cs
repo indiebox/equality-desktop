@@ -55,8 +55,6 @@ namespace Equality.Views
 
             Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X);
             Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y);
-
-            ListBoxColumns.MouseMove += ScrollListBoxOnDragging;
         }
 
         private async void ColumnControl_MouseEnter(object sender, MouseEventArgs e)
@@ -94,29 +92,6 @@ namespace Equality.Views
             }
 
             Vm.DragColumn = null;
-
-            ListBoxColumns.MouseMove -= ScrollListBoxOnDragging;
-        }
-
-        /// <summary>
-        /// Called when mouse move inside columns list box.
-        /// This handler used for automaticall scroll to left/right on drag and drop columns.
-        /// </summary>
-        private void ScrollListBoxOnDragging(object sender, MouseEventArgs e)
-        {
-            var li = sender as ListBox;
-
-            double horizontalPos = e.GetPosition(li).X;
-            const double tolerance = 300;
-            const double maxStep = 2;
-
-            if (horizontalPos < tolerance) {
-                double offset = Math.Min(maxStep, tolerance / horizontalPos - 0.95);
-                ColumnsScrollViewer.ScrollToHorizontalOffset(ColumnsScrollViewer.HorizontalOffset - offset);
-            } else if (horizontalPos > li.ActualWidth - tolerance) {
-                double offset = Math.Min(maxStep, tolerance / (li.ActualWidth - horizontalPos) - 0.95);
-                ColumnsScrollViewer.ScrollToHorizontalOffset(ColumnsScrollViewer.HorizontalOffset + offset);
-            }
         }
 
         #endregion
