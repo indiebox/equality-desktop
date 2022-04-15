@@ -61,10 +61,12 @@ namespace Equality.Views
                 return;
             }
             Vm.DragCard = ((ContentControl)sender).Content as Card;
-            DragCardInitialPosition = (from column in Vm.Columns
-                                       where column.Cards.Contains(Vm.DragCard)
-                                       select column.Cards.IndexOf(Vm.DragCard))
-                                      .First();
+            DragCardInitialPosition = Vm.Columns
+                .Select(column => column)
+                .Where(column => column.Cards.Contains(Vm.DragCard))
+                .First().
+                Cards.IndexOf(Vm.DragCard)
+                                      ;
 
             DeltaMouse = Mouse.GetPosition(DraggingCanvas);
             CardRelativePoint = ((ContentControl)sender).TransformToAncestor(this).Transform(new Point(0, 0));
