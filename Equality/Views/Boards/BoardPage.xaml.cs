@@ -146,9 +146,9 @@ namespace Equality.Views
         {
             if (IsDraggingColumn && DragColumnInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn)) {
                 Vm.UpdateColumnOrder.Execute();
-            } else if (IsDraggingCard && DragCardInitialPosition != (from column in Vm.Columns
-                                                                     where column.Cards.Contains(Vm.DragCard)
-                                                                     select column.Cards).First().IndexOf(Vm.DragCard)) {
+            } else if (IsDraggingCard && DragCardInitialPosition != Vm.Columns
+                                                                        .Where(column => column.Cards.Contains(Vm.DragCard)).First()
+                                                                        .Cards.IndexOf(Vm.DragCard)) {
                 Vm.UpdateCardOrder.Execute();
             }
 
