@@ -222,7 +222,8 @@
 
                 <Border CornerRadius="3"
                         Background="#ebecf0"
-                        VerticalAlignment="Top">
+                        VerticalAlignment="Top"
+                        MouseDown="ColumnControl_MouseDown">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -370,6 +371,36 @@
                         <ListBox Name="CardsList"
                                  Grid.Row="1"
                                  VirtualizingPanel.VirtualizationMode="Standard">
+                            <i:Interaction.Behaviors>
+                                <equality:ScrollByMouse Orientation="Vertical"
+                                                        Tolerance="50"
+                                                        MaxStep="1"
+                                                        IsScrollEnabled="{Binding DataContext.DragCard, Converter={catel:ReferenceToBooleanConverter}, RelativeSource={RelativeSource AncestorType=mvvm:Page}}" />
+                                <equality:AutoScrollOnCommandExecuted Position="Bottom"
+                                                                      Command="{Binding DataContext.OpenCreateCardWindow, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                                      CommandParameter="{Binding}" />
+                            </i:Interaction.Behaviors>
+                            <ListBox.Style>
+                                <Style TargetType="ListBox"
+                                       BasedOn="{StaticResource ListBoxStyle}">
+                                    <!-- Override scrollbar color -->
+                                    <Style.Resources>
+                                        <Style TargetType="ScrollViewer"
+                                               BasedOn="{StaticResource MaterialDesignScrollViewer}">
+                                            <Style.Resources>
+                                                <Style TargetType="ScrollBar"
+                                                       BasedOn="{StaticResource MaterialDesignScrollBarMinimal}">
+                                                    <Style.Resources>
+                                                        <SolidColorBrush x:Key="MaterialDesignBody"
+                                                                         Color="#DD000000" />
+                                                    </Style.Resources>
+                                                </Style>
+                                            </Style.Resources>
+                                        </Style>
+                                    </Style.Resources>
+                                </Style>
+                            </ListBox.Style>
+
                             <!-- Templates for custom objects. -->
                             <ListBox.Resources>
                                 <DataTemplate DataType="{x:Type models:Card}">
@@ -470,88 +501,127 @@
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
+                <!-- Columns list -->
                 <ListBox x:Name="ListBoxColumns"
-                         ItemsSource="{Binding Columns}"
                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                         VerticalContentAlignment="Stretch">
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                         ScrollViewer.CanContentScroll="False"
+                         VerticalContentAlignment="Stretch"
+                         PreviewMouseDown="StartScrollColumns"
+                         Margin="0,0,10,0">
+                    <i:Interaction.Behaviors>
+                        <equality:ScrollByMouse Orientation="Horizontal"
+                                                IsScrollEnabled="{Binding DragColumn, Converter={catel:ReferenceToBooleanConverter}}" />
+                        <equality:AutoScrollOnCommandExecuted Position="Right"
+                                                              Command="{Binding OpenCreateColumnWindow}" />
+                    </i:Interaction.Behaviors>
+                    <ListBox.Style>
+                        <Style TargetType="ListBox"
+                               BasedOn="{StaticResource ListBoxStyle}">
+                            <!-- Override scrollbar color -->
+                            <Style.Resources>
+                                <Style TargetType="ScrollViewer"
+                                       BasedOn="{StaticResource MaterialDesignScrollViewer}">
+                                    <Style.Resources>
+                                        <Style TargetType="ScrollBar"
+                                               BasedOn="{StaticResource MaterialDesignScrollBarMinimal}">
+                                            <Style.Resources>
+                                                <SolidColorBrush x:Key="MaterialDesignBody"
+                                                                 Color="White" />
+                                            </Style.Resources>
+                                        </Style>
+                                    </Style.Resources>
+                                </Style>
+                            </Style.Resources>
+                        </Style>
+                    </ListBox.Style>
+
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
 
-                    <ListBox.ItemTemplate>
+                    <ListBox.Resources>
                         <DataTemplate DataType="{x:Type models:Column}">
                             <ContentControl ContentTemplate="{StaticResource Column}"
                                             Content="{Binding}"
                                             Margin="10,0,0,0"
-                                            MouseEnter="ColumnControl_MouseEnter"
-                                            MouseDown="ColumnControl_MouseDown" />
+                                            MouseEnter="ColumnControl_MouseEnter" />
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
+
+                        <DataTemplate DataType="{x:Type objects:DataObject}">
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="10,0,0,0">
+                                <StackPanel VerticalAlignment="Top"
+                                            Background="#00000000">
+                                    <Button Padding="10"
+                                            Cursor="Hand"
+                                            Width="350"
+                                            BorderThickness="0"
+                                            Height="50"
+                                            Command="{Binding DataContext.OpenCreateColumnWindow, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                            Visibility="{Binding DataContext.CreateColumnVm, RelativeSource={RelativeSource AncestorType=mvvm:Page}, Converter={catel:ReferenceToCollapsingVisibilityConverter}, ConverterParameter=True}">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Background"
+                                                        Value="#19000014" />
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+
+                                                        <ControlTemplate TargetType="{x:Type Button}">
+                                                            <Border Background="{TemplateBinding Background}">
+                                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                                  VerticalAlignment="Center" />
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver"
+                                                             Value="True">
+                                                        <Setter Property="Background"
+                                                                Value="#33000029" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Plus"
+                                                                     Width="20"
+                                                                     Height="20"
+                                                                     VerticalAlignment="Center"
+                                                                     Foreground="White" />
+                                            <TextBlock FontSize="16"
+                                                       Foreground="White">Добавить колонку</TextBlock>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                                <ContentControl VerticalAlignment="Top"
+                                                Focusable="False"
+                                                Content="{Binding DataContext.CreateColumnVm, RelativeSource={RelativeSource AncestorType=mvvm:Page}, Converter={catel:ViewModelToViewConverter}}" />
+                            </StackPanel>
+                        </DataTemplate>
+
+                        <CollectionViewSource x:Key="ColumnsCollection"
+                                              Source="{Binding Columns}" />
+                    </ListBox.Resources>
+
+                    <ListBox.ItemsSource>
+                        <CompositeCollection>
+                            <CollectionContainer Collection="{Binding Source={StaticResource ColumnsCollection}}" />
+                            <StaticResource ResourceKey="DataObject" />
+                        </CompositeCollection>
+                    </ListBox.ItemsSource>
                 </ListBox>
-                <StackPanel Grid.Column="1"
-                            VerticalAlignment="Top"
-                            Margin="10,0,0,0"
-                            Background="#00000000">
-                    <Button Padding="10"
-                            Cursor="Hand"
-                            Width="350"
-                            BorderThickness="0"
-                            Height="50"
-                            Command="{Binding DataContext.OpenCreateColumnWindow, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
-                            Visibility="{Binding DataContext.CreateColumnVm, RelativeSource={RelativeSource AncestorType=mvvm:Page}, Converter={catel:ReferenceToCollapsingVisibilityConverter}, ConverterParameter=True}">
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Background"
-                                        Value="#19000014" />
-
-                                <Setter Property="Template">
-                                    <Setter.Value>
-
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Border Background="{TemplateBinding Background}">
-                                                <ContentPresenter HorizontalAlignment="Center"
-                                                                  VerticalAlignment="Center" />
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver"
-                                             Value="True">
-                                        <Setter Property="Background"
-                                                Value="#33000029" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Plus"
-                                                     Width="20"
-                                                     Height="20"
-                                                     VerticalAlignment="Center"
-                                                     Foreground="White" />
-                            <TextBlock FontSize="16"
-                                       Foreground="White">Добавить колонку</TextBlock>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-                <ContentControl Grid.Column="1"
-                                Margin="10,0,0,0"
-                                VerticalAlignment="Top"
-                                Focusable="False"
-                                Content="{Binding DataContext.CreateColumnVm, RelativeSource={RelativeSource AncestorType=mvvm:Page}, Converter={catel:ViewModelToViewConverter}}" />
-
             </Grid>
         </Grid>
     </Grid>

@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 using Equality.Models;
 using Equality.ViewModels;
@@ -18,22 +20,30 @@ namespace Equality.Views
             InitializeComponent();
 
             DataContextChanged += BoardPage_DataContextChanged;
+            ListBoxColumns.Loaded += ListBoxColumns_Loaded;
         }
+
+        protected BoardPageViewModel Vm { get; set; }
 
         private void BoardPage_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             Vm = (BoardPageViewModel)DataContext;
         }
 
-        BoardPageViewModel Vm { get; set; }
+        private void ListBoxColumns_Loaded(object sender, RoutedEventArgs e)
+        {
+            ColumnsScrollViewer = (VisualTreeHelper.GetChild(ListBoxColumns, 0) as Decorator).Child as ScrollViewer;
+        }
 
-        int DragColumnInitialPosition { get; set; }
+        #region Drag&Drop
+
+        protected int DragColumnInitialPosition { get; set; }
 
         int DragCardInitialPosition { get; set; }
 
-        bool IsDraggingColumn => Vm.DragColumn != null;
+        bool IsDraggingColumn => Vm?.DragColumn != null;
 
-        bool IsDraggingCard => Vm.DragCard != null;
+        bool IsDraggingCard => Vm?.DragCard != null;
 
         public Point DeltaMouse { get; set; }
 
@@ -46,11 +56,13 @@ namespace Equality.Views
             if (IsDraggingColumn || e.LeftButton != MouseButtonState.Pressed) {
                 return;
             }
-            Vm.DragColumn = ((ContentControl)sender).Content as Column;
+
+            Vm.DragColumn = ((FrameworkElement)sender).DataContext as Column;
             DragColumnInitialPosition = Vm.Columns.IndexOf(Vm.DragColumn);
 
             DeltaMouse = Mouse.GetPosition(DraggingCanvas);
-            ColumnRelativePoint = ((ContentControl)sender).TransformToAncestor(this).Transform(new Point(0, 0));
+            ColumnRelativePoint = ((FrameworkElement)sender).TransformToAncestor(this).Transform(new Point(0, 0));
+
             Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X);
             Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y);
         }
@@ -78,8 +90,8 @@ namespace Equality.Views
             if (!IsDraggingColumn) {
                 return;
             }
-            var column = ((ContentControl)sender).Content as Column;
 
+            var column = ((FrameworkElement)sender).DataContext as Column;
             int oldIndex = Vm.Columns.IndexOf(column);
             int dragColumnIndex = Vm.Columns.IndexOf(Vm.DragColumn);
 
@@ -122,38 +134,76 @@ namespace Equality.Views
             }
         }
 
-        #region StopDrag
-
-        private void Page_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (!IsDraggingColumn && !IsDraggingCard) {
-                return;
-            }
-
-            StopDragging();
-        }
-
-        private void Page_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (!IsDraggingColumn && !IsDraggingCard) {
-                return;
-            }
-
-            StopDragging();
-        }
-
         private void StopDragging()
         {
+            if (!IsDraggingColumn && !IsDraggingCard) {
+                return;
+            }
+
             if (IsDraggingColumn && DragColumnInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn)) {
                 Vm.UpdateColumnOrder.Execute();
             } else if (IsDraggingCard && DragCardInitialPosition != Vm.Columns
-                                                                        .Where(column => column.Cards.Contains(Vm.DragCard)).First()
-                                                                        .Cards.IndexOf(Vm.DragCard)) {
+                                                                    .Where(column => column.Cards.Contains(Vm.DragCard)).First()
+                                                                    .Cards.IndexOf(Vm.DragCard)) {
                 Vm.UpdateCardOrder.Execute();
             }
 
             Vm.DragColumn = null;
             Vm.DragCard = null;
+        }
+
+        #endregion
+
+        #region Horizontal scroll
+
+        protected double ScrollInitialPosition { get; set; }
+
+        protected ScrollViewer ColumnsScrollViewer { get; set; }
+
+        protected bool IsScrolling { get; set; }
+
+        private void StartScrollColumns(object sender, MouseButtonEventArgs e)
+        {
+            // We check that the mouse is pointed at the main parent element of the ListBox, and not at the inner elements.
+            if (Mouse.DirectlyOver is not Grid grid || grid.Parent != null) {
+                return;
+            }
+
+            IsScrolling = true;
+            ScrollInitialPosition = Mouse.GetPosition(this).X + ColumnsScrollViewer.HorizontalOffset;
+
+            ListBoxColumns.MouseMove += ScrollColumns;
+        }
+
+        private void ScrollColumns(object sender, MouseEventArgs e)
+        {
+            ColumnsScrollViewer.ScrollToHorizontalOffset(ScrollInitialPosition - Mouse.GetPosition(this).X);
+        }
+
+        private void StopScrolling()
+        {
+            if (!IsScrolling) {
+                return;
+            }
+
+            IsScrolling = false;
+            ListBoxColumns.MouseMove -= ScrollColumns;
+        }
+
+        #endregion
+
+        #region Common handlers
+
+        private void Page_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            StopDragging();
+            StopScrolling();
+        }
+
+        private void Page_MouseLeave(object sender, MouseEventArgs e)
+        {
+            StopDragging();
+            StopScrolling();
         }
 
         #endregion
