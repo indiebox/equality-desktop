@@ -62,7 +62,6 @@ namespace Equality.Views
             }
             Vm.DragCard = ((ContentControl)sender).Content as Card;
             DragCardInitialPosition = Vm.Columns
-                .Select(column => column)
                 .Where(column => column.Cards.Contains(Vm.DragCard))
                 .First().
                 Cards.IndexOf(Vm.DragCard)
@@ -94,18 +93,20 @@ namespace Equality.Views
             }
             var card = ((ContentControl)sender).Content as Card;
 
-            int oldIndex = (from column in Vm.Columns
-                            where column.Cards.Contains(card)
-                            select column.Cards.IndexOf(card))
-                                      .First();
-            int dragColumnIndex = (from column in Vm.Columns
-                                   where column.Cards.Contains(Vm.DragCard)
-                                   select column.Cards.IndexOf(Vm.DragCard))
-                                      .First();
+            int oldIndex = Vm.Columns
+                .Where(column => column.Cards.Contains(card))
+                .First()
+                .Cards.IndexOf(card);
+            int dragColumnIndex = Vm.Columns
+                .Where(column => column.Cards.Contains(Vm.DragCard))
+                .First()
+                .Cards.IndexOf(Vm.DragCard);
 
-            (from column in Vm.Columns
-             where column.Cards.Contains(Vm.DragCard)
-             select column.Cards).First().Move(oldIndex, dragColumnIndex);
+            Vm.Columns
+                .Where(column => column.Cards.Contains(Vm.DragCard))
+                .First()
+                .Cards
+                .Move(oldIndex, dragColumnIndex);
         }
 
         private void Grid_MouseMove(object sender, MouseEventArgs e)
