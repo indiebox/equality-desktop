@@ -199,6 +199,11 @@
                         <ListBox Name="CardsList"
                                  Grid.Row="1"
                                  VirtualizingPanel.VirtualizationMode="Standard">
+                            <i:Interaction.Behaviors>
+                                <equality:AutoScrollOnCommandExecuted Position="Bottom"
+                                                                      Command="{Binding DataContext.OpenCreateCardWindow, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                                      CommandParameter="{Binding}" />
+                            </i:Interaction.Behaviors>
                             <ListBox.Style>
                                 <Style TargetType="ListBox"
                                        BasedOn="{StaticResource ListBoxStyle}">
@@ -471,10 +476,13 @@
                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
                          ScrollViewer.CanContentScroll="False"
                          VerticalContentAlignment="Stretch"
-                         PreviewMouseDown="StartScrollColumns">
+                         PreviewMouseDown="StartScrollColumns"
+                         Margin="0,0,10,0">
                     <i:Interaction.Behaviors>
                         <equality:ScrollByMouse Orientation="Horizontal"
                                                 IsScrollEnabled="{Binding DragColumn, Converter={catel:ReferenceToBooleanConverter}}" />
+                        <equality:AutoScrollOnCommandExecuted Position="Right"
+                                                              Command="{Binding OpenCreateColumnWindow}" />
                     </i:Interaction.Behaviors>
                     <ListBox.Style>
                         <Style TargetType="ListBox"
@@ -512,9 +520,9 @@
                         </DataTemplate>
 
                         <DataTemplate DataType="{x:Type objects:DataObject}">
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="10,0,0,0">
                                 <StackPanel VerticalAlignment="Top"
-                                            Margin="10,0,0,0"
                                             Background="#00000000">
                                     <Button Padding="10"
                                             Cursor="Hand"
@@ -559,9 +567,7 @@
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>
-                                <ContentControl Grid.Column="1"
-                                                Margin="10,0,0,0"
-                                                VerticalAlignment="Top"
+                                <ContentControl VerticalAlignment="Top"
                                                 Focusable="False"
                                                 Content="{Binding DataContext.CreateColumnVm, RelativeSource={RelativeSource AncestorType=mvvm:Page}, Converter={catel:ViewModelToViewConverter}}" />
                             </StackPanel>
