@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -106,12 +107,14 @@ namespace Equality.Views
             var li = sender as ListBox;
 
             double horizontalPos = e.GetPosition(li).X;
-            double tolerance = 100;
-            double offset = 1;
+            const double tolerance = 300;
+            const double maxStep = 2;
 
             if (horizontalPos < tolerance) {
+                double offset = Math.Min(maxStep, tolerance / horizontalPos - 0.95);
                 ColumnsScrollViewer.ScrollToHorizontalOffset(ColumnsScrollViewer.HorizontalOffset - offset);
             } else if (horizontalPos > li.ActualWidth - tolerance) {
+                double offset = Math.Min(maxStep, tolerance / (li.ActualWidth - horizontalPos) - 0.95);
                 ColumnsScrollViewer.ScrollToHorizontalOffset(ColumnsScrollViewer.HorizontalOffset + offset);
             }
         }

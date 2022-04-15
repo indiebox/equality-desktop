@@ -199,6 +199,27 @@
                         <ListBox Name="CardsList"
                                  Grid.Row="1"
                                  VirtualizingPanel.VirtualizationMode="Standard">
+                            <ListBox.Style>
+                                <Style TargetType="ListBox"
+                                       BasedOn="{StaticResource ListBoxStyle}">
+                                    <!-- Override scrollbar color -->
+                                    <Style.Resources>
+                                        <Style TargetType="ScrollViewer"
+                                               BasedOn="{StaticResource MaterialDesignScrollViewer}">
+                                            <Style.Resources>
+                                                <Style TargetType="ScrollBar"
+                                                       BasedOn="{StaticResource MaterialDesignScrollBarMinimal}">
+                                                    <Style.Resources>
+                                                        <SolidColorBrush x:Key="MaterialDesignBody"
+                                                                         Color="#DD000000" />
+                                                    </Style.Resources>
+                                                </Style>
+                                            </Style.Resources>
+                                        </Style>
+                                    </Style.Resources>
+                                </Style>
+                            </ListBox.Style>
+
                             <!-- Templates for custom objects. -->
                             <ListBox.Resources>
                                 <DataTemplate DataType="{x:Type models:Card}">
