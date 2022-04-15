@@ -35,7 +35,7 @@ namespace Equality.Views
 
         protected int DragColumnInitialPosition { get; set; }
 
-        protected bool IsDragging => Vm.DragColumn != null;
+        protected bool IsDragging => Vm?.DragColumn != null;
 
         public Point DeltaMouse { get; set; }
 
