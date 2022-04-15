@@ -140,7 +140,7 @@ namespace Equality.Views
                 return;
             }
 
-            if (DragColumnInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn)) {
+            if (IsDraggingColumn && DragColumnInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn)) {
                 Vm.UpdateColumnOrder.Execute();
             } else if (IsDraggingCard && DragCardInitialPosition != Vm.Columns
                                                                     .Where(column => column.Cards.Contains(Vm.DragCard)).First()
