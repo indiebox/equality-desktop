@@ -83,11 +83,10 @@ namespace Equality.ViewModels
             UpdateColumnOrder = new(OnUpdateColumnOrderExecuteAsync);
             DeleteColumn = new(OnDeleteColumnExecuteAsync);
 
-            UpdateCardOrder = new(OnUpdateCardOrderExecuteAsync);
-
             StartEditCard = new(OnStartEditCardExecuteAsync);
             SaveNewCardName = new(OnSaveNewCardNameExecuteAsync, () => EditableCard != null && GetFieldErrors("name") == string.Empty);
             CancelEditCard = new(OnCancelEditCardExecute);
+            UpdateCardOrder = new(OnUpdateCardOrderExecuteAsync);
             DeleteCard = new(OnDeleteCardExecuteAsync);
         }
 
@@ -236,28 +235,6 @@ namespace Equality.ViewModels
             }
         }
 
-        public TaskCommand UpdateCardOrder { get; private set; }
-
-        private async Task OnUpdateCardOrderExecuteAsync()
-        {
-            if (DragCard == null) {
-                return;
-            }
-
-            try {
-                var afterCard = (from column in Columns
-                                 where column.Cards.Contains(DragCard)
-                                 select column.Cards).First().Contains(DragCard)
-                    ? (from column in Columns
-                       where column.Cards.Contains(DragCard)
-                       select column.Cards).First().TakeWhile(card => card.Id != DragCard.Id).LastOrDefault()
-                    : null;
-                await CardService.UpdateCardOrderAsync(DragCard, afterCard);
-            } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
-            }
-        }
-
         #endregion UpdateColumnOrder
 
         #region DeleteColumn
@@ -367,6 +344,32 @@ namespace Equality.ViewModels
         }
 
         #endregion EditCard
+
+        #region UpdateCardOrder
+
+        public TaskCommand UpdateCardOrder { get; private set; }
+
+        private async Task OnUpdateCardOrderExecuteAsync()
+        {
+            if (DragCard == null) {
+                return;
+            }
+
+            try {
+                var afterCard = (from column in Columns
+                                 where column.Cards.Contains(DragCard)
+                                 select column.Cards).First().Contains(DragCard)
+                    ? (from column in Columns
+                       where column.Cards.Contains(DragCard)
+                       select column.Cards).First().TakeWhile(card => card.Id != DragCard.Id).LastOrDefault()
+                    : null;
+                await CardService.UpdateCardOrderAsync(DragCard, afterCard);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
+        #endregion UpdateCardOrder
 
         #region DeleteCard
 

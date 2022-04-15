@@ -92,7 +92,7 @@ namespace Equality.Services
         }
 
         public Task<ApiResponseMessage> UpdateCardOrderAsync(TCardModel card, TCardModel afterCard)
-    => UpdateCardOrderAsync(card.Id, afterCard?.Id ?? 0);
+            => UpdateCardOrderAsync(card.Id, afterCard?.Id ?? 0);
 
         public async Task<ApiResponseMessage> UpdateCardOrderAsync(ulong cardId, ulong afterCardId)
         {
