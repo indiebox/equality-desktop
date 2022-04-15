@@ -72,12 +72,7 @@ namespace Equality.ViewModels
                     }
                 });
 
-                var result = response.Object;
-                ProcessNominations(result);
-
-                NominatedMembers.ReplaceRange(response.Object);
-
-                MvvmHelper.GetFirstInstanceOfViewModel<ProjectPageViewModel>().Leader = result.First(nomination => nomination.IsLeader).Nominated;
+                ProcessNominations(response.Object);
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }
@@ -98,10 +93,7 @@ namespace Equality.ViewModels
                     }
                 });
 
-                var result = response.Object;
-                ProcessNominations(result);
-
-                NominatedMembers.AddRange(result);
+                ProcessNominations(response.Object);
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }
@@ -113,6 +105,25 @@ namespace Equality.ViewModels
                 item.PercentageSupport = (double)item.VotersCount / nominations.Length * 100;
                 item.IsCurrentUserVotes = item.Voters.Any(voter => voter.IsCurrentUser);
             }
+
+            NominatedMembers.ReplaceRange(nominations);
+            MvvmHelper.GetFirstInstanceOfViewModel<ProjectPageViewModel>().Leader = nominations.First(nomination => nomination.IsLeader).Nominated;
+        }
+
+        protected async Task SubscribePusherAsync()
+        {
+            await ProjectService.SubscribeNominateUserAsync(StateManager.SelectedProject, (LeaderNomination[] nominations) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    ProcessNominations(nominations);
+                });
+            });
+        }
+
+        protected async void UnsubscribePusher()
+        {
+            ProjectService.UnsubscribeNominateUser(StateManager.SelectedProject);
         }
 
         #endregion
@@ -122,11 +133,12 @@ namespace Equality.ViewModels
             await base.InitializeAsync();
 
             await LoadLeaderNominationsAsync();
+            await SubscribePusherAsync();
         }
 
         protected override async Task CloseAsync()
         {
-            // TODO: unsubscribe from events here
+            UnsubscribePusher();
 
             await base.CloseAsync();
         }

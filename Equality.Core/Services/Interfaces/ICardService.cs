@@ -85,6 +85,25 @@ namespace Equality.Services
         public Task<ApiResponseMessage<TCardModel>> UpdateCardAsync(TCardModel card, QueryParameters query = null);
 
         /// <summary>
+        /// Sends the update card order request to the API.
+        /// </summary>
+        /// <param name="card">The card.</param>
+        /// <param name="afterCard">The card after which insert new. If null - insert card at first position.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets a token using <see cref="ITokenResolverService.ResolveApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage> UpdateCardOrderAsync(TCardModel card, TCardModel afterCard);
+
+        /// <inheritdoc cref="UpdateCardOrderAsync(TCardModel, TCardModel)" />
+        /// <param name="cardId">The card id.</param>
+        /// <param name="afterCardId">The card id after which insert new. If 0 - insert card at first position.</param>
+        public Task<ApiResponseMessage> UpdateCardOrderAsync(ulong cardId, ulong afterCardId);
+
+        /// <summary>
         /// Sends the delete card request to the API.
         /// </summary>
         /// <param name="card">The card.</param>

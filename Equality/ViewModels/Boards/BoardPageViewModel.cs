@@ -85,6 +85,7 @@ namespace Equality.ViewModels
             StartEditCard = new(OnStartEditCardExecuteAsync);
             SaveNewCardName = new(OnSaveNewCardNameExecuteAsync, () => EditableCard != null && GetFieldErrors("name") == string.Empty);
             CancelEditCard = new(OnCancelEditCardExecute);
+            UpdateCardOrder = new(OnUpdateCardOrderExecuteAsync);
             DeleteCard = new(OnDeleteCardExecuteAsync);
         }
 
@@ -100,6 +101,8 @@ namespace Equality.ViewModels
         #region ColumnProperties
 
         public Column DragColumn { get; set; }
+
+        public Card DragCard { get; set; }
 
         public CreateColumnControlViewModel CreateColumnVm { get; set; }
 
@@ -340,6 +343,35 @@ namespace Equality.ViewModels
         }
 
         #endregion EditCard
+
+        #region UpdateCardOrder
+
+        public TaskCommand UpdateCardOrder { get; private set; }
+
+        private async Task OnUpdateCardOrderExecuteAsync()
+        {
+            if (DragCard == null) {
+                return;
+            }
+
+            try {
+
+                var afterColumn = Columns
+                    .Where(column => column.Cards.Contains(DragCard))
+                    .FirstOrDefault();
+                Card afterCard = null;
+                if (afterColumn != null) {
+                    afterCard = afterColumn.Cards
+                       .TakeWhile(card => card.Id != DragCard.Id)
+                       .LastOrDefault();
+                }
+                await CardService.UpdateCardOrderAsync(DragCard, afterCard);
+            } catch (HttpRequestException e) {
+                Data.ExceptionHandler.Handle(e);
+            }
+        }
+
+        #endregion UpdateCardOrder
 
         #region DeleteCard
 
