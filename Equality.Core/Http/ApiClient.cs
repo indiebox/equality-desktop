@@ -6,6 +6,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
+using Catel;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -28,22 +30,35 @@ namespace Equality.Http
 
         public HttpClient HttpClient { get; set; }
 
-        public ApiClient WithToken(string token)
+        public IApiClient WithSocketID(string socketId)
         {
+            if (!string.IsNullOrWhiteSpace(socketId)) {
+                HttpClient.DefaultRequestHeaders.Add("X-Socket-ID", socketId);
+            }
+
+            return this;
+        }
+
+        public IApiClient WithToken(string token)
+        {
+            Argument.IsNotNull(nameof(token), token);
+
             HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             return this;
         }
 
-        public ApiClient WithTokenOnce(string token)
+        public IApiClient WithTokenOnce(string token)
         {
+            Argument.IsNotNull(nameof(token), token);
+
             IsTemporaryToken = true;
             OriginalToken = HttpClient.DefaultRequestHeaders.Authorization;
 
             return WithToken(token);
         }
 
-        public ApiClient WithoutToken()
+        public IApiClient WithoutToken()
         {
             HttpClient.DefaultRequestHeaders.Authorization = null;
 
@@ -203,7 +218,7 @@ namespace Equality.Http
 
             HandleStatusCode(response, responseData);
 
-            RestoreToken();
+            RestoreHeaders();
 
             return new ApiResponseMessage(response, responseData);
         }
@@ -319,10 +334,9 @@ namespace Equality.Http
         }
 
         /// <summary>
-        /// Restore an earlier token that was set by the user.
+        /// Restore an earlier headers like bearer-token and socket-id that was set by the user.
         /// </summary>
-        /// <remarks>This method is necessary for correct implementation of method <c>WithTokenOnce()</c>.</remarks>
-        protected void RestoreToken()
+        protected void RestoreHeaders()
         {
             if (IsTemporaryToken) {
                 IsTemporaryToken = false;
@@ -330,6 +344,8 @@ namespace Equality.Http
                 HttpClient.DefaultRequestHeaders.Authorization = OriginalToken;
                 OriginalToken = null;
             }
+
+            HttpClient.DefaultRequestHeaders.Remove("X-Socket-ID");
         }
 
         /// <summary>

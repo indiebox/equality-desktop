@@ -1,11 +1,15 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 
 using Catel.IoC;
 using Catel.Logging;
 using Catel.MVVM;
 
 using Equality.Data;
+using Equality.Http;
 using Equality.Services;
+
+using PusherClient;
 
 namespace Equality
 {
@@ -15,6 +19,21 @@ namespace Equality
     public partial class App : Application
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
+        public static void RegisterPusher()
+        {
+            var client = new Http.PusherClient("7c6a91460be1e040ce8c", new PusherOptions
+            {
+                Authorizer = new HttpAuthorizer("http://equality/broadcasting/auth")
+                {
+                    AuthenticationHeader = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", StateManager.ApiToken)
+                },
+                Cluster = "eu",
+                Encrypted = true,
+            });
+
+            ServiceLocator.Default.RegisterInstance<IWebsocketClient>(client);
+        }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -55,7 +74,7 @@ namespace Equality
 
             var serviceLocator = ServiceLocator.Default;
 
-            serviceLocator.RegisterType<ITokenResolverService, TokenResolver>();
+            serviceLocator.RegisterType<ITokenResolver, TokenResolver>();
             serviceLocator.RegisterType<INotificationService, NotificationService>();
             serviceLocator.RegisterTypeAndInstantiate<ExceptionHandler>();
 

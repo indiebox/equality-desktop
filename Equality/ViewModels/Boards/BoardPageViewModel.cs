@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 using Catel.Collections;
 using Catel.Data;
 using Catel.MVVM;
-
 using Catel.Services;
+using Catel.ExceptionHandling;
 
-using Equality.Controls;
 using Equality.Data;
 using Equality.Extensions;
 using Equality.Helpers;
@@ -209,7 +208,7 @@ namespace Equality.ViewModels
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
             } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
+                Data.ExceptionHandler.Handle(e);
             }
         }
 
@@ -231,7 +230,7 @@ namespace Equality.ViewModels
                     : null;
                 await ColumnService.UpdateColumnOrderAsync(DragColumn, afterColumn);
             } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
+                Data.ExceptionHandler.Handle(e);
             }
         }
 
@@ -254,7 +253,7 @@ namespace Equality.ViewModels
 
                 Columns.Remove(column);
             } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
+                Data.ExceptionHandler.Handle(e);
             }
         }
 
@@ -339,7 +338,7 @@ namespace Equality.ViewModels
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
             } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
+                Data.ExceptionHandler.Handle(e);
             }
         }
 
@@ -393,7 +392,7 @@ namespace Equality.ViewModels
                     column.Cards.Remove(card);
                 }
             } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
+                Data.ExceptionHandler.Handle(e);
             }
         }
 
@@ -415,8 +414,92 @@ namespace Equality.ViewModels
                 }
 
             } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
+                Data.ExceptionHandler.Handle(e);
             }
+        }
+
+        protected async Task SubscribePusherAsync()
+        {
+            await ColumnService.SubscribeCreateColumnAsync(StateManager.SelectedBoard, (Column col, ulong? afterColumnId) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    if (afterColumnId == null) {
+                        Columns.Add(col);
+
+                        return;
+                    }
+
+                    if (afterColumnId == 0) {
+                        Columns.Insert(0, col);
+
+                        return;
+                    }
+
+                    var afterColumn = Columns.FirstOrDefault(col => col.Id == afterColumnId);
+                    if (afterColumn == null) {
+                        Columns.Add(col);
+                    } else {
+                        Columns.Insert(Columns.IndexOf(afterColumn) + 1, col);
+                    }
+                });
+            });
+
+            await ColumnService.SubscribeUpdateColumnAsync(StateManager.SelectedBoard, (Column column) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    var col = Columns.FirstOrDefault(col => col.Id == column.Id);
+                    if (col != null) {
+                        col.SyncWithOnly(column, new string[]
+                        {
+                            nameof(col.Name),
+                            nameof(col.CreatedAt),
+                            nameof(col.UpdatedAt),
+                        });
+                    }
+                });
+            });
+
+            await ColumnService.SubscribeUpdateColumnOrderAsync(StateManager.SelectedBoard, (ulong columnId, ulong afterId) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    var currCol = Columns.FirstOrDefault(col => col.Id == columnId);
+                    if (currCol == null) {
+                        return;
+                    }
+
+                    if (afterId == 0) {
+                        Columns.Remove(currCol);
+                        Columns.Insert(0, currCol);
+
+                        return;
+                    }
+
+                    var afterCol = Columns.FirstOrDefault(col => col.Id == afterId);
+                    if (afterCol != null) {
+                        Columns.Remove(currCol);
+                        Columns.Insert(Columns.IndexOf(afterCol) + 1, currCol);
+                    }
+                });
+            });
+
+            await ColumnService.SubscribeDeleteColumnAsync(StateManager.SelectedBoard, (ulong columnId) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    Columns.Remove(Columns.FirstOrDefault(col => col.Id == columnId));
+                });
+            });
+        }
+
+        protected void UnsubscribePusherAsync()
+        {
+            ColumnService.UnsubscribeCreateColumn(StateManager.SelectedBoard);
+            ColumnService.UnsubscribeUpdateColumn(StateManager.SelectedBoard);
+            ColumnService.UnsubscribeUpdateColumnOrder(StateManager.SelectedBoard);
+            ColumnService.UnsubscribeDeleteColumn(StateManager.SelectedBoard);
         }
 
         #endregion
@@ -451,11 +534,12 @@ namespace Equality.ViewModels
             await base.InitializeAsync();
 
             await LoadColumnsAsync();
+            await Data.ExceptionHandler.Service.ProcessWithRetryAsync(SubscribePusherAsync);
         }
 
         protected override async Task CloseAsync()
         {
-            // TODO: unsubscribe from events here
+            UnsubscribePusherAsync();
 
             await base.CloseAsync();
         }

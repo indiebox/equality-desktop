@@ -1,7 +1,9 @@
 ﻿namespace Equality.Data
 {
-    public interface ITokenResolverService
+    public interface ITokenResolver
     {
         public string ResolveApiToken();
+
+        public string ResolveSocketID();
     }
 }

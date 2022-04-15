@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 using Catel;
@@ -13,14 +12,15 @@ using Newtonsoft.Json.Linq;
 
 namespace Equality.Services
 {
-    public class ColumnServiceBase<TColumnModel, TBoardModel> : IColumnService<TColumnModel, TBoardModel>
+    public partial class ColumnServiceBase<TColumnModel, TBoardModel> : IColumnService<TColumnModel, TBoardModel>
         where TColumnModel : class, IColumn, new()
         where TBoardModel : class, IBoard, new()
     {
-        IApiClient ApiClient;
-        ITokenResolverService TokenResolver;
+        protected IApiClient ApiClient;
 
-        public ColumnServiceBase(IApiClient apiClient, ITokenResolverService tokenResolver)
+        protected ITokenResolver TokenResolver;
+
+        public ColumnServiceBase(IApiClient apiClient, ITokenResolver tokenResolver)
         {
             ApiClient = apiClient;
             TokenResolver = tokenResolver;
@@ -55,7 +55,10 @@ namespace Equality.Services
                 { "name", column.Name },
             };
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"boards/{boardId}/columns"), data);
+            var response = await ApiClient
+                .WithTokenOnce(TokenResolver.ResolveApiToken())
+                .WithSocketID(TokenResolver.ResolveSocketID())
+                .PostAsync(query.Parse($"boards/{boardId}/columns"), data);
 
             column = Deserialize(response.Content["data"]);
 
@@ -73,7 +76,10 @@ namespace Equality.Services
                 { "name", column.Name },
             };
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync(query.Parse($"columns/{column.Id}"), data);
+            var response = await ApiClient
+                .WithTokenOnce(TokenResolver.ResolveApiToken())
+                .WithSocketID(TokenResolver.ResolveSocketID())
+                .PatchAsync(query.Parse($"columns/{column.Id}"), data);
 
             column = Deserialize(response.Content["data"]);
 
@@ -92,7 +98,10 @@ namespace Equality.Services
                 { "after", afterColumnId.ToString() },
             };
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"columns/{columnId}/order", data);
+            return await ApiClient
+                .WithTokenOnce(TokenResolver.ResolveApiToken())
+                .WithSocketID(TokenResolver.ResolveSocketID())
+                .PostAsync($"columns/{columnId}/order", data);
         }
 
         public Task<ApiResponseMessage> DeleteColumnAsync(TColumnModel column)
@@ -102,7 +111,10 @@ namespace Equality.Services
         {
             Argument.IsMinimal<ulong>(nameof(columnId), columnId, 1);
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"columns/{columnId}");
+            return await ApiClient
+                .WithTokenOnce(TokenResolver.ResolveApiToken())
+                .WithSocketID(TokenResolver.ResolveSocketID())
+                .DeleteAsync($"columns/{columnId}");
         }
 
         /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>

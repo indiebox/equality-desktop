@@ -15,11 +15,11 @@ namespace Equality.Services
         where TCardModel : class, ICard, new()
         where TColumnModel : class, IColumn, new()
     {
-        protected ITokenResolverService TokenResolver;
+        protected ITokenResolver TokenResolver;
 
         protected IApiClient ApiClient;
 
-        public CardServiceBase(IApiClient apiClient, ITokenResolverService tokenResolver)
+        public CardServiceBase(IApiClient apiClient, ITokenResolver tokenResolver)
         {
             Argument.IsNotNull(nameof(apiClient), apiClient);
             Argument.IsNotNull(nameof(tokenResolver), tokenResolver);

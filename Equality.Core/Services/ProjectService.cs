@@ -23,9 +23,9 @@ namespace Equality.Services
     {
         protected IApiClient ApiClient;
 
-        protected ITokenResolverService TokenResolver;
+        protected ITokenResolver TokenResolver;
 
-        public ProjectServiceBase(IApiClient apiClient, ITokenResolverService tokenResolver)
+        public ProjectServiceBase(IApiClient apiClient, ITokenResolver tokenResolver)
         {
             ApiClient = apiClient;
             TokenResolver = tokenResolver;

@@ -10,7 +10,7 @@ namespace Equality.Services
 {
     public class BoardService : BoardServiceBase<Board, Project>, IBoardService
     {
-        public BoardService(IApiClient apiClient, ITokenResolverService tokenResolver) : base(apiClient, tokenResolver)
+        public BoardService(IApiClient apiClient, ITokenResolver tokenResolver) : base(apiClient, tokenResolver)
         {
 
         }
