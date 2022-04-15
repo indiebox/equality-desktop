@@ -356,12 +356,15 @@ namespace Equality.ViewModels
             }
 
             try {
-                var afterCard = (from column in Columns
-                                 where column.Cards.Contains(DragCard)
-                                 select column.Cards).First().Contains(DragCard)
-                    ? (from column in Columns
-                       where column.Cards.Contains(DragCard)
-                       select column.Cards).First().TakeWhile(card => card.Id != DragCard.Id).LastOrDefault()
+                var afterCard = Columns
+                    .Where(column => column.Cards.Contains(DragCard))
+                    .First()
+                    .Cards.Contains(DragCard)
+                    ? Columns
+                       .Where(column => column.Cards.Contains(DragCard))
+                       .First().Cards
+                       .TakeWhile(card => card.Id != DragCard.Id)
+                       .LastOrDefault()
                     : null;
                 await CardService.UpdateCardOrderAsync(DragCard, afterCard);
             } catch (HttpRequestException e) {
