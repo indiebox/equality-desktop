@@ -367,7 +367,7 @@ namespace Equality.ViewModels
                 }
                 await CardService.UpdateCardOrderAsync(DragCard, afterCard);
             } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
+                Data.ExceptionHandler.Handle(e);
             }
         }
 
