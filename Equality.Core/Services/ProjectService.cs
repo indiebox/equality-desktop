@@ -15,7 +15,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace Equality.Services
 {
-    public class ProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel, TUserModel> : IProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel, TUserModel>
+    public partial class ProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel, TUserModel> : IProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel, TUserModel>
         where TProjectModel : class, IProject, new()
         where TTeamModel : class, ITeam, new()
         where TLeaderNominationModel : class, ILeaderNomination, new()
@@ -70,7 +70,10 @@ namespace Equality.Services
             Argument.IsMinimal<ulong>(nameof(userId), userId, 1);
             query ??= new QueryParameters();
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"projects/{projectId}/leader-nominations/{userId}"));
+            var response = await ApiClient
+                .WithTokenOnce(TokenResolver.ResolveApiToken())
+                .WithSocketID(TokenResolver.ResolveSocketID())
+                .PostAsync(query.Parse($"projects/{projectId}/leader-nominations/{userId}"));
 
             var nominations = DeserializeLeaderNominations(response.Content["data"]);
 
