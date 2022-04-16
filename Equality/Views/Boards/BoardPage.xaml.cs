@@ -51,6 +51,8 @@ namespace Equality.Views
 
         public Point CardRelativePoint { get; set; }
 
+        bool IsChangeColumn { get; set; } = false;
+
         private void ColumnControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (IsDraggingColumn || e.LeftButton != MouseButtonState.Pressed) {
@@ -118,7 +120,7 @@ namespace Equality.Views
                 int newOldIndex = Vm.DraggableCardColumn.Cards.IndexOf(card);
                 int newDragColumnIndex = Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard);
                 Vm.DraggableCardColumn.Cards.Move(newOldIndex, newDragColumnIndex);
-                Vm.MoveCardToColumn.Execute();
+                IsChangeColumn = true;
             }
         }
 
@@ -146,7 +148,11 @@ namespace Equality.Views
             } else if (IsDraggingCard && DragCardInitialPosition != Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard)) {
                 Vm.UpdateCardOrder.Execute();
             }
+            if (IsChangeColumn) {
+                Vm.MoveCardToColumn.Execute();
+            }
 
+            IsChangeColumn = false;
             Vm.DraggableCardColumn = null;
             Vm.DragColumn = null;
             Vm.DragCard = null;
