@@ -2,7 +2,7 @@
 
 namespace Equality.Services
 {
-    public interface ICardService : ICardServiceBase<Card, Column>
+    public interface ICardService : ICardServiceBase<Card>
     {
     }
 }
