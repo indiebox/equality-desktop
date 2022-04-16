@@ -51,6 +51,8 @@ namespace Equality.Views
 
         public Point CardRelativePoint { get; set; }
 
+        public Column CurrentColumn { get; set; }
+
         private void ColumnControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (IsDraggingColumn || e.LeftButton != MouseButtonState.Pressed) {
@@ -73,10 +75,10 @@ namespace Equality.Views
                 return;
             }
             Vm.DragCard = ((ContentControl)sender).Content as Card;
-            DragCardInitialPosition = Vm.Columns
+            CurrentColumn = Vm.Columns
                 .Where(column => column.Cards.Contains(Vm.DragCard))
-                .First().
-                Cards.IndexOf(Vm.DragCard)
+                .First();
+            DragCardInitialPosition = CurrentColumn.Cards.IndexOf(Vm.DragCard)
                                       ;
 
             DeltaMouse = Mouse.GetPosition(DraggingCanvas);
@@ -105,20 +107,10 @@ namespace Equality.Views
             }
             var card = ((ContentControl)sender).Content as Card;
 
-            int oldIndex = Vm.Columns
-                .Where(column => column.Cards.Contains(card))
-                .First()
-                .Cards.IndexOf(card);
-            int dragColumnIndex = Vm.Columns
-                .Where(column => column.Cards.Contains(Vm.DragCard))
-                .First()
-                .Cards.IndexOf(Vm.DragCard);
+            int oldIndex = CurrentColumn.Cards.IndexOf(card);
+            int dragColumnIndex = CurrentColumn.Cards.IndexOf(Vm.DragCard);
 
-            Vm.Columns
-                .Where(column => column.Cards.Contains(Vm.DragCard))
-                .First()
-                .Cards
-                .Move(oldIndex, dragColumnIndex);
+            CurrentColumn.Cards.Move(oldIndex, dragColumnIndex);
         }
 
         private void Grid_MouseMove(object sender, MouseEventArgs e)
@@ -142,12 +134,11 @@ namespace Equality.Views
 
             if (IsDraggingColumn && DragColumnInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn)) {
                 Vm.UpdateColumnOrder.Execute();
-            } else if (IsDraggingCard && DragCardInitialPosition != Vm.Columns
-                                                                    .Where(column => column.Cards.Contains(Vm.DragCard)).First()
-                                                                    .Cards.IndexOf(Vm.DragCard)) {
+            } else if (IsDraggingCard && DragCardInitialPosition != CurrentColumn.Cards.IndexOf(Vm.DragCard)) {
                 Vm.UpdateCardOrder.Execute();
             }
 
+            CurrentColumn = null;
             Vm.DragColumn = null;
             Vm.DragCard = null;
         }
