@@ -105,7 +105,7 @@ namespace Equality.ViewModels
 
         public Card DragCard { get; set; }
 
-        public Column CurrentColumn { get; set; }
+        public Column DraggableCardColumn { get; set; }
 
         public CreateColumnControlViewModel CreateColumnVm { get; set; }
 
@@ -380,11 +380,11 @@ namespace Equality.ViewModels
             if (DragCard == null) {
                 return;
             }
-            if (CurrentColumn == null) {
+            if (DraggableCardColumn == null) {
                 return;
             }
             try {
-                await CardService.MoveCardToColumnAsync(DragCard, CurrentColumn);
+                await CardService.MoveCardToColumnAsync(DragCard, DraggableCardColumn);
             } catch (HttpRequestException e) {
                 Data.ExceptionHandler.Handle(e);
             }
