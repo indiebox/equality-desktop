@@ -110,7 +110,16 @@ namespace Equality.Views
             int oldIndex = CurrentColumn.Cards.IndexOf(card);
             int dragColumnIndex = CurrentColumn.Cards.IndexOf(Vm.DragCard);
 
-            CurrentColumn.Cards.Move(oldIndex, dragColumnIndex);
+            if (oldIndex != -1) {
+                CurrentColumn.Cards.Move(oldIndex, dragColumnIndex);
+            } else {
+                CurrentColumn.Cards.Remove(Vm.DragCard);
+                CurrentColumn = Vm.Columns
+                .Where(column => column.Cards.Contains(card))
+                .First();
+                CurrentColumn.Cards.Add(Vm.DragCard);
+            }
+            //Here is moving to other column
         }
 
         private void Grid_MouseMove(object sender, MouseEventArgs e)
