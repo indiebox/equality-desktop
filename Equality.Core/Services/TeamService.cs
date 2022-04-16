@@ -43,7 +43,7 @@ namespace Equality.Services
             return new(teams, response);
         }
 
-        public async Task<ApiResponseMessage<TTeamModel>> CreateAsync(TTeamModel team, QueryParameters query = null)
+        public async Task<ApiResponseMessage<TTeamModel>> CreateAsync(ITeam team, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(team), team);
             query ??= new QueryParameters();
@@ -56,13 +56,12 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse("teams"), data);
+            var deserializedTeam = Deserialize(response.Content["data"]);
 
-            team = Deserialize(response.Content["data"]);
-
-            return new(team, response);
+            return new(deserializedTeam, response);
         }
 
-        public Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(TTeamModel team, QueryParameters query = null)
+        public Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(ITeam team, QueryParameters query = null)
             => GetMembersAsync(team.Id, query);
 
         public async Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(ulong teamId, QueryParameters query = null)
@@ -77,7 +76,7 @@ namespace Equality.Services
             return new(members, response);
         }
 
-        public Task<ApiResponseMessage> LeaveTeamAsync(TTeamModel team) => LeaveTeamAsync(team.Id);
+        public Task<ApiResponseMessage> LeaveTeamAsync(ITeam team) => LeaveTeamAsync(team.Id);
 
         public async Task<ApiResponseMessage> LeaveTeamAsync(ulong teamId)
         {
@@ -86,7 +85,7 @@ namespace Equality.Services
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"teams/{teamId}/leave");
         }
 
-        public Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(TTeamModel team, string imagePath, QueryParameters query = null)
+        public Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(ITeam team, string imagePath, QueryParameters query = null)
             => SetLogoAsync(team.Id, imagePath, query);
 
         public async Task<ApiResponseMessage<TTeamModel>> SetLogoAsync(ulong teamId, string imagePath, QueryParameters query = null)
@@ -127,7 +126,7 @@ namespace Equality.Services
             return new(team, response);
         }
 
-        public Task<ApiResponseMessage> DeleteLogoAsync(TTeamModel team) => DeleteLogoAsync(team.Id);
+        public Task<ApiResponseMessage> DeleteLogoAsync(ITeam team) => DeleteLogoAsync(team.Id);
 
         public async Task<ApiResponseMessage> DeleteLogoAsync(ulong teamId)
         {
@@ -136,7 +135,7 @@ namespace Equality.Services
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"teams/{teamId}/logo");
         }
 
-        public async Task<ApiResponseMessage<TTeamModel>> UpdateTeamAsync(TTeamModel team, QueryParameters query = null)
+        public async Task<ApiResponseMessage<TTeamModel>> UpdateTeamAsync(ITeam team, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(team), team);
             Argument.IsMinimal<ulong>("team.Id", team.Id, 1);
@@ -150,10 +149,9 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync(query.Parse($"teams/{team.Id}"), data);
+            var deserializedTeam = Deserialize(response.Content["data"]);
 
-            team = Deserialize(response.Content["data"]);
-
-            return new(team, response);
+            return new(deserializedTeam, response);
         }
 
         /// <summary>
