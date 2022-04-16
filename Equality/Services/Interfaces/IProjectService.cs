@@ -2,7 +2,7 @@
 
 namespace Equality.Services
 {
-    public interface IProjectService : IProjectServiceBase<Project, Team, LeaderNomination, User>
+    public interface IProjectService : IProjectServiceBase<Project, LeaderNomination, User>
     {
 
     }
