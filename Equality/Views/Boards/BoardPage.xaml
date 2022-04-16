@@ -467,12 +467,13 @@
                                  Content="{Binding DragColumn}"
                                  Visibility="{Binding DragColumn, Converter={catel:ReferenceToCollapsingVisibilityConverter}}"
                                  d:Visibility="Collapsed" />
-            <materialDesign:Card x:Name="MovingCard"
-                                 ContentTemplate="{StaticResource Card}"
-                                 IsHitTestVisible="False"
-                                 Content="{Binding DragCard}"
-                                 Visibility="{Binding DragCard, Converter={catel:ReferenceToCollapsingVisibilityConverter}}"
-                                 d:Visibility="Collapsed" />
+            <ContentControl x:Name="MovingCard"
+                            MinWidth="330"
+                            ContentTemplate="{StaticResource Card}"
+                            IsHitTestVisible="False"
+                            Content="{Binding DragCard}"
+                            Visibility="{Binding DragCard, Converter={catel:ReferenceToCollapsingVisibilityConverter}}"
+                            d:Visibility="Collapsed" />
         </Canvas>
 
         <Grid>
