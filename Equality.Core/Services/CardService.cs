@@ -106,6 +106,18 @@ namespace Equality.Services
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"cards/{cardId}/order", data);
         }
 
+        public Task<ApiResponseMessage> MoveCardToColumnAsync(TCardModel card, TColumnModel column) => MoveCardToColumnAsync(card.Id, column.Id);
+
+
+        public async Task<ApiResponseMessage> MoveCardToColumnAsync(ulong cardId, ulong columnId)
+        {
+            Argument.IsMinimal<ulong>(nameof(cardId), cardId, 1);
+
+            Argument.IsMinimal<ulong>(nameof(columnId), columnId, 1);
+
+            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"/cards/{cardId}/move/{columnId}");
+        }
+
         public Task<ApiResponseMessage> DeleteCardAsync(TCardModel card)
             => DeleteCardAsync(card.Id);
 

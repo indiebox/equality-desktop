@@ -87,6 +87,7 @@ namespace Equality.ViewModels
             CancelEditCard = new(OnCancelEditCardExecute);
             UpdateCardOrder = new(OnUpdateCardOrderExecuteAsync);
             DeleteCard = new(OnDeleteCardExecuteAsync);
+            MoveCardToColumn = new(OnMoveCardToColumnAsync);
         }
 
         #region Properties
@@ -103,6 +104,8 @@ namespace Equality.ViewModels
         public Column DragColumn { get; set; }
 
         public Card DragCard { get; set; }
+
+        public Column CurrentColumn { get; set; }
 
         public CreateColumnControlViewModel CreateColumnVm { get; set; }
 
@@ -355,7 +358,6 @@ namespace Equality.ViewModels
             }
 
             try {
-
                 var afterColumn = Columns
                     .Where(column => column.Cards.Contains(DragCard))
                     .FirstOrDefault();
@@ -366,6 +368,23 @@ namespace Equality.ViewModels
                        .LastOrDefault();
                 }
                 await CardService.UpdateCardOrderAsync(DragCard, afterCard);
+            } catch (HttpRequestException e) {
+                Data.ExceptionHandler.Handle(e);
+            }
+        }
+
+        public TaskCommand MoveCardToColumn { get; private set; }
+
+        private async Task OnMoveCardToColumnAsync()
+        {
+            if (DragCard == null) {
+                return;
+            }
+            if (CurrentColumn == null) {
+                return;
+            }
+            try {
+                await CardService.MoveCardToColumnAsync(DragCard, CurrentColumn);
             } catch (HttpRequestException e) {
                 Data.ExceptionHandler.Handle(e);
             }
