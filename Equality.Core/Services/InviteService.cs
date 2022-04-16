@@ -11,9 +11,8 @@ using Newtonsoft.Json.Linq;
 
 namespace Equality.Services
 {
-    public class InviteServiceBase<TInviteModel, TTeamModel> : IInviteServiceBase<TInviteModel, TTeamModel>
+    public class InviteServiceBase<TInviteModel> : IInviteServiceBase<TInviteModel>
         where TInviteModel : class, IInvite, new()
-        where TTeamModel : class, ITeam, new()
     {
         protected IApiClient ApiClient;
 
@@ -28,7 +27,7 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
-        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(TTeamModel team, QueryParameters query = null)
+        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ITeam team, QueryParameters query = null)
             => GetTeamInvitesAsync(team.Id, query);
 
         public async Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ulong teamId, QueryParameters query = null)
@@ -54,7 +53,7 @@ namespace Equality.Services
             return new(invites, response);
         }
 
-        public Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(TTeamModel team, string email, QueryParameters query = null)
+        public Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(ITeam team, string email, QueryParameters query = null)
             => InviteUserAsync(team.Id, email, query);
 
         public async Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(ulong teamId, string email, QueryParameters query = null)
@@ -75,7 +74,7 @@ namespace Equality.Services
             return new(invite, response);
         }
 
-        public Task<ApiResponseMessage> RevokeInviteAsync(TInviteModel invite) => RevokeInviteAsync(invite.Id);
+        public Task<ApiResponseMessage> RevokeInviteAsync(IInvite invite) => RevokeInviteAsync(invite.Id);
 
         public async Task<ApiResponseMessage> RevokeInviteAsync(ulong inviteId)
         {
@@ -84,7 +83,7 @@ namespace Equality.Services
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"invites/{inviteId}");
         }
 
-        public Task<ApiResponseMessage> AcceptInviteAsync(TInviteModel invite) => AcceptInviteAsync(invite.Id);
+        public Task<ApiResponseMessage> AcceptInviteAsync(IInvite invite) => AcceptInviteAsync(invite.Id);
 
         public async Task<ApiResponseMessage> AcceptInviteAsync(ulong inviteId)
         {
@@ -93,7 +92,7 @@ namespace Equality.Services
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"invites/{inviteId}/accept");
         }
 
-        public Task<ApiResponseMessage> DeclineInviteAsync(TInviteModel invite) => DeclineInviteAsync(invite.Id);
+        public Task<ApiResponseMessage> DeclineInviteAsync(IInvite invite) => DeclineInviteAsync(invite.Id);
 
         public async Task<ApiResponseMessage> DeclineInviteAsync(ulong inviteId)
         {

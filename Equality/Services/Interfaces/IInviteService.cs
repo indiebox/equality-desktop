@@ -2,7 +2,7 @@
 
 namespace Equality.Services
 {
-    public interface IInviteService : IInviteServiceBase<Invite, Team>
+    public interface IInviteService : IInviteServiceBase<Invite>
     {
     }
 }
