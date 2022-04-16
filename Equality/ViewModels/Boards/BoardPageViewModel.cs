@@ -377,10 +377,7 @@ namespace Equality.ViewModels
 
         private async Task OnMoveCardToColumnAsync()
         {
-            if (DragCard == null) {
-                return;
-            }
-            if (DraggableCardColumn == null) {
+            if (DragCard == null || DraggableCardColumn == null) {
                 return;
             }
             try {
