@@ -150,6 +150,7 @@ namespace Equality.Views
             }
             if (IsChangeColumn) {
                 Vm.MoveCardToColumn.Execute();
+                Vm.UpdateCardOrder.Execute();
             }
 
             IsChangeColumn = false;
