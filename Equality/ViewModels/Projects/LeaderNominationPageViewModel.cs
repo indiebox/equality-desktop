@@ -74,7 +74,7 @@ namespace Equality.ViewModels
 
                 ProcessNominations(response.Object);
             } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
+                Data.ExceptionHandler.Handle(e);
             }
         }
 
@@ -95,7 +95,7 @@ namespace Equality.ViewModels
 
                 ProcessNominations(response.Object);
             } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
+                Data.ExceptionHandler.Handle(e);
             }
         }
 
