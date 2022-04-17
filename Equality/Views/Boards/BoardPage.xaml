@@ -468,7 +468,7 @@
                                  Visibility="{Binding DragColumn, Converter={catel:ReferenceToCollapsingVisibilityConverter}}"
                                  d:Visibility="Collapsed" />
             <ContentControl x:Name="MovingCard"
-                            MinWidth="330"
+                            Width="330"
                             ContentTemplate="{StaticResource Card}"
                             IsHitTestVisible="False"
                             Content="{Binding DragCard}"
