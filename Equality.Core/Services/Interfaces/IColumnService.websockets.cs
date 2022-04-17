@@ -5,9 +5,8 @@ using Equality.Models;
 
 namespace Equality.Services
 {
-    public partial interface IColumnService<TColumnModel, TBoardModel>
+    public partial interface IColumnService<TColumnModel>
         where TColumnModel : class, IColumn, new()
-        where TBoardModel : class, IBoard, new()
     {
         /// <summary>
         /// Subscribe to websocket event for create column.

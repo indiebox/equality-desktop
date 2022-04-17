@@ -7,9 +7,8 @@ using Equality.Models;
 
 namespace Equality.Services
 {
-    public partial class ColumnServiceBase<TColumnModel, TBoardModel>
+    public partial class ColumnServiceBase<TColumnModel>
         where TColumnModel : class, IColumn, new()
-        where TBoardModel : class, IBoard, new()
     {
         protected IWebsocketClient WebsocketClient;
 

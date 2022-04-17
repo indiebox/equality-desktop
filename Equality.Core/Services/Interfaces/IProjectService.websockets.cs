@@ -5,9 +5,8 @@ using Equality.Models;
 
 namespace Equality.Services
 {
-    public partial interface IProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel, TUserModel>
+    public partial interface IProjectServiceBase<TProjectModel, TLeaderNominationModel, TUserModel>
         where TProjectModel : class, IProject, new()
-        where TTeamModel : class, ITeam, new()
         where TLeaderNominationModel : class, ILeaderNomination, new()
         where TUserModel : class, IUser, new()
     {

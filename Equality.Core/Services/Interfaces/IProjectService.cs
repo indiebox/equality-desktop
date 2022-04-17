@@ -7,9 +7,8 @@ using Equality.Data;
 
 namespace Equality.Services
 {
-    public partial interface IProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel, TUserModel> : IDeserializeModels<TProjectModel>
+    public partial interface IProjectServiceBase<TProjectModel, TLeaderNominationModel, TUserModel> : IDeserializeModels<TProjectModel>
         where TProjectModel : class, IProject, new()
-        where TTeamModel : class, ITeam, new()
         where TLeaderNominationModel : class, ILeaderNomination, new()
         where TUserModel : class, IUser, new()
     {
@@ -25,9 +24,9 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(TTeamModel team, QueryParameters query = null);
+        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ITeam team, QueryParameters query = null);
 
-        /// <inheritdoc cref="GetProjectsAsync(TTeamModel, QueryParameters)"/>
+        /// <inheritdoc cref="GetProjectsAsync(ITeam, QueryParameters)"/>
         /// <param name="teamId">The team id.</param>
         /// <param name="query">The query parameters.</param>
         public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ulong teamId, QueryParameters query = null);
@@ -44,9 +43,9 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(TProjectModel project, QueryParameters query = null);
+        public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(IProject project, QueryParameters query = null);
 
-        /// <inheritdoc cref="GetNominatedUsersAsync(TProjectModel, QueryParameters)"/>`
+        /// <inheritdoc cref="GetNominatedUsersAsync(IProject, QueryParameters)"/>`
         /// <param name="projectId">The project id.</param>
         /// <param name="query">The query parameters.</param>
         public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(ulong projectId, QueryParameters query = null);
@@ -64,9 +63,9 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(TProjectModel project, TUserModel user, QueryParameters query = null);
+        public Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(IProject project, IUser user, QueryParameters query = null);
 
-        /// <inheritdoc cref="NominateUserAsync(TProjectModel, TUserModel, QueryParameters)"/>`
+        /// <inheritdoc cref="NominateUserAsync(IProject, IUser, QueryParameters)"/>`
         /// <param name="projectId">The project id.</param>
         /// <param name="userId">The user id.</param>
         /// <param name="query">The query parameters.</param>
@@ -84,9 +83,9 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(TProjectModel project, QueryParameters query = null);
+        public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(IProject project, QueryParameters query = null);
 
-        /// <inheritdoc cref="GetProjectLeaderAsync(TProjectModel, QueryParameters)"/>`
+        /// <inheritdoc cref="GetProjectLeaderAsync(IProject, QueryParameters)"/>`
         /// <param name="projectId">The project id.</param>
         /// <param name="query">The query parameters.</param>
         public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(ulong projectId, QueryParameters query = null);
@@ -104,13 +103,13 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(TTeamModel team, TProjectModel project, QueryParameters query = null);
+        public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ITeam team, IProject project, QueryParameters query = null);
 
-        /// <inheritdoc cref="CreateProjectAsync(TTeamModel, TProjectModel, QueryParameters)"/>
+        /// <inheritdoc cref="CreateProjectAsync(ITeam, IProject, QueryParameters)"/>
         /// <param name="teamId">The team id.</param>
         /// <param name="project">The project.</param>
         /// <param name="query">The query parameters.</param>
-        public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ulong teamId, TProjectModel project, QueryParameters query = null);
+        public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ulong teamId, IProject project, QueryParameters query = null);
 
         /// <summary>
         /// Sends the set image request to the API.
@@ -121,9 +120,9 @@ namespace Equality.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TProjectModel>> SetImageAsync(TProjectModel project, string imagePath, QueryParameters query = null);
+        public Task<ApiResponseMessage<TProjectModel>> SetImageAsync(IProject project, string imagePath, QueryParameters query = null);
 
-        /// <inheritdoc cref="SetImageAsync(TProjectModel, string, QueryParameters)"/>
+        /// <inheritdoc cref="SetImageAsync(IProject, string, QueryParameters)"/>
         /// <param name="projectId">The project id.</param>
         /// <param name="imagePath">The path to image file.</param>
         /// <param name="query">The query parameters.</param>
@@ -136,9 +135,9 @@ namespace Equality.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> DeleteImageAsync(TProjectModel project);
+        public Task<ApiResponseMessage> DeleteImageAsync(IProject project);
 
-        /// <inheritdoc cref="DeleteImageAsync(TProjectModel)"/>
+        /// <inheritdoc cref="DeleteImageAsync(IProject)"/>
         /// <param name="projectId">The project id.</param>
         public Task<ApiResponseMessage> DeleteImageAsync(ulong projectId);
 
@@ -150,6 +149,6 @@ namespace Equality.Services
         /// <returns>Returns the API response.</returns>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TProjectModel>> UpdateProjectAsync(TProjectModel project, QueryParameters query = null);
+        public Task<ApiResponseMessage<TProjectModel>> UpdateProjectAsync(IProject project, QueryParameters query = null);
     }
 }

@@ -7,9 +7,8 @@ using Equality.Data;
 
 namespace Equality.Services
 {
-    public interface IInviteServiceBase<TInviteModel, TTeamModel> : IDeserializeModels<TInviteModel>
+    public interface IInviteServiceBase<TInviteModel> : IDeserializeModels<TInviteModel>
         where TInviteModel : class, IInvite, new()
-        where TTeamModel : class, ITeam, new()
     {
         /// <summary>
         /// Sends the get team invites request to the API.
@@ -23,9 +22,9 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(TTeamModel team, QueryParameters query = null);
+        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ITeam team, QueryParameters query = null);
 
-        /// <inheritdoc cref="GetTeamInvitesAsync(TTeamModel, QueryParameters)"/>
+        /// <inheritdoc cref="GetTeamInvitesAsync(ITeam, QueryParameters)"/>
         /// <param name="teamId">The team id.</param>
         /// <param name="query">The query parameters.</param>
         public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ulong teamId, QueryParameters query = null);
@@ -56,9 +55,9 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(TTeamModel team, string email, QueryParameters query = null);
+        public Task<ApiResponseMessage<TInviteModel>> InviteUserAsync(ITeam team, string email, QueryParameters query = null);
 
-        /// <inheritdoc cref="InviteUserAsync(TTeamModel, string, QueryParameters)"/>
+        /// <inheritdoc cref="InviteUserAsync(ITeam, string, QueryParameters)"/>
         /// <param name="teamId">The team id.</param>
         /// <param name="email">The user email.</param>
         /// <param name="query">The query parameters.</param>
@@ -75,9 +74,9 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> RevokeInviteAsync(TInviteModel invite);
+        public Task<ApiResponseMessage> RevokeInviteAsync(IInvite invite);
 
-        /// <inheritdoc cref="RevokeInviteAsync(TInviteModel)"/>
+        /// <inheritdoc cref="RevokeInviteAsync(IInvite)"/>
         /// <param name="inviteId">The invite id.</param>
         public Task<ApiResponseMessage> RevokeInviteAsync(ulong inviteId);
 
@@ -92,9 +91,9 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> AcceptInviteAsync(TInviteModel invite);
+        public Task<ApiResponseMessage> AcceptInviteAsync(IInvite invite);
 
-        /// <inheritdoc cref="AcceptInviteAsync(TInviteModel)"/>
+        /// <inheritdoc cref="AcceptInviteAsync(IInvite)"/>
         /// <param name="inviteId">The invite id.</param>
         public Task<ApiResponseMessage> AcceptInviteAsync(ulong inviteId);
 
@@ -109,9 +108,9 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> DeclineInviteAsync(TInviteModel invite);
+        public Task<ApiResponseMessage> DeclineInviteAsync(IInvite invite);
 
-        /// <inheritdoc cref="DeclineInviteAsync(TInviteModel)"/>
+        /// <inheritdoc cref="DeclineInviteAsync(IInvite)"/>
         /// <param name="inviteId">The invite id.</param>
         public Task<ApiResponseMessage> DeclineInviteAsync(ulong inviteId);
     }

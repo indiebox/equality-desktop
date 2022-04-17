@@ -11,11 +11,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Equality.Services
 {
-    public class BoardServiceBase<TBoardModel, TProjectModel> : IBoardServiceBase<TBoardModel, TProjectModel>
+    public class BoardServiceBase<TBoardModel> : IBoardServiceBase<TBoardModel>
         where TBoardModel : class, IBoard, new()
-        where TProjectModel : class, IProject, new()
     {
-
         protected ITokenResolver TokenResolver;
 
         protected IApiClient ApiClient;
@@ -28,7 +26,7 @@ namespace Equality.Services
             ApiClient = apiClient;
             TokenResolver = tokenResolver;
         }
-        public Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(TProjectModel project, QueryParameters query = null)
+        public Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(IProject project, QueryParameters query = null)
             => GetBoardsAsync(project.Id, query);
 
         public async Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(ulong projectId, QueryParameters query = null)
@@ -43,10 +41,10 @@ namespace Equality.Services
             return new(boards, response);
         }
 
-        public Task<ApiResponseMessage<TBoardModel>> CreateBoardAsync(TProjectModel project, TBoardModel board, QueryParameters query = null)
+        public Task<ApiResponseMessage<TBoardModel>> CreateBoardAsync(IProject project, IBoard board, QueryParameters query = null)
             => CreateBoardAsync(project.Id, board, query);
 
-        public async Task<ApiResponseMessage<TBoardModel>> CreateBoardAsync(ulong projectId, TBoardModel board, QueryParameters query = null)
+        public async Task<ApiResponseMessage<TBoardModel>> CreateBoardAsync(ulong projectId, IBoard board, QueryParameters query = null)
         {
             Argument.IsMinimal<ulong>(nameof(projectId), projectId, 1);
             Argument.IsNotNull(nameof(board), board);
@@ -58,13 +56,12 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"projects/{projectId}/boards"), data);
+            var deserializedBoard = Deserialize(response.Content["data"]);
 
-            board = Deserialize(response.Content["data"]);
-
-            return new(board, response);
+            return new(deserializedBoard, response);
         }
 
-        public async Task<ApiResponseMessage<TBoardModel>> UpdateBoardAsync(TBoardModel board, QueryParameters query = null)
+        public async Task<ApiResponseMessage<TBoardModel>> UpdateBoardAsync(IBoard board, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(board), board);
             Argument.IsMinimal<ulong>("board.Id", board.Id, 1);
@@ -76,10 +73,9 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync(query.Parse($"boards/{board.Id}"), data);
+            var deserializedBoard = Deserialize(response.Content["data"]);
 
-            board = Deserialize(response.Content["data"]);
-
-            return new(board, response);
+            return new(deserializedBoard, response);
         }
 
         /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>

@@ -12,9 +12,8 @@ using Newtonsoft.Json.Linq;
 
 namespace Equality.Services
 {
-    public partial class ColumnServiceBase<TColumnModel, TBoardModel> : IColumnService<TColumnModel, TBoardModel>
+    public partial class ColumnServiceBase<TColumnModel> : IColumnService<TColumnModel>
         where TColumnModel : class, IColumn, new()
-        where TBoardModel : class, IBoard, new()
     {
         protected IApiClient ApiClient;
 
@@ -26,7 +25,7 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
-        public Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(TBoardModel board, QueryParameters query = null)
+        public Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(IBoard board, QueryParameters query = null)
             => GetColumnsAsync(board.Id, query);
 
         public async Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(ulong boardId, QueryParameters query = null)
@@ -41,10 +40,10 @@ namespace Equality.Services
             return new(columns, response);
         }
 
-        public Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(TBoardModel board, TColumnModel column, QueryParameters query = null)
+        public Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(IBoard board, IColumn column, QueryParameters query = null)
             => CreateColumnAsync(board.Id, column, query);
 
-        public async Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(ulong boardId, TColumnModel column, QueryParameters query = null)
+        public async Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(ulong boardId, IColumn column, QueryParameters query = null)
         {
             Argument.IsMinimal<ulong>(nameof(boardId), boardId, 1);
             Argument.IsNotNull(nameof(column), column);
@@ -59,13 +58,12 @@ namespace Equality.Services
                 .WithTokenOnce(TokenResolver.ResolveApiToken())
                 .WithSocketID(TokenResolver.ResolveSocketID())
                 .PostAsync(query.Parse($"boards/{boardId}/columns"), data);
+            var deserializedColumn = Deserialize(response.Content["data"]);
 
-            column = Deserialize(response.Content["data"]);
-
-            return new(column, response);
+            return new(deserializedColumn, response);
         }
 
-        public async Task<ApiResponseMessage<TColumnModel>> UpdateColumnAsync(TColumnModel column, QueryParameters query = null)
+        public async Task<ApiResponseMessage<TColumnModel>> UpdateColumnAsync(IColumn column, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(column), column);
             Argument.IsMinimal<ulong>("column.Id", column.Id, 1);
@@ -80,13 +78,12 @@ namespace Equality.Services
                 .WithTokenOnce(TokenResolver.ResolveApiToken())
                 .WithSocketID(TokenResolver.ResolveSocketID())
                 .PatchAsync(query.Parse($"columns/{column.Id}"), data);
+            var deserializedColumn = Deserialize(response.Content["data"]);
 
-            column = Deserialize(response.Content["data"]);
-
-            return new(column, response);
+            return new(deserializedColumn, response);
         }
 
-        public Task<ApiResponseMessage> UpdateColumnOrderAsync(TColumnModel column, TColumnModel afterColumn)
+        public Task<ApiResponseMessage> UpdateColumnOrderAsync(IColumn column, IColumn afterColumn)
             => UpdateColumnOrderAsync(column.Id, afterColumn?.Id ?? 0);
 
         public async Task<ApiResponseMessage> UpdateColumnOrderAsync(ulong columnId, ulong afterColumnId)
@@ -104,7 +101,7 @@ namespace Equality.Services
                 .PostAsync($"columns/{columnId}/order", data);
         }
 
-        public Task<ApiResponseMessage> DeleteColumnAsync(TColumnModel column)
+        public Task<ApiResponseMessage> DeleteColumnAsync(IColumn column)
             => DeleteColumnAsync(column.Id);
 
         public async Task<ApiResponseMessage> DeleteColumnAsync(ulong columnId)
