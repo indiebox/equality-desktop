@@ -15,9 +15,8 @@ using Newtonsoft.Json.Serialization;
 
 namespace Equality.Services
 {
-    public partial class ProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel, TUserModel> : IProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel, TUserModel>
+    public partial class ProjectServiceBase<TProjectModel, TLeaderNominationModel, TUserModel> : IProjectServiceBase<TProjectModel, TLeaderNominationModel, TUserModel>
         where TProjectModel : class, IProject, new()
-        where TTeamModel : class, ITeam, new()
         where TLeaderNominationModel : class, ILeaderNomination, new()
         where TUserModel : class, IUser, new()
     {
@@ -31,7 +30,7 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
-        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(TTeamModel team, QueryParameters query = null)
+        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ITeam team, QueryParameters query = null)
             => GetProjectsAsync(team.Id, query);
 
         public async Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ulong teamId, QueryParameters query = null)
@@ -46,7 +45,7 @@ namespace Equality.Services
             return new(projects, response);
         }
 
-        public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(TProjectModel project, QueryParameters query = null)
+        public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(IProject project, QueryParameters query = null)
             => GetNominatedUsersAsync(project.Id, query);
 
         public async Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(ulong projectId, QueryParameters query = null)
@@ -61,7 +60,7 @@ namespace Equality.Services
             return new(nominations, response);
         }
 
-        public Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(TProjectModel project, TUserModel user, QueryParameters query = null)
+        public Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(IProject project, IUser user, QueryParameters query = null)
             => NominateUserAsync(project.Id, user.Id, query);
 
         public async Task<ApiResponseMessage<TLeaderNominationModel[]>> NominateUserAsync(ulong projectId, ulong userId, QueryParameters query = null)
@@ -80,7 +79,7 @@ namespace Equality.Services
             return new(nominations, response);
         }
 
-        public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(TProjectModel project, QueryParameters query = null)
+        public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(IProject project, QueryParameters query = null)
             => GetProjectLeaderAsync(project.Id, query);
 
         public async Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(ulong projectId, QueryParameters query = null)
@@ -95,10 +94,10 @@ namespace Equality.Services
             return new(leader, response);
         }
 
-        public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(TTeamModel team, TProjectModel project, QueryParameters query = null)
+        public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ITeam team, IProject project, QueryParameters query = null)
             => CreateProjectAsync(team.Id, project, query);
 
-        public async Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ulong teamId, TProjectModel project, QueryParameters query = null)
+        public async Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ulong teamId, IProject project, QueryParameters query = null)
         {
             Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
             Argument.IsNotNull(nameof(project), project);
@@ -111,13 +110,12 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"teams/{teamId}/projects"), data);
+            var deserializedProject = Deserialize(response.Content["data"]);
 
-            project = Deserialize(response.Content["data"]);
-
-            return new(project, response);
+            return new(deserializedProject, response);
         }
 
-        public Task<ApiResponseMessage<TProjectModel>> SetImageAsync(TProjectModel project, string imagePath, QueryParameters query = null)
+        public Task<ApiResponseMessage<TProjectModel>> SetImageAsync(IProject project, string imagePath, QueryParameters query = null)
             => SetImageAsync(project.Id, imagePath, query);
 
         public async Task<ApiResponseMessage<TProjectModel>> SetImageAsync(ulong projectId, string imagePath, QueryParameters query = null)
@@ -158,7 +156,7 @@ namespace Equality.Services
             return new(project, response);
         }
 
-        public Task<ApiResponseMessage> DeleteImageAsync(TProjectModel project) => DeleteImageAsync(project.Id);
+        public Task<ApiResponseMessage> DeleteImageAsync(IProject project) => DeleteImageAsync(project.Id);
 
         public async Task<ApiResponseMessage> DeleteImageAsync(ulong projectId)
         {
@@ -167,7 +165,7 @@ namespace Equality.Services
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"projects/{projectId}/image");
         }
 
-        public async Task<ApiResponseMessage<TProjectModel>> UpdateProjectAsync(TProjectModel project, QueryParameters query = null)
+        public async Task<ApiResponseMessage<TProjectModel>> UpdateProjectAsync(IProject project, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(project), project);
             Argument.IsMinimal<ulong>("project.Id", project.Id, 1);
@@ -180,10 +178,9 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync(query.Parse($"projects/{project.Id}"), data);
+            var deserializedProject = Deserialize(response.Content["data"]);
 
-            project = Deserialize(response.Content["data"]);
-
-            return new(project, response);
+            return new(deserializedProject, response);
         }
 
         /// <summary>

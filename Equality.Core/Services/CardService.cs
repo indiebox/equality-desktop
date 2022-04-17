@@ -11,9 +11,8 @@ using Newtonsoft.Json.Linq;
 
 namespace Equality.Services
 {
-    public class CardServiceBase<TCardModel, TColumnModel> : ICardServiceBase<TCardModel, TColumnModel>
+    public class CardServiceBase<TCardModel> : ICardServiceBase<TCardModel>
         where TCardModel : class, ICard, new()
-        where TColumnModel : class, IColumn, new()
     {
         protected ITokenResolver TokenResolver;
 
@@ -28,7 +27,7 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
-        public Task<ApiResponseMessage<TCardModel[]>> GetCardsAsync(TColumnModel column, QueryParameters query = null)
+        public Task<ApiResponseMessage<TCardModel[]>> GetCardsAsync(IColumn column, QueryParameters query = null)
             => GetCardsAsync(column.Id, query);
 
         public async Task<ApiResponseMessage<TCardModel[]>> GetCardsAsync(ulong columnId, QueryParameters query = null)
@@ -43,13 +42,13 @@ namespace Equality.Services
             return new(boards, response);
         }
 
-        public Task<ApiResponseMessage<TCardModel>> CreateCardAsync(TColumnModel column, TCardModel card, QueryParameters query = null)
+        public Task<ApiResponseMessage<TCardModel>> CreateCardAsync(IColumn column, ICard card, QueryParameters query = null)
             => CreateCardAsync(column.Id, card, query);
 
-        public Task<ApiResponseMessage<TCardModel>> CreateCardAsync(ulong columnId, TCardModel card, QueryParameters query = null)
+        public Task<ApiResponseMessage<TCardModel>> CreateCardAsync(ulong columnId, ICard card, QueryParameters query = null)
             => CreateCardAsync(columnId, card, null, query);
 
-        public async Task<ApiResponseMessage<TCardModel>> CreateCardAsync(ulong columnId, TCardModel card, ulong? afterCardId, QueryParameters query = null)
+        public async Task<ApiResponseMessage<TCardModel>> CreateCardAsync(ulong columnId, ICard card, ulong? afterCardId, QueryParameters query = null)
         {
             Argument.IsMinimal<ulong>(nameof(columnId), columnId, 1);
             Argument.IsNotNull(nameof(card), card);
@@ -66,13 +65,12 @@ namespace Equality.Services
             }
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"columns/{columnId}/cards"), data);
+            var deserializedCard = Deserialize(response.Content["data"]);
 
-            card = Deserialize(response.Content["data"]);
-
-            return new(card, response);
+            return new(deserializedCard, response);
         }
 
-        public async Task<ApiResponseMessage<TCardModel>> UpdateCardAsync(TCardModel card, QueryParameters query = null)
+        public async Task<ApiResponseMessage<TCardModel>> UpdateCardAsync(ICard card, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(card), card);
             Argument.IsMinimal<ulong>("card.Id", card.Id, 1);
@@ -85,13 +83,12 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync(query.Parse($"cards/{card.Id}"), data);
+            var deserializedCard = Deserialize(response.Content["data"]);
 
-            card = Deserialize(response.Content["data"]);
-
-            return new(card, response);
+            return new(deserializedCard, response);
         }
 
-        public Task<ApiResponseMessage> UpdateCardOrderAsync(TCardModel card, TCardModel afterCard)
+        public Task<ApiResponseMessage> UpdateCardOrderAsync(ICard card, ICard afterCard)
             => UpdateCardOrderAsync(card.Id, afterCard?.Id ?? 0);
 
         public async Task<ApiResponseMessage> UpdateCardOrderAsync(ulong cardId, ulong afterCardId)
@@ -106,7 +103,7 @@ namespace Equality.Services
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"cards/{cardId}/order", data);
         }
 
-        public Task<ApiResponseMessage> MoveCardToColumnAsync(TCardModel card, TColumnModel column, TCardModel afterCard)
+        public Task<ApiResponseMessage> MoveCardToColumnAsync(ICard card, IColumn column, ICard afterCard)
             => MoveCardToColumnAsync(card.Id, column.Id, afterCard?.Id ?? 0);
 
         public async Task<ApiResponseMessage> MoveCardToColumnAsync(ulong cardId, ulong columnId, ulong afterCardId)
@@ -122,7 +119,7 @@ namespace Equality.Services
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"cards/{cardId}/move/{columnId}", data);
         }
 
-        public Task<ApiResponseMessage> DeleteCardAsync(TCardModel card)
+        public Task<ApiResponseMessage> DeleteCardAsync(ICard card)
             => DeleteCardAsync(card.Id);
 
         public async Task<ApiResponseMessage> DeleteCardAsync(ulong cardId)

@@ -4,7 +4,7 @@ using Equality.Models;
 
 namespace Equality.Services
 {
-    internal class ColumnService : ColumnServiceBase<Column, Board>, IColumnService
+    internal class ColumnService : ColumnServiceBase<Column>, IColumnService
     {
         public ColumnService(IApiClient apiClient, ITokenResolver tokenResolver, IWebsocketClient websocketClient)
             : base(apiClient, tokenResolver, websocketClient)

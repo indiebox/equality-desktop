@@ -8,9 +8,8 @@ using Equality.Data;
 
 namespace Equality.Services
 {
-    public partial interface IColumnService<TColumnModel, TBoardModel> : IDeserializeModels<TColumnModel>
+    public partial interface IColumnService<TColumnModel> : IDeserializeModels<TColumnModel>
         where TColumnModel : class, IColumn, new()
-        where TBoardModel : class, IBoard, new()
     {
         /// <summary>
         /// Sends the get board columns request to the API.
@@ -24,9 +23,9 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(TBoardModel board, QueryParameters query = null);
+        public Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(IBoard board, QueryParameters query = null);
 
-        /// <inheritdoc cref="GetColumnsAsync(TBoardModel, QueryParameters)"/>
+        /// <inheritdoc cref="GetColumnsAsync(IBoard, QueryParameters)"/>
         /// <param name="boardId">The board id.</param>
         /// <param name="query">The query parameters.</param>
         public Task<ApiResponseMessage<TColumnModel[]>> GetColumnsAsync(ulong boardId, QueryParameters query = null);
@@ -44,13 +43,13 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(TBoardModel board, TColumnModel column, QueryParameters query = null);
+        public Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(IBoard board, IColumn column, QueryParameters query = null);
 
-        /// <inheritdoc cref="CreateColumnAsync(TBoardModel, TColumnModel, QueryParameters)"/>
+        /// <inheritdoc cref="CreateColumnAsync(IBoard, IColumn, QueryParameters)"/>
         /// <param name="boardId">The board id.</param>
         /// <param name="column">The column.</param>
         /// <param name="query">The query parameters.</param>
-        public Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(ulong boardId, TColumnModel column, QueryParameters query = null);
+        public Task<ApiResponseMessage<TColumnModel>> CreateColumnAsync(ulong boardId, IColumn column, QueryParameters query = null);
 
         /// <summary>
         /// Sends the update column request to the API.
@@ -64,7 +63,7 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TColumnModel>> UpdateColumnAsync(TColumnModel column, QueryParameters query = null);
+        public Task<ApiResponseMessage<TColumnModel>> UpdateColumnAsync(IColumn column, QueryParameters query = null);
 
         /// <summary>
         /// Sends the update column order request to the API.
@@ -78,9 +77,9 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> UpdateColumnOrderAsync(TColumnModel column, TColumnModel afterColumn);
+        public Task<ApiResponseMessage> UpdateColumnOrderAsync(IColumn column, IColumn afterColumn);
 
-        /// <inheritdoc cref="UpdateColumnOrderAsync(TColumnModel, TColumnModel)" />
+        /// <inheritdoc cref="UpdateColumnOrderAsync(IColumn, IColumn)" />
         /// <param name="columnId">The column id.</param>
         /// <param name="afterColumnId">The column id after which insert new. If 0 - insert column at first position.</param>
         public Task<ApiResponseMessage> UpdateColumnOrderAsync(ulong columnId, ulong afterColumnId);
@@ -96,9 +95,9 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> DeleteColumnAsync(TColumnModel column);
+        public Task<ApiResponseMessage> DeleteColumnAsync(IColumn column);
 
-        /// <inheritdoc cref="DeleteColumnAsync(TColumnModel)" />
+        /// <inheritdoc cref="DeleteColumnAsync(IColumn)" />
         /// <param name="columnId">The column id.</param>
         public Task<ApiResponseMessage> DeleteColumnAsync(ulong columnId);
     }

@@ -2,7 +2,7 @@
 
 namespace Equality.Services
 {
-    public interface IColumnService : IColumnService<Column, Board>
+    public interface IColumnService : IColumnService<Column>
     {
     }
 }
