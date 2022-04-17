@@ -542,6 +542,39 @@ namespace Equality.ViewModels
                     }
                 });
             });
+            await CardService.SubscribeUpdateCardOrderAsync(StateManager.SelectedBoard, (ulong cardId, ulong afterId) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    Column column = null;
+                    Card existingCard = null;
+                    foreach (var col in Columns) {
+                        var card = col.Cards.FirstOrDefault(card => card.Id == cardId);
+                        if (card != null) {
+                            column = col;
+                            existingCard = card;
+
+                            break;
+                        }
+                    }
+                    if (existingCard == null) {
+                        return;
+                    }
+
+                    if (afterId == 0) {
+                        column.Cards.Remove(existingCard);
+                        column.Cards.Insert(0, existingCard);
+
+                        return;
+                    }
+
+                    var afterCard = column.Cards.FirstOrDefault(card => card.Id == afterId);
+                    if (afterCard != null) {
+                        column.Cards.Remove(existingCard);
+                        column.Cards.Insert(column.Cards.IndexOf(afterCard) + 1, existingCard);
+                    }
+                });
+            });
         }
 
         protected void UnsubscribePusherAsync()
@@ -555,6 +588,7 @@ namespace Equality.ViewModels
             // Cards.
             CardService.UnsubscribeCreateCard(StateManager.SelectedBoard);
             CardService.UnsubscribeUpdateCard(StateManager.SelectedBoard);
+            CardService.UnsubscribeUpdateCardOrder(StateManager.SelectedBoard);
         }
 
         #endregion

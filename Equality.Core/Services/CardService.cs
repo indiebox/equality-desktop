@@ -106,7 +106,10 @@ namespace Equality.Services
                 { "after", afterCardId.ToString() },
             };
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"cards/{cardId}/order", data);
+            return await ApiClient
+                .WithTokenOnce(TokenResolver.ResolveApiToken())
+                .WithSocketID(TokenResolver.ResolveSocketID())
+                .PostAsync($"cards/{cardId}/order", data);
         }
 
         public Task<ApiResponseMessage> DeleteCardAsync(ICard card)

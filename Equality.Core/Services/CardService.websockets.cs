@@ -55,6 +55,19 @@ namespace Equality.Services
             WebsocketClient.UnbindEvent(GetChannelName(board), "updated");
         }
 
+        public async Task SubscribeUpdateCardOrderAsync(IBoard board, Action<ulong, ulong> action)
+        {
+            await WebsocketClient.BindEventAsync(GetChannelName(board), "order-changed", (data) =>
+            {
+                action.Invoke(ulong.Parse(data["id"].ToString()), ulong.Parse(data["after"].ToString()));
+            });
+        }
+
+        public void UnsubscribeUpdateCardOrder(IBoard board)
+        {
+            WebsocketClient.UnbindEvent(GetChannelName(board), "order-changed");
+        }
+
         protected string GetChannelName(IBoard board) => $"private-boards.{board.Id}.cards";
     }
 }
