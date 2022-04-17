@@ -609,18 +609,30 @@ namespace Equality.ViewModels
                         return;
                     }
 
-                    //if (afterId == 0) {
-                    //    column.Cards.Remove(existingCard);
-                    //    column.Cards.Insert(0, existingCard);
+                    Card existingCard = null;
+                    foreach (var col in Columns) {
+                        var card = col.Cards.FirstOrDefault(card => card.Id == cardId);
+                        if (card != null) {
+                            existingCard = card;
+                            col.Cards.Remove(card);
 
-                    //    return;
-                    //}
+                            break;
+                        }
+                    }
+                    if (existingCard == null) {
+                        return;
+                    }
 
-                    //var afterCard = column.Cards.FirstOrDefault(card => card.Id == afterId);
-                    //if (afterCard != null) {
-                    //    column.Cards.Remove(existingCard);
-                    //    column.Cards.Insert(column.Cards.IndexOf(afterCard) + 1, existingCard);
-                    //}
+                    if (afterId == 0) {
+                        column.Cards.Insert(0, existingCard);
+
+                        return;
+                    }
+
+                    var afterCard = column.Cards.FirstOrDefault(card => card.Id == afterId);
+                    if (afterCard != null) {
+                        column.Cards.Insert(column.Cards.IndexOf(afterCard) + 1, existingCard);
+                    }
                 });
             });
             await CardService.SubscribeDeleteCardAsync(StateManager.SelectedBoard, (ulong cardId) =>
