@@ -142,11 +142,10 @@ namespace Equality.Views
 
             if (IsDraggingColumn && DragColumnInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn)) {
                 Vm.UpdateColumnOrder.Execute();
+            } else if (Vm.DraggableCardColumn != Vm.Columns.Where(column => column.Cards.Contains(Vm.DragCard))) {
+                Vm.MoveCardToColumn.Execute();
             } else if (IsDraggingCard && DragCardInitialPosition != Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard)) {
                 Vm.UpdateCardOrder.Execute();
-            }
-            if (Vm.DraggableCardColumn != Vm.Columns.Where(column => column.Cards.Contains(Vm.DragCard))) {
-                Vm.MoveCardToColumn.Execute();
             }
 
             Vm.DraggableCardColumn = null;

@@ -383,7 +383,7 @@ namespace Equality.ViewModels
             try {
                 var afterColumn = Columns
                     .Where(column => column.Cards.Contains(DragCard))
-                    .FirstOrDefault();
+                    .First();
                 Card afterCard = null;
                 if (afterColumn != null) {
                     afterCard = afterColumn.Cards
@@ -391,7 +391,7 @@ namespace Equality.ViewModels
                        .LastOrDefault();
                 }
 
-                await CardService.MoveCardToColumnAsync(DragCard, DraggableCardColumn, afterCard);
+                await CardService.MoveCardToColumnAsync(DragCard, afterColumn, afterCard);
             } catch (HttpRequestException e) {
                 Data.ExceptionHandler.Handle(e);
             }
