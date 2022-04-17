@@ -103,6 +103,27 @@ namespace Equality.Services
         public Task<ApiResponseMessage> UpdateCardOrderAsync(ulong cardId, ulong afterCardId);
 
         /// <summary>
+        /// Sends the move card to column request to the API.
+        /// </summary>
+        /// <param name="card">The card.</param>
+        /// <param name="column">The column.</param>
+        /// <param name="afterCard">The after card id.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets a token using <see cref="ITokenResolver.ResolveApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage> MoveCardToColumnAsync(ICard card, IColumn column, ICard afterCard);
+
+        /// <inheritdoc cref="MoveCardToColumnAsync(ICard, IColumn, ICard)" />
+        /// <param name="cardId">The card id.</param>
+        /// <param name="columnId">The column id.</param>
+        /// <param name="afterCardId">The after card id.</param>
+        public Task<ApiResponseMessage> MoveCardToColumnAsync(ulong cardId, ulong columnId, ulong afterCardId);
+
+        /// <summary>
         /// Sends the delete card request to the API.
         /// </summary>
         /// <param name="card">The card.</param>
