@@ -105,6 +105,9 @@ namespace Equality.ViewModels
 
         public Card DragCard { get; set; }
 
+        /// <summary>
+        /// The column in which the draggable card.
+        /// </summary>
         public Column DraggableCardColumn { get; set; }
 
         public CreateColumnControlViewModel CreateColumnVm { get; set; }
@@ -358,9 +361,7 @@ namespace Equality.ViewModels
             }
 
             try {
-                var afterColumn = Columns
-                    .Where(column => column.Cards.Contains(DragCard))
-                    .FirstOrDefault();
+                var afterColumn = Columns.FirstOrDefault(column => column.Cards.Contains(DragCard));
                 Card afterCard = null;
                 if (afterColumn != null) {
                     afterCard = afterColumn.Cards
@@ -373,6 +374,10 @@ namespace Equality.ViewModels
             }
         }
 
+        #endregion UpdateCardOrder
+
+        #region MoveCard
+
         public TaskCommand MoveCardToColumn { get; private set; }
 
         private async Task OnMoveCardToColumnAsync()
@@ -381,23 +386,17 @@ namespace Equality.ViewModels
                 return;
             }
             try {
-                var afterColumn = Columns
-                    .Where(column => column.Cards.Contains(DragCard))
-                    .First();
-                Card afterCard = null;
-                if (afterColumn != null) {
-                    afterCard = afterColumn.Cards
-                       .TakeWhile(card => card.Id != DragCard.Id)
-                       .LastOrDefault();
-                }
+                var afterCard = DraggableCardColumn.Cards
+                   .TakeWhile(card => card.Id != DragCard.Id)
+                   .LastOrDefault();
 
-                await CardService.MoveCardToColumnAsync(DragCard, afterColumn, afterCard);
+                await CardService.MoveCardToColumnAsync(DragCard, DraggableCardColumn, afterCard);
             } catch (HttpRequestException e) {
                 Data.ExceptionHandler.Handle(e);
             }
         }
 
-        #endregion UpdateCardOrder
+        #endregion MoveCard
 
         #region DeleteCard
 
