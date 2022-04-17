@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Equality.Services
 {
-    public class CardServiceBase<TCardModel> : ICardServiceBase<TCardModel>
+    public partial class CardServiceBase<TCardModel> : ICardServiceBase<TCardModel>
         where TCardModel : class, ICard, new()
     {
         protected ITokenResolver TokenResolver;
