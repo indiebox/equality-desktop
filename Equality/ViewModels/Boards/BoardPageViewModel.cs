@@ -420,6 +420,7 @@ namespace Equality.ViewModels
 
         protected async Task SubscribePusherAsync()
         {
+            // Columns.
             await ColumnService.SubscribeCreateColumnAsync(StateManager.SelectedBoard, (Column col, ulong? afterColumnId) =>
             {
                 App.Current.Dispatcher.Invoke(() =>
@@ -444,7 +445,6 @@ namespace Equality.ViewModels
                     }
                 });
             });
-
             await ColumnService.SubscribeUpdateColumnAsync(StateManager.SelectedBoard, (Column column) =>
             {
                 App.Current.Dispatcher.Invoke(() =>
@@ -460,7 +460,6 @@ namespace Equality.ViewModels
                     }
                 });
             });
-
             await ColumnService.SubscribeUpdateColumnOrderAsync(StateManager.SelectedBoard, (ulong columnId, ulong afterId) =>
             {
                 App.Current.Dispatcher.Invoke(() =>
@@ -484,7 +483,6 @@ namespace Equality.ViewModels
                     }
                 });
             });
-
             await ColumnService.SubscribeDeleteColumnAsync(StateManager.SelectedBoard, (ulong columnId) =>
             {
                 App.Current.Dispatcher.Invoke(() =>
@@ -492,14 +490,49 @@ namespace Equality.ViewModels
                     Columns.Remove(Columns.FirstOrDefault(col => col.Id == columnId));
                 });
             });
+
+            // Cards.
+            await CardService.SubscribeCreateCardAsync(StateManager.SelectedBoard, (Card card, ulong columnId, ulong? afterCardId) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    var column = Columns.Where(col => col.Id == columnId).FirstOrDefault();
+                    if (column == null) {
+                        return;
+                    }
+
+                    if (afterCardId == null) {
+                        column.Cards.Add(card);
+
+                        return;
+                    }
+
+                    if (afterCardId == 0) {
+                        column.Cards.Insert(0, card);
+
+                        return;
+                    }
+
+                    var afterColumn = column.Cards.FirstOrDefault(col => col.Id == afterCardId);
+                    if (afterColumn == null) {
+                        column.Cards.Add(card);
+                    } else {
+                        column.Cards.Insert(column.Cards.IndexOf(afterColumn) + 1, card);
+                    }
+                });
+            });
         }
 
         protected void UnsubscribePusherAsync()
         {
+            // Columns.
             ColumnService.UnsubscribeCreateColumn(StateManager.SelectedBoard);
             ColumnService.UnsubscribeUpdateColumn(StateManager.SelectedBoard);
             ColumnService.UnsubscribeUpdateColumnOrder(StateManager.SelectedBoard);
             ColumnService.UnsubscribeDeleteColumn(StateManager.SelectedBoard);
+
+            // Cards.
+            CardService.UnsubscribeCreateCard(StateManager.SelectedBoard);
         }
 
         #endregion
