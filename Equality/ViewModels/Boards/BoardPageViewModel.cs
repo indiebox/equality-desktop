@@ -94,9 +94,6 @@ namespace Equality.ViewModels
 
         public Project Project { get; set; } = StateManager.SelectedProject;
 
-        [Model]
-        public Board Board { get; set; }
-
         public ObservableCollection<Column> Columns { get; set; } = new();
 
         #region ColumnProperties
@@ -445,6 +442,7 @@ namespace Equality.ViewModels
 
         protected async Task SubscribePusherAsync()
         {
+            // Columns.
             await ColumnService.SubscribeCreateColumnAsync(StateManager.SelectedBoard, (Column col, ulong? afterColumnId) =>
             {
                 App.Current.Dispatcher.Invoke(() =>
@@ -469,7 +467,6 @@ namespace Equality.ViewModels
                     }
                 });
             });
-
             await ColumnService.SubscribeUpdateColumnAsync(StateManager.SelectedBoard, (Column column) =>
             {
                 App.Current.Dispatcher.Invoke(() =>
@@ -485,7 +482,6 @@ namespace Equality.ViewModels
                     }
                 });
             });
-
             await ColumnService.SubscribeUpdateColumnOrderAsync(StateManager.SelectedBoard, (ulong columnId, ulong afterId) =>
             {
                 App.Current.Dispatcher.Invoke(() =>
@@ -509,7 +505,6 @@ namespace Equality.ViewModels
                     }
                 });
             });
-
             await ColumnService.SubscribeDeleteColumnAsync(StateManager.SelectedBoard, (ulong columnId) =>
             {
                 App.Current.Dispatcher.Invoke(() =>
@@ -517,14 +512,160 @@ namespace Equality.ViewModels
                     Columns.Remove(Columns.FirstOrDefault(col => col.Id == columnId));
                 });
             });
+
+            // Cards.
+            await CardService.SubscribeCreateCardAsync(StateManager.SelectedBoard, (Card card, ulong columnId, ulong? afterCardId) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    var column = Columns.Where(col => col.Id == columnId).FirstOrDefault();
+                    if (column == null) {
+                        return;
+                    }
+
+                    if (afterCardId == null) {
+                        column.Cards.Add(card);
+
+                        return;
+                    }
+
+                    if (afterCardId == 0) {
+                        column.Cards.Insert(0, card);
+
+                        return;
+                    }
+
+                    var afterColumn = column.Cards.FirstOrDefault(col => col.Id == afterCardId);
+                    if (afterColumn == null) {
+                        column.Cards.Add(card);
+                    } else {
+                        column.Cards.Insert(column.Cards.IndexOf(afterColumn) + 1, card);
+                    }
+                });
+            });
+            await CardService.SubscribeUpdateCardAsync(StateManager.SelectedBoard, (Card updatedCard) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    Card existingCard = null;
+                    foreach (var col in Columns) {
+                        var card = col.Cards.FirstOrDefault(card => card.Id == updatedCard.Id);
+                        if (card != null) {
+                            existingCard = card;
+
+                            break;
+                        }
+                    }
+
+                    if (existingCard != null) {
+                        existingCard.SyncWithOnly(updatedCard, new string[]
+                        {
+                            nameof(updatedCard.Name),
+                            nameof(updatedCard.CreatedAt),
+                            nameof(updatedCard.UpdatedAt),
+                        });
+                    }
+                });
+            });
+            await CardService.SubscribeUpdateCardOrderAsync(StateManager.SelectedBoard, (ulong cardId, ulong afterId) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    Column column = null;
+                    Card existingCard = null;
+                    foreach (var col in Columns) {
+                        var card = col.Cards.FirstOrDefault(card => card.Id == cardId);
+                        if (card != null) {
+                            column = col;
+                            existingCard = card;
+
+                            break;
+                        }
+                    }
+                    if (existingCard == null) {
+                        return;
+                    }
+
+                    if (afterId == 0) {
+                        column.Cards.Remove(existingCard);
+                        column.Cards.Insert(0, existingCard);
+
+                        return;
+                    }
+
+                    var afterCard = column.Cards.FirstOrDefault(card => card.Id == afterId);
+                    if (afterCard != null) {
+                        column.Cards.Remove(existingCard);
+                        column.Cards.Insert(column.Cards.IndexOf(afterCard) + 1, existingCard);
+                    }
+                });
+            });
+            await CardService.SubscribeMoveCardToColumnAsync(StateManager.SelectedBoard, (ulong cardId, ulong columnId, ulong afterId) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    var column = Columns.First(c => c.Id == columnId);
+                    if (column == null) {
+                        return;
+                    }
+
+                    Card existingCard = null;
+                    foreach (var col in Columns) {
+                        var card = col.Cards.FirstOrDefault(card => card.Id == cardId);
+                        if (card != null) {
+                            existingCard = card;
+                            col.Cards.Remove(card);
+
+                            break;
+                        }
+                    }
+                    if (existingCard == null) {
+                        return;
+                    }
+
+                    if (afterId == 0) {
+                        column.Cards.Insert(0, existingCard);
+
+                        return;
+                    }
+
+                    var afterCard = column.Cards.FirstOrDefault(card => card.Id == afterId);
+                    if (afterCard != null) {
+                        column.Cards.Insert(column.Cards.IndexOf(afterCard) + 1, existingCard);
+                    }
+                });
+            });
+            await CardService.SubscribeDeleteCardAsync(StateManager.SelectedBoard, (ulong cardId) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    foreach (var column in Columns) {
+                        var card = column.Cards.FirstOrDefault(card => card.Id == cardId);
+
+                        if (card != null) {
+                            column.Cards.Remove(card);
+
+                            break;
+                        }
+                    }
+                });
+            });
         }
 
         protected void UnsubscribePusherAsync()
         {
+            // Columns.
             ColumnService.UnsubscribeCreateColumn(StateManager.SelectedBoard);
             ColumnService.UnsubscribeUpdateColumn(StateManager.SelectedBoard);
             ColumnService.UnsubscribeUpdateColumnOrder(StateManager.SelectedBoard);
             ColumnService.UnsubscribeDeleteColumn(StateManager.SelectedBoard);
+
+            // Cards.
+            CardService.UnsubscribeCreateCard(StateManager.SelectedBoard);
+            CardService.UnsubscribeUpdateCard(StateManager.SelectedBoard);
+            CardService.UnsubscribeUpdateCardOrder(StateManager.SelectedBoard);
+            CardService.UnsubscribeMoveCardToColumn(StateManager.SelectedBoard);
+            CardService.UnsubscribeDeleteCard(StateManager.SelectedBoard);
         }
 
         #endregion
