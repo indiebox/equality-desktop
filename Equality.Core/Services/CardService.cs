@@ -64,7 +64,10 @@ namespace Equality.Services
                 data.Add("after_card", afterCardId);
             }
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"columns/{columnId}/cards"), data);
+            var response = await ApiClient
+                .WithTokenOnce(TokenResolver.ResolveApiToken())
+                .WithSocketID(TokenResolver.ResolveSocketID())
+                .PostAsync(query.Parse($"columns/{columnId}/cards"), data);
             var deserializedCard = Deserialize(response.Content["data"]);
 
             return new(deserializedCard, response);
@@ -82,7 +85,10 @@ namespace Equality.Services
                 { "description", card.Description },
             };
 
-            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync(query.Parse($"cards/{card.Id}"), data);
+            var response = await ApiClient
+                .WithTokenOnce(TokenResolver.ResolveApiToken())
+                .WithSocketID(TokenResolver.ResolveSocketID())
+                .PatchAsync(query.Parse($"cards/{card.Id}"), data);
             var deserializedCard = Deserialize(response.Content["data"]);
 
             return new(deserializedCard, response);

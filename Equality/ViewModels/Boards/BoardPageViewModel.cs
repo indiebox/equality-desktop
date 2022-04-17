@@ -93,9 +93,6 @@ namespace Equality.ViewModels
 
         public Project Project { get; set; } = StateManager.SelectedProject;
 
-        [Model]
-        public Board Board { get; set; }
-
         public ObservableCollection<Column> Columns { get; set; } = new();
 
         #region ColumnProperties
@@ -521,6 +518,30 @@ namespace Equality.ViewModels
                     }
                 });
             });
+            await CardService.SubscribeUpdateCardAsync(StateManager.SelectedBoard, (Card updatedCard) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    Card existingCard = null;
+                    foreach (var col in Columns) {
+                        var card = col.Cards.FirstOrDefault(card => card.Id == updatedCard.Id);
+                        if (card != null) {
+                            existingCard = card;
+
+                            break;
+                        }
+                    }
+
+                    if (existingCard != null) {
+                        existingCard.SyncWithOnly(updatedCard, new string[]
+                        {
+                            nameof(updatedCard.Name),
+                            nameof(updatedCard.CreatedAt),
+                            nameof(updatedCard.UpdatedAt),
+                        });
+                    }
+                });
+            });
         }
 
         protected void UnsubscribePusherAsync()
@@ -533,6 +554,7 @@ namespace Equality.ViewModels
 
             // Cards.
             CardService.UnsubscribeCreateCard(StateManager.SelectedBoard);
+            CardService.UnsubscribeUpdateCard(StateManager.SelectedBoard);
         }
 
         #endregion

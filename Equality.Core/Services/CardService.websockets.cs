@@ -41,6 +41,20 @@ namespace Equality.Services
             WebsocketClient.UnbindEvent(GetChannelName(board), "created");
         }
 
+        public async Task SubscribeUpdateCardAsync(IBoard board, Action<TCardModel> action)
+        {
+            await WebsocketClient.BindEventAsync(GetChannelName(board), "updated", (data) =>
+            {
+                var deserializedCard = Json.Deserialize<TCardModel>(data["card"].ToString());
+                action.Invoke(deserializedCard);
+            });
+        }
+
+        public void UnsubscribeUpdateCard(IBoard board)
+        {
+            WebsocketClient.UnbindEvent(GetChannelName(board), "updated");
+        }
+
         protected string GetChannelName(IBoard board) => $"private-boards.{board.Id}.cards";
     }
 }
