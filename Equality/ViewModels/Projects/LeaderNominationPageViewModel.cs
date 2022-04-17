@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Collections;
+using Catel.ExceptionHandling;
 
 using Equality.MVVM;
 using Equality.Models;
@@ -133,7 +133,7 @@ namespace Equality.ViewModels
             await base.InitializeAsync();
 
             await LoadLeaderNominationsAsync();
-            await SubscribePusherAsync();
+            await Data.ExceptionHandler.Service.ProcessWithRetryAsync(SubscribePusherAsync);
         }
 
         protected override async Task CloseAsync()
