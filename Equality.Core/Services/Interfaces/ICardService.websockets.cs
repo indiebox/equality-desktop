@@ -60,5 +60,21 @@ namespace Equality.Services
         /// </summary>
         /// <param name="board">The board.</param>
         public void UnsubscribeUpdateCardOrder(IBoard board);
+
+        /// <summary>
+        /// Subscribe to websocket event for delete card.
+        /// </summary>
+        /// <param name="board">The board.</param>
+        /// <param name="action">
+        /// The action.
+        /// First argument is the id of deleted card.
+        /// </param>
+        public Task SubscribeDeleteCardAsync(IBoard board, Action<ulong> action);
+
+        /// <summary>
+        /// Unsubscribe from websocket event for delete card.
+        /// </summary>
+        /// <param name="board">The board.</param>
+        public void UnsubscribeDeleteCard(IBoard board);
     }
 }

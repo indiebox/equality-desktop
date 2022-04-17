@@ -119,7 +119,10 @@ namespace Equality.Services
         {
             Argument.IsMinimal<ulong>(nameof(cardId), cardId, 1);
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).DeleteAsync($"cards/{cardId}");
+            return await ApiClient
+                .WithTokenOnce(TokenResolver.ResolveApiToken())
+                .WithSocketID(TokenResolver.ResolveSocketID())
+                .DeleteAsync($"cards/{cardId}");
         }
 
         /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>

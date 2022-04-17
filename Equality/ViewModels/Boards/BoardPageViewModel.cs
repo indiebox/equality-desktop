@@ -575,6 +575,21 @@ namespace Equality.ViewModels
                     }
                 });
             });
+            await CardService.SubscribeDeleteCardAsync(StateManager.SelectedBoard, (ulong cardId) =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    foreach (var column in Columns) {
+                        var card = column.Cards.FirstOrDefault(card => card.Id == cardId);
+
+                        if (card != null) {
+                            column.Cards.Remove(card);
+
+                            break;
+                        }
+                    }
+                });
+            });
         }
 
         protected void UnsubscribePusherAsync()
@@ -589,6 +604,7 @@ namespace Equality.ViewModels
             CardService.UnsubscribeCreateCard(StateManager.SelectedBoard);
             CardService.UnsubscribeUpdateCard(StateManager.SelectedBoard);
             CardService.UnsubscribeUpdateCardOrder(StateManager.SelectedBoard);
+            CardService.UnsubscribeDeleteCard(StateManager.SelectedBoard);
         }
 
         #endregion
