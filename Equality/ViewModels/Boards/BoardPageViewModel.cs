@@ -381,7 +381,17 @@ namespace Equality.ViewModels
                 return;
             }
             try {
-                await CardService.MoveCardToColumnAsync(DragCard, DraggableCardColumn);
+                var afterColumn = Columns
+                    .Where(column => column.Cards.Contains(DragCard))
+                    .FirstOrDefault();
+                Card afterCard = null;
+                if (afterColumn != null) {
+                    afterCard = afterColumn.Cards
+                       .TakeWhile(card => card.Id != DragCard.Id)
+                       .LastOrDefault();
+                }
+
+                await CardService.MoveCardToColumnAsync(DragCard, DraggableCardColumn, afterCard);
             } catch (HttpRequestException e) {
                 Data.ExceptionHandler.Handle(e);
             }

@@ -147,7 +147,6 @@ namespace Equality.Views
             }
             if (Vm.DraggableCardColumn != Vm.Columns.Where(column => column.Cards.Contains(Vm.DragCard))) {
                 Vm.MoveCardToColumn.Execute();
-                Vm.UpdateCardOrder.Execute();
             }
 
             Vm.DraggableCardColumn = null;

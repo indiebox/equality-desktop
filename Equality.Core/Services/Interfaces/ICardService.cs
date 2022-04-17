@@ -115,12 +115,12 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage> MoveCardToColumnAsync(TCardModel card, TColumnModel column);
+        public Task<ApiResponseMessage> MoveCardToColumnAsync(TCardModel card, TColumnModel column, TCardModel afterCard);
 
         /// <inheritdoc cref="UpdateCardOrderAsync(TCardModel, TColumnModel)" />
         /// <param name="cardId">The card id.</param>
         /// <param name="columnId">The column id.</param>
-        public Task<ApiResponseMessage> MoveCardToColumnAsync(ulong cardId, ulong columnId);
+        public Task<ApiResponseMessage> MoveCardToColumnAsync(ulong cardId, ulong columnId, ulong afterCardId);
 
         /// <summary>
         /// Sends the delete card request to the API.
