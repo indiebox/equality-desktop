@@ -114,10 +114,8 @@ namespace Equality.Views
                 Vm.DraggableCardColumn = Vm.Columns
                                 .Where(column => column.Cards.Contains(card))
                                 .First();
-                Vm.DraggableCardColumn.Cards.Add(Vm.DragCard);
-                int newOldIndex = Vm.DraggableCardColumn.Cards.IndexOf(card);
-                int newDragColumnIndex = Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard);
-                Vm.DraggableCardColumn.Cards.Move(newOldIndex, newDragColumnIndex);
+                int Index = Vm.DraggableCardColumn.Cards.IndexOf(card);
+                Vm.DraggableCardColumn.Cards.Insert(Index, Vm.DragCard);
             }
         }
 
