@@ -62,6 +62,25 @@ namespace Equality.Services
         public void UnsubscribeUpdateCardOrder(IBoard board);
 
         /// <summary>
+        /// Subscribe to websocket event for move card to column.
+        /// </summary>
+        /// <param name="board">The board.</param>
+        /// <param name="action">
+        /// The action.
+        /// First argument is the id of moved card.
+        /// Second is the id of column.
+        /// Third is the id of card after which the created card should be inserted.
+        /// If third argument is null - last position. If 0 - first position.
+        /// </param>
+        public Task SubscribeMoveCardToColumnAsync(IBoard board, Action<ulong, ulong, ulong> action);
+
+        /// <summary>
+        /// Unsubscribe from websocket event for move card to column.
+        /// </summary>
+        /// <param name="board">The board.</param>
+        public void UnsubscribeMoveCardToColumn(IBoard board);
+
+        /// <summary>
         /// Subscribe to websocket event for delete card.
         /// </summary>
         /// <param name="board">The board.</param>

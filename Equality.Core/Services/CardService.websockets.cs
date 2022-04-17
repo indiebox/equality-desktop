@@ -68,6 +68,23 @@ namespace Equality.Services
             WebsocketClient.UnbindEvent(GetChannelName(board), "order-changed");
         }
 
+        public async Task SubscribeMoveCardToColumnAsync(IBoard board, Action<ulong, ulong, ulong> action)
+        {
+            await WebsocketClient.BindEventAsync(GetChannelName(board), "moved", (data) =>
+            {
+                action.Invoke(
+                    ulong.Parse(data["id"].ToString()),
+                    ulong.Parse(data["column"].ToString()),
+                    ulong.Parse(data["after_card"].ToString())
+                );
+            });
+        }
+
+        public void UnsubscribeMoveCardToColumn(IBoard board)
+        {
+            WebsocketClient.UnbindEvent(GetChannelName(board), "moved");
+        }
+
         public async Task SubscribeDeleteCardAsync(IBoard board, Action<ulong> action)
         {
             await WebsocketClient.BindEventAsync(GetChannelName(board), "deleted", (data) =>
