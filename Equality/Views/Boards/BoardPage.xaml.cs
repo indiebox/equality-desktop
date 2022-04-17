@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,6 +37,8 @@ namespace Equality.Views
 
         int DragCardInitialPosition { get; set; }
 
+        Column DragCardInitialColumn { get; set; }
+
         bool IsDraggingColumn => Vm?.DragColumn != null;
 
         bool IsDraggingCard => Vm?.DragCard != null;
@@ -72,12 +70,11 @@ namespace Equality.Views
             if (IsDraggingCard || e.LeftButton != MouseButtonState.Pressed) {
                 return;
             }
+
             Vm.DragCard = ((ContentControl)sender).Content as Card;
-            DragCardInitialPosition = Vm.Columns
-                .Where(column => column.Cards.Contains(Vm.DragCard))
-                .First().
-                Cards.IndexOf(Vm.DragCard)
-                                      ;
+            Vm.DraggableCardColumn = Vm.Columns.First(column => column.Cards.Contains(Vm.DragCard));
+            DragCardInitialColumn = Vm.DraggableCardColumn;
+            DragCardInitialPosition = Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard);
 
             DeltaMouse = Mouse.GetPosition(DraggingCanvas);
             CardRelativePoint = ((ContentControl)sender).TransformToAncestor(this).Transform(new Point(0, 0));
@@ -103,22 +100,19 @@ namespace Equality.Views
             if (!IsDraggingCard) {
                 return;
             }
+
             var card = ((ContentControl)sender).Content as Card;
+            int oldIndex = Vm.DraggableCardColumn.Cards.IndexOf(card);
+            int dragCardIndex = Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard);
 
-            int oldIndex = Vm.Columns
-                .Where(column => column.Cards.Contains(card))
-                .First()
-                .Cards.IndexOf(card);
-            int dragColumnIndex = Vm.Columns
-                .Where(column => column.Cards.Contains(Vm.DragCard))
-                .First()
-                .Cards.IndexOf(Vm.DragCard);
-
-            Vm.Columns
-                .Where(column => column.Cards.Contains(Vm.DragCard))
-                .First()
-                .Cards
-                .Move(oldIndex, dragColumnIndex);
+            if (oldIndex != -1) {
+                Vm.DraggableCardColumn.Cards.Move(oldIndex, dragCardIndex);
+            } else {
+                Vm.DraggableCardColumn.Cards.Remove(Vm.DragCard);
+                Vm.DraggableCardColumn = Vm.Columns.First(column => column.Cards.Contains(card));
+                int index = Vm.DraggableCardColumn.Cards.IndexOf(card);
+                Vm.DraggableCardColumn.Cards.Insert(index, Vm.DragCard);
+            }
         }
 
         private void Grid_MouseMove(object sender, MouseEventArgs e)
@@ -142,12 +136,13 @@ namespace Equality.Views
 
             if (IsDraggingColumn && DragColumnInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn)) {
                 Vm.UpdateColumnOrder.Execute();
-            } else if (IsDraggingCard && DragCardInitialPosition != Vm.Columns
-                                                                    .Where(column => column.Cards.Contains(Vm.DragCard)).First()
-                                                                    .Cards.IndexOf(Vm.DragCard)) {
+            } else if (DragCardInitialColumn != Vm.DraggableCardColumn) {
+                Vm.MoveCardToColumn.Execute();
+            } else if (IsDraggingCard && DragCardInitialPosition != Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard)) {
                 Vm.UpdateCardOrder.Execute();
             }
 
+            Vm.DraggableCardColumn = null;
             Vm.DragColumn = null;
             Vm.DragCard = null;
         }
