@@ -41,6 +41,8 @@ namespace Equality.ViewModels
             Column.SyncWith(response.Object);
         }
 
+        protected override bool OnOkCommandCanExecute(object param) => !HasErrors;
+
         #endregion
 
         #region Validation

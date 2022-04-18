@@ -13,8 +13,8 @@ namespace Equality.ViewModels.Base
     {
         protected BaseCreateControlViewModel()
         {
-            OkCommand = new(OnOkCommandExecute);
-            CloseCommand = new(OnCloseCommandExecute);
+            OkCommand = new(OnOkCommandExecute, OnOkCommandCanExecute);
+            CloseCommand = new(OnCloseCommandExecute, OnCloseCommandCanExecute);
         }
 
 
@@ -51,6 +51,11 @@ namespace Equality.ViewModels.Base
             }
         }
 
+        protected virtual bool OnOkCommandCanExecute(object param)
+        {
+            return true;
+        }
+
         protected abstract Task OkAction(object param);
 
         public TaskCommand CloseCommand { get; private set; }
@@ -60,6 +65,11 @@ namespace Equality.ViewModels.Base
             Result = false;
             await CancelViewModelAsync();
             await CloseViewModelAsync(false);
+        }
+
+        protected virtual bool OnCloseCommandCanExecute()
+        {
+            return true;
         }
 
         #endregion

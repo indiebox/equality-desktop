@@ -47,6 +47,8 @@ namespace Equality.ViewModels
             Card.SyncWith(response.Object);
         }
 
+        protected override bool OnOkCommandCanExecute(object param) => !HasErrors;
+
         #endregion
 
         #region Validation
