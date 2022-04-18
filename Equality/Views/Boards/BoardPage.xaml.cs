@@ -88,6 +88,7 @@ namespace Equality.Views
             if (!IsDraggingColumn) {
                 return;
             }
+
             var column = ((FrameworkElement)sender).DataContext as Column;
             int oldIndex = Vm.Columns.IndexOf(column);
             int dragColumnIndex = Vm.Columns.IndexOf(Vm.DragColumn);
@@ -95,44 +96,33 @@ namespace Equality.Views
             Vm.Columns.Move(oldIndex, dragColumnIndex);
         }
 
-        private async void CardControl_MouseEnter(object sender, MouseEventArgs e)
+        private async void CardControl_MouseMove(object sender, MouseEventArgs e)
         {
             if (!IsDraggingCard) {
                 return;
             }
 
-            var card = ((ContentControl)sender).Content as Card;
+            var control = (ContentControl)sender;
+            var card = control.Content as Card;
+
             Point MousePosition = Mouse.GetPosition(this);
-            double CardPositionY = ((ContentControl)sender).TransformToAncestor(this)
-                                .Transform(new Point(0, 0)).Y + ((ContentControl)sender).ActualHeight / 2;
+            double CardPositionY = control
+                .TransformToAncestor(this)
+                .Transform(new Point(0, 0)).Y + control.ActualHeight / 2;
 
-            if (Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard) > Vm.DraggableCardColumn.Cards.IndexOf(card)) {
-                if (CardPositionY >= MousePosition.Y) {
-                    int oldIndex = Vm.DraggableCardColumn.Cards.IndexOf(card);
-                    int dragCardIndex = Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard);
+            int dragCardIndex = Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard);
+            int cardIndex = Vm.DraggableCardColumn.Cards.IndexOf(card);
 
-                    if (oldIndex != -1) {
-                        Vm.DraggableCardColumn.Cards.Move(oldIndex, dragCardIndex);
-                    } else {
-                        Vm.DraggableCardColumn.Cards.Remove(Vm.DragCard);
-                        Vm.DraggableCardColumn = Vm.Columns.First(column => column.Cards.Contains(card));
-                        int index = Vm.DraggableCardColumn.Cards.IndexOf(card);
-                        Vm.DraggableCardColumn.Cards.Insert(index, Vm.DragCard);
-                    }
-                }
-            } else {
-                if (CardPositionY < MousePosition.Y) {
-                    int oldIndex = Vm.DraggableCardColumn.Cards.IndexOf(card);
-                    int dragCardIndex = Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard);
+            if ((dragCardIndex > cardIndex && CardPositionY >= MousePosition.Y)
+                || (dragCardIndex < cardIndex && CardPositionY < MousePosition.Y)) {
+                if (cardIndex != -1) {
+                    Vm.DraggableCardColumn.Cards.Move(cardIndex, dragCardIndex);
+                } else {
+                    Vm.DraggableCardColumn.Cards.Remove(Vm.DragCard);
+                    Vm.DraggableCardColumn = Vm.Columns.First(column => column.Cards.Contains(card));
 
-                    if (oldIndex != -1) {
-                        Vm.DraggableCardColumn.Cards.Move(oldIndex, dragCardIndex);
-                    } else {
-                        Vm.DraggableCardColumn.Cards.Remove(Vm.DragCard);
-                        Vm.DraggableCardColumn = Vm.Columns.First(column => column.Cards.Contains(card));
-                        int index = Vm.DraggableCardColumn.Cards.IndexOf(card);
-                        Vm.DraggableCardColumn.Cards.Insert(index, Vm.DragCard);
-                    }
+                    int index = Vm.DraggableCardColumn.Cards.IndexOf(card);
+                    Vm.DraggableCardColumn.Cards.Insert(index, Vm.DragCard);
                 }
             }
         }

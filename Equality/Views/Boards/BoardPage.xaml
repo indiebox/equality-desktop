@@ -407,7 +407,7 @@
                                     <ContentControl ContentTemplate="{StaticResource Card}"
                                                     MouseDown="Card_MouseDown"
                                                     Margin="10,0,10,10"
-                                                    MouseMove="CardControl_MouseEnter"
+                                                    MouseMove="CardControl_MouseMove"
                                                     Content="{Binding}">
 
                                     </ContentControl>
