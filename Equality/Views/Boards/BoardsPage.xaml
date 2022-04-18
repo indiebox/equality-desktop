@@ -52,16 +52,13 @@
                                        LastChildFill="False">
                                 <DockPanel.Resources>
                                     <Style TargetType="DockPanel">
+                                        <Setter Property="Background"
+                                                Value="#7FFFFFFF" />
                                         <Style.Triggers>
                                             <Trigger Property="IsMouseOver"
                                                      Value="True">
                                                 <Setter Property="Background"
                                                         Value="White" />
-                                            </Trigger>
-                                            <Trigger Property="IsMouseOver"
-                                                     Value="False">
-                                                <Setter Property="Background"
-                                                        Value="#7FFFFFFF" />
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>
@@ -120,6 +117,7 @@
                                         </Button>
                                     </StackPanel>
 
+                                    <!-- Edit board name -->
                                     <StackPanel Orientation="Horizontal">
                                         <StackPanel.Style>
                                             <Style TargetType="StackPanel">
@@ -208,10 +206,9 @@
                         </Button>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-
             </ListBox>
             <ContentControl Grid.Row="2"
-                            Margin="20,5,0,0"
+                            Margin="10"
                             Focusable="False"
                             Content="{Binding CreateBoardVm, Converter={catel:ViewModelToViewConverter}}" />
         </Grid>

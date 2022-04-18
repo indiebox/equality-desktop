@@ -19,13 +19,16 @@
 
         <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                  Style="{StaticResource MaterialDesignTextBox}"
-                 AcceptsReturn="False"
                  Margin="0,0,0,30"
                  materialDesign:ValidationAssist.FontSize="14"
                  materialDesign:ValidationAssist.UsePopup="True"
                  materialDesign:HintAssist.Hint="Название команды">
             <i:Interaction.Behaviors>
                 <catel:Focus />
+                <catel:KeyPressToCommand Command="{Binding OkCommand}"
+                                         Key="Return" />
+                <catel:KeyPressToCommand Command="{Binding CloseCommand}"
+                                         Key="Esc" />
             </i:Interaction.Behaviors>
         </TextBox>
 
@@ -36,11 +39,10 @@
             </Grid.ColumnDefinitions>
 
             <Button Margin="0,0,10,0"
-                    Command="{Binding CreateTeam}">Добавить</Button>
+                    Command="{Binding OkCommand}">Добавить</Button>
             <Button Grid.Column="1"
                     Style="{StaticResource MaterialDesignOutlinedButton}"
-                    Command="{Binding Cancel}"
-                    Cursor="Hand">Отменить</Button>
+                    Command="{Binding CloseCommand}">Отменить</Button>
         </Grid>
     </Grid>
 

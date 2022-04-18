@@ -152,12 +152,16 @@ namespace Equality.ViewModels
 
         private Task CreateColumnVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
-            if (e.Result ?? false) {
-                Columns.Add(CreateColumnVm.Column);
-            }
-
             CreateColumnVm.ClosedAsync -= CreateColumnVmClosedAsync;
-            CreateColumnVm = null;
+
+            if (CreateColumnVm.Result) {
+                Columns.Add(CreateColumnVm.Column);
+
+                // Open control again.
+                OpenCreateColumnWindow.Execute();
+            } else {
+                CreateColumnVm = null;
+            }
 
             return Task.CompletedTask;
         }
@@ -280,13 +284,17 @@ namespace Equality.ViewModels
 
         private Task CreateCardVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
-            if (e.Result ?? false) {
-                ColumnForNewCard.Cards.Add(CreateCardVm.Card);
-            }
-
             CreateCardVm.ClosedAsync -= CreateCardVmClosedAsync;
-            CreateCardVm = null;
-            ColumnForNewCard = null;
+
+            if (CreateCardVm.Result) {
+                ColumnForNewCard.Cards.Add(CreateCardVm.Card);
+
+                // Open control again.
+                OpenCreateCardWindow.Execute(ColumnForNewCard);
+            } else {
+                CreateCardVm = null;
+                ColumnForNewCard = null;
+            }
 
             return Task.CompletedTask;
         }

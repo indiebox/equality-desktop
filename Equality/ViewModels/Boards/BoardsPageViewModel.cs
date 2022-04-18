@@ -149,7 +149,7 @@ namespace Equality.ViewModels
 
         private Task CreateBoardVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
-            if (e.Result ?? false) {
+            if (CreateBoardVm.Result) {
                 Boards.Add(CreateBoardVm.Board);
             }
 

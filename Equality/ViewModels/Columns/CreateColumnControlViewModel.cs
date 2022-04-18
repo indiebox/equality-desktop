@@ -1,34 +1,25 @@
-﻿
-
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net.Http;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Catel.Data;
 using Catel.MVVM;
 
-using Equality.Http;
 using Equality.Extensions;
 using Equality.Validation;
-using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
-using System.Windows.Input;
 using Equality.Data;
+using Equality.ViewModels.Base;
 
 namespace Equality.ViewModels
 {
-    public class CreateColumnControlViewModel : ViewModel
+    public class CreateColumnControlViewModel : BaseCreateControlViewModel
     {
         IColumnService ColumnService;
 
         public CreateColumnControlViewModel(IColumnService columnService)
         {
             ColumnService = columnService;
-
-            CreateColumn = new TaskCommand(OnCreateColumnExecute, () => !HasErrors);
-            CloseWindow = new TaskCommand(OnCloseWindowExecute);
         }
 
         #region Properties
@@ -44,34 +35,13 @@ namespace Equality.ViewModels
 
         #region Commands
 
-        public TaskCommand CreateColumn { get; private set; }
-
-        private async Task OnCreateColumnExecute()
+        protected override async Task OkAction(object param)
         {
-            if (FirstValidationHasErrors()) {
-                return;
-            }
-
-            try {
-                var response = await ColumnService.CreateColumnAsync(StateManager.SelectedBoard, Column);
-                Column.SyncWith(response.Object);
-
-                await SaveViewModelAsync();
-                await CloseViewModelAsync(true);
-            } catch (UnprocessableEntityHttpException e) {
-                HandleApiErrors(e.Errors);
-            } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
-            }
+            var response = await ColumnService.CreateColumnAsync(StateManager.SelectedBoard, Column);
+            Column.SyncWith(response.Object);
         }
 
-        public TaskCommand CloseWindow { get; private set; }
-
-        private async Task OnCloseWindowExecute()
-        {
-            await CancelViewModelAsync();
-            await CloseViewModelAsync(false);
-        }
+        protected override bool OnOkCommandCanExecute(object param) => !HasErrors;
 
         #endregion
 
@@ -89,19 +59,5 @@ namespace Equality.ViewModels
         }
 
         #endregion
-
-        protected override async Task InitializeAsync()
-        {
-            await base.InitializeAsync();
-
-            // TODO: subscribe to events here
-        }
-
-        protected override async Task CloseAsync()
-        {
-            // TODO: unsubscribe from events here
-
-            await base.CloseAsync();
-        }
     }
 }

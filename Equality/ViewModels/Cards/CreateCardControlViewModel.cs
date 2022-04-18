@@ -1,22 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel;
 using Catel.Data;
 using Catel.MVVM;
 
-using Equality.Data;
 using Equality.Extensions;
-using Equality.Http;
 using Equality.Models;
-using Equality.MVVM;
 using Equality.Services;
 using Equality.Validation;
+using Equality.ViewModels.Base;
 
 namespace Equality.ViewModels
 {
-    public class CreateCardControlViewModel : ViewModel
+    public class CreateCardControlViewModel : BaseCreateControlViewModel
     {
         protected Column Column;
 
@@ -29,9 +26,6 @@ namespace Equality.ViewModels
 
             Column = column;
             CardService = cardService;
-
-            CreateCard = new(OnCreateCardExecute, () => !HasErrors);
-            CloseWindow = new(OnCloseWindowExecute);
         }
 
         #region Properties
@@ -47,34 +41,13 @@ namespace Equality.ViewModels
 
         #region Commands
 
-        public TaskCommand CreateCard { get; private set; }
-
-        private async Task OnCreateCardExecute()
+        protected override async Task OkAction(object param)
         {
-            if (FirstValidationHasErrors()) {
-                return;
-            }
-
-            try {
-                var response = await CardService.CreateCardAsync(Column, Card);
-                Card.SyncWith(response.Object);
-
-                await SaveViewModelAsync();
-                await CloseViewModelAsync(true);
-            } catch (UnprocessableEntityHttpException e) {
-                HandleApiErrors(e.Errors);
-            } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
-            }
+            var response = await CardService.CreateCardAsync(Column, Card);
+            Card.SyncWith(response.Object);
         }
 
-        public TaskCommand CloseWindow { get; private set; }
-
-        private async Task OnCloseWindowExecute()
-        {
-            await CancelViewModelAsync();
-            await CloseViewModelAsync(false);
-        }
+        protected override bool OnOkCommandCanExecute(object param) => !HasErrors;
 
         #endregion
 
@@ -92,19 +65,5 @@ namespace Equality.ViewModels
         }
 
         #endregion
-
-        protected override async Task InitializeAsync()
-        {
-            await base.InitializeAsync();
-
-            // TODO: subcribe to events here
-        }
-
-        protected override async Task CloseAsync()
-        {
-            // TODO: unsubscribe from events here
-
-            await base.CloseAsync();
-        }
     }
 }
