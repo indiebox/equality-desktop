@@ -160,8 +160,11 @@
                             <TextBox Text="{Binding DataContext.NewCardName, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                      Style="{StaticResource OutlinedTextBox}"
                                      Margin="0"
-                                     BorderBrush="Transparent"
-                                     materialDesign:ValidationAssist.FontSize="14"
+                                     Padding="10"
+                                     VerticalAlignment="Center"
+                                     AcceptsReturn="False"
+                                     BorderThickness="0"
+                                     materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
                                      materialDesign:ValidationAssist.UsePopup="True"
                                      materialDesign:HintAssist.Hint="Содержимое карточки">
                                 <i:Interaction.Behaviors>
@@ -197,6 +200,22 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type models:Column}"
                       x:Key="Column">
+            <!-- Restore scrollbar color -->
+            <DataTemplate.Resources>
+                <Style TargetType="ScrollViewer"
+                       BasedOn="{StaticResource MaterialDesignScrollViewer}">
+                    <Style.Resources>
+                        <Style TargetType="ScrollBar"
+                               BasedOn="{StaticResource MaterialDesignScrollBarMinimal}">
+                            <Style.Resources>
+                                <SolidColorBrush x:Key="MaterialDesignBody"
+                                                 Color="#DD000000" />
+                            </Style.Resources>
+                        </Style>
+                    </Style.Resources>
+                </Style>
+            </DataTemplate.Resources>
+
             <Grid Width="350"
                   Background="Transparent">
                 <Grid.RowDefinitions>
@@ -254,7 +273,8 @@
                             </DockPanel.Style>
 
                             <StackPanel DockPanel.Dock="Right"
-                                        Orientation="Horizontal">
+                                        Orientation="Horizontal"
+                                        VerticalAlignment="Top">
                                 <Button Command="{Binding DataContext.OpenCreateCardWindow, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                         CommandParameter="{Binding}"
                                         Style="{StaticResource MaterialDesignIconForegroundButton}">
@@ -299,6 +319,8 @@
                             </StackPanel>
                             <TextBlock FontSize="16"
                                        Margin="10,10,0,10"
+                                       TextWrapping="Wrap"
+                                       TextAlignment="Left"
                                        Text="{Binding Name}" />
                         </DockPanel>
 
@@ -326,18 +348,16 @@
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
                             <TextBox Text="{Binding DataContext.NewColumnName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                      Style="{StaticResource OutlinedTextBox}"
-                                     BorderThickness="0"
                                      Margin="0"
                                      Padding="10"
+                                     AcceptsReturn="False"
+                                     BorderThickness="0"
                                      materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
-                                     materialDesign:TextFieldAssist.HasOutlinedTextField="False"
-                                     materialDesign:ValidationAssist.FontSize="14"
                                      materialDesign:ValidationAssist.UsePopup="True"
                                      materialDesign:HintAssist.Hint="Название колонки">
                                 <i:Interaction.Behaviors>
@@ -381,26 +401,6 @@
                                                                       Command="{Binding DataContext.OpenCreateCardWindow, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                                       CommandParameter="{Binding}" />
                             </i:Interaction.Behaviors>
-                            <ListBox.Style>
-                                <Style TargetType="ListBox"
-                                       BasedOn="{StaticResource ListBoxStyle}">
-                                    <!-- Override scrollbar color -->
-                                    <Style.Resources>
-                                        <Style TargetType="ScrollViewer"
-                                               BasedOn="{StaticResource MaterialDesignScrollViewer}">
-                                            <Style.Resources>
-                                                <Style TargetType="ScrollBar"
-                                                       BasedOn="{StaticResource MaterialDesignScrollBarMinimal}">
-                                                    <Style.Resources>
-                                                        <SolidColorBrush x:Key="MaterialDesignBody"
-                                                                         Color="#DD000000" />
-                                                    </Style.Resources>
-                                                </Style>
-                                            </Style.Resources>
-                                        </Style>
-                                    </Style.Resources>
-                                </Style>
-                            </ListBox.Style>
 
                             <!-- Templates for custom objects. -->
                             <ListBox.Resources>
@@ -527,6 +527,7 @@
                     <ListBox.Style>
                         <Style TargetType="ListBox"
                                BasedOn="{StaticResource ListBoxStyle}">
+
                             <!-- Override scrollbar color -->
                             <Style.Resources>
                                 <Style TargetType="ScrollViewer"
