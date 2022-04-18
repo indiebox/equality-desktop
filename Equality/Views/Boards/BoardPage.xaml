@@ -474,10 +474,6 @@
                             Content="{Binding DragCard}"
                             Visibility="{Binding DragCard, Converter={catel:ReferenceToCollapsingVisibilityConverter}}"
                             d:Visibility="Collapsed" />
-            <Rectangle Name="TestRectangle"
-                       Height="50"
-                       Width="50"
-                       Fill="Red"></Rectangle>
         </Canvas>
 
         <Grid>

@@ -105,11 +105,6 @@ namespace Equality.Views
             Point MousePosition = Mouse.GetPosition(this);
             double CardPositionY = ((ContentControl)sender).TransformToAncestor(this)
                                 .Transform(new Point(0, 0)).Y + ((ContentControl)sender).ActualHeight / 2;
-            Canvas.SetTop(TestRectangle, CardPositionY);
-            Canvas.SetLeft(TestRectangle, ((ContentControl)sender).TransformToAncestor(this)
-                                .Transform(new Point(0, 0)).X);
-            Debug.WriteLine("Курсор: " + MousePosition.Y);
-            Debug.WriteLine("Карточка: " + CardPositionY);
 
             if (Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard) > Vm.DraggableCardColumn.Cards.IndexOf(card)) {
                 if (CardPositionY >= MousePosition.Y) {
