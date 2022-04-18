@@ -25,8 +25,6 @@
                  materialDesign:HintAssist.Hint="Содержимое карточки">
             <i:Interaction.Behaviors>
                 <catel:Focus />
-                <catel:KeyPressToCommand Command="{Binding OkCommand}"
-                                         Key="Return" />
                 <catel:KeyPressToCommand Command="{Binding CloseCommand}"
                                          Key="Esc" />
             </i:Interaction.Behaviors>
