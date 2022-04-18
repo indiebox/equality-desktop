@@ -62,6 +62,18 @@ namespace Equality.ViewModels
             CreateProjectVm.ClosedAsync += CreateProjectVmClosedAsync;
         }
 
+        private Task CreateProjectVmClosedAsync(object sender, ViewModelClosedEventArgs e)
+        {
+            if (CreateProjectVm.Result) {
+                Projects.Add(CreateProjectVm.Project);
+            }
+
+            CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;
+            CreateProjectVm = null;
+
+            return Task.CompletedTask;
+        }
+
         #endregion
 
         #region Methods
@@ -74,18 +86,6 @@ namespace Equality.ViewModels
 
             var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
             vm.ActiveTab = ApplicationWindowViewModel.Tab.Project;
-        }
-
-        private Task CreateProjectVmClosedAsync(object sender, ViewModelClosedEventArgs e)
-        {
-            if (e.Result ?? false) {
-                Projects.Add(CreateProjectVm.Project);
-            }
-
-            CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;
-            CreateProjectVm = null;
-
-            return Task.CompletedTask;
         }
 
         protected async Task LoadProjectsAsync()

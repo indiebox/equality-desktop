@@ -152,7 +152,7 @@ namespace Equality.ViewModels
 
         private Task CreateColumnVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
-            if (e.Result ?? false) {
+            if (CreateColumnVm.Result) {
                 Columns.Add(CreateColumnVm.Column);
             }
 
@@ -280,7 +280,7 @@ namespace Equality.ViewModels
 
         private Task CreateCardVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
-            if (e.Result ?? false) {
+            if (CreateCardVm.Result) {
                 ColumnForNewCard.Cards.Add(CreateCardVm.Card);
             }
 

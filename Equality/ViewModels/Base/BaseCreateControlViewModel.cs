@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.MVVM;
@@ -16,7 +17,6 @@ namespace Equality.ViewModels.Base
             OkCommand = new(OnOkCommandExecute, OnOkCommandCanExecute);
             CloseCommand = new(OnCloseCommandExecute, OnCloseCommandCanExecute);
         }
-
 
         #region Properties
 
