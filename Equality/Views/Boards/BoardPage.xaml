@@ -130,6 +130,7 @@
                             </materialDesign:PopupBox>
                         </Grid>
 
+                        <!-- Edit card name -->
                         <Grid>
                             <Grid.Style>
                                 <Style TargetType="Grid">
