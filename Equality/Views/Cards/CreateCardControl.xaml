@@ -20,13 +20,15 @@
 
         <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                  Style="{StaticResource OutlinedTextBox}"
-                 AcceptsReturn="True"
                  Margin="0,0,0,30"
-                 materialDesign:ValidationAssist.FontSize="14"
                  materialDesign:ValidationAssist.UsePopup="True"
                  materialDesign:HintAssist.Hint="Содержимое карточки">
             <i:Interaction.Behaviors>
                 <catel:Focus />
+                <catel:KeyPressToCommand Command="{Binding OkCommand}"
+                                         Key="Return" />
+                <catel:KeyPressToCommand Command="{Binding CloseCommand}"
+                                         Key="Esc" />
             </i:Interaction.Behaviors>
         </TextBox>
 
@@ -37,9 +39,9 @@
             </Grid.ColumnDefinitions>
 
             <Button Margin="0,0,10,0"
-                    Command="{Binding CreateCard}">Добавить</Button>
+                    Command="{Binding OkCommand}">Добавить</Button>
             <Button Grid.Column="1"
-                    Command="{Binding CloseWindow}"
+                    Command="{Binding CloseCommand}"
                     Style="{StaticResource MaterialDesignOutlinedButton}"
                     Cursor="Hand">Отменить</Button>
         </Grid>

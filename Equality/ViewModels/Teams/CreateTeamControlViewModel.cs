@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.Data;
@@ -9,23 +7,19 @@ using Catel.MVVM;
 using Equality.Http;
 using Equality.Extensions;
 using Equality.Validation;
-using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
-using Equality.Data;
+using Equality.ViewModels.Base;
 
 namespace Equality.ViewModels
 {
-    public class CreateTeamControlViewModel : ViewModel
+    public class CreateTeamControlViewModel : BaseCreateControlViewModel
     {
         protected ITeamService TeamService;
 
         public CreateTeamControlViewModel(ITeamService teamService)
         {
             TeamService = teamService;
-
-            CreateTeam = new TaskCommand(OnCreateTeamExecute, () => !HasErrors);
-            Cancel = new TaskCommand(OnCancelExecute);
         }
 
         #region Properties
@@ -41,40 +35,19 @@ namespace Equality.ViewModels
 
         #region Commands
 
-        public TaskCommand CreateTeam { get; private set; }
-
-        private async Task OnCreateTeamExecute()
+        protected override async Task OkAction(object param)
         {
-            if (FirstValidationHasErrors()) {
-                return;
-            }
-
-            try {
-                var response = await TeamService.CreateAsync(Team, new()
-                {
-                    Fields = new[]
+            var response = await TeamService.CreateAsync(Team, new()
+            {
+                Fields = new[]
                     {
                         new Field("teams", "id", "name", "description", "url", "logo")
                     }
-                });
-                Team.SyncWith(response.Object);
-
-                await SaveViewModelAsync();
-                await CloseViewModelAsync(true);
-            } catch (UnprocessableEntityHttpException e) {
-                HandleApiErrors(e.Errors);
-            } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
-            }
+            });
+            Team.SyncWith(response.Object);
         }
 
-        public TaskCommand Cancel { get; private set; }
-
-        private async Task OnCancelExecute()
-        {
-            await CancelViewModelAsync();
-            await CloseViewModelAsync(false);
-        }
+        protected override bool OnOkCommandCanExecute(object param) => !HasErrors;
 
         #endregion
 
@@ -92,19 +65,5 @@ namespace Equality.ViewModels
         }
 
         #endregion
-
-        protected override async Task InitializeAsync()
-        {
-            await base.InitializeAsync();
-
-            // TODO: subscribe to events here
-        }
-
-        protected override async Task CloseAsync()
-        {
-            // TODO: unsubscribe from events here
-
-            await base.CloseAsync();
-        }
     }
 }

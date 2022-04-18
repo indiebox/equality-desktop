@@ -26,7 +26,7 @@
             <Button Style="{StaticResource BaseButton}"
                     Width="40"
                     Height="40"
-                    Command="{Binding CloseWindow}">
+                    Command="{Binding CloseCommand}">
                 <Grid Background="#FFCCCCCC">
                     <materialDesign:PackIcon VerticalAlignment="Center"
                                              HorizontalAlignment="Center"
@@ -50,31 +50,24 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBox Grid.Column="0"
-                         Width="Auto"
-                         TextWrapping="Wrap"
                          Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                         materialDesign:ValidationAssist.FontSize="14"
+                         Style="{StaticResource BorderlessTextbox}"
+                         TextWrapping="Wrap"
                          materialDesign:ValidationAssist.Background="#FFCCCCCC"
-                         BorderThickness="0"
-                         materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
                          materialDesign:HintAssist.Hint="Название">
                     <i:Interaction.Behaviors>
                         <catel:Focus />
+                        <catel:KeyPressToCommand Command="{Binding OkCommand}"
+                                                 Key="Enter" />
+                        <catel:KeyPressToCommand Command="{Binding CloseCommand}"
+                                                 Key="Esc" />
                     </i:Interaction.Behaviors>
-
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="PreviewKeyDown">
-                            <catel:EventToCommand Command="{Binding CreateProject}"
-                                                  PassEventArgsToCommand="True"
-                                                  DisableAssociatedObjectOnCannotExecute="False" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
                 </TextBox>
 
                 <materialDesign:Chip Margin="10,0,0,0"
                                      Grid.Column="1">
                     <Button Style="{StaticResource BaseButton}"
-                            Command="{Binding CreateProject}">
+                            Command="{Binding OkCommand}">
                         Создать
                     </Button>
                 </materialDesign:Chip>

@@ -30,6 +30,10 @@
                      materialDesign:HintAssist.Hint="Название колонки">
                 <i:Interaction.Behaviors>
                     <catel:Focus />
+                    <catel:KeyPressToCommand Command="{Binding OkCommand}"
+                                             Key="Enter" />
+                    <catel:KeyPressToCommand Command="{Binding CloseCommand}"
+                                             Key="Esc" />
                 </i:Interaction.Behaviors>
             </TextBox>
 
@@ -40,9 +44,9 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Margin="0,0,10,0"
-                        Command="{Binding CreateColumn}">Добавить</Button>
+                        Command="{Binding OkCommand}">Добавить</Button>
                 <Button Grid.Column="1"
-                        Command="{Binding CloseWindow}"
+                        Command="{Binding CloseCommand}"
                         Style="{StaticResource MaterialDesignOutlinedButton}"
                         Cursor="Hand">Отменить</Button>
             </Grid>
