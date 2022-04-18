@@ -106,9 +106,9 @@ namespace Equality.Views
             double CardPositionY = ((ContentControl)sender).TransformToAncestor(this)
                                 .Transform(new Point(0, 0)).Y + ((ContentControl)sender).ActualHeight / 2;
 
-            if (Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard) > Vm.DraggableCardColumn.Cards.IndexOf(card)) {
+            int oldIndex = Vm.DraggableCardColumn.Cards.IndexOf(card);
+            if (Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard) > oldIndex) {
                 if (CardPositionY >= MousePosition.Y) {
-                    int oldIndex = Vm.DraggableCardColumn.Cards.IndexOf(card);
                     int dragCardIndex = Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard);
 
                     if (oldIndex != -1) {
@@ -122,7 +122,6 @@ namespace Equality.Views
                 }
             } else {
                 if (CardPositionY < MousePosition.Y) {
-                    int oldIndex = Vm.DraggableCardColumn.Cards.IndexOf(card);
                     int dragCardIndex = Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard);
 
                     if (oldIndex != -1) {
