@@ -10,9 +10,6 @@ using Equality.Data;
 using Equality.Http;
 using Equality.Models;
 
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
-
 namespace Equality.Services
 {
     public class TeamServiceBase<TTeamModel, TTeamMemberModel> : ITeamServiceBase<TTeamModel, TTeamMemberModel>
@@ -38,7 +35,7 @@ namespace Equality.Services
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse("teams"));
 
-            var teams = DeserializeRange(response.Content["data"]);
+            var teams = Json.Deserialize<TTeamModel[]>(response.Content["data"]);
 
             return new(teams, response);
         }
@@ -56,7 +53,7 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse("teams"), data);
-            var deserializedTeam = Deserialize(response.Content["data"]);
+            var deserializedTeam = Json.Deserialize<TTeamModel>(response.Content["data"]);
 
             return new(deserializedTeam, response);
         }
@@ -70,8 +67,7 @@ namespace Equality.Services
             query ??= new QueryParameters();
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"teams/{teamId}/members"));
-
-            var members = DeserializeMembers(response.Content["data"]);
+            var members = Json.Deserialize<TTeamMemberModel[]>(response.Content["data"]);
 
             return new(members, response);
         }
@@ -121,7 +117,7 @@ namespace Equality.Services
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"teams/{teamId}/logo"), data);
 
-            var team = Deserialize(response.Content["data"]);
+            var team = Json.Deserialize<TTeamModel>(response.Content["data"]);
 
             return new(team, response);
         }
@@ -149,33 +145,9 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync(query.Parse($"teams/{team.Id}"), data);
-            var deserializedTeam = Deserialize(response.Content["data"]);
+            var deserializedTeam = Json.Deserialize<TTeamModel>(response.Content["data"]);
 
             return new(deserializedTeam, response);
         }
-
-        /// <summary>
-        /// Deserializes the JToken to the <c>ITeamMember[]</c>.
-        /// </summary>
-        /// <param name="data">The JToken.</param>
-        /// <returns>Returns the <c>ITeamMember[]</c>.</returns>
-        public TTeamMemberModel[] DeserializeMembers(JToken data)
-        {
-            Argument.IsNotNull(nameof(data), data);
-
-            return data.ToObject<TTeamMemberModel[]>(new()
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new SnakeCaseNamingStrategy()
-                }
-            });
-        }
-
-        /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
-        protected TTeamModel Deserialize(JToken data) => ((IDeserializeModels<TTeamModel>)this).Deserialize(data);
-
-        /// <inheritdoc cref="IDeserializeModels{T}.DeserializeRange(JToken)"/>
-        protected TTeamModel[] DeserializeRange(JToken data) => ((IDeserializeModels<TTeamModel>)this).DeserializeRange(data);
     }
 }

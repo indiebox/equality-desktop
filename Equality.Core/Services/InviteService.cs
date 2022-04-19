@@ -37,7 +37,7 @@ namespace Equality.Services
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"teams/{teamId}/invites"));
 
-            var invites = DeserializeRange(response.Content["data"]);
+            var invites = Json.Deserialize<TInviteModel[]>(response.Content["data"]);
 
             return new(invites, response);
         }
@@ -48,7 +48,7 @@ namespace Equality.Services
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse("invites"));
 
-            var invites = DeserializeRange(response.Content["data"]);
+            var invites = Json.Deserialize<TInviteModel[]>(response.Content["data"]);
 
             return new(invites, response);
         }
@@ -69,7 +69,7 @@ namespace Equality.Services
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"teams/{teamId}/invites"), data);
 
-            var invite = Deserialize(response.Content["data"]);
+            var invite = Json.Deserialize<TInviteModel>(response.Content["data"]);
 
             return new(invite, response);
         }
@@ -100,11 +100,5 @@ namespace Equality.Services
 
             return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"invites/{inviteId}/decline");
         }
-
-        /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
-        protected TInviteModel Deserialize(JToken data) => ((IDeserializeModels<TInviteModel>)this).Deserialize(data);
-
-        /// <inheritdoc cref="IDeserializeModels{T}.DeserializeRange(JToken)"/>
-        protected TInviteModel[] DeserializeRange(JToken data) => ((IDeserializeModels<TInviteModel>)this).DeserializeRange(data);
     }
 }

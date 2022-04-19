@@ -7,7 +7,7 @@ using Equality.Data;
 
 namespace Equality.Services
 {
-    public interface IBoardServiceBase<TBoardModel> : IDeserializeModels<TBoardModel>
+    public interface IBoardServiceBase<TBoardModel>
         where TBoardModel : class, IBoard, new()
     {
         /// <summary>

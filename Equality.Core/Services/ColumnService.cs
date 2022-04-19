@@ -8,8 +8,6 @@ using Equality.Data;
 using Equality.Http;
 using Equality.Models;
 
-using Newtonsoft.Json.Linq;
-
 namespace Equality.Services
 {
     public partial class ColumnServiceBase<TColumnModel> : IColumnService<TColumnModel>
@@ -35,7 +33,7 @@ namespace Equality.Services
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"boards/{boardId}/columns"));
 
-            var columns = DeserializeRange(response.Content["data"]);
+            var columns = Json.Deserialize<TColumnModel[]>(response.Content["data"]);
 
             return new(columns, response);
         }
@@ -58,7 +56,7 @@ namespace Equality.Services
                 .WithTokenOnce(TokenResolver.ResolveApiToken())
                 .WithSocketID(TokenResolver.ResolveSocketID())
                 .PostAsync(query.Parse($"boards/{boardId}/columns"), data);
-            var deserializedColumn = Deserialize(response.Content["data"]);
+            var deserializedColumn = Json.Deserialize<TColumnModel>(response.Content["data"]);
 
             return new(deserializedColumn, response);
         }
@@ -78,7 +76,7 @@ namespace Equality.Services
                 .WithTokenOnce(TokenResolver.ResolveApiToken())
                 .WithSocketID(TokenResolver.ResolveSocketID())
                 .PatchAsync(query.Parse($"columns/{column.Id}"), data);
-            var deserializedColumn = Deserialize(response.Content["data"]);
+            var deserializedColumn = Json.Deserialize<TColumnModel>(response.Content["data"]);
 
             return new(deserializedColumn, response);
         }
@@ -113,11 +111,5 @@ namespace Equality.Services
                 .WithSocketID(TokenResolver.ResolveSocketID())
                 .DeleteAsync($"columns/{columnId}");
         }
-
-        /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
-        protected TColumnModel Deserialize(JToken data) => ((IDeserializeModels<TColumnModel>)this).Deserialize(data);
-
-        /// <inheritdoc cref="IDeserializeModels{T}.DeserializeRange(JToken)"/>
-        protected TColumnModel[] DeserializeRange(JToken data) => ((IDeserializeModels<TColumnModel>)this).DeserializeRange(data);
     }
 }

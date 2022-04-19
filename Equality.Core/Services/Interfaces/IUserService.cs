@@ -7,7 +7,7 @@ using Equality.Models;
 
 namespace Equality.Services
 {
-    public interface IUserServiceBase<TUserModel> : IDeserializeModels<TUserModel>
+    public interface IUserServiceBase<TUserModel>
         where TUserModel : class, IUser, new()
     {
         /// <summary>

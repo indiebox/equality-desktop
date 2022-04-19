@@ -7,7 +7,7 @@ using Equality.Data;
 
 namespace Equality.Services
 {
-    public interface IInviteServiceBase<TInviteModel> : IDeserializeModels<TInviteModel>
+    public interface IInviteServiceBase<TInviteModel>
         where TInviteModel : class, IInvite, new()
     {
         /// <summary>

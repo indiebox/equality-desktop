@@ -10,9 +10,6 @@ using Equality.Data;
 using Equality.Http;
 using Equality.Models;
 
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
-
 namespace Equality.Services
 {
     public partial class ProjectServiceBase<TProjectModel, TLeaderNominationModel, TUserModel> : IProjectServiceBase<TProjectModel, TLeaderNominationModel, TUserModel>
@@ -40,7 +37,7 @@ namespace Equality.Services
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"teams/{teamId}/projects"));
 
-            var projects = DeserializeRange(response.Content["data"]);
+            var projects = Json.Deserialize<TProjectModel[]>(response.Content["data"]);
 
             return new(projects, response);
         }
@@ -55,7 +52,7 @@ namespace Equality.Services
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"projects/{projectId}/leader-nominations"));
 
-            var nominations = DeserializeLeaderNominations(response.Content["data"]);
+            var nominations = Json.Deserialize<TLeaderNominationModel[]>(response.Content["data"]);
 
             return new(nominations, response);
         }
@@ -74,7 +71,7 @@ namespace Equality.Services
                 .WithSocketID(TokenResolver.ResolveSocketID())
                 .PostAsync(query.Parse($"projects/{projectId}/leader-nominations/{userId}"));
 
-            var nominations = DeserializeLeaderNominations(response.Content["data"]);
+            var nominations = Json.Deserialize<TLeaderNominationModel[]>(response.Content["data"]);
 
             return new(nominations, response);
         }
@@ -89,7 +86,7 @@ namespace Equality.Services
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"projects/{projectId}/leader"));
 
-            var leader = DeserializeLeader(response.Content["data"]);
+            var leader = Json.Deserialize<TUserModel>(response.Content["data"]);
 
             return new(leader, response);
         }
@@ -110,7 +107,7 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"teams/{teamId}/projects"), data);
-            var deserializedProject = Deserialize(response.Content["data"]);
+            var deserializedProject = Json.Deserialize<TProjectModel>(response.Content["data"]);
 
             return new(deserializedProject, response);
         }
@@ -151,7 +148,7 @@ namespace Equality.Services
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"projects/{projectId}/image"), data);
 
-            var project = Deserialize(response.Content["data"]);
+            var project = Json.Deserialize<TProjectModel>(response.Content["data"]);
 
             return new(project, response);
         }
@@ -178,51 +175,9 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync(query.Parse($"projects/{project.Id}"), data);
-            var deserializedProject = Deserialize(response.Content["data"]);
+            var deserializedProject = Json.Deserialize<TProjectModel>(response.Content["data"]);
 
             return new(deserializedProject, response);
         }
-
-        /// <summary>
-        /// Deserializes the JToken to the <c>ITeamMember[]</c>.
-        /// </summary>
-        /// <param name="data">The JToken.</param>
-        /// <returns>Returns the <c>ITeamMember[]</c>.</returns>
-        public TLeaderNominationModel[] DeserializeLeaderNominations(JToken data)
-        {
-            Argument.IsNotNull(nameof(data), data);
-
-            return data.ToObject<TLeaderNominationModel[]>(new()
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new SnakeCaseNamingStrategy()
-                }
-            });
-        }
-
-        /// <summary>
-        /// Deserializes the JToken to the <c>IUser</c>.
-        /// </summary>
-        /// <param name="data">The JToken.</param>
-        /// <returns>Returns the <c>IUser</c>.</returns>
-        public TUserModel DeserializeLeader(JToken data)
-        {
-            Argument.IsNotNull(nameof(data), data);
-
-            return data.ToObject<TUserModel>(new()
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new SnakeCaseNamingStrategy()
-                }
-            });
-        }
-
-        /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
-        protected TProjectModel Deserialize(JToken data) => ((IDeserializeModels<TProjectModel>)this).Deserialize(data);
-
-        /// <inheritdoc cref="IDeserializeModels{T}.DeserializeRange(JToken)"/>
-        protected TProjectModel[] DeserializeRange(JToken data) => ((IDeserializeModels<TProjectModel>)this).DeserializeRange(data);
     }
 }
