@@ -95,11 +95,20 @@ namespace Equality.Views
 
         private async void ColumnControl_MouseEnter(object sender, MouseEventArgs e)
         {
+            var column = ((FrameworkElement)sender).DataContext as Column;
+
+            if (IsDraggingCard && column.Cards.Count == 0) {
+                Vm.DraggableCardColumn.Cards.Remove(Vm.DragCard);
+                Vm.DraggableCardColumn = column;
+                column.Cards.Add(Vm.DragCard);
+
+                return;
+            }
+
             if (!IsDraggingColumn) {
                 return;
             }
 
-            var column = ((FrameworkElement)sender).DataContext as Column;
             int oldIndex = Vm.Columns.IndexOf(column);
             int dragColumnIndex = Vm.Columns.IndexOf(Vm.DragColumn);
 
