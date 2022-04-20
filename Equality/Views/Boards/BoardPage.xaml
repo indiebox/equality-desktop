@@ -243,7 +243,7 @@
                 <Border CornerRadius="3"
                         Background="#ebecf0"
                         VerticalAlignment="Top"
-                        MouseDown="ColumnHeaderMouseDown">
+                        MouseLeftButtonDown="ColumnHeaderMouseDown">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -407,7 +407,7 @@
                                 <DataTemplate DataType="{x:Type models:Card}">
                                     <ContentControl ContentTemplate="{StaticResource Card}"
                                                     Margin="10,0,10,10"
-                                                    MouseDown="CardMouseDown"
+                                                    MouseLeftButtonDown="CardMouseDown"
                                                     MouseMove="CardMouseMove"
                                                     Content="{Binding}">
 
