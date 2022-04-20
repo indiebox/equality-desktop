@@ -70,8 +70,9 @@ namespace Equality.Views
 
             // Move draggable card in new column.
             if (IsDraggingCard) {
-                Vm.MoveCard(Vm.DragCard, Vm.DraggableCardColumn, column);
+                Vm.DraggableCardColumn.Cards.Remove(Vm.DragCard);
                 Vm.DraggableCardColumn = column;
+                column.Cards.Add(Vm.DragCard);
 
                 return;
             }
@@ -96,7 +97,6 @@ namespace Equality.Views
             }
 
             var control = (ContentControl)sender;
-            // TODO: check control.Parent
             Vm.DragCard = control.Content as Card;
             Vm.DraggableCardColumn = Vm.Columns.First(column => column.Cards.Contains(Vm.DragCard));
 
@@ -116,6 +116,9 @@ namespace Equality.Views
 
             var control = (ContentControl)sender;
             var card = control.Content as Card;
+            if (Vm.DragCard == card) {
+                return;
+            }
 
             //TODO: try optimize
             var mousePosition = Mouse.GetPosition(this);
