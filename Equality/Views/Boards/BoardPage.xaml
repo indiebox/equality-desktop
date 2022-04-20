@@ -15,8 +15,8 @@
            TextElement.Foreground="{DynamicResource MaterialDesignBody}"
            Background="{DynamicResource MaterialDesignPaper}"
            FontSize="16"
-           PreviewMouseUp="Page_MouseUp"
-           MouseLeave="Page_MouseLeave"
+           PreviewMouseUp="PageMouseUp"
+           MouseLeave="PageMouseLeave"
            d:DesignHeight="1080"
            d:DesignWidth="1920"
            d:DataContext="{d:DesignInstance Type=vm:BoardPageViewModel, IsDesignTimeCreatable=True}"
@@ -243,7 +243,7 @@
                 <Border CornerRadius="3"
                         Background="#ebecf0"
                         VerticalAlignment="Top"
-                        MouseDown="ColumnControl_MouseDown">
+                        MouseDown="ColumnHeaderMouseDown">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -406,9 +406,9 @@
                             <ListBox.Resources>
                                 <DataTemplate DataType="{x:Type models:Card}">
                                     <ContentControl ContentTemplate="{StaticResource Card}"
-                                                    MouseDown="Card_MouseDown"
                                                     Margin="10,0,10,10"
-                                                    MouseMove="CardControl_MouseMove"
+                                                    MouseDown="CardMouseDown"
+                                                    MouseMove="CardMouseMove"
                                                     Content="{Binding}">
 
                                     </ContentControl>
@@ -458,7 +458,7 @@
             </Grid>
         </DataTemplate>
     </Page.Resources>
-    <Grid MouseMove="Grid_MouseMove">
+    <Grid MouseMove="GridMouseMove">
         <controls:ProjectImage ImagePath="{Binding Project.Image}" />
         <Canvas Panel.ZIndex="1"
                 x:Name="DraggingCanvas">
@@ -557,7 +557,7 @@
                             <ContentControl ContentTemplate="{StaticResource Column}"
                                             Content="{Binding}"
                                             Margin="10,0,0,0"
-                                            MouseEnter="ColumnControl_MouseEnter" />
+                                            MouseEnter="ColumnMouseEnter" />
                         </DataTemplate>
 
                         <DataTemplate DataType="{x:Type objects:DataObject}">

@@ -35,7 +35,7 @@ namespace Equality.Views
 
         public Point DeltaMouse { get; set; }
 
-        private void Grid_MouseMove(object sender, MouseEventArgs e)
+        private void GridMouseMove(object sender, MouseEventArgs e)
         {
             if (IsDraggingCard) {
                 var cursorPosition = Mouse.GetPosition(DraggingCanvas);
@@ -75,7 +75,10 @@ namespace Equality.Views
 
         public Point ColumnRelativePoint { get; set; }
 
-        private void ColumnControl_MouseDown(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// Fired when mouse is over through column header(with column name).
+        /// </summary>
+        private void ColumnHeaderMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (IsDraggingColumn || e.LeftButton != MouseButtonState.Pressed) {
                 return;
@@ -93,7 +96,10 @@ namespace Equality.Views
             Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y);
         }
 
-        private async void ColumnControl_MouseEnter(object sender, MouseEventArgs e)
+        /// <summary>
+        /// Fired when mouse is over through column element(full height of the page).
+        /// </summary>
+        private async void ColumnMouseEnter(object sender, MouseEventArgs e)
         {
             var column = ((FrameworkElement)sender).DataContext as Column;
 
@@ -127,7 +133,7 @@ namespace Equality.Views
 
         public Point CardRelativePoint { get; set; }
 
-        private void Card_MouseDown(object sender, MouseButtonEventArgs e)
+        private void CardMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (IsDraggingCard || e.LeftButton != MouseButtonState.Pressed) {
                 return;
@@ -145,7 +151,7 @@ namespace Equality.Views
             Canvas.SetTop(MovingCard, CardRelativePoint.Y);
         }
 
-        private async void CardControl_MouseMove(object sender, MouseEventArgs e)
+        private async void CardMouseMove(object sender, MouseEventArgs e)
         {
             if (!IsDraggingCard) {
                 return;
@@ -220,13 +226,13 @@ namespace Equality.Views
 
         #region Common handlers
 
-        private void Page_MouseUp(object sender, MouseButtonEventArgs e)
+        private void PageMouseUp(object sender, MouseButtonEventArgs e)
         {
             StopDragging();
             StopScrolling();
         }
 
-        private void Page_MouseLeave(object sender, MouseEventArgs e)
+        private void PageMouseLeave(object sender, MouseEventArgs e)
         {
             StopDragging();
             StopScrolling();
