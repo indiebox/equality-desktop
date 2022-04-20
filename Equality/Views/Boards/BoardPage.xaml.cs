@@ -123,7 +123,6 @@ namespace Equality.Views
             double mousePosition = e.GetPosition(control).Y;
             double cardCenter = control.ActualHeight / 2;
 
-            // TODO: краш, т.к dragCardIndex = -1 с пушера
             int dragCardIndex = Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard);
             int cardIndex = Vm.DraggableCardColumn.Cards.IndexOf(card);
 
@@ -168,8 +167,6 @@ namespace Equality.Views
                 Vm.DragCard = null;
                 Vm.DraggableCardColumn = null;
             }
-
-            PageGrid.MouseMove -= GridMouseMove;
         }
 
         #endregion
@@ -216,6 +213,12 @@ namespace Equality.Views
 
         private void GridMouseMove(object sender, MouseEventArgs e)
         {
+            if (!IsDraggingCard && !IsDraggingColumn) {
+                PageGrid.MouseMove -= GridMouseMove;
+
+                return;
+            }
+
             var cursorPosition = Mouse.GetPosition(DraggingCanvas);
             var element = IsDraggingCard
                     ? MovingCard

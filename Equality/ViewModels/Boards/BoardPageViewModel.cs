@@ -542,9 +542,16 @@ namespace Equality.ViewModels
                 App.Current.Dispatcher.Invoke(() =>
                 {
                     var col = Columns.FirstOrDefault(col => col.Id == columnId);
-                    if (col != null) {
-                        Columns.Remove(col);
+                    if (col == null) {
+                        return;
                     }
+
+                    // Disable dragging mode for the column.
+                    if (DragColumn.Id == columnId) {
+                        DragColumn = null;
+                    }
+
+                    Columns.Remove(col);
                 });
             });
 
@@ -656,6 +663,12 @@ namespace Equality.ViewModels
                     var (column, card) = FindColumnAndCard(cardId);
                     if (column == null || card == null) {
                         return;
+                    }
+
+                    // Disable dragging mode for the card.
+                    if (DragCard.Id == cardId) {
+                        DragCard = null;
+                        DraggableCardColumn = null;
                     }
 
                     column.Cards.Remove(card);
