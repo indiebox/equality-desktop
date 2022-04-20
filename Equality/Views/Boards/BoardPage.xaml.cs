@@ -120,17 +120,14 @@ namespace Equality.Views
                 return;
             }
 
-            //TODO: try optimize
-            var mousePosition = Mouse.GetPosition(this);
-            double cardPositionY = control
-                .TransformToAncestor(this)
-                .Transform(new Point(0, 0)).Y + control.ActualHeight / 2;
+            double mousePosition = e.GetPosition(control).Y;
+            double cardCenter = control.ActualHeight / 2;
 
             int dragCardIndex = Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard);
             int cardIndex = Vm.DraggableCardColumn.Cards.IndexOf(card);
 
-            if ((dragCardIndex > cardIndex && cardPositionY >= mousePosition.Y)
-                || (dragCardIndex < cardIndex && cardPositionY < mousePosition.Y)) {
+            if ((dragCardIndex > cardIndex && mousePosition < cardCenter)
+                || (dragCardIndex < cardIndex && mousePosition > cardCenter)) {
                 Vm.DraggableCardColumn.Cards.Move(dragCardIndex, cardIndex);
             }
         }
