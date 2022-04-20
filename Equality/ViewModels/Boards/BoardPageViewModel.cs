@@ -434,6 +434,18 @@ namespace Equality.ViewModels
 
         #region Methods
 
+        public void MoveCard(Card card, Column oldColumn, Column newColumn)
+        {
+            oldColumn.Cards.Remove(card);
+            newColumn.Cards.Add(card);
+        }
+
+        public void MoveCard(Card card, Column column, int index)
+        {
+            column.Cards.Remove(card);
+            column.Cards.Insert(index, card);
+        }
+
         protected async Task LoadColumnsAsync()
         {
             try {

@@ -458,7 +458,7 @@
             </Grid>
         </DataTemplate>
     </Page.Resources>
-    <Grid MouseMove="GridMouseMove">
+    <Grid x:Name="PageGrid">
         <controls:ProjectImage ImagePath="{Binding Project.Image}" />
         <Canvas Panel.ZIndex="1"
                 x:Name="DraggingCanvas">

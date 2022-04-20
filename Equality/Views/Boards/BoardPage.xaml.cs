@@ -35,65 +35,30 @@ namespace Equality.Views
 
         public Point DeltaMouse { get; set; }
 
-        private void GridMouseMove(object sender, MouseEventArgs e)
-        {
-            if (IsDraggingCard) {
-                var cursorPosition = Mouse.GetPosition(DraggingCanvas);
-                Canvas.SetLeft(MovingCard, CardRelativePoint.X + (cursorPosition.X - DeltaMouse.X));
-                Canvas.SetTop(MovingCard, CardRelativePoint.Y + (cursorPosition.Y - DeltaMouse.Y));
-            } else if (IsDraggingColumn) {
-                var cursorPosition = Mouse.GetPosition(DraggingCanvas);
-                Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X + (cursorPosition.X - DeltaMouse.X));
-                Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y + (cursorPosition.Y - DeltaMouse.Y));
-            }
-        }
+        public Point DraggableRelativePoint { get; set; }
 
-        private void StopDragging()
-        {
-            if (!IsDraggingColumn && !IsDraggingCard) {
-                return;
-            }
-
-            if (IsDraggingColumn && DragColumnInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn)) {
-                Vm.UpdateColumnOrder.Execute();
-            } else if (DragCardInitialColumn != Vm.DraggableCardColumn) {
-                Vm.MoveCardToColumn.Execute();
-            } else if (IsDraggingCard && DragCardInitialPosition != Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard)) {
-                Vm.UpdateCardOrder.Execute();
-            }
-
-            Vm.DraggableCardColumn = null;
-            Vm.DragColumn = null;
-            Vm.DragCard = null;
-        }
-
-        #region Columns
-
-        protected int DragColumnInitialPosition { get; set; }
+        protected int DragElementInitialPosition { get; set; }
 
         bool IsDraggingColumn => Vm?.DragColumn != null;
 
-        public Point ColumnRelativePoint { get; set; }
+        bool IsDraggingCard => Vm?.DragCard != null;
+
+        Column DragCardInitialColumn { get; set; }
 
         /// <summary>
         /// Fired when mouse is over through column header(with column name).
         /// </summary>
         private void ColumnHeaderMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (IsDraggingColumn || e.LeftButton != MouseButtonState.Pressed) {
+            if (IsDraggingColumn) {
                 return;
             }
 
             var control = (FrameworkElement)sender;
-
             Vm.DragColumn = control.DataContext as Column;
-            DragColumnInitialPosition = Vm.Columns.IndexOf(Vm.DragColumn);
 
-            DeltaMouse = Mouse.GetPosition(DraggingCanvas);
-            ColumnRelativePoint = control.TransformToAncestor(this).Transform(new Point(0, 0));
-
-            Canvas.SetLeft(MovingColumn, ColumnRelativePoint.X);
-            Canvas.SetTop(MovingColumn, ColumnRelativePoint.Y);
+            DragElementInitialPosition = Vm.Columns.IndexOf(Vm.DragColumn);
+            StartDragging(control);
         }
 
         /// <summary>
@@ -103,10 +68,10 @@ namespace Equality.Views
         {
             var column = ((FrameworkElement)sender).DataContext as Column;
 
-            if (IsDraggingCard && column.Cards.Count == 0) {
-                Vm.DraggableCardColumn.Cards.Remove(Vm.DragCard);
+            // Move draggable card in new column.
+            if (IsDraggingCard) {
+                Vm.MoveCard(Vm.DragCard, Vm.DraggableCardColumn, column);
                 Vm.DraggableCardColumn = column;
-                column.Cards.Add(Vm.DragCard);
 
                 return;
             }
@@ -121,36 +86,28 @@ namespace Equality.Views
             Vm.Columns.Move(oldIndex, dragColumnIndex);
         }
 
-        #endregion Columns
-
-        #region Cards
-
-        int DragCardInitialPosition { get; set; }
-
-        Column DragCardInitialColumn { get; set; }
-
-        bool IsDraggingCard => Vm?.DragCard != null;
-
-        public Point CardRelativePoint { get; set; }
-
+        /// <summary>
+        /// Fired when mouse down in card element.
+        /// </summary>
         private void CardMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (IsDraggingCard || e.LeftButton != MouseButtonState.Pressed) {
+            if (IsDraggingCard) {
                 return;
             }
 
-            Vm.DragCard = ((ContentControl)sender).Content as Card;
+            var control = (ContentControl)sender;
+            // TODO: check control.Parent
+            Vm.DragCard = control.Content as Card;
             Vm.DraggableCardColumn = Vm.Columns.First(column => column.Cards.Contains(Vm.DragCard));
+
             DragCardInitialColumn = Vm.DraggableCardColumn;
-            DragCardInitialPosition = Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard);
-
-            DeltaMouse = Mouse.GetPosition(DraggingCanvas);
-            CardRelativePoint = ((ContentControl)sender).TransformToAncestor(this).Transform(new Point(0, 0));
-
-            Canvas.SetLeft(MovingCard, CardRelativePoint.X);
-            Canvas.SetTop(MovingCard, CardRelativePoint.Y);
+            DragElementInitialPosition = Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard);
+            StartDragging(control);
         }
 
+        /// <summary>
+        /// Fired when mouse move in card element.
+        /// </summary>
         private async void CardMouseMove(object sender, MouseEventArgs e)
         {
             if (!IsDraggingCard) {
@@ -160,29 +117,59 @@ namespace Equality.Views
             var control = (ContentControl)sender;
             var card = control.Content as Card;
 
-            Point MousePosition = Mouse.GetPosition(this);
-            double CardPositionY = control
+            //TODO: try optimize
+            var mousePosition = Mouse.GetPosition(this);
+            double cardPositionY = control
                 .TransformToAncestor(this)
                 .Transform(new Point(0, 0)).Y + control.ActualHeight / 2;
 
             int dragCardIndex = Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard);
             int cardIndex = Vm.DraggableCardColumn.Cards.IndexOf(card);
 
-            if ((dragCardIndex > cardIndex && CardPositionY >= MousePosition.Y)
-                || (dragCardIndex < cardIndex && CardPositionY < MousePosition.Y)) {
-                if (cardIndex != -1) {
-                    Vm.DraggableCardColumn.Cards.Move(cardIndex, dragCardIndex);
-                } else {
-                    Vm.DraggableCardColumn.Cards.Remove(Vm.DragCard);
-                    Vm.DraggableCardColumn = Vm.Columns.First(column => column.Cards.Contains(card));
-
-                    int index = Vm.DraggableCardColumn.Cards.IndexOf(card);
-                    Vm.DraggableCardColumn.Cards.Insert(index, Vm.DragCard);
-                }
+            if ((dragCardIndex > cardIndex && cardPositionY >= mousePosition.Y)
+                || (dragCardIndex < cardIndex && cardPositionY < mousePosition.Y)) {
+                Vm.MoveCard(Vm.DragCard, Vm.DraggableCardColumn, cardIndex);
             }
         }
 
-        #endregion Cards
+        private void StartDragging(FrameworkElement control)
+        {
+            var element = IsDraggingCard
+                    ? MovingCard
+                    : MovingColumn;
+
+            DeltaMouse = Mouse.GetPosition(DraggingCanvas);
+            DraggableRelativePoint = control.TransformToAncestor(this).Transform(new Point(0, 0));
+
+            Canvas.SetLeft(element, DraggableRelativePoint.X);
+            Canvas.SetTop(element, DraggableRelativePoint.Y);
+
+            PageGrid.MouseMove += GridMouseMove;
+        }
+
+        private void StopDragging()
+        {
+            if (IsDraggingColumn) {
+                if (DragElementInitialPosition != Vm.Columns.IndexOf(Vm.DragColumn)) {
+                    Vm.UpdateColumnOrder.Execute();
+                }
+
+                Vm.DragColumn = null;
+            }
+
+            if (IsDraggingCard) {
+                if (DragCardInitialColumn != Vm.DraggableCardColumn) {
+                    Vm.MoveCardToColumn.Execute();
+                } else if (DragElementInitialPosition != Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard)) {
+                    Vm.UpdateCardOrder.Execute();
+                }
+
+                Vm.DragCard = null;
+                Vm.DraggableCardColumn = null;
+            }
+
+            PageGrid.MouseMove -= GridMouseMove;
+        }
 
         #endregion
 
@@ -225,6 +212,17 @@ namespace Equality.Views
         #endregion
 
         #region Common handlers
+
+        private void GridMouseMove(object sender, MouseEventArgs e)
+        {
+            var cursorPosition = Mouse.GetPosition(DraggingCanvas);
+            var element = IsDraggingCard
+                    ? MovingCard
+                    : MovingColumn;
+
+            Canvas.SetLeft(element, DraggableRelativePoint.X + (cursorPosition.X - DeltaMouse.X));
+            Canvas.SetTop(element, DraggableRelativePoint.Y + (cursorPosition.Y - DeltaMouse.Y));
+        }
 
         private void PageMouseUp(object sender, MouseButtonEventArgs e)
         {
