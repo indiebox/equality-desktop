@@ -438,11 +438,6 @@ namespace Equality.ViewModels
             newColumn.Cards.Insert(index, card);
         }
 
-        public void MoveCard(Card card, Column column, int index)
-        {
-            column.Cards.Move(column.Cards.IndexOf(card), index);
-        }
-
         public (Column, Card) FindColumnAndCard(ulong cardId)
         {
             Column column = null;
@@ -606,19 +601,22 @@ namespace Equality.ViewModels
                     }
 
                     if (afterId == 0) {
-                        MoveCard(card, column, 0);
+                        column.Cards.Move(column.Cards.IndexOf(card), 0);
 
                         return;
                     }
 
                     var afterCard = column.Cards.FirstOrDefault(card => card.Id == afterId);
                     if (afterCard != null) {
-                        var index = column.Cards.IndexOf(afterCard);
-                        if (column.Cards.IndexOf(card) > index) {
-                            index++;
+                        // If we move card to up, then we need to +1 to our index,
+                        // so we insert new card after the specified one, not before.
+                        int cardIndex = column.Cards.IndexOf(card);
+                        int afterCardIndex = column.Cards.IndexOf(afterCard);
+                        if (cardIndex > afterCardIndex) {
+                            afterCardIndex++;
                         }
 
-                        MoveCard(card, column, index);
+                        column.Cards.Move(cardIndex, afterCardIndex);
                     }
                 });
             });

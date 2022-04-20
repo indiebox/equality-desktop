@@ -131,7 +131,7 @@ namespace Equality.Views
 
             if ((dragCardIndex > cardIndex && cardPositionY >= mousePosition.Y)
                 || (dragCardIndex < cardIndex && cardPositionY < mousePosition.Y)) {
-                Vm.MoveCard(Vm.DragCard, Vm.DraggableCardColumn, cardIndex);
+                Vm.DraggableCardColumn.Cards.Move(dragCardIndex, cardIndex);
             }
         }
 
