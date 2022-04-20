@@ -541,7 +541,10 @@ namespace Equality.ViewModels
             {
                 App.Current.Dispatcher.Invoke(() =>
                 {
-                    Columns.Remove(Columns.FirstOrDefault(col => col.Id == columnId));
+                    var col = Columns.FirstOrDefault(col => col.Id == columnId);
+                    if (col != null) {
+                        Columns.Remove(col);
+                    }
                 });
             });
 
@@ -596,7 +599,7 @@ namespace Equality.ViewModels
                 App.Current.Dispatcher.Invoke(() =>
                 {
                     var (column, card) = FindColumnAndCard(cardId);
-                    if (card == null) {
+                    if (column == null || card == null) {
                         return;
                     }
 
@@ -624,13 +627,13 @@ namespace Equality.ViewModels
             {
                 App.Current.Dispatcher.Invoke(() =>
                 {
-                    var newColumn = Columns.First(c => c.Id == columnId);
+                    var newColumn = Columns.FirstOrDefault(c => c.Id == columnId);
                     if (newColumn == null) {
                         return;
                     }
 
                     var (oldColumn, card) = FindColumnAndCard(cardId);
-                    if (card == null) {
+                    if (oldColumn == null || card == null) {
                         return;
                     }
 
@@ -651,6 +654,10 @@ namespace Equality.ViewModels
                 App.Current.Dispatcher.Invoke(() =>
                 {
                     var (column, card) = FindColumnAndCard(cardId);
+                    if (column == null || card == null) {
+                        return;
+                    }
+
                     column.Cards.Remove(card);
                 });
             });

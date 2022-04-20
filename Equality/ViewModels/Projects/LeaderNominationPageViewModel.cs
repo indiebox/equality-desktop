@@ -101,13 +101,17 @@ namespace Equality.ViewModels
 
         protected void ProcessNominations(LeaderNomination[] nominations)
         {
+            if (nominations.Length == 0) {
+                return;
+            }
+
             foreach (var item in nominations) {
                 item.PercentageSupport = (double)item.VotersCount / nominations.Length * 100;
                 item.IsCurrentUserVotes = item.Voters.Any(voter => voter.IsCurrentUser);
             }
 
             NominatedMembers.ReplaceRange(nominations);
-            MvvmHelper.GetFirstInstanceOfViewModel<ProjectPageViewModel>().Leader = nominations.First(nomination => nomination.IsLeader).Nominated;
+            MvvmHelper.GetFirstInstanceOfViewModel<ProjectPageViewModel>().Leader = nominations.FirstOrDefault(nomination => nomination.IsLeader)?.Nominated;
         }
 
         protected async Task SubscribePusherAsync()

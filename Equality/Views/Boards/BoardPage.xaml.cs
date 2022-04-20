@@ -123,6 +123,7 @@ namespace Equality.Views
             double mousePosition = e.GetPosition(control).Y;
             double cardCenter = control.ActualHeight / 2;
 
+            // TODO: краш, т.к dragCardIndex = -1 с пушера
             int dragCardIndex = Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard);
             int cardIndex = Vm.DraggableCardColumn.Cards.IndexOf(card);
 
