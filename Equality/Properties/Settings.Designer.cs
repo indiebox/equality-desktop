@@ -34,5 +34,17 @@ namespace Equality.Properties {
                 this["api_token"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public ulong active_board_id {
+            get {
+                return ((ulong)(this["active_board_id"]));
+            }
+            set {
+                this["active_board_id"] = value;
+            }
+        }
     }
 }

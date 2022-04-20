@@ -88,7 +88,56 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </StackPanel.Style>
-
+                                        <StackPanel>
+                                            <StackPanel.Style>
+                                                <Style TargetType="StackPanel">
+                                                    <Setter Property="Visibility"
+                                                            Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Value="True">
+                                                            <DataTrigger.Binding>
+                                                                <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                                                    <Binding Path="." />
+                                                                    <Binding Path="DataContext.ActieveBoard"
+                                                                             RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
+                                                                </MultiBinding>
+                                                            </DataTrigger.Binding>
+                                                            <Setter Property="Visibility"
+                                                                    Value="Visible" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </StackPanel.Style>
+                                            <Button Style="{StaticResource MaterialDesignIconButton}">
+                                                <materialDesign:PackIcon Kind="Star" />
+                                            </Button>
+                                        </StackPanel>
+                                        <StackPanel>
+                                            <StackPanel.Style>
+                                                <Style TargetType="StackPanel">
+                                                    <Setter Property="Visibility"
+                                                            Value="Visible" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Value="True">
+                                                            <DataTrigger.Binding>
+                                                                <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                                                    <Binding Path="." />
+                                                                    <Binding Path="DataContext.ActieveBoard"
+                                                                             RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
+                                                                </MultiBinding>
+                                                            </DataTrigger.Binding>
+                                                            <Setter Property="Visibility"
+                                                                    Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </StackPanel.Style>
+                                            <Button Command="{Binding DataContext.MarkAsActive, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    CommandParameter="{Binding}"
+                                                    Style="{StaticResource MaterialDesignIconButton}">
+                                                <materialDesign:PackIcon Kind="StarBorder" />
+                                            </Button>
+                                        </StackPanel>
                                         <TextBlock Text="{Binding Name}"
                                                    VerticalAlignment="Center" />
 

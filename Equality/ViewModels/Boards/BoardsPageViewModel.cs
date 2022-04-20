@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -52,6 +53,7 @@ namespace Equality.ViewModels
             StartEditBoardName = new Command<Board>(OnStartEditBoardNameExecuteAsync);
             SaveNewBoardName = new TaskCommand(OnSaveNewBoardNameExecuteAsync, () => GetFieldErrors(nameof(NewBoardName)) == string.Empty);
             CancelEditBoardName = new Command(OnCancelEditBoardNameExecute);
+            MarkAsActive = new Command<Board>(OnMarkAsActiveExecute);
 
             ApiFieldsMap = new Dictionary<string, string>()
             {
@@ -68,6 +70,8 @@ namespace Equality.ViewModels
         public CreateBoardControlViewModel CreateBoardVm { get; set; }
 
         public Board EditableBoard { get; set; } = null;
+
+        public Board ActieveBoard { get; set; } = null;
 
         [Validatable]
         public string NewBoardName { get; set; }
@@ -92,6 +96,18 @@ namespace Equality.ViewModels
             CreateBoardVm = MvvmHelper.CreateViewModel<CreateBoardControlViewModel>();
             CreateBoardVm.ClosedAsync += CreateBoardVmClosedAsync;
         }
+
+
+        public Command<Board> MarkAsActive { get; private set; }
+
+        private void OnMarkAsActiveExecute(Board board)
+        {
+            Properties.Settings.Default.active_board_id = board.Id;
+            Properties.Settings.Default.Save();
+
+            ActieveBoard = board;
+        }
+
 
         public Command<Board> StartEditBoardName { get; private set; }
 
@@ -165,6 +181,12 @@ namespace Equality.ViewModels
                 var response = await BoardService.GetBoardsAsync(StateManager.SelectedProject);
 
                 Boards.AddRange(response.Object);
+
+                ulong actieveBoardIndex = Properties.Settings.Default.active_board_id;
+
+                if (actieveBoardIndex != 0) {
+                    ActieveBoard = Boards.Where(board => (board.Id == actieveBoardIndex)).First();
+                }
 
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
