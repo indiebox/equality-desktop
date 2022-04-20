@@ -520,7 +520,7 @@
                          Margin="0,0,10,0">
                     <i:Interaction.Behaviors>
                         <equality:ScrollByMouse Orientation="Horizontal"
-                                                IsScrollEnabled="{Binding DragColumn, Converter={catel:ReferenceToBooleanConverter}}" />
+                                                IsScrollEnabled="{Binding IsDragging}" />
                         <equality:AutoScrollOnCommandExecuted Position="Right"
                                                               Command="{Binding OpenCreateColumnWindow}" />
                     </i:Interaction.Behaviors>

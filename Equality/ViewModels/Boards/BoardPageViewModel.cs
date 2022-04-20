@@ -96,16 +96,11 @@ namespace Equality.ViewModels
 
         public ObservableCollection<Column> Columns { get; set; } = new();
 
+        public bool IsDragging => DragCard != null || DragColumn != null;
+
         #region ColumnProperties
 
         public Column DragColumn { get; set; }
-
-        public Card DragCard { get; set; }
-
-        /// <summary>
-        /// The column in which the draggable card.
-        /// </summary>
-        public Column DraggableCardColumn { get; set; }
 
         public CreateColumnControlViewModel CreateColumnVm { get; set; }
 
@@ -117,6 +112,13 @@ namespace Equality.ViewModels
         #endregion ColumnProperties
 
         #region CardProperties
+
+        public Card DragCard { get; set; }
+
+        /// <summary>
+        /// The column in which the draggable card.
+        /// </summary>
+        public Column DraggableCardColumn { get; set; }
 
         public CreateCardControlViewModel CreateCardVm { get; set; }
 
