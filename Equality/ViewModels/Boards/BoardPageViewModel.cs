@@ -96,16 +96,11 @@ namespace Equality.ViewModels
 
         public ObservableCollection<Column> Columns { get; set; } = new();
 
+        public bool IsDragging => DragCard != null || DragColumn != null;
+
         #region ColumnProperties
 
         public Column DragColumn { get; set; }
-
-        public Card DragCard { get; set; }
-
-        /// <summary>
-        /// The column in which the draggable card.
-        /// </summary>
-        public Column DraggableCardColumn { get; set; }
 
         public CreateColumnControlViewModel CreateColumnVm { get; set; }
 
@@ -117,6 +112,13 @@ namespace Equality.ViewModels
         #endregion ColumnProperties
 
         #region CardProperties
+
+        public Card DragCard { get; set; }
+
+        /// <summary>
+        /// The column in which the draggable card.
+        /// </summary>
+        public Column DraggableCardColumn { get; set; }
 
         public CreateCardControlViewModel CreateCardVm { get; set; }
 
@@ -232,9 +234,10 @@ namespace Equality.ViewModels
             }
 
             try {
-                var afterColumn = Columns.Contains(DragColumn)
-                    ? Columns.TakeWhile(col => col.Id != DragColumn.Id).LastOrDefault()
-                    : null;
+                var afterColumn = Columns
+                    .TakeWhile(col => col.Id != DragColumn.Id)
+                    .LastOrDefault();
+
                 await ColumnService.UpdateColumnOrderAsync(DragColumn, afterColumn);
             } catch (HttpRequestException e) {
                 Data.ExceptionHandler.Handle(e);
@@ -366,13 +369,10 @@ namespace Equality.ViewModels
             }
 
             try {
-                var afterColumn = Columns.FirstOrDefault(column => column.Cards.Contains(DragCard));
-                Card afterCard = null;
-                if (afterColumn != null) {
-                    afterCard = afterColumn.Cards
-                       .TakeWhile(card => card.Id != DragCard.Id)
-                       .LastOrDefault();
-                }
+                var afterCard = DraggableCardColumn.Cards
+                   .TakeWhile(card => card.Id != DragCard.Id)
+                   .LastOrDefault();
+
                 await CardService.UpdateCardOrderAsync(DragCard, afterCard);
             } catch (HttpRequestException e) {
                 Data.ExceptionHandler.Handle(e);
@@ -431,6 +431,30 @@ namespace Equality.ViewModels
         #endregion
 
         #region Methods
+
+        public void MoveCard(Card card, Column oldColumn, Column newColumn, int index)
+        {
+            oldColumn.Cards.Remove(card);
+            newColumn.Cards.Insert(index, card);
+        }
+
+        public (Column, Card) FindColumnAndCard(ulong cardId)
+        {
+            Column column = null;
+            Card existingCard = null;
+
+            foreach (var col in Columns) {
+                var card = col.Cards.FirstOrDefault(card => card.Id == cardId);
+                if (card != null) {
+                    column = col;
+                    existingCard = card;
+
+                    break;
+                }
+            }
+
+            return (column, existingCard);
+        }
 
         protected async Task LoadColumnsAsync()
         {
@@ -517,7 +541,17 @@ namespace Equality.ViewModels
             {
                 App.Current.Dispatcher.Invoke(() =>
                 {
-                    Columns.Remove(Columns.FirstOrDefault(col => col.Id == columnId));
+                    var col = Columns.FirstOrDefault(col => col.Id == columnId);
+                    if (col == null) {
+                        return;
+                    }
+
+                    // Disable dragging mode for the column.
+                    if (DragColumn.Id == columnId) {
+                        DragColumn = null;
+                    }
+
+                    Columns.Remove(col);
                 });
             });
 
@@ -526,7 +560,7 @@ namespace Equality.ViewModels
             {
                 App.Current.Dispatcher.Invoke(() =>
                 {
-                    var column = Columns.Where(col => col.Id == columnId).FirstOrDefault();
+                    var column = Columns.FirstOrDefault(col => col.Id == columnId);
                     if (column == null) {
                         return;
                     }
@@ -555,18 +589,10 @@ namespace Equality.ViewModels
             {
                 App.Current.Dispatcher.Invoke(() =>
                 {
-                    Card existingCard = null;
-                    foreach (var col in Columns) {
-                        var card = col.Cards.FirstOrDefault(card => card.Id == updatedCard.Id);
-                        if (card != null) {
-                            existingCard = card;
+                    var (_, card) = FindColumnAndCard(updatedCard.Id);
 
-                            break;
-                        }
-                    }
-
-                    if (existingCard != null) {
-                        existingCard.SyncWithOnly(updatedCard, new string[]
+                    if (card != null) {
+                        card.SyncWithOnly(updatedCard, new string[]
                         {
                             nameof(updatedCard.Name),
                             nameof(updatedCard.CreatedAt),
@@ -579,32 +605,28 @@ namespace Equality.ViewModels
             {
                 App.Current.Dispatcher.Invoke(() =>
                 {
-                    Column column = null;
-                    Card existingCard = null;
-                    foreach (var col in Columns) {
-                        var card = col.Cards.FirstOrDefault(card => card.Id == cardId);
-                        if (card != null) {
-                            column = col;
-                            existingCard = card;
-
-                            break;
-                        }
-                    }
-                    if (existingCard == null) {
+                    var (column, card) = FindColumnAndCard(cardId);
+                    if (column == null || card == null) {
                         return;
                     }
 
                     if (afterId == 0) {
-                        column.Cards.Remove(existingCard);
-                        column.Cards.Insert(0, existingCard);
+                        column.Cards.Move(column.Cards.IndexOf(card), 0);
 
                         return;
                     }
 
                     var afterCard = column.Cards.FirstOrDefault(card => card.Id == afterId);
                     if (afterCard != null) {
-                        column.Cards.Remove(existingCard);
-                        column.Cards.Insert(column.Cards.IndexOf(afterCard) + 1, existingCard);
+                        // If we move card to up, then we need to +1 to our index,
+                        // so we insert new card after the specified one, not before.
+                        int cardIndex = column.Cards.IndexOf(card);
+                        int afterCardIndex = column.Cards.IndexOf(afterCard);
+                        if (cardIndex > afterCardIndex) {
+                            afterCardIndex++;
+                        }
+
+                        column.Cards.Move(cardIndex, afterCardIndex);
                     }
                 });
             });
@@ -612,34 +634,25 @@ namespace Equality.ViewModels
             {
                 App.Current.Dispatcher.Invoke(() =>
                 {
-                    var column = Columns.First(c => c.Id == columnId);
-                    if (column == null) {
+                    var newColumn = Columns.FirstOrDefault(c => c.Id == columnId);
+                    if (newColumn == null) {
                         return;
                     }
 
-                    Card existingCard = null;
-                    foreach (var col in Columns) {
-                        var card = col.Cards.FirstOrDefault(card => card.Id == cardId);
-                        if (card != null) {
-                            existingCard = card;
-                            col.Cards.Remove(card);
-
-                            break;
-                        }
-                    }
-                    if (existingCard == null) {
+                    var (oldColumn, card) = FindColumnAndCard(cardId);
+                    if (oldColumn == null || card == null) {
                         return;
                     }
 
                     if (afterId == 0) {
-                        column.Cards.Insert(0, existingCard);
+                        MoveCard(card, oldColumn, newColumn, 0);
 
                         return;
                     }
 
-                    var afterCard = column.Cards.FirstOrDefault(card => card.Id == afterId);
+                    var afterCard = newColumn.Cards.FirstOrDefault(card => card.Id == afterId);
                     if (afterCard != null) {
-                        column.Cards.Insert(column.Cards.IndexOf(afterCard) + 1, existingCard);
+                        MoveCard(card, oldColumn, newColumn, newColumn.Cards.IndexOf(afterCard) + 1);
                     }
                 });
             });
@@ -647,15 +660,18 @@ namespace Equality.ViewModels
             {
                 App.Current.Dispatcher.Invoke(() =>
                 {
-                    foreach (var column in Columns) {
-                        var card = column.Cards.FirstOrDefault(card => card.Id == cardId);
-
-                        if (card != null) {
-                            column.Cards.Remove(card);
-
-                            break;
-                        }
+                    var (column, card) = FindColumnAndCard(cardId);
+                    if (column == null || card == null) {
+                        return;
                     }
+
+                    // Disable dragging mode for the card.
+                    if (DragCard.Id == cardId) {
+                        DragCard = null;
+                        DraggableCardColumn = null;
+                    }
+
+                    column.Cards.Remove(card);
                 });
             });
         }
