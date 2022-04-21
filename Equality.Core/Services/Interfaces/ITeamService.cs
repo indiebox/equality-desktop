@@ -7,7 +7,7 @@ using Equality.Data;
 
 namespace Equality.Services
 {
-    public interface ITeamServiceBase<TTeamModel, TTeamMemberModel> : IDeserializeModels<TTeamModel>
+    public interface ITeamServiceBase<TTeamModel, TTeamMemberModel>
         where TTeamModel : class, ITeam, new()
         where TTeamMemberModel : class, ITeamMember, new()
     {

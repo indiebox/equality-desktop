@@ -8,8 +8,6 @@ using Equality.Data;
 using Equality.Http;
 using Equality.Models;
 
-using Newtonsoft.Json.Linq;
-
 namespace Equality.Services
 {
     public class UserServiceBase<TUserModel> : IUserServiceBase<TUserModel>
@@ -33,8 +31,7 @@ namespace Equality.Services
             query ??= new QueryParameters();
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse("user"));
-
-            var user = Deserialize(response.Content["data"]);
+            var user = Json.Deserialize<TUserModel>(response.Content["data"]);
 
             return new(user, response);
         }
@@ -52,8 +49,7 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.PostAsync("login", data);
-
-            var user = Deserialize(response.Content["data"]);
+            var user = Json.Deserialize<TUserModel>(response.Content["data"]);
 
             return new(user, response);
         }
@@ -90,12 +86,6 @@ namespace Equality.Services
 
             return await ApiClient.PostAsync("reset-password", data);
         }
-
-        /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
-        protected TUserModel Deserialize(JToken data) => ((IDeserializeModels<TUserModel>)this).Deserialize(data);
-
-        /// <inheritdoc cref="IDeserializeModels{T}.DeserializeRange(JToken)"/>
-        protected TUserModel[] DeserializeRange(JToken data) => ((IDeserializeModels<TUserModel>)this).DeserializeRange(data);
 
         protected string GetDeviceName()
         {

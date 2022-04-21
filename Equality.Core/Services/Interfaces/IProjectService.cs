@@ -7,7 +7,7 @@ using Equality.Data;
 
 namespace Equality.Services
 {
-    public partial interface IProjectServiceBase<TProjectModel, TLeaderNominationModel, TUserModel> : IDeserializeModels<TProjectModel>
+    public partial interface IProjectServiceBase<TProjectModel, TLeaderNominationModel, TUserModel>
         where TProjectModel : class, IProject, new()
         where TLeaderNominationModel : class, ILeaderNomination, new()
         where TUserModel : class, IUser, new()

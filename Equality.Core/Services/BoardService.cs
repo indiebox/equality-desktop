@@ -7,8 +7,6 @@ using Equality.Data;
 using Equality.Http;
 using Equality.Models;
 
-using Newtonsoft.Json.Linq;
-
 namespace Equality.Services
 {
     public class BoardServiceBase<TBoardModel> : IBoardServiceBase<TBoardModel>
@@ -36,7 +34,7 @@ namespace Equality.Services
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"projects/{projectId}/boards"));
 
-            var boards = DeserializeRange(response.Content["data"]);
+            var boards = Json.Deserialize<TBoardModel[]>(response.Content["data"]);
 
             return new(boards, response);
         }
@@ -56,7 +54,7 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync(query.Parse($"projects/{projectId}/boards"), data);
-            var deserializedBoard = Deserialize(response.Content["data"]);
+            var deserializedBoard = Json.Deserialize<TBoardModel>(response.Content["data"]);
 
             return new(deserializedBoard, response);
         }
@@ -73,15 +71,9 @@ namespace Equality.Services
             };
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PatchAsync(query.Parse($"boards/{board.Id}"), data);
-            var deserializedBoard = Deserialize(response.Content["data"]);
+            var deserializedBoard = Json.Deserialize<TBoardModel>(response.Content["data"]);
 
             return new(deserializedBoard, response);
         }
-
-        /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
-        protected TBoardModel Deserialize(JToken data) => ((IDeserializeModels<TBoardModel>)this).Deserialize(data);
-
-        /// <inheritdoc cref="IDeserializeModels{T}.DeserializeRange(JToken)"/>
-        protected TBoardModel[] DeserializeRange(JToken data) => ((IDeserializeModels<TBoardModel>)this).DeserializeRange(data);
     }
 }

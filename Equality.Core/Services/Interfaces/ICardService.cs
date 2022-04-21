@@ -7,7 +7,7 @@ using Equality.Data;
 
 namespace Equality.Services
 {
-    public partial interface ICardServiceBase<TCardModel> : IDeserializeModels<TCardModel>
+    public partial interface ICardServiceBase<TCardModel>
         where TCardModel : class, ICard, new()
     {
         /// <summary>

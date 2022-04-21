@@ -8,7 +8,7 @@ using Equality.Data;
 
 namespace Equality.Services
 {
-    public partial interface IColumnService<TColumnModel> : IDeserializeModels<TColumnModel>
+    public partial interface IColumnService<TColumnModel>
         where TColumnModel : class, IColumn, new()
     {
         /// <summary>

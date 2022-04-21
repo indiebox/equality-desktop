@@ -7,8 +7,6 @@ using Equality.Data;
 using Equality.Http;
 using Equality.Models;
 
-using Newtonsoft.Json.Linq;
-
 namespace Equality.Services
 {
     public partial class CardServiceBase<TCardModel> : ICardServiceBase<TCardModel>
@@ -37,7 +35,7 @@ namespace Equality.Services
 
             var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"columns/{columnId}/cards"));
 
-            var boards = DeserializeRange(response.Content["data"]);
+            var boards = Json.Deserialize<TCardModel[]>(response.Content["data"]);
 
             return new(boards, response);
         }
@@ -68,7 +66,7 @@ namespace Equality.Services
                 .WithTokenOnce(TokenResolver.ResolveApiToken())
                 .WithSocketID(TokenResolver.ResolveSocketID())
                 .PostAsync(query.Parse($"columns/{columnId}/cards"), data);
-            var deserializedCard = Deserialize(response.Content["data"]);
+            var deserializedCard = Json.Deserialize<TCardModel>(response.Content["data"]);
 
             return new(deserializedCard, response);
         }
@@ -89,7 +87,7 @@ namespace Equality.Services
                 .WithTokenOnce(TokenResolver.ResolveApiToken())
                 .WithSocketID(TokenResolver.ResolveSocketID())
                 .PatchAsync(query.Parse($"cards/{card.Id}"), data);
-            var deserializedCard = Deserialize(response.Content["data"]);
+            var deserializedCard = Json.Deserialize<TCardModel>(response.Content["data"]);
 
             return new(deserializedCard, response);
         }
@@ -125,7 +123,10 @@ namespace Equality.Services
                 { "after_card", afterCardId.ToString() },
             };
 
-            return await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).PostAsync($"cards/{cardId}/move/{columnId}", data);
+            return await ApiClient
+                .WithTokenOnce(TokenResolver.ResolveApiToken())
+                .WithSocketID(TokenResolver.ResolveSocketID())
+                .PostAsync($"cards/{cardId}/move/{columnId}", data);
         }
 
         public Task<ApiResponseMessage> DeleteCardAsync(ICard card)
@@ -140,11 +141,5 @@ namespace Equality.Services
                 .WithSocketID(TokenResolver.ResolveSocketID())
                 .DeleteAsync($"cards/{cardId}");
         }
-
-        /// <inheritdoc cref="IDeserializeModels{T}.Deserialize(JToken)"/>
-        protected TCardModel Deserialize(JToken data) => ((IDeserializeModels<TCardModel>)this).Deserialize(data);
-
-        /// <inheritdoc cref="IDeserializeModels{T}.DeserializeRange(JToken)"/>
-        protected TCardModel[] DeserializeRange(JToken data) => ((IDeserializeModels<TCardModel>)this).DeserializeRange(data);
     }
 }
