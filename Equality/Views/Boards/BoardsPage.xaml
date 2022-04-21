@@ -98,7 +98,7 @@
                                                             <DataTrigger.Binding>
                                                                 <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
                                                                     <Binding Path="." />
-                                                                    <Binding Path="DataContext.ActieveBoard"
+                                                                    <Binding Path="DataContext.ActiveBoard"
                                                                              RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
                                                                 </MultiBinding>
                                                             </DataTrigger.Binding>
@@ -122,7 +122,7 @@
                                                             <DataTrigger.Binding>
                                                                 <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
                                                                     <Binding Path="." />
-                                                                    <Binding Path="DataContext.ActieveBoard"
+                                                                    <Binding Path="DataContext.ActiveBoard"
                                                                              RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
                                                                 </MultiBinding>
                                                             </DataTrigger.Binding>

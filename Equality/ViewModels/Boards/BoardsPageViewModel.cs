@@ -71,7 +71,7 @@ namespace Equality.ViewModels
 
         public Board EditableBoard { get; set; } = null;
 
-        public Board ActieveBoard { get; set; } = null;
+        public Board ActiveBoard { get; set; } = null;
 
         [Validatable]
         public string NewBoardName { get; set; }
@@ -97,6 +97,7 @@ namespace Equality.ViewModels
             CreateBoardVm.ClosedAsync += CreateBoardVmClosedAsync;
         }
 
+        /* Добавить снятие доски */
 
         public Command<Board> MarkAsActive { get; private set; }
 
@@ -105,7 +106,7 @@ namespace Equality.ViewModels
             Properties.Settings.Default.active_board_id = board.Id;
             Properties.Settings.Default.Save();
 
-            ActieveBoard = board;
+            ActiveBoard = board;
         }
 
 
@@ -182,10 +183,10 @@ namespace Equality.ViewModels
 
                 Boards.AddRange(response.Object);
 
-                ulong actieveBoardIndex = Properties.Settings.Default.active_board_id;
+                ulong activeBoardIndex = Properties.Settings.Default.active_board_id;
 
-                if (actieveBoardIndex != 0) {
-                    ActieveBoard = Boards.Where(board => (board.Id == actieveBoardIndex)).First();
+                if (activeBoardIndex != 0) {
+                    ActiveBoard = Boards.Where(board => (board.Id == activeBoardIndex)).FirstOrDefault();
                 }
 
             } catch (HttpRequestException e) {
