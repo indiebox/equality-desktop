@@ -37,13 +37,13 @@ namespace Equality.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public ulong active_board_id {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string active_boards_id {
             get {
-                return ((ulong)(this["active_board_id"]));
+                return ((string)(this["active_boards_id"]));
             }
             set {
-                this["active_board_id"] = value;
+                this["active_boards_id"] = value;
             }
         }
     }

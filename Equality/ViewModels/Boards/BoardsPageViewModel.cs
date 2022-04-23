@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Catel;
 using Catel.Collections;
 using Catel.Data;
 using Catel.MVVM;
@@ -18,6 +20,10 @@ using Equality.Models;
 using Equality.MVVM;
 using Equality.Services;
 using Equality.Validation;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Equality.ViewModels
 {
@@ -103,7 +109,15 @@ namespace Equality.ViewModels
 
         private void OnMarkAsActiveExecute(Board board)
         {
-            Properties.Settings.Default.active_board_id = board.Id;
+            Dictionary<ulong, ulong> boardsIds = JsonConvert.DeserializeObject<Dictionary<ulong, ulong>>(Properties.Settings.Default.active_boards_id);
+
+            if (boardsIds != null) {
+                boardsIds[Project.Id] = board.Id;
+            } else {
+                boardsIds = new() { { Project.Id, board.Id } };
+            }
+
+            Properties.Settings.Default.active_boards_id += JsonConvert.SerializeObject(boardsIds);
             Properties.Settings.Default.Save();
 
             ActiveBoard = board;
@@ -176,6 +190,19 @@ namespace Equality.ViewModels
             return Task.CompletedTask;
         }
 
+        public (string, string) Deserialize(JToken data)
+        {
+            Argument.IsNotNull(nameof(data), data);
+
+            return data.ToObject<(string, string)>(new()
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                }
+            });
+        }
+
         protected async void LoadBoardsAsync()
         {
             try {
@@ -183,12 +210,12 @@ namespace Equality.ViewModels
 
                 Boards.AddRange(response.Object);
 
-                ulong activeBoardIndex = Properties.Settings.Default.active_board_id;
-
-                if (activeBoardIndex != 0) {
-                    ActiveBoard = Boards.Where(board => (board.Id == activeBoardIndex)).FirstOrDefault();
+                Dictionary<ulong, ulong> boardsIds = JsonConvert.DeserializeObject<Dictionary<ulong, ulong>>(Properties.Settings.Default.active_boards_id);
+                if (boardsIds != null) {
+                    if (boardsIds.ContainsKey(Project.Id)) {
+                        ActiveBoard = Boards.Where(board => board.Id == boardsIds[Project.Id]).FirstOrDefault();
+                    }
                 }
-
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }
