@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using Catel;
 using Catel.Collections;
 using Catel.Data;
 using Catel.MVVM;
@@ -20,10 +18,6 @@ using Equality.Models;
 using Equality.MVVM;
 using Equality.Services;
 using Equality.Validation;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 
 namespace Equality.ViewModels
 {
@@ -40,6 +34,7 @@ namespace Equality.ViewModels
                     new() { Id = 1, Name = "Board" },
                     new() { Id = 2, Name = "Board1" },
                 });
+                ActiveBoard = Boards[^1];
             });
         }
 
@@ -60,7 +55,6 @@ namespace Equality.ViewModels
             SaveNewBoardName = new TaskCommand(OnSaveNewBoardNameExecuteAsync, () => GetFieldErrors(nameof(NewBoardName)) == string.Empty);
             CancelEditBoardName = new Command(OnCancelEditBoardNameExecute);
             MarkAsActive = new Command<Board>(OnMarkAsActiveExecute);
-            ClearActiveBoard = new Command(OnClearActiveBoardExecute);
 
             ApiFieldsMap = new Dictionary<string, string>()
             {
@@ -112,34 +106,23 @@ namespace Equality.ViewModels
                 var boardsIds = Json.Deserialize<Dictionary<string, ulong>>(Properties.Settings.Default.active_boards_id);
                 string projectId = Project.Id.ToString();
 
-                if (boardsIds != null) {
-                    boardsIds[projectId] = board.Id;
+                // Is currently active.
+                if (ActiveBoard == board) {
+                    boardsIds?.Remove(projectId);
+                    Properties.Settings.Default.active_boards_id = Json.Serialize(boardsIds);
+
+                    ActiveBoard = null;
                 } else {
-                    boardsIds = new() { { projectId, board.Id } };
+                    if (boardsIds != null) {
+                        boardsIds[projectId] = board.Id;
+                    } else {
+                        boardsIds = new() { { projectId, board.Id } };
+                    }
+
+                    Properties.Settings.Default.active_boards_id = Json.Serialize(boardsIds);
+
+                    ActiveBoard = board;
                 }
-
-                Properties.Settings.Default.active_boards_id = Json.Serialize(boardsIds);
-
-                ActiveBoard = board;
-            } catch {
-                Properties.Settings.Default.active_boards_id = string.Empty;
-            }
-
-            Properties.Settings.Default.Save();
-        }
-
-        public Command ClearActiveBoard { get; private set; }
-
-        private void OnClearActiveBoardExecute()
-        {
-            try {
-                var boardsIds = Json.Deserialize<Dictionary<string, ulong>>(Properties.Settings.Default.active_boards_id);
-                string projectId = Project.Id.ToString();
-                boardsIds.Remove(projectId);
-
-                Properties.Settings.Default.active_boards_id = Json.Serialize(boardsIds);
-
-                ActiveBoard = null;
             } catch {
                 Properties.Settings.Default.active_boards_id = string.Empty;
             }
