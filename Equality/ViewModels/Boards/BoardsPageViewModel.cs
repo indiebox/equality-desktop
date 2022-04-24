@@ -229,19 +229,6 @@ namespace Equality.ViewModels
             return Task.CompletedTask;
         }
 
-        public (string, string) Deserialize(JToken data)
-        {
-            Argument.IsNotNull(nameof(data), data);
-
-            return data.ToObject<(string, string)>(new()
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new SnakeCaseNamingStrategy()
-                }
-            });
-        }
-
         protected async void LoadBoardsAsync()
         {
             try {
@@ -251,10 +238,10 @@ namespace Equality.ViewModels
 
                 LoadActiveBoard();
 
-                if (ActiveBoard != null) {
-                    StateManager.SelectedBoard = ActiveBoard;
-
-                    NavigationService.Navigate<BoardPageViewModel, ProjectPageViewModel>();
+                if (NavigationContext.Values.ContainsKey("open-active-board")) {
+                    if (ActiveBoard != null) {
+                        OpenBoardPage.Execute(ActiveBoard);
+                    }
                 }
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
