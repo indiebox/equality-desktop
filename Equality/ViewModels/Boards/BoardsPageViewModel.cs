@@ -250,6 +250,12 @@ namespace Equality.ViewModels
                 Boards.AddRange(response.Object);
 
                 LoadActiveBoard();
+
+                if (ActiveBoard != null) {
+                    StateManager.SelectedBoard = ActiveBoard;
+
+                    NavigationService.Navigate<BoardPageViewModel, ProjectPageViewModel>();
+                }
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }
