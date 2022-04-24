@@ -99,6 +99,10 @@
                                                         <Style TargetType="materialDesign:PackIcon">
                                                             <Setter Property="Kind"
                                                                     Value="StarBorder" />
+                                                            <Setter Property="Width"
+                                                                    Value="20" />
+                                                            <Setter Property="Height"
+                                                                    Value="20" />
                                                             <Style.Triggers>
                                                                 <DataTrigger Value="True">
                                                                     <DataTrigger.Binding>
