@@ -109,15 +109,15 @@ namespace Equality.ViewModels
 
         private void OnMarkAsActiveExecute(Board board)
         {
-            Dictionary<ulong, ulong> boardsIds = JsonConvert.DeserializeObject<Dictionary<ulong, ulong>>(Properties.Settings.Default.active_boards_id);
+            Dictionary<string, ulong> boardsIds = JsonConvert.DeserializeObject<Dictionary<string, ulong>>(Properties.Settings.Default.active_boards_id);
 
             if (boardsIds != null) {
-                boardsIds[Project.Id] = board.Id;
+                boardsIds[Project.Id.ToString()] = board.Id;
             } else {
-                boardsIds = new() { { Project.Id, board.Id } };
+                boardsIds = new() { { Project.Id.ToString(), board.Id } };
             }
 
-            Properties.Settings.Default.active_boards_id += JsonConvert.SerializeObject(boardsIds);
+            Properties.Settings.Default.active_boards_id = JsonConvert.SerializeObject(boardsIds);
             Properties.Settings.Default.Save();
 
             ActiveBoard = board;
@@ -210,10 +210,10 @@ namespace Equality.ViewModels
 
                 Boards.AddRange(response.Object);
 
-                Dictionary<ulong, ulong> boardsIds = JsonConvert.DeserializeObject<Dictionary<ulong, ulong>>(Properties.Settings.Default.active_boards_id);
+                Dictionary<string, ulong> boardsIds = JsonConvert.DeserializeObject<Dictionary<string, ulong>>(Properties.Settings.Default.active_boards_id);
                 if (boardsIds != null) {
-                    if (boardsIds.ContainsKey(Project.Id)) {
-                        ActiveBoard = Boards.Where(board => board.Id == boardsIds[Project.Id]).FirstOrDefault();
+                    if (boardsIds.ContainsKey(Project.Id.ToString())) {
+                        ActiveBoard = Boards.Where(board => board.Id == boardsIds[Project.Id.ToString()]).FirstOrDefault();
                     }
                 }
             } catch (HttpRequestException e) {
