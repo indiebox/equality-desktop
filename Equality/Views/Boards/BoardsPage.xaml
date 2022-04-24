@@ -89,6 +89,39 @@
                                             </Style>
                                         </StackPanel.Style>
 
+                                        <!-- Make board active button -->
+                                        <StackPanel>
+                                            <Button Command="{Binding DataContext.MarkAsActive, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    CommandParameter="{Binding}"
+                                                    Style="{StaticResource MaterialDesignIconButton}">
+                                                <materialDesign:PackIcon>
+                                                    <materialDesign:PackIcon.Style>
+                                                        <Style TargetType="materialDesign:PackIcon">
+                                                            <Setter Property="Kind"
+                                                                    Value="StarBorder" />
+                                                            <Setter Property="Width"
+                                                                    Value="20" />
+                                                            <Setter Property="Height"
+                                                                    Value="20" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Value="True">
+                                                                    <DataTrigger.Binding>
+                                                                        <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                                                            <Binding Path="." />
+                                                                            <Binding Path="DataContext.ActiveBoard"
+                                                                                     RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
+                                                                        </MultiBinding>
+                                                                    </DataTrigger.Binding>
+                                                                    <Setter Property="Kind"
+                                                                            Value="Star" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </materialDesign:PackIcon.Style>
+                                                </materialDesign:PackIcon>
+                                            </Button>
+                                        </StackPanel>
+
                                         <TextBlock Text="{Binding Name}"
                                                    VerticalAlignment="Center" />
 

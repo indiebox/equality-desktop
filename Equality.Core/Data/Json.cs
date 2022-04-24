@@ -15,12 +15,8 @@ namespace Equality.Data
         /// </summary>
         /// <param name="data">The JSON string.</param>
         /// <returns>The deserialized object.</returns>
-        /// 
-        /// <exception cref="ArgumentException" />
         public static TModel Deserialize<TModel>(string data)
         {
-            Argument.IsNotNullOrWhitespace(nameof(data), data);
-
             return JsonConvert.DeserializeObject<TModel>(data, new JsonSerializerSettings
             {
                 ContractResolver = new DefaultContractResolver
@@ -42,6 +38,22 @@ namespace Equality.Data
             Argument.IsNotNull(nameof(data), data);
 
             return data.ToObject<TModel>(new()
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                }
+            });
+        }
+
+        /// <summary>
+        /// Serializes the <c>object</c> to the string.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns>The serialized string.</returns>
+        public static string Serialize(object data)
+        {
+            return JsonConvert.SerializeObject(data, new JsonSerializerSettings()
             {
                 ContractResolver = new DefaultContractResolver
                 {

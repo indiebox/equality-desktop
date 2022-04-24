@@ -34,5 +34,17 @@ namespace Equality.Properties {
                 this["api_token"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string active_boards_id {
+            get {
+                return ((string)(this["active_boards_id"]));
+            }
+            set {
+                this["active_boards_id"] = value;
+            }
+        }
     }
 }
