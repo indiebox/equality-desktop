@@ -60,6 +60,7 @@ namespace Equality.ViewModels
             SaveNewBoardName = new TaskCommand(OnSaveNewBoardNameExecuteAsync, () => GetFieldErrors(nameof(NewBoardName)) == string.Empty);
             CancelEditBoardName = new Command(OnCancelEditBoardNameExecute);
             MarkAsActive = new Command<Board>(OnMarkAsActiveExecute);
+            ClearActiveBoard = new Command(OnClearActiveBoardExecute);
 
             ApiFieldsMap = new Dictionary<string, string>()
             {
@@ -103,26 +104,48 @@ namespace Equality.ViewModels
             CreateBoardVm.ClosedAsync += CreateBoardVmClosedAsync;
         }
 
-        /* Добавить снятие доски */
-
         public Command<Board> MarkAsActive { get; private set; }
 
         private void OnMarkAsActiveExecute(Board board)
         {
-            Dictionary<string, ulong> boardsIds = JsonConvert.DeserializeObject<Dictionary<string, ulong>>(Properties.Settings.Default.active_boards_id);
+            try {
+                var boardsIds = Json.Deserialize<Dictionary<string, ulong>>(Properties.Settings.Default.active_boards_id);
+                string projectId = Project.Id.ToString();
 
-            if (boardsIds != null) {
-                boardsIds[Project.Id.ToString()] = board.Id;
-            } else {
-                boardsIds = new() { { Project.Id.ToString(), board.Id } };
+                if (boardsIds != null) {
+                    boardsIds[projectId] = board.Id;
+                } else {
+                    boardsIds = new() { { projectId, board.Id } };
+                }
+
+                Properties.Settings.Default.active_boards_id = Json.Serialize(boardsIds);
+
+                ActiveBoard = board;
+            } catch {
+                Properties.Settings.Default.active_boards_id = string.Empty;
             }
 
-            Properties.Settings.Default.active_boards_id = JsonConvert.SerializeObject(boardsIds);
             Properties.Settings.Default.Save();
-
-            ActiveBoard = board;
         }
 
+        public Command ClearActiveBoard { get; private set; }
+
+        private void OnClearActiveBoardExecute()
+        {
+            try {
+                var boardsIds = Json.Deserialize<Dictionary<string, ulong>>(Properties.Settings.Default.active_boards_id);
+                string projectId = Project.Id.ToString();
+                boardsIds.Remove(projectId);
+
+                Properties.Settings.Default.active_boards_id = Json.Serialize(boardsIds);
+
+                ActiveBoard = null;
+            } catch {
+                Properties.Settings.Default.active_boards_id = string.Empty;
+            }
+
+            Properties.Settings.Default.Save();
+        }
 
         public Command<Board> StartEditBoardName { get; private set; }
 
@@ -178,6 +201,22 @@ namespace Equality.ViewModels
 
         #region Methods
 
+        private void LoadActiveBoard()
+        {
+            try {
+                var boardsIds = Json.Deserialize<Dictionary<string, ulong>>(Properties.Settings.Default.active_boards_id);
+                if (boardsIds != null) {
+                    string projectId = Project.Id.ToString();
+                    if (boardsIds.ContainsKey(projectId)) {
+                        ActiveBoard = Boards.Where(board => board.Id == boardsIds[projectId]).FirstOrDefault();
+                    }
+                }
+            } catch {
+                Properties.Settings.Default.active_boards_id = String.Empty;
+                Properties.Settings.Default.Save();
+            }
+        }
+
         private Task CreateBoardVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
             if (CreateBoardVm.Result) {
@@ -210,12 +249,7 @@ namespace Equality.ViewModels
 
                 Boards.AddRange(response.Object);
 
-                Dictionary<string, ulong> boardsIds = JsonConvert.DeserializeObject<Dictionary<string, ulong>>(Properties.Settings.Default.active_boards_id);
-                if (boardsIds != null) {
-                    if (boardsIds.ContainsKey(Project.Id.ToString())) {
-                        ActiveBoard = Boards.Where(board => board.Id == boardsIds[Project.Id.ToString()]).FirstOrDefault();
-                    }
-                }
+                LoadActiveBoard();
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }

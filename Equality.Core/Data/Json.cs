@@ -49,5 +49,21 @@ namespace Equality.Data
                 }
             });
         }
+
+        /// <summary>
+        /// Serializes the <c>object</c> to the string.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns>The serialized string.</returns>
+        public static string Serialize(object data)
+        {
+            return JsonConvert.SerializeObject(data, new JsonSerializerSettings()
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                }
+            });
+        }
     }
 }

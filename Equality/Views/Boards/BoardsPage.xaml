@@ -108,7 +108,9 @@
                                                     </Style.Triggers>
                                                 </Style>
                                             </StackPanel.Style>
-                                            <Button Style="{StaticResource MaterialDesignIconButton}">
+                                            <Button Style="{StaticResource MaterialDesignIconButton}"
+                                                    Command="{Binding DataContext.ClearActiveBoard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                    CommandParameter="{Binding}">
                                                 <materialDesign:PackIcon Kind="Star" />
                                             </Button>
                                         </StackPanel>
