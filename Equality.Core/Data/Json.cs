@@ -15,12 +15,8 @@ namespace Equality.Data
         /// </summary>
         /// <param name="data">The JSON string.</param>
         /// <returns>The deserialized object.</returns>
-        /// 
-        /// <exception cref="ArgumentException" />
         public static TModel Deserialize<TModel>(string data)
         {
-            Argument.IsNotNullOrWhitespace(nameof(data), data);
-
             return JsonConvert.DeserializeObject<TModel>(data, new JsonSerializerSettings
             {
                 ContractResolver = new DefaultContractResolver
