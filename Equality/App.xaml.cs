@@ -42,6 +42,9 @@ namespace Equality
 #endif
             Log.Info("Starting application");
 
+            Log.Info("Allow only one app instance");
+            SingleInstance.Make();
+
             // Want to improve performance? Uncomment the lines below. Note though that this will disable
             // some features. 
             //
@@ -50,7 +53,6 @@ namespace Equality
             Log.Info("Improving performance");
             Catel.Windows.Controls.UserControl.DefaultCreateWarningAndErrorValidatorForViewModelValue = false;
             Catel.Windows.Controls.UserControl.DefaultSkipSearchingForInfoBarMessageControlValue = true;
-
 
             /*
             |--------------------------------------------------------------------------
