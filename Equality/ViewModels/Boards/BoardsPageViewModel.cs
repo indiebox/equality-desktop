@@ -55,11 +55,6 @@ namespace Equality.ViewModels
             SaveNewBoardName = new TaskCommand(OnSaveNewBoardNameExecuteAsync, () => GetFieldErrors(nameof(NewBoardName)) == string.Empty);
             CancelEditBoardName = new Command(OnCancelEditBoardNameExecute);
             MarkAsActive = new Command<Board>(OnMarkAsActiveExecute);
-
-            ApiFieldsMap = new Dictionary<string, string>()
-            {
-                { nameof(NewBoardName), "name" },
-            };
         }
 
         #region Properties
@@ -96,6 +91,18 @@ namespace Equality.ViewModels
         {
             CreateBoardVm = MvvmHelper.CreateViewModel<CreateBoardControlViewModel>();
             CreateBoardVm.ClosedAsync += CreateBoardVmClosedAsync;
+        }
+
+        private Task CreateBoardVmClosedAsync(object sender, ViewModelClosedEventArgs e)
+        {
+            if (CreateBoardVm.Result) {
+                Boards.Add(CreateBoardVm.Board);
+            }
+
+            CreateBoardVm.ClosedAsync -= CreateBoardVmClosedAsync;
+            CreateBoardVm = null;
+
+            return Task.CompletedTask;
         }
 
         public Command<Board> MarkAsActive { get; private set; }
@@ -174,7 +181,7 @@ namespace Equality.ViewModels
 
                 CancelEditBoardName.Execute();
             } catch (UnprocessableEntityHttpException e) {
-                HandleApiErrors(e.Errors);
+                HandleApiErrors(e.Errors, new() { { "name", nameof(NewBoardName) } });
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }
@@ -198,18 +205,6 @@ namespace Equality.ViewModels
                 Properties.Settings.Default.active_boards_id = String.Empty;
                 Properties.Settings.Default.Save();
             }
-        }
-
-        private Task CreateBoardVmClosedAsync(object sender, ViewModelClosedEventArgs e)
-        {
-            if (CreateBoardVm.Result) {
-                Boards.Add(CreateBoardVm.Board);
-            }
-
-            CreateBoardVm.ClosedAsync -= CreateBoardVmClosedAsync;
-            CreateBoardVm = null;
-
-            return Task.CompletedTask;
         }
 
         protected async void LoadBoardsAsync()

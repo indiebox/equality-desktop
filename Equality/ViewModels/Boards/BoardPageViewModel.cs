@@ -77,13 +77,13 @@ namespace Equality.ViewModels
             OpenCreateCardWindow = new(OnOpenCreateCardWindowExecuteAsync);
 
             StartEditColumn = new(OnStartEditColumnExecuteAsync);
-            SaveNewColumnName = new(OnSaveNewColumnNameExecuteAsync, () => EditableColumn != null && GetFieldErrors("name") == string.Empty);
+            SaveNewColumnName = new(OnSaveNewColumnNameExecuteAsync, () => GetFieldErrors(nameof(NewColumnName)) == string.Empty);
             CancelEditColumn = new(OnCancelEditColumnExecute);
             UpdateColumnOrder = new(OnUpdateColumnOrderExecuteAsync);
             DeleteColumn = new(OnDeleteColumnExecuteAsync);
 
             StartEditCard = new(OnStartEditCardExecuteAsync);
-            SaveNewCardName = new(OnSaveNewCardNameExecuteAsync, () => EditableCard != null && GetFieldErrors("name") == string.Empty);
+            SaveNewCardName = new(OnSaveNewCardNameExecuteAsync, () => GetFieldErrors(nameof(NewCardName)) == string.Empty);
             CancelEditCard = new(OnCancelEditCardExecute);
             UpdateCardOrder = new(OnUpdateCardOrderExecuteAsync);
             DeleteCard = new(OnDeleteCardExecuteAsync);
@@ -215,7 +215,7 @@ namespace Equality.ViewModels
 
                 CancelEditColumn.Execute();
             } catch (UnprocessableEntityHttpException e) {
-                HandleApiErrors(e.Errors);
+                HandleApiErrors(e.Errors, new() { { "name", nameof(NewColumnName) } });
             } catch (HttpRequestException e) {
                 Data.ExceptionHandler.Handle(e);
             }
@@ -350,7 +350,7 @@ namespace Equality.ViewModels
 
                 CancelEditCard.Execute();
             } catch (UnprocessableEntityHttpException e) {
-                HandleApiErrors(e.Errors);
+                HandleApiErrors(e.Errors, new() { { "name", nameof(NewCardName) } });
             } catch (HttpRequestException e) {
                 Data.ExceptionHandler.Handle(e);
             }
