@@ -216,9 +216,9 @@ namespace Equality.Http
                 ? new()
                 : JObject.Parse(jsonResponse);
 
-            HandleStatusCode(response, responseData);
-
             RestoreHeaders();
+
+            HandleStatusCode(response, responseData);
 
             return new ApiResponseMessage(response, responseData);
         }
