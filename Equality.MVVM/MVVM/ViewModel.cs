@@ -23,26 +23,13 @@ namespace Equality.MVVM
             _validationToken = SuspendValidations();
 
             ApiErrors = new();
-            ApiFieldsMap = new();
+            CatelProperties = PropertyDataManager.Default.GetCatelTypeInfo(GetType()).GetCatelProperties();
 
             AutomaticallyHideApiErrorsOnPropertyChanged = true;
             AutomaticallyMapApiFields = true;
 
             ExcludeNonDecoratedPropertiesFromValidation();
         }
-
-        /// <summary>
-        /// Map between <c>ViewModel`s</c> properties and Api fields.
-        /// </summary>
-        /// <remarks>
-        /// It is used for base implementation of <c>DisplayApiErrors</c> method for attaching Api errors to the <c>ViewModel</c> property.
-        /// <code></code>
-        /// Also for auto detaching Api errors when associated property in <c>ViewModel</c> has changed.
-        /// <code></code>
-        /// Key is the property name in <c>ViewModel</c>, Value is the name of field in Api response.
-        /// </remarks>
-        [ExcludeFromValidation]
-        public Dictionary<string, string> ApiFieldsMap { get; protected set; }
 
         /// <summary>
         /// The Api errors for fields.
@@ -62,6 +49,11 @@ namespace Equality.MVVM
         /// </summary>
         [ExcludeFromValidation]
         protected bool AutomaticallyMapApiFields { get; set; }
+
+        /// <summary>
+        /// Gets the list of all properties of the view model.
+        /// </summary>
+        protected IDictionary<string, PropertyData> CatelProperties { get; private set; }
 
         /// <summary>
         /// Enable display of the validation errors and perform first validation.
@@ -114,9 +106,8 @@ namespace Equality.MVVM
                 && e.OldValue != e.NewValue
                 && e.IsOldValueMeaningful) {
 
-                if (ApiFieldsMap?.ContainsKey(e.PropertyName) ?? false) {
-                    string apiField = ApiFieldsMap[e.PropertyName];
-                    ApiErrors.Remove(apiField);
+                if (ApiErrors.ContainsKey(e.PropertyName)) {
+                    ApiErrors.Remove(e.PropertyName);
                 } else {
                     ApiErrors.Remove(PropertyToApiFieldName(e.PropertyName));
                 }
@@ -150,25 +141,20 @@ namespace Equality.MVVM
         protected virtual void DisplayApiErrors(List<IFieldValidationResult> validationResults)
         {
             var errors = new Dictionary<string, string>(ApiErrors);
-
-            foreach (var value in ApiFieldsMap) {
-                if (errors.ContainsKey(value.Value)) {
-                    validationResults.Add(FieldValidationResult.CreateError(value.Key, errors[value.Value]));
-                    errors.Remove(value.Value);
-                }
-            }
-
-            if (errors.Count == 0 || !AutomaticallyMapApiFields) {
+            if (errors.Count == 0) {
                 return;
             }
 
-            // Automatically map api fields with assumed properties of VM.
             foreach (var error in errors) {
-                string assumedPropertyName = ApiFieldToPropertyName(error.Key);
+                if (PropertyExists(error.Key)) {
+                    validationResults.Add(FieldValidationResult.CreateError(error.Key, error.Value));
+                } else if (AutomaticallyMapApiFields) {
+                    // Automatically map api fields with assumed properties of VM.
+                    string assumedPropertyName = ApiFieldToPropertyName(error.Key);
 
-                if (PropertyExists(assumedPropertyName)) {
-                    validationResults.Add(FieldValidationResult.CreateError(assumedPropertyName, error.Value));
-                    errors.Remove(error.Value);
+                    if (PropertyExists(assumedPropertyName)) {
+                        validationResults.Add(FieldValidationResult.CreateError(assumedPropertyName, error.Value));
+                    }
                 }
             }
         }
@@ -238,15 +224,23 @@ namespace Equality.MVVM
         /// Handle Api errors and call <c>DisplayApiErrors()</c>.
         /// </summary>
         /// <param name="errors">The Api errors.</param>
+        /// <param name="aliases">The list of aliases of errors. First key is the name of api field, second is alias.</param>
         /// <remarks>
+        /// If <paramref name="aliases"/> specified, errors will be added to <see cref="ApiErrors"/> with alias.
         /// Use <see cref="DisplayApiErrors(List{IFieldValidationResult})"/> to display the Api errors.
         /// </remarks>
-        protected void HandleApiErrors(Dictionary<string, string[]> errors)
+        protected void HandleApiErrors(Dictionary<string, string[]> errors, Dictionary<string, string> aliases = null)
         {
             ApiErrors.Clear();
 
             foreach (var error in errors) {
-                ApiErrors.Add(error.Key, error.Value[0]);
+                string key = error.Key;
+
+                if (aliases?.ContainsKey(key) ?? false) {
+                    key = aliases[error.Key];
+                }
+
+                ApiErrors.Add(key, error.Value[0]);
             }
 
             Validate(true);
@@ -257,8 +251,7 @@ namespace Equality.MVVM
         /// </summary>
         /// <param name="propertyName">The property name.</param>
         /// <returns>Returns true if property exists.</returns>
-        protected bool PropertyExists(string propertyName)
-            => PropertyDataManager.Default.GetCatelTypeInfo(GetType()).GetCatelProperties().ContainsKey(propertyName);
+        protected bool PropertyExists(string propertyName) => CatelProperties.ContainsKey(propertyName);
 
         /// <summary>
         /// Converts Api field to assumed property name.
@@ -311,9 +304,8 @@ namespace Equality.MVVM
         private void ExcludeNonDecoratedPropertiesFromValidation()
         {
             var type = GetType();
-            var properties = PropertyDataManager.Default.GetCatelTypeInfo(GetType()).GetCatelProperties();
 
-            foreach (var property in properties) {
+            foreach (var property in CatelProperties) {
                 if (!property.Value.GetPropertyInfo(type).IsDecoratedWithAttribute(typeof(ValidatableAttribute))) {
                     PropertiesNotCausingValidation[type].Add(property.Key);
                 }
