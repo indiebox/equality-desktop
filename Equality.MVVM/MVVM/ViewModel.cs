@@ -231,8 +231,6 @@ namespace Equality.MVVM
         /// </remarks>
         protected void HandleApiErrors(Dictionary<string, string[]> errors, Dictionary<string, string> aliases = null)
         {
-            ApiErrors.Clear();
-
             foreach (var error in errors) {
                 string key = error.Key;
 
@@ -240,6 +238,10 @@ namespace Equality.MVVM
                     key = aliases[error.Key];
                 }
 
+                // Override existing error.
+                if (ApiErrors.ContainsKey(key)) {
+                    ApiErrors.Remove(key);
+                }
                 ApiErrors.Add(key, error.Value[0]);
             }
 
