@@ -47,10 +47,6 @@ namespace Equality.ViewModels
 
         private async Task OnOpenCreateCardWindowExecuteAsync(Column column)
         {
-            if (CreateCardVm != null) {
-                CreateCardVm.ClosedAsync -= CreateCardVmClosedAsync;
-            }
-
             ColumnForNewCard = column;
 
             CreateCardVm = MvvmHelper.CreateViewModel<CreateCardControlViewModel>(ColumnForNewCard);

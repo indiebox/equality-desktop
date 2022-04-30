@@ -177,6 +177,14 @@ namespace Equality.ViewModels
         {
             UnsubscribePusherAsync();
 
+            if (CreateColumnVm != null) {
+                CreateColumnVm.ClosedAsync -= CreateColumnVmClosedAsync;
+            }
+
+            if (CreateCardVm != null) {
+                CreateCardVm.ClosedAsync -= CreateCardVmClosedAsync;
+            }
+
             await base.CloseAsync();
         }
     }
