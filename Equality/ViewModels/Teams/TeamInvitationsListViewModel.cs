@@ -19,6 +19,10 @@ using Equality.Http;
 
 namespace Equality.ViewModels
 {
+    /*
+     * NavigationContext: 
+     * send-invite - open invite user dialog
+     */
     public class TeamInvitationsListViewModel : ViewModel
     {
         protected IInviteService InviteService;

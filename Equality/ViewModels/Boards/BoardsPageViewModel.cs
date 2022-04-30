@@ -21,6 +21,10 @@ using Equality.Validation;
 
 namespace Equality.ViewModels
 {
+    /*
+     * NavigationContext: 
+     * open-active-board - open active board, if available
+     */
     public class BoardsPageViewModel : ViewModel
     {
         #region DesignModeConstructor
@@ -199,6 +203,10 @@ namespace Equality.ViewModels
                     string projectId = Project.Id.ToString();
                     if (boardsIds.ContainsKey(projectId)) {
                         ActiveBoard = Boards.Where(board => board.Id == boardsIds[projectId]).FirstOrDefault();
+
+                        if (NavigationContext.Values.ContainsKey("open-active-board")) {
+                            OpenBoardPage.Execute(ActiveBoard);
+                        }
                     }
                 }
             } catch {
@@ -215,12 +223,6 @@ namespace Equality.ViewModels
                 Boards.AddRange(response.Object);
 
                 LoadActiveBoard();
-
-                if (NavigationContext.Values.ContainsKey("open-active-board")) {
-                    if (ActiveBoard != null) {
-                        OpenBoardPage.Execute(ActiveBoard);
-                    }
-                }
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }

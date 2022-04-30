@@ -15,6 +15,10 @@ using Equality.Data;
 
 namespace Equality.ViewModels
 {
+    /*
+     * NavigationContext: 
+     * email - the user email
+     */
     public class ResetPasswordPageViewModel : ViewModel
     {
         protected INavigationService NavigationService;
