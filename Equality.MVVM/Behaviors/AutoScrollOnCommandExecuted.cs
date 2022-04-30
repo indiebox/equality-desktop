@@ -40,7 +40,11 @@ namespace Equality.Behaviors
         {
             AutoScrollOnCommandExecuted target = (AutoScrollOnCommandExecuted)d;
 
-            if (target != null && e.NewValue is ICatelCommand command) {
+            if (e.OldValue is ICatelCommand oldCommand) {
+                oldCommand.Executed -= target.Scroll;
+            }
+
+            if (e.NewValue is ICatelCommand command) {
                 command.Executed += target.Scroll;
             }
         }

@@ -55,7 +55,7 @@ namespace Equality.ViewModels
             OpenTeamPage = new Command<Team>(OnOpenTeamPageExecute);
             FilterProjects = new Command<Team>(OnFilterProjectsExecute);
             ResetFilter = new Command(OnResetFilterExecute);
-            OpenCreateProjectWindow = new TaskCommand<Team>(OnOpenCreateProjectWindowExecuteAsync);
+            OpenCreateProjectWindow = new TaskCommand<Team>(OnOpenCreateProjectWindowExecuteAsync, (team) => TeamForNewProject == null || TeamForNewProject != team);
         }
 
         #region Properties
@@ -208,6 +208,10 @@ namespace Equality.ViewModels
         {
             if (CreateTeamVm != null) {
                 CreateTeamVm.ClosedAsync -= CreateTeamVmClosedAsync;
+            }
+
+            if (CreateProjectVm != null) {
+                CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;
             }
 
             await base.CloseAsync();

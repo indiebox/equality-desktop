@@ -169,7 +169,7 @@ namespace Equality.ViewModels
         {
             ColumnService = columnService;
 
-            OpenCreateColumnWindow = new(OnOpenCreateColumnWindowExecuteAsync);
+            OpenCreateColumnWindow = new(OnOpenCreateColumnWindowExecuteAsync, () => CreateColumnVm is null);
             StartEditColumn = new(OnStartEditColumnExecuteAsync);
             SaveNewColumnName = new(OnSaveNewColumnNameExecuteAsync, () => GetFieldErrors(nameof(NewColumnName)) == string.Empty);
             CancelEditColumn = new(OnCancelEditColumnExecute);

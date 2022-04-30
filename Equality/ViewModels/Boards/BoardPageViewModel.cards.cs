@@ -47,8 +47,11 @@ namespace Equality.ViewModels
 
         private async Task OnOpenCreateCardWindowExecuteAsync(Column column)
         {
-            ColumnForNewCard = column;
+            if (CreateCardVm != null) {
+                CreateCardVm.ClosedAsync -= CreateCardVmClosedAsync;
+            }
 
+            ColumnForNewCard = column;
             CreateCardVm = MvvmHelper.CreateViewModel<CreateCardControlViewModel>(ColumnForNewCard);
             CreateCardVm.ClosedAsync += CreateCardVmClosedAsync;
         }
@@ -210,7 +213,7 @@ namespace Equality.ViewModels
         {
             CardService = cardService;
 
-            OpenCreateCardWindow = new(OnOpenCreateCardWindowExecuteAsync);
+            OpenCreateCardWindow = new(OnOpenCreateCardWindowExecuteAsync, (column) => ColumnForNewCard == null || ColumnForNewCard.Id != column?.Id);
             StartEditCard = new(OnStartEditCardExecuteAsync);
             SaveNewCardName = new(OnSaveNewCardNameExecuteAsync, () => GetFieldErrors(nameof(NewCardName)) == string.Empty);
             CancelEditCard = new(OnCancelEditCardExecute);

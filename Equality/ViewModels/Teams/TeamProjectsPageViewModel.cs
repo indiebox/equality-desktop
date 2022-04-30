@@ -41,7 +41,7 @@ namespace Equality.ViewModels
             ProjectService = projectService;
 
             OpenProjectPage = new Command<Project>(OnOpenOpenProjectPageExecute);
-            OpenCreateProjectWindow = new TaskCommand(OnOpenCreateProjectWindowExecuteAsync);
+            OpenCreateProjectWindow = new TaskCommand(OnOpenCreateProjectWindowExecuteAsync, () => CreateProjectVm is null);
         }
 
         #region Properties
@@ -116,7 +116,9 @@ namespace Equality.ViewModels
 
         protected override async Task CloseAsync()
         {
-            // TODO: unsubscribe from events here
+            if (CreateProjectVm != null) {
+                CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;
+            }
 
             await base.CloseAsync();
         }
