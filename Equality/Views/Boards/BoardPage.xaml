@@ -171,6 +171,10 @@
                                     <equality:FocusAndSelectText FocusMoment="Event"
                                                                  EventName="IsVisibleChanged"
                                                                  Source="{Binding ., RelativeSource={RelativeSource AncestorType=TextBox}}" />
+                                    <catel:KeyPressToCommand Command="{Binding DataContext.SaveNewCardName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                             Key="Return" />
+                                    <catel:KeyPressToCommand Command="{Binding DataContext.CancelEditCard, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                             Key="Esc" />
                                 </i:Interaction.Behaviors>
                             </TextBox>
 
@@ -364,6 +368,10 @@
                                     <equality:FocusAndSelectText FocusMoment="Event"
                                                                  EventName="IsVisibleChanged"
                                                                  Source="{Binding ., RelativeSource={RelativeSource AncestorType=TextBox}}" />
+                                    <catel:KeyPressToCommand Command="{Binding DataContext.SaveNewColumnName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                             Key="Return" />
+                                    <catel:KeyPressToCommand Command="{Binding DataContext.CancelEditColumn, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                             Key="Esc" />
                                 </i:Interaction.Behaviors>
                             </TextBox>
 
