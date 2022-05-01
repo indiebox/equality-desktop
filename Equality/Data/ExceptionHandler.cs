@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -58,11 +59,7 @@ namespace Equality.Data
 
         private void RegisterHandlers()
         {
-            _exceptionService.Register<UnprocessableEntityHttpException>(e =>
-            {
-                throw e;
-            });
-
+            _exceptionService.Register<UnprocessableEntityHttpException>(HandleUnprocessableEntityException);
             _exceptionService.Register<BadRequestHttpException>(HandleBadRequestException);
             _exceptionService.Register<UnauthorizedHttpException>(HandleUnauthorizedException);
             _exceptionService.Register<ForbiddenHttpException>(HandleForbiddenException);
@@ -76,6 +73,18 @@ namespace Equality.Data
         }
 
         #region HttpExceptions
+
+        private void HandleUnprocessableEntityException(UnprocessableEntityHttpException exception)
+        {
+            if (exception.Errors.Count == 0) {
+                _notificationService.ShowError($"Ошибка данных: {exception.Message}", TimeSpan.FromSeconds(5));
+
+                return;
+            }
+
+            string error = exception.Errors[exception.Errors.Keys.First()][0];
+            _notificationService.ShowError($"Ошибка данных: {error}", TimeSpan.FromSeconds(5));
+        }
 
         private void HandleBadRequestException(BadRequestHttpException exception)
         {
