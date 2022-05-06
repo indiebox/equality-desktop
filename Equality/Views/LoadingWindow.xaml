@@ -1,4 +1,5 @@
 ﻿<catel:Window  x:Class="Equality.Views.LoadingWindow"
+               xmlns:gif="http://wpfanimatedgif.codeplex.com"
                xmlns:catel="http://schemas.catelproject.com"
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -13,6 +14,7 @@
                d:DataContext="{d:DesignInstance Type=viewmodels:LoadingWindowViewModel}"
                mc:Ignorable="d">
     <Grid>
+        <MediaElement Source="/Resources/gifs/loading.gif" />
         <notification:NotificationArea x:Name="NotificationsContainer"
                                        Grid.ColumnSpan="2"
                                        Position="TopRight"
