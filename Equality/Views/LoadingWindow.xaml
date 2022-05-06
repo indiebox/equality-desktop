@@ -1,8 +1,8 @@
 ﻿<catel:Window  x:Class="Equality.Views.LoadingWindow"
-               xmlns:gif="http://wpfanimatedgif.codeplex.com"
                xmlns:catel="http://schemas.catelproject.com"
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:gif="http://wpfanimatedgif.codeplex.com"
                xmlns:viewmodels="clr-namespace:Equality.ViewModels"
                xmlns:notification="clr-namespace:Notification.Wpf.Controls;assembly=Notification.Wpf"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -14,7 +14,6 @@
                d:DataContext="{d:DesignInstance Type=viewmodels:LoadingWindowViewModel}"
                mc:Ignorable="d">
     <Grid>
-        <MediaElement Source="/Resources/gifs/loading.gif" />
         <notification:NotificationArea x:Name="NotificationsContainer"
                                        Grid.ColumnSpan="2"
                                        Position="TopRight"
@@ -22,8 +21,6 @@
                                        d:Panel.ZIndex="-1"
                                        Focusable="False"
                                        Margin="5" />
-
-        <TextBlock VerticalAlignment="Center"
-                   HorizontalAlignment="Center">Экран загрузки...</TextBlock>
+        <Image gif:ImageBehavior.AnimatedSource="/Resources/gifs/loading.gif" />
     </Grid>
 </catel:Window>
