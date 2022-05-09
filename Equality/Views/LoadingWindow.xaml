@@ -1,5 +1,4 @@
 ﻿<catel:Window  x:Class="Equality.Views.LoadingWindow"
-               xmlns:gif="http://wpfanimatedgif.codeplex.com"
                xmlns:catel="http://schemas.catelproject.com"
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,6 +6,7 @@
                xmlns:notification="clr-namespace:Notification.Wpf.Controls;assembly=Notification.Wpf"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:gif="http://wpfanimatedgif.codeplex.com"
                WindowStartupLocation="CenterScreen"
                ResizeMode="NoResize"
                Height="300"
@@ -14,7 +14,17 @@
                d:DataContext="{d:DesignInstance Type=viewmodels:LoadingWindowViewModel}"
                mc:Ignorable="d">
     <Grid>
-        <MediaElement Source="/Resources/gifs/loading.gif" />
+        <Grid Height="200">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="90*"></RowDefinition>
+                <RowDefinition Height="10*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Image Grid.Row="0"
+                   Source="/Resources/gifs/loading.gif" />
+            <TextBlock Grid.Row="1"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center">Загрузка...</TextBlock>
+        </Grid>
         <notification:NotificationArea x:Name="NotificationsContainer"
                                        Grid.ColumnSpan="2"
                                        Position="TopRight"
@@ -22,8 +32,5 @@
                                        d:Panel.ZIndex="-1"
                                        Focusable="False"
                                        Margin="5" />
-
-        <TextBlock VerticalAlignment="Center"
-                   HorizontalAlignment="Center">Экран загрузки...</TextBlock>
     </Grid>
 </catel:Window>

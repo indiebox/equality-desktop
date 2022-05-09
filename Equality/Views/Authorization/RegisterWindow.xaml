@@ -19,6 +19,18 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <Grid Height="200">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="90*"></RowDefinition>
+                <RowDefinition Height="10*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Image Grid.Row="0"
+                   Source="/Resources/gifs/loading.gif" />
+            <TextBlock Grid.Row="1"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center">Загрузка...</TextBlock>
+        </Grid>
+
         <DockPanel Grid.Row="0"
                    Panel.ZIndex="1"
                    Background="White"
