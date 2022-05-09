@@ -21,16 +21,18 @@
                                        d:Panel.ZIndex="-1"
                                        Focusable="False"
                                        Margin="5" />
-        <Grid Height="200">
+        <Grid Height="220">
             <Grid.RowDefinitions>
                 <RowDefinition Height="90*"></RowDefinition>
-                <RowDefinition Height="10*"></RowDefinition>
+                <RowDefinition Height="20*"></RowDefinition>
             </Grid.RowDefinitions>
             <Image Grid.Row="0"
                    gif:ImageBehavior.AnimatedSource="/Resources/gifs/loading.gif" />
             <TextBlock Grid.Row="1"
                        VerticalAlignment="Center"
-                       HorizontalAlignment="Center">Загрузка...</TextBlock>
+                       HorizontalAlignment="Center"
+                       FontSize="27"
+                       Foreground="#FF6A6A6A">загрузка</TextBlock>
         </Grid>
     </Grid>
 </catel:Window>
