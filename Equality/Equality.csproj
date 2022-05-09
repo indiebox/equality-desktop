@@ -37,6 +37,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
     </ItemGroup>
 
     <ItemGroup>
@@ -201,6 +202,7 @@
     </Choose>
 
     <ItemGroup>
+        <None Remove="Resources\gifs\loading.gif" />
         <None Remove="Resources\Icons\Logo.ico" />
     </ItemGroup>
 
@@ -208,6 +210,7 @@
         <ProjectReference Include="..\Equality.MVVM\Equality.MVVM.csproj" />
     </ItemGroup>
     <ItemGroup>
+        <Resource Include="Resources\gifs\loading.gif" />
         <Resource Include="Resources\Icons\Logo.ico">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Resource>
