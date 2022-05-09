@@ -1,5 +1,6 @@
 ﻿<catel:Window x:Class="Equality.Views.RegisterWindow"
               xmlns:catel="http://schemas.catelproject.com"
+              xmlns:gif="http://wpfanimatedgif.codeplex.com"
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -25,13 +26,17 @@
                 <RowDefinition Height="10*"></RowDefinition>
             </Grid.RowDefinitions>
             <Image Grid.Row="0"
-                   Source="/Resources/gifs/loading.gif" />
-            <TextBlock Grid.Row="1"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center">Загрузка...</TextBlock>
+                   gif:ImageBehavior.AnimatedSource="/Resources/gifs/loading.gif" />
+            <ProgressBar Style="{StaticResource MaterialDesignLinearProgressBar}"
+                         Height="40"
+                         Width="500"
+                         IsIndeterminate="True"
+                         materialDesign:TransitionAssist.DisableTransitions="True"
+                         Background="Transparent"
+                         Foreground="{StaticResource PrimaryHueMidBrush}" />
         </Grid>
 
-        <DockPanel Grid.Row="0"
+        <!--<DockPanel Grid.Row="0"
                    Panel.ZIndex="1"
                    Background="White"
                    Visibility="{Binding IsBrowserLoaded, Converter={StaticResource InverseBoolToVisConverter}}"
@@ -47,7 +52,7 @@
                              Background="Transparent"
                              Foreground="{StaticResource PrimaryHueMidBrush}" />
             </StackPanel>
-        </DockPanel>
+        </DockPanel>-->
 
         <cefSharp:ChromiumWebBrowser x:Name="Browser"
                                      Grid.Row="0"

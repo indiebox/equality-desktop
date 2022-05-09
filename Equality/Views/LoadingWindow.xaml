@@ -7,7 +7,6 @@
                xmlns:notification="clr-namespace:Notification.Wpf.Controls;assembly=Notification.Wpf"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               xmlns:gif="http://wpfanimatedgif.codeplex.com"
                WindowStartupLocation="CenterScreen"
                ResizeMode="NoResize"
                Height="300"
@@ -22,6 +21,16 @@
                                        d:Panel.ZIndex="-1"
                                        Focusable="False"
                                        Margin="5" />
-        <Image gif:ImageBehavior.AnimatedSource="/Resources/gifs/loading.gif" />
+        <Grid Height="200">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="90*"></RowDefinition>
+                <RowDefinition Height="10*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Image Grid.Row="0"
+                   gif:ImageBehavior.AnimatedSource="/Resources/gifs/loading.gif" />
+            <TextBlock Grid.Row="1"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center">Загрузка...</TextBlock>
+        </Grid>
     </Grid>
 </catel:Window>
