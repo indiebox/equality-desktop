@@ -20,42 +20,27 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Height="200">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="90*"></RowDefinition>
-                <RowDefinition Height="10*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Image Grid.Row="0"
-                   gif:ImageBehavior.AnimatedSource="/Resources/gifs/loading.gif" />
-            <ProgressBar Style="{StaticResource MaterialDesignLinearProgressBar}"
-                         Height="40"
-                         Width="500"
-                         IsIndeterminate="True"
-                         materialDesign:TransitionAssist.DisableTransitions="True"
-                         Background="Transparent"
-                         Foreground="{StaticResource PrimaryHueMidBrush}" />
+        <Grid Panel.ZIndex="1"
+              Background="White"
+              Visibility="{Binding IsBrowserLoaded, Converter={StaticResource InverseBoolToVisConverter}}">
+            <Grid Height="220"
+                  VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="90*"></RowDefinition>
+                    <RowDefinition Height="20*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Image Grid.Row="0"
+                       gif:ImageBehavior.AnimatedSource="/Resources/gifs/loading.gif" />
+                <TextBlock Grid.Row="1"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontSize="27"
+                           Foreground="#FF6A6A6A">загрузка</TextBlock>
+            </Grid>
         </Grid>
 
-        <!--<DockPanel Grid.Row="0"
-                   Panel.ZIndex="1"
-                   Background="White"
-                   Visibility="{Binding IsBrowserLoaded, Converter={StaticResource InverseBoolToVisConverter}}"
-                   Height="Auto"
-                   Width="Auto">
-            <StackPanel VerticalAlignment="Center"
-                        HorizontalAlignment="Center">
-                <ProgressBar Style="{StaticResource MaterialDesignLinearProgressBar}"
-                             Height="40"
-                             Width="500"
-                             IsIndeterminate="True"
-                             materialDesign:TransitionAssist.DisableTransitions="True"
-                             Background="Transparent"
-                             Foreground="{StaticResource PrimaryHueMidBrush}" />
-            </StackPanel>
-        </DockPanel>-->
-
         <cefSharp:ChromiumWebBrowser x:Name="Browser"
-                                     Grid.Row="0"
                                      Address="{Binding Url}" />
 
     </Grid>
