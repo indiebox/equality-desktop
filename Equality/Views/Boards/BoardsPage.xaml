@@ -182,6 +182,10 @@
                                                 <equality:FocusAndSelectText FocusMoment="PropertyChanged"
                                                                              PropertyName="EditableBoard"
                                                                              Source="{Binding DataContext, RelativeSource={RelativeSource AncestorType=mvvm:Page}}" />
+                                                <catel:KeyPressToCommand Command="{Binding DataContext.SaveNewBoardName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                                         Key="Return" />
+                                                <catel:KeyPressToCommand Command="{Binding DataContext.CancelEditBoardName, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                                         Key="Esc" />
                                             </i:Interaction.Behaviors>
                                         </TextBox>
 

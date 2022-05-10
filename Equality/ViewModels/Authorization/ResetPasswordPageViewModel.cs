@@ -15,6 +15,10 @@ using Equality.Data;
 
 namespace Equality.ViewModels
 {
+    /*
+     * NavigationContext: 
+     * email - the user email
+     */
     public class ResetPasswordPageViewModel : ViewModel
     {
         protected INavigationService NavigationService;
@@ -38,8 +42,6 @@ namespace Equality.ViewModels
             GoHome = new Command(OnGoHomeExecute, () => !IsSendingRequest);
             ResendToken = new TaskCommand(OnResendTokenExecute, () => !IsSendingRequest);
             ResetPassword = new TaskCommand(OnResetPasswordExecute, () => !IsSendingRequest && !HasErrors);
-
-            NavigationCompleted += OnNavigationCompleted;
         }
 
         public override string Title => "Изменение пароля";
@@ -155,7 +157,7 @@ namespace Equality.ViewModels
 
         #region Methods
 
-        private void OnNavigationCompleted(object sender, System.EventArgs e)
+        protected override void OnNavigationCompleted()
         {
             Email = (string)NavigationContext.Values["email"];
         }

@@ -19,6 +19,10 @@ using Equality.Http;
 
 namespace Equality.ViewModels
 {
+    /*
+     * NavigationContext: 
+     * send-invite - open invite user dialog
+     */
     public class TeamInvitationsListViewModel : ViewModel
     {
         protected IInviteService InviteService;
@@ -74,8 +78,6 @@ namespace Equality.ViewModels
 
             OpenInviteUserDialog = new TaskCommand(OnOpenInviteUserDialogExecuteAsync);
             RevokeInvite = new TaskCommand<Invite>(OnRevokeInviteExecuteAsync);
-
-            NavigationCompleted += OnNavigated;
         }
 
         public enum InviteFilter
@@ -93,6 +95,24 @@ namespace Equality.ViewModels
         public ObservableCollection<Invite> FilteredInvites { get; set; } = new();
 
         public InviteFilter SelectedFilter { get; set; }
+        private void OnSelectedFilterChanged()
+        {
+            switch (SelectedFilter) {
+                case InviteFilter.All:
+                default:
+                    FilteredInvites.ReplaceRange(Invites);
+                    break;
+                case InviteFilter.Pending:
+                    FilteredInvites.ReplaceRange(Invites.Where(invite => invite.Status == IInvite.InviteStatus.Pending));
+                    break;
+                case InviteFilter.Accepted:
+                    FilteredInvites.ReplaceRange(Invites.Where(invite => invite.Status == IInvite.InviteStatus.Accepted));
+                    break;
+                case InviteFilter.Declined:
+                    FilteredInvites.ReplaceRange(Invites.Where(invite => invite.Status == IInvite.InviteStatus.Declined));
+                    break;
+            }
+        }
 
         #endregion
 
@@ -134,29 +154,10 @@ namespace Equality.ViewModels
 
         #region Methods
 
-        private void OnNavigated(object sender, System.EventArgs e)
+        protected override void OnNavigationCompleted()
         {
             if (NavigationContext.Values.ContainsKey("send-invite")) {
                 OpenInviteUserDialog.Execute();
-            }
-        }
-
-        private void OnSelectedFilterChanged()
-        {
-            switch (SelectedFilter) {
-                case InviteFilter.All:
-                default:
-                    FilteredInvites.ReplaceRange(Invites);
-                    break;
-                case InviteFilter.Pending:
-                    FilteredInvites.ReplaceRange(Invites.Where(invite => invite.Status == IInvite.InviteStatus.Pending));
-                    break;
-                case InviteFilter.Accepted:
-                    FilteredInvites.ReplaceRange(Invites.Where(invite => invite.Status == IInvite.InviteStatus.Accepted));
-                    break;
-                case InviteFilter.Declined:
-                    FilteredInvites.ReplaceRange(Invites.Where(invite => invite.Status == IInvite.InviteStatus.Declined));
-                    break;
             }
         }
 
