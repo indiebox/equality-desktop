@@ -46,5 +46,17 @@ namespace Equality.Properties {
                 this["active_boards_id"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string current_theme {
+            get {
+                return ((string)(this["current_theme"]));
+            }
+            set {
+                this["current_theme"] = value;
+            }
+        }
     }
 }

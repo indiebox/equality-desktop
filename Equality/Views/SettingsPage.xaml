@@ -4,10 +4,12 @@
            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+           xmlns:equality="http://equality.indiebox.ru/schemas"
            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            xmlns:vm="clr-namespace:Equality.ViewModels"
+           d:DataContext="{d:DesignInstance Type=vm:SettingsPageViewModel}"
            TextElement.Foreground="{DynamicResource MaterialDesignBody}"
            Background="{DynamicResource MaterialDesignPaper}"
            FontSize="16"
@@ -32,17 +34,19 @@
                                  Margin="4"
                                  IsChecked="True"
                                  HorizontalContentAlignment="Left">
-                        <!--IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:TeamMembersPageViewModel+Tab.Invitations}}"-->
                         Внешний вид
                     </RadioButton>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Left">
                     <Label Margin="10,0">Тема</Label>
                     <RadioButton Margin="10"
+                                 IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:SettingsPageViewModel+Themes.Light}}"
                                  Content="Светлая" />
                     <RadioButton Margin="10"
+                                 IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:SettingsPageViewModel+Themes.Dark}}"
                                  Content="Тёмная" />
                     <RadioButton Margin="10"
+                                 IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:SettingsPageViewModel+Themes.Sync}}"
                                  Content="Синхронизация с компьютером" />
                 </StackPanel>
             </StackPanel>

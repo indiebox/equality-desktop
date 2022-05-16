@@ -19,11 +19,35 @@ namespace Equality.ViewModels
 
         public SettingsPageViewModel(INavigationService navigationService)
         {
+
         }
+
+        public enum Themes
+        {
+            Light,
+            Dark,
+            Sync,
+        }
+
+        #region Methods
+
+        private void OnActiveThemeChanged()
+        {
+            switch (ActiveTheme) {
+                case Themes.Light:
+                    break;
+                case Themes.Dark:
+                    break;
+                case Themes.Sync:
+                    break;
+            }
+        }
+
+        #endregion
 
         #region Properties
 
-
+        public Themes ActiveTheme { get; set; }
 
         #endregion
 
@@ -37,7 +61,7 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            // TODO: subscribe to events here
+            OnActiveThemeChanged();
         }
 
         protected override async Task CloseAsync()
