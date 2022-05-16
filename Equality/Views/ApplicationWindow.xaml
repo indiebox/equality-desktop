@@ -41,6 +41,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <TabControl Grid.Row="0"
@@ -146,18 +147,43 @@
                              Height="80">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <catel:EventToCommand Command="{Binding OpenSettings}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+
+                        <TabItem.Header>
+                            <StackPanel>
+                                <StackPanel>
+                                    <materialDesign:PackIcon Kind="Settings"
+                                                             Width="24"
+                                                             Height="24"
+                                                             HorizontalAlignment="Center" />
+                                    <TextBlock Text="Настройка"
+                                               HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </StackPanel>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem Grid.Row="3"
+                             Style="{StaticResource MaterialDesignNavigationRailTabItem}"
+                             Width="80"
+                             Height="80">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                 <catel:EventToCommand Command="{Binding Logout}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
 
                         <TabItem.Header>
                             <StackPanel>
-                                <materialDesign:PackIcon Kind="Logout"
-                                                         Width="24"
-                                                         Height="24"
-                                                         HorizontalAlignment="Center" />
-                                <TextBlock Text="Выйти"
-                                           HorizontalAlignment="Center" />
+                                <StackPanel>
+                                    <materialDesign:PackIcon Kind="Logout"
+                                                             Width="24"
+                                                             Height="24"
+                                                             HorizontalAlignment="Center" />
+                                    <TextBlock Text="Выйти"
+                                               HorizontalAlignment="Center" />
+                                </StackPanel>
                             </StackPanel>
                         </TabItem.Header>
                     </TabItem>

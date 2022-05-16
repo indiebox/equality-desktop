@@ -35,6 +35,7 @@ namespace Equality.ViewModels
             NavigationService = navigationService;
             UserService = userService;
 
+            OpenSettings = new TaskCommand(OnOpenSettings);
             Logout = new TaskCommand(OnLogoutExecute);
 
             StateManager.SelectedTeamChanged += SelectedTeamChangedInStateManager;
@@ -82,6 +83,12 @@ namespace Equality.ViewModels
             }
         }
 
+        public TaskCommand OpenSettings { get; private set; }
+
+        private async Task OnOpenSettings()
+        {
+            NavigationService.Navigate<SettingsPageViewModel>();
+        }
         #endregion
 
         #region Methods
