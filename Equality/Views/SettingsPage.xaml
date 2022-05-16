@@ -27,19 +27,14 @@
             <StackPanel Orientation="Horizontal">
                 <StackPanel Orientation="Vertical"
                             Margin="4">
-                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonRight}"
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                                 BorderBrush="{StaticResource PrimaryHueMidBrush}"
                                  Margin="4"
                                  IsChecked="True"
-                                 Content="FIRST" />
-                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonRight}"
-                                 Margin="4"
-                                 IsChecked="False"
-                                 Content="SECOND" />
-                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonRight}"
-                                 Margin="4"
-                                 IsChecked="False"
-                                 IsEnabled="False"
-                                 Content="THIRD" />
+                                 HorizontalContentAlignment="Left">
+                        <!--IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:TeamMembersPageViewModel+Tab.Invitations}}"-->
+                        Внешний вид
+                    </RadioButton>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Left">
                     <Label Margin="10,0">Тема</Label>
