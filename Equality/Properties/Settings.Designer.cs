@@ -49,7 +49,7 @@ namespace Equality.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Light")]
         public string current_theme {
             get {
                 return ((string)(this["current_theme"]));

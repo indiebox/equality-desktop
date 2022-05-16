@@ -1,7 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
+
+using Catel.MVVM;
 
 using Catel.Services;
 
+using Equality.Data;
 using Equality.MVVM;
 
 namespace Equality.ViewModels
@@ -19,7 +23,23 @@ namespace Equality.ViewModels
 
         public SettingsPageViewModel(INavigationService navigationService)
         {
+            string currentThemeString = Properties.Settings.Default.current_theme;
+            ChangeTheme = new Command<string>(OnChangeThemeExecute);
 
+            if (currentThemeString == null) {
+                currentThemeString = "Light";
+            }
+            switch (currentThemeString) {
+                case "Light":
+                    ActiveTheme = Themes.Light;
+                    break;
+                case "Dark":
+                    ActiveTheme = Themes.Dark;
+                    break;
+                case "Sync":
+                    ActiveTheme = Themes.Sync;
+                    break;
+            }
         }
 
         public enum Themes
@@ -31,16 +51,23 @@ namespace Equality.ViewModels
 
         #region Methods
 
-        private void OnActiveThemeChanged()
+        private void OnActiveThemeChanged(string newTheme)
         {
-            switch (ActiveTheme) {
-                case Themes.Light:
+            switch (newTheme) {
+                case "Light":
+                    ActiveTheme = Themes.Light;
+                    Properties.Settings.Default.current_theme = "Light";
                     break;
-                case Themes.Dark:
+                case "Dark":
+                    ActiveTheme = Themes.Dark;
+                    Properties.Settings.Default.current_theme = "Dark";
                     break;
-                case Themes.Sync:
+                case "Sync":
+                    ActiveTheme = Themes.Sync;
+                    Properties.Settings.Default.current_theme = "Sync";
                     break;
             }
+            Properties.Settings.Default.Save();
         }
 
         #endregion
@@ -54,14 +81,18 @@ namespace Equality.ViewModels
         #region Commands
 
 
+        public Command<string> ChangeTheme { get; private set; }
+
+        private void OnChangeThemeExecute(string theme)
+        {
+            OnActiveThemeChanged(theme);
+        }
 
         #endregion
 
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-
-            OnActiveThemeChanged();
         }
 
         protected override async Task CloseAsync()

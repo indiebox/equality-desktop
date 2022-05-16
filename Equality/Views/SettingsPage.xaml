@@ -40,13 +40,19 @@
                 <StackPanel HorizontalAlignment="Left">
                     <Label Margin="10,0">Тема</Label>
                     <RadioButton Margin="10"
-                                 IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:SettingsPageViewModel+Themes.Light}}"
+                                 Command="{Binding ChangeTheme}"
+                                 CommandParameter="Light"
+                                 IsChecked="{Binding ActiveTheme, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:SettingsPageViewModel+Themes.Light}}"
                                  Content="Светлая" />
                     <RadioButton Margin="10"
-                                 IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:SettingsPageViewModel+Themes.Dark}}"
+                                 Command="{Binding ChangeTheme}"
+                                 CommandParameter="Dark"
+                                 IsChecked="{Binding ActiveTheme, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:SettingsPageViewModel+Themes.Dark}}"
                                  Content="Тёмная" />
                     <RadioButton Margin="10"
-                                 IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:SettingsPageViewModel+Themes.Sync}}"
+                                 Command="{Binding ChangeTheme}"
+                                 CommandParameter="Sync"
+                                 IsChecked="{Binding ActiveTheme, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:SettingsPageViewModel+Themes.Sync}}"
                                  Content="Синхронизация с компьютером" />
                 </StackPanel>
             </StackPanel>
