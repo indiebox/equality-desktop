@@ -8,6 +8,8 @@ using Catel.Services;
 using Equality.Data;
 using Equality.MVVM;
 
+using MaterialDesignThemes.Wpf;
+
 namespace Equality.ViewModels
 {
     public class SettingsPageViewModel : ViewModel
@@ -53,14 +55,26 @@ namespace Equality.ViewModels
 
         private void OnActiveThemeChanged(string newTheme)
         {
+            ITheme theme = _paletteHelper.GetTheme();
+            IBaseTheme baseTheme;
             switch (newTheme) {
                 case "Light":
                     ActiveTheme = Themes.Light;
                     Properties.Settings.Default.current_theme = "Light";
+
+                    baseTheme = new MaterialDesignLightTheme();
+                    theme.SetBaseTheme(baseTheme);
+                    _paletteHelper.SetTheme(theme);
+
                     break;
                 case "Dark":
                     ActiveTheme = Themes.Dark;
                     Properties.Settings.Default.current_theme = "Dark";
+
+                    baseTheme = new MaterialDesignDarkTheme();
+                    theme.SetBaseTheme(baseTheme);
+                    _paletteHelper.SetTheme(theme);
+
                     break;
                 case "Sync":
                     ActiveTheme = Themes.Sync;
@@ -75,6 +89,8 @@ namespace Equality.ViewModels
         #region Properties
 
         public Themes ActiveTheme { get; set; }
+
+        private readonly PaletteHelper _paletteHelper = new PaletteHelper();
 
         #endregion
 
