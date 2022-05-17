@@ -17,7 +17,7 @@
            d:DataContext="{d:DesignInstance vm:TeamProjectsPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
 
-    <Grid Background="White">
+    <Grid Background="{StaticResource MaterialDesignPaper}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

@@ -17,9 +17,9 @@
     <StackPanel Orientation="Horizontal"
                 HorizontalAlignment="Center">
         <StackPanel Margin="20">
-            <StackPanel Background="White"
+            <StackPanel Background="{StaticResource MaterialDesignPaper}"
                         HorizontalAlignment="Center">
-                <StackPanel Background="White"
+                <StackPanel Background="{StaticResource MaterialDesignPaper}"
                             Margin="10,0">
                     <TextBlock Margin="10"
                                FontSize="24"

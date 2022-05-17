@@ -31,7 +31,7 @@
                      Width="250"
                      Padding="10"
                      DockPanel.Dock="Left"
-                     Background="White"
+                     Background="{StaticResource MaterialDesignPaper}"
                      VerticalAlignment="Center"
                      materialDesign:HintAssist.Hint="Поиск по имени"
                      Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}">

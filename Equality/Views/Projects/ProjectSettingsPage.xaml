@@ -16,7 +16,7 @@
                mc:Ignorable="d">
     <DockPanel>
         <Grid>
-            <StackPanel Background="White"
+            <StackPanel Background="{StaticResource MaterialDesignPaper}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
                         Margin="20">

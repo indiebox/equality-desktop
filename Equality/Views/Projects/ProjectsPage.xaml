@@ -28,7 +28,7 @@
                    Opacity="0.5" />
 
         <DockPanel>
-            <Grid Background="White"
+            <Grid Background="{DynamicResource MaterialDesignPaper}"
                   Width="300">
                 <Grid Margin="15">
                     <Grid.RowDefinitions>
@@ -120,7 +120,7 @@
                     <ListBox.Resources>
                         <ControlTemplate x:Key="NoItemsTemplate">
                             <StackPanel>
-                                <TextBlock Background="White"
+                                <TextBlock Background="{DynamicResource MaterialDesignPaper}"
                                            Padding="15"
                                            Margin="30"
                                            TextWrapping="Wrap"
@@ -133,7 +133,7 @@
 
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type models:Team}">
-                            <StackPanel Background="White"
+                            <StackPanel Background="{DynamicResource MaterialDesignPaper}"
                                         Margin="30,30,20,0">
                                 <Button Style="{StaticResource BaseButton}"
                                         Command="{Binding DataContext.OpenTeamPage, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"

@@ -24,7 +24,7 @@
                    Height="50"
                    LastChildFill="False">
             <ComboBox Style="{StaticResource FilledComboBox}"
-                      Background="White"
+                      Background="{StaticResource MaterialDesignPaper}"
                       materialDesign:HintAssist.Hint="Фильтры"
                       VerticalAlignment="Center"
                       Width="250">
@@ -319,7 +319,7 @@
                                                     <Setter Property="TextDecorations"
                                                             Value="Underline" />
                                                 </DataTrigger>
-                                                
+
                                                 <!-- Accepted invite -->
                                                 <DataTrigger Binding="{Binding Status}"
                                                              Value="Accepted">
