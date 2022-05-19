@@ -10,6 +10,8 @@ using Equality.Http;
 using Equality.MVVM;
 using Equality.Services;
 
+using MaterialDesignThemes.Wpf;
+
 using PusherClient;
 
 namespace Equality.ViewModels
@@ -20,8 +22,36 @@ namespace Equality.ViewModels
 
         protected IUserService UserService;
 
+        private readonly PaletteHelper _paletteHelper = new PaletteHelper();
+
         public LoadingWindowViewModel(IUIVisualizerService uiVisualizerService, IUserService userService)
         {
+            ITheme theme = _paletteHelper.GetTheme();
+            IBaseTheme baseTheme;
+            string currentThemeString = Properties.Settings.Default.current_theme;
+
+            switch (currentThemeString) {
+                case "Light":
+                    Properties.Settings.Default.current_theme = "Light";
+
+                    baseTheme = new MaterialDesignLightTheme();
+                    theme.SetBaseTheme(baseTheme);
+                    _paletteHelper.SetTheme(theme);
+
+                    break;
+                case "Dark":
+                    Properties.Settings.Default.current_theme = "Dark";
+
+                    baseTheme = new MaterialDesignDarkTheme();
+                    theme.SetBaseTheme(baseTheme);
+                    _paletteHelper.SetTheme(theme);
+
+                    break;
+                case "Sync":
+                    Properties.Settings.Default.current_theme = "Sync";
+                    break;
+            }
+
             UIVisualizerService = uiVisualizerService;
             UserService = userService;
         }

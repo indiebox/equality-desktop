@@ -43,7 +43,6 @@
         </DockPanel>
 
         <ListBox Grid.Row="1"
-                 Background="WhiteSmoke"
                  ItemsSource="{Binding FilteredInvites}">
             <ListBox.Resources>
                 <ControlTemplate x:Key="NoItemsTemplate">
