@@ -15,37 +15,8 @@ namespace Equality.ViewModels
 
         public AuthorizationWindowViewModel(INavigationService navigationService)
         {
-            ITheme theme = _paletteHelper.GetTheme();
-            IBaseTheme baseTheme;
-            string currentThemeString = Properties.Settings.Default.current_theme;
-
-            switch (currentThemeString) {
-                case "Light":
-                    Properties.Settings.Default.current_theme = "Light";
-
-                    baseTheme = new MaterialDesignLightTheme();
-                    theme.SetBaseTheme(baseTheme);
-                    _paletteHelper.SetTheme(theme);
-
-                    break;
-                case "Dark":
-                    Properties.Settings.Default.current_theme = "Dark";
-
-                    baseTheme = new MaterialDesignDarkTheme();
-                    theme.SetBaseTheme(baseTheme);
-                    _paletteHelper.SetTheme(theme);
-
-                    break;
-                case "Sync":
-                    Properties.Settings.Default.current_theme = "Sync";
-                    break;
-            }
-
-
-
             NavigationService = navigationService;
         }
-        private readonly PaletteHelper _paletteHelper = new PaletteHelper();
 
         public override string Title => "Equality";
 
