@@ -254,6 +254,64 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Style.Triggers>
+                                    <DataTrigger Value="True">
+                                        <DataTrigger.Binding>
+                                            <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                                <Binding Path="." />
+                                                <Binding Path="DataContext.DragColumn"
+                                                         RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
+                                            </MultiBinding>
+                                        </DataTrigger.Binding>
+                                        <Setter Property="Opacity"
+                                                Value="0.5" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <Border Grid.RowSpan="2"
+                                Background="Black"
+                                Opacity="0.7"
+                                Panel.ZIndex="1">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Visibility"
+                                            Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CantMoveCardMessages.Count, Converter={equality:GreaterOrEqualConverter}, ConverterParameter=1}"
+                                                     Value="True">
+                                            <Setter Property="Visibility"
+                                                    Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <StackPanel Orientation="Vertical"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Margin="10">
+                                <materialDesign:PackIcon HorizontalAlignment="Center"
+                                                         Width="40"
+                                                         Height="40"
+                                                         Foreground="White"
+                                                         Kind="Lock" />
+                                <ListBox ItemsSource="{Binding CantMoveCardMessages}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Foreground="White"
+                                                       FontSize="14"
+                                                       TextWrapping="Wrap"
+                                                       TextAlignment="Center"
+                                                       Text="{Binding}" />
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </Border>
+
                         <!-- Column header -->
                         <DockPanel LastChildFill="True">
                             <DockPanel.Style>

@@ -15,18 +15,18 @@ namespace Equality.Views
         {
             InitializeComponent();
 
-            DataContextChanged += BoardPage_DataContextChanged;
-            ListBoxColumns.Loaded += ListBoxColumns_Loaded;
+            DataContextChanged += BoardPageDataContextChanged;
+            ListBoxColumns.Loaded += ListBoxColumnsLoaded;
         }
 
         protected BoardPageViewModel Vm { get; set; }
 
-        private void BoardPage_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void BoardPageDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             Vm = (BoardPageViewModel)DataContext;
         }
 
-        private void ListBoxColumns_Loaded(object sender, RoutedEventArgs e)
+        private void ListBoxColumnsLoaded(object sender, RoutedEventArgs e)
         {
             ColumnsScrollViewer = (VisualTreeHelper.GetChild(ListBoxColumns, 0) as Decorator).Child as ScrollViewer;
         }
@@ -46,7 +46,7 @@ namespace Equality.Views
         Column DragCardInitialColumn { get; set; }
 
         /// <summary>
-        /// Fired when mouse is over through column header(with column name).
+        /// Fired when mouse is over through column header(with a column name).
         /// </summary>
         private void ColumnHeaderMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -68,23 +68,22 @@ namespace Equality.Views
         {
             var column = ((FrameworkElement)sender).DataContext as Column;
 
-            // Move draggable card in new column.
             if (IsDraggingCard) {
+                // Move draggable card in new column.
+                if (!CanMoveCardToColumn(Vm.DragCard, column)) {
+                    return;
+                }
+
                 Vm.DraggableCardColumn.Cards.Remove(Vm.DragCard);
                 Vm.DraggableCardColumn = column;
                 column.Cards.Add(Vm.DragCard);
+            } else if (IsDraggingColumn) {
+                // Change column order.
+                int oldIndex = Vm.Columns.IndexOf(column);
+                int dragColumnIndex = Vm.Columns.IndexOf(Vm.DragColumn);
 
-                return;
+                Vm.Columns.Move(oldIndex, dragColumnIndex);
             }
-
-            if (!IsDraggingColumn) {
-                return;
-            }
-
-            int oldIndex = Vm.Columns.IndexOf(column);
-            int dragColumnIndex = Vm.Columns.IndexOf(Vm.DragColumn);
-
-            Vm.Columns.Move(oldIndex, dragColumnIndex);
         }
 
         /// <summary>
@@ -120,11 +119,15 @@ namespace Equality.Views
                 return;
             }
 
-            double mousePosition = e.GetPosition(control).Y;
-            double cardCenter = control.ActualHeight / 2;
-
             int dragCardIndex = Vm.DraggableCardColumn.Cards.IndexOf(Vm.DragCard);
             int cardIndex = Vm.DraggableCardColumn.Cards.IndexOf(card);
+
+            if (dragCardIndex == -1 || cardIndex == -1) {
+                return;
+            }
+
+            double mousePosition = e.GetPosition(control).Y;
+            double cardCenter = control.ActualHeight / 2;
 
             if ((dragCardIndex > cardIndex && mousePosition < cardCenter)
                 || (dragCardIndex < cardIndex && mousePosition > cardCenter)) {
@@ -137,6 +140,10 @@ namespace Equality.Views
             var element = IsDraggingCard
                     ? MovingCard
                     : MovingColumn;
+
+            if (IsDraggingCard) {
+                SetMoveCardAbilities();
+            }
 
             DeltaMouse = Mouse.GetPosition(DraggingCanvas);
             DraggableRelativePoint = control.TransformToAncestor(this).Transform(new Point(0, 0));
@@ -166,12 +173,46 @@ namespace Equality.Views
 
                 Vm.DragCard = null;
                 Vm.DraggableCardColumn = null;
+
+                ResetMoveCardAbilities();
+            }
+        }
+
+        /// <summary>
+        /// Do we can move card to the column.
+        /// </summary>
+        /// <param name="card">The card.</param>
+        /// <param name="column">The column.</param>
+        private bool CanMoveCardToColumn(Card card, Column column)
+        {
+            return !column.IsCardsLimitReached;
+        }
+
+        /// <summary>
+        /// Set move card abilities to each column and add messages.
+        /// </summary>
+        private void SetMoveCardAbilities()
+        {
+            foreach (var col in Vm.Columns) {
+                if (col.IsCardsLimitReached && !col.Cards.Contains(Vm.DragCard)) {
+                    col.CantMoveCardMessages.Add("ƒостигнут лимит карточек в данной колонке: 100");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reset move card abilities for each column.
+        /// </summary>
+        private void ResetMoveCardAbilities()
+        {
+            foreach (var col in Vm.Columns) {
+                col.CantMoveCardMessages.Clear();
             }
         }
 
         #endregion
 
-        #region Horizontal scroll
+        #region Horizontal scroll(board)
 
         protected double ScrollInitialPosition { get; set; }
 
