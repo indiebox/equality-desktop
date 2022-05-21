@@ -30,6 +30,8 @@ namespace Equality.ViewModels
         [Validatable]
         public string NewColumnName { get; set; }
 
+        public bool IsColumnsLimitReached => Columns.Count >= 50;
+
         #endregion
 
         #region Commands
@@ -52,6 +54,7 @@ namespace Equality.ViewModels
                 Columns.Add(CreateColumnVm.Column);
 
                 // Open control again.
+                CreateColumnVm = null;
                 OpenCreateColumnWindow.Execute();
             } else {
                 CreateColumnVm = null;
@@ -169,12 +172,14 @@ namespace Equality.ViewModels
         {
             ColumnService = columnService;
 
-            OpenCreateColumnWindow = new(OnOpenCreateColumnWindowExecuteAsync, () => CreateColumnVm is null);
+            OpenCreateColumnWindow = new(OnOpenCreateColumnWindowExecuteAsync, () => CreateColumnVm is null && !IsColumnsLimitReached);
             StartEditColumn = new(OnStartEditColumnExecuteAsync);
             SaveNewColumnName = new(OnSaveNewColumnNameExecuteAsync, () => GetFieldErrors(nameof(NewColumnName)) == string.Empty);
             CancelEditColumn = new(OnCancelEditColumnExecute);
             UpdateColumnOrder = new(OnUpdateColumnOrderExecuteAsync);
             DeleteColumn = new(OnDeleteColumnExecuteAsync);
+
+            Columns.CollectionChanged += (s, e) => RaisePropertyChanged(nameof(IsColumnsLimitReached));
         }
 
         protected async void RegisterPusherForColumns()

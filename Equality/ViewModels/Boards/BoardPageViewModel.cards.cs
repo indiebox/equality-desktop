@@ -64,11 +64,18 @@ namespace Equality.ViewModels
                 ColumnForNewCard.Cards.Add(CreateCardVm.Card);
 
                 // Open control again.
-                OpenCreateCardWindow.Execute(ColumnForNewCard);
-            } else {
+                var col = ColumnForNewCard;
                 CreateCardVm = null;
                 ColumnForNewCard = null;
+                if (!col.IsCardsLimitReached) {
+                    OpenCreateCardWindow.Execute(col);
+
+                    return Task.CompletedTask;
+                }
             }
+
+            CreateCardVm = null;
+            ColumnForNewCard = null;
 
             return Task.CompletedTask;
         }

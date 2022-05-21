@@ -30,8 +30,21 @@
                        Margin="10"
                        LastChildFill="False">
                 <Button DockPanel.Dock="Right"
-                        Style="{StaticResource MaterialDesignIconButton}"
                         Command="{Binding OpenCreateBoardWindow}">
+                    <Button.Style>
+                        <Style TargetType="Button"
+                               BasedOn="{StaticResource MaterialDesignIconButton}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsBoardsLimitReached}"
+                                             Value="True">
+                                    <Setter Property="ToolTip"
+                                            Value="Достигнут лимит досок для данного проекта: 10" />
+                                    <Setter Property="ToolTipService.ShowOnDisabled"
+                                            Value="True" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
                     <materialDesign:PackIcon Kind="Plus" />
                 </Button>
                 <TextBlock DockPanel.Dock="Left"

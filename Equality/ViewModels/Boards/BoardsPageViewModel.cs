@@ -54,11 +54,13 @@ namespace Equality.ViewModels
             NavigationService = navigationService;
 
             OpenBoardPage = new Command<Board>(OnOpenOpenBoardPageExecute);
-            OpenCreateBoardWindow = new TaskCommand(OnOpenCreateBoardWindowExecuteAsync, () => CreateBoardVm is null);
+            OpenCreateBoardWindow = new TaskCommand(OnOpenCreateBoardWindowExecuteAsync, () => CreateBoardVm is null && !IsBoardsLimitReached);
             StartEditBoardName = new Command<Board>(OnStartEditBoardNameExecuteAsync);
             SaveNewBoardName = new TaskCommand(OnSaveNewBoardNameExecuteAsync, () => GetFieldErrors(nameof(NewBoardName)) == string.Empty);
             CancelEditBoardName = new Command(OnCancelEditBoardNameExecute);
             MarkAsActive = new Command<Board>(OnMarkAsActiveExecute);
+
+            Boards.CollectionChanged += (s, e) => RaisePropertyChanged(nameof(IsBoardsLimitReached));
         }
 
         #region Properties
@@ -75,6 +77,8 @@ namespace Equality.ViewModels
 
         [Validatable]
         public string NewBoardName { get; set; }
+
+        public bool IsBoardsLimitReached => Boards.Count >= 10;
 
         #endregion
 

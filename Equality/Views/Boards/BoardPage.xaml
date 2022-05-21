@@ -280,8 +280,23 @@
                                         Orientation="Horizontal"
                                         VerticalAlignment="Top">
                                 <Button Command="{Binding DataContext.OpenCreateCardWindow, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
-                                        CommandParameter="{Binding}"
-                                        Style="{StaticResource MaterialDesignIconForegroundButton}">
+                                        CommandParameter="{Binding}">
+                                    <Button.Style>
+                                        <Style TargetType="Button"
+                                               BasedOn="{StaticResource MaterialDesignIconForegroundButton}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsCardsLimitReached}"
+                                                             Value="True">
+                                                    <Setter Property="IsEnabled"
+                                                            Value="False" />
+                                                    <Setter Property="ToolTip"
+                                                            Value="Достигнут лимит карточек для данной колонки: 100" />
+                                                    <Setter Property="ToolTipService.ShowOnDisabled"
+                                                            Value="True" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
                                     <materialDesign:PackIcon Kind="Plus"
                                                              Foreground="Gray" />
                                 </Button>
@@ -602,6 +617,14 @@
                                                         <Setter Property="Background"
                                                                 Value="#33000029" />
                                                     </Trigger>
+
+                                                    <DataTrigger Binding="{Binding DataContext.IsColumnsLimitReached, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                                 Value="True">
+                                                        <Setter Property="ToolTip"
+                                                                Value="Достигнут лимит колонок для данной доски: 50" />
+                                                        <Setter Property="ToolTipService.ShowOnDisabled"
+                                                                Value="True" />
+                                                    </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Button.Style>
