@@ -24,7 +24,7 @@ namespace Equality.Converters
 
         protected override object ConvertBack(object value, Type targetType, object parameter)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 
@@ -47,7 +47,7 @@ namespace Equality.Converters
 
         protected override object ConvertBack(object value, Type targetType, object parameter)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }
