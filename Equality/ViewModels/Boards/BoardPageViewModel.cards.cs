@@ -341,7 +341,7 @@ namespace Equality.ViewModels
                     }
 
                     // Disable dragging mode for the card.
-                    if (DragCard.Id == cardId) {
+                    if (DragCard != null && DragCard.Id == cardId) {
                         DragCard = null;
                         DraggableCardColumn = null;
                     }

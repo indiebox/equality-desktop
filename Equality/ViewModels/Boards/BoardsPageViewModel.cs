@@ -60,7 +60,14 @@ namespace Equality.ViewModels
             CancelEditBoardName = new Command(OnCancelEditBoardNameExecute);
             MarkAsActive = new Command<Board>(OnMarkAsActiveExecute);
 
-            Boards.CollectionChanged += (s, e) => RaisePropertyChanged(nameof(IsBoardsLimitReached));
+            Boards.CollectionChanged += (s, e) =>
+            {
+                RaisePropertyChanged(nameof(IsBoardsLimitReached));
+
+                if (IsBoardsLimitReached && CreateBoardVm != null) {
+                    CreateBoardVm.CloseCommand.Execute();
+                }
+            };
         }
 
         #region Properties

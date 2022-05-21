@@ -179,7 +179,14 @@ namespace Equality.ViewModels
             UpdateColumnOrder = new(OnUpdateColumnOrderExecuteAsync);
             DeleteColumn = new(OnDeleteColumnExecuteAsync);
 
-            Columns.CollectionChanged += (s, e) => RaisePropertyChanged(nameof(IsColumnsLimitReached));
+            Columns.CollectionChanged += (s, e) =>
+            {
+                RaisePropertyChanged(nameof(IsColumnsLimitReached));
+
+                if (IsColumnsLimitReached && CreateColumnVm != null) {
+                    CreateColumnVm.CloseCommand.Execute();
+                }
+            };
         }
 
         protected async void RegisterPusherForColumns()
@@ -256,7 +263,7 @@ namespace Equality.ViewModels
                     }
 
                     // Disable dragging mode for the column.
-                    if (DragColumn.Id == columnId) {
+                    if (DragColumn != null && DragColumn.Id == columnId) {
                         DragColumn = null;
                     }
 
