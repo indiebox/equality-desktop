@@ -85,7 +85,7 @@ namespace Equality.ViewModels
         [Validatable]
         public string NewBoardName { get; set; }
 
-        public bool IsBoardsLimitReached => Boards.Count >= 10;
+        public bool IsBoardsLimitReached => Boards.Count >= Properties.Settings.Default.max_boards_count;
 
         #endregion
 

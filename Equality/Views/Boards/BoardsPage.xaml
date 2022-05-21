@@ -10,6 +10,7 @@
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            xmlns:vm="clr-namespace:Equality.ViewModels"
            xmlns:controls="clr-namespace:Equality.Controls"
+           xmlns:prop="clr-namespace:Equality.Properties"
            TextElement.Foreground="{DynamicResource MaterialDesignBody}"
            Background="{DynamicResource MaterialDesignPaper}"
            FontSize="16"
@@ -37,8 +38,14 @@
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsBoardsLimitReached}"
                                              Value="True">
-                                    <Setter Property="ToolTip"
-                                            Value="Достигнут лимит досок для данного проекта: 10" />
+                                    <Setter Property="ToolTip">
+                                        <Setter.Value>
+                                            <TextBlock>
+                                                    <Run>Достигнут лимит досок для данного проекта: </Run>
+                                                    <Run Text="{Binding Source={x:Static prop:Settings.Default}, Path=max_boards_count, Mode=OneTime}" />
+                                            </TextBlock>
+                                        </Setter.Value>
+                                    </Setter>
                                     <Setter Property="ToolTipService.ShowOnDisabled"
                                             Value="True" />
                                 </DataTrigger>

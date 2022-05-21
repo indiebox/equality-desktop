@@ -12,6 +12,7 @@
            xmlns:models="clr-namespace:Equality.Models"
            xmlns:objects="clr-namespace:Equality.Data.Wpf"
            xmlns:equality="http://equality.indiebox.ru/schemas"
+           xmlns:prop="clr-namespace:Equality.Properties"
            TextElement.Foreground="{DynamicResource MaterialDesignBody}"
            Background="{DynamicResource MaterialDesignPaper}"
            FontSize="16"
@@ -53,6 +54,7 @@
                         </Style>
                     </Grid.Style>
 
+                    <!-- Card itself -->
                     <StackPanel>
                         <Grid>
                             <Grid.Style>
@@ -272,6 +274,7 @@
                             </Style>
                         </Grid.Style>
 
+                        <!-- Move card abilities and messages -->
                         <Border Grid.RowSpan="2"
                                 Background="Black"
                                 Opacity="0.7"
@@ -347,8 +350,14 @@
                                                              Value="True">
                                                     <Setter Property="IsEnabled"
                                                             Value="False" />
-                                                    <Setter Property="ToolTip"
-                                                            Value="Достигнут лимит карточек для данной колонки: 100" />
+                                                    <Setter Property="ToolTip">
+                                                        <Setter.Value>
+                                                            <TextBlock>
+                                                                <Run>Достигнут лимит карточек для данной колонки: </Run>
+                                                                <Run Text="{Binding Source={x:Static prop:Settings.Default}, Path=max_cards_count, Mode=OneTime}" />
+                                                            </TextBlock>
+                                                        </Setter.Value>
+                                                    </Setter>
                                                     <Setter Property="ToolTipService.ShowOnDisabled"
                                                             Value="True" />
                                                 </DataTrigger>
@@ -678,8 +687,14 @@
 
                                                     <DataTrigger Binding="{Binding DataContext.IsColumnsLimitReached, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                                                  Value="True">
-                                                        <Setter Property="ToolTip"
-                                                                Value="Достигнут лимит колонок для данной доски: 50" />
+                                                        <Setter Property="ToolTip">
+                                                            <Setter.Value>
+                                                                <TextBlock>
+                                                                    <Run>Достигнут лимит колонок для данной доски: </Run>
+                                                                    <Run Text="{Binding Source={x:Static prop:Settings.Default}, Path=max_columns_count, Mode=OneTime}" />
+                                                                </TextBlock>
+                                                            </Setter.Value>
+                                                        </Setter>
                                                         <Setter Property="ToolTipService.ShowOnDisabled"
                                                                 Value="True" />
                                                     </DataTrigger>

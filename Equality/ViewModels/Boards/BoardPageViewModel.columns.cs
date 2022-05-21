@@ -30,7 +30,7 @@ namespace Equality.ViewModels
         [Validatable]
         public string NewColumnName { get; set; }
 
-        public bool IsColumnsLimitReached => Columns.Count >= 50;
+        public bool IsColumnsLimitReached => Columns.Count >= Properties.Settings.Default.max_columns_count;
 
         #endregion
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 using Catel.Data;
@@ -31,7 +30,7 @@ namespace Equality.Models
 
         #region Custom properties
 
-        public bool IsCardsLimitReached => Cards.Count >= 5;
+        public bool IsCardsLimitReached => Cards.Count >= Properties.Settings.Default.max_cards_count;
 
         /// <summary>
         /// The list of messages why we cant move current draggable card to this column.

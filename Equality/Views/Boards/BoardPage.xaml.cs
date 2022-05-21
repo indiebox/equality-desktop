@@ -195,7 +195,7 @@ namespace Equality.Views
         {
             foreach (var col in Vm.Columns) {
                 if (col.IsCardsLimitReached && !col.Cards.Contains(Vm.DragCard)) {
-                    col.CantMoveCardMessages.Add("ƒостигнут лимит карточек в данной колонке: 100");
+                    col.CantMoveCardMessages.Add($"ƒостигнут лимит карточек в данной колонке: {Properties.Settings.Default.max_cards_count}");
                 }
             }
         }
