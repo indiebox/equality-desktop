@@ -68,8 +68,8 @@ namespace Equality.Views
         {
             var column = ((FrameworkElement)sender).DataContext as Column;
 
+            // Move draggable card in new column.
             if (IsDraggingCard) {
-                // Move draggable card in new column.
                 if (!CanMoveCardToColumn(Vm.DragCard, column)) {
                     return;
                 }
@@ -185,7 +185,7 @@ namespace Equality.Views
         /// <param name="column">The column.</param>
         private bool CanMoveCardToColumn(Card card, Column column)
         {
-            return !column.IsCardsLimitReached;
+            return column.CantMoveCardMessages.Count == 0;
         }
 
         /// <summary>
