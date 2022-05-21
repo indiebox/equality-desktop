@@ -42,8 +42,10 @@ namespace Equality
 #endif
             Log.Info("Starting application");
 
+#if !DEBUG
             Log.Info("Allow only one app instance");
             SingleInstance.Make();
+#endif
 
             // Want to improve performance? Uncomment the lines below. Note though that this will disable
             // some features. 
