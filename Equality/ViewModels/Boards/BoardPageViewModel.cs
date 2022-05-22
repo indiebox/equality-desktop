@@ -52,8 +52,9 @@ namespace Equality.ViewModels
                         Name = "Empty column",
                     },
                 });
-            });
 
+                Columns[1].CantMoveCardMessages.Add("Тестовое сообщение о запрете перемещения.");
+            });
         }
 
         #endregion

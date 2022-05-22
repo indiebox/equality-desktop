@@ -46,5 +46,32 @@ namespace Equality.Properties {
                 this["active_boards_id"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int max_boards_count {
+            get {
+                return ((int)(this["max_boards_count"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public int max_columns_count {
+            get {
+                return ((int)(this["max_columns_count"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int max_cards_count {
+            get {
+                return ((int)(this["max_cards_count"]));
+            }
+        }
     }
 }

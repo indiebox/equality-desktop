@@ -51,24 +51,44 @@ namespace Equality.ViewModels
                 CreateCardVm.ClosedAsync -= CreateCardVmClosedAsync;
             }
 
+            if (ColumnForNewCard != null) {
+                ColumnForNewCard.Cards.CollectionChanged -= ColumnForNewCardCardsChanged;
+            }
+
             ColumnForNewCard = column;
+            ColumnForNewCard.Cards.CollectionChanged += ColumnForNewCardCardsChanged;
             CreateCardVm = MvvmHelper.CreateViewModel<CreateCardControlViewModel>(ColumnForNewCard);
             CreateCardVm.ClosedAsync += CreateCardVmClosedAsync;
+        }
+
+        private void ColumnForNewCardCardsChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (ColumnForNewCard.IsCardsLimitReached) {
+                CreateCardVm.CloseCommand.Execute();
+            }
         }
 
         private Task CreateCardVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
             CreateCardVm.ClosedAsync -= CreateCardVmClosedAsync;
+            ColumnForNewCard.Cards.CollectionChanged -= ColumnForNewCardCardsChanged;
 
             if (CreateCardVm.Result) {
                 ColumnForNewCard.Cards.Add(CreateCardVm.Card);
 
                 // Open control again.
-                OpenCreateCardWindow.Execute(ColumnForNewCard);
-            } else {
+                var col = ColumnForNewCard;
                 CreateCardVm = null;
                 ColumnForNewCard = null;
+                if (!col.IsCardsLimitReached) {
+                    OpenCreateCardWindow.Execute(col);
+
+                    return Task.CompletedTask;
+                }
             }
+
+            CreateCardVm = null;
+            ColumnForNewCard = null;
 
             return Task.CompletedTask;
         }
@@ -334,7 +354,7 @@ namespace Equality.ViewModels
                     }
 
                     // Disable dragging mode for the card.
-                    if (DragCard.Id == cardId) {
+                    if (DragCard != null && DragCard.Id == cardId) {
                         DragCard = null;
                         DraggableCardColumn = null;
                     }
