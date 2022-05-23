@@ -73,5 +73,29 @@ namespace Equality.Properties {
                 return ((int)(this["max_cards_count"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public ulong menu_selected_team {
+            get {
+                return ((ulong)(this["menu_selected_team"]));
+            }
+            set {
+                this["menu_selected_team"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public ulong menu_selected_project {
+            get {
+                return ((ulong)(this["menu_selected_project"]));
+            }
+            set {
+                this["menu_selected_project"] = value;
+            }
+        }
     }
 }

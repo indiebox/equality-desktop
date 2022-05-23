@@ -80,7 +80,7 @@ namespace Equality.ViewModels
 
         protected async void OpenBoardPageAsync()
         {
-            var board = await LoadActiveBoard();
+            var board = await LoadActiveBoardAsync();
             if (board != null) {
                 StateManager.SelectedBoard = board;
                 NavigationService.Navigate<BoardPageViewModel, ProjectPageViewModel>();
@@ -89,7 +89,7 @@ namespace Equality.ViewModels
             }
         }
 
-        private async Task<Board> LoadActiveBoard()
+        private async Task<Board> LoadActiveBoardAsync()
         {
             if (!SettingsManager.FavoriteBoards.ContainsKey(Project.Id)) {
                 return null;
