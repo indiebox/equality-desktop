@@ -32,7 +32,7 @@
             <TextBlock TextAlignment="Center"
                        TextWrapping="Wrap">Вы уверены, что хотите удалить данную колонку?</TextBlock>
             <TextBlock TextAlignment="Center"
-                       TextWrapping="Wrap">Это действие невозможно отменить!</TextBlock>
+                       TextWrapping="Wrap">Все карточки будут также удалены.</TextBlock>
         </StackPanel>
 
         <DockPanel Grid.Row="1"
