@@ -5,7 +5,7 @@
     <Setting Name="api_token" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="active_boards_id" Type="System.String" Scope="User">
+    <Setting Name="favorite_boards" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="max_boards_count" Type="System.Int32" Scope="Application">

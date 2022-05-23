@@ -121,10 +121,10 @@ namespace Equality.ViewModels
         {
             // Is currently active.
             if (ActiveBoard == board) {
-                SettingsManager.ActiveBoards.Remove(Project.Id);
+                SettingsManager.FavoriteBoards.Remove(Project.Id);
                 ActiveBoard = null;
             } else {
-                SettingsManager.ActiveBoards[Project.Id] = board.Id;
+                SettingsManager.FavoriteBoards[Project.Id] = board.Id;
                 ActiveBoard = board;
             }
 
@@ -200,11 +200,11 @@ namespace Equality.ViewModels
 
         private void LoadActiveBoard()
         {
-            if (SettingsManager.ActiveBoards.ContainsKey(Project.Id)) {
-                ActiveBoard = Boards.Where(board => board.Id == SettingsManager.ActiveBoards[Project.Id]).FirstOrDefault();
+            if (SettingsManager.FavoriteBoards.ContainsKey(Project.Id)) {
+                ActiveBoard = Boards.Where(board => board.Id == SettingsManager.FavoriteBoards[Project.Id]).FirstOrDefault();
 
                 if (ActiveBoard == null) {
-                    SettingsManager.ActiveBoards.Remove(Project.Id);
+                    SettingsManager.FavoriteBoards.Remove(Project.Id);
                 }
             }
         }

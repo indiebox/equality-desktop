@@ -38,12 +38,12 @@ namespace Equality.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string active_boards_id {
+        public string favorite_boards {
             get {
-                return ((string)(this["active_boards_id"]));
+                return ((string)(this["favorite_boards"]));
             }
             set {
-                this["active_boards_id"] = value;
+                this["favorite_boards"] = value;
             }
         }
         

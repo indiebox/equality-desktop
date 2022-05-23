@@ -2,9 +2,17 @@
 
 namespace Equality.Data
 {
+    /// <summary>
+    /// Class for working with complex deserializable types in Properties.Settings.
+    /// </summary>
     internal static class SettingsManager
     {
-        public static Dictionary<ulong, ulong> ActiveBoards { get; set; } = new();
+        /// <summary>
+        /// Key-value pair for favorite board for project.
+        /// The key is a project id.
+        /// The value is a board id.
+        /// </summary>
+        public static Dictionary<ulong, ulong> FavoriteBoards { get; set; } = new();
 
         static SettingsManager()
         {
@@ -16,19 +24,19 @@ namespace Equality.Data
         private static void LoadSettings()
         {
             try {
-                var activeBoards = Json.Deserialize<Dictionary<ulong, ulong>>(Properties.Settings.Default.active_boards_id ?? "");
-                if (activeBoards != null) {
-                    ActiveBoards = activeBoards;
+                var favoriteBoards = Json.Deserialize<Dictionary<ulong, ulong>>(Properties.Settings.Default.favorite_boards ?? "");
+                if (favoriteBoards != null) {
+                    FavoriteBoards = favoriteBoards;
                 }
             } catch {
-                Properties.Settings.Default.active_boards_id = string.Empty;
+                Properties.Settings.Default.favorite_boards = string.Empty;
                 Properties.Settings.Default.Save();
             }
         }
 
         private static void SaveSettings()
         {
-            Properties.Settings.Default.active_boards_id = Json.Serialize(ActiveBoards);
+            Properties.Settings.Default.favorite_boards = Json.Serialize(FavoriteBoards);
         }
     }
 }
