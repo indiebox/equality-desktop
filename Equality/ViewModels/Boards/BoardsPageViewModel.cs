@@ -119,14 +119,12 @@ namespace Equality.ViewModels
 
         private void OnMarkAsActiveExecute(Board board)
         {
-            string projectId = Project.Id.ToString();
-
             // Is currently active.
             if (ActiveBoard == board) {
-                SettingsManager.ActiveBoards.Remove(projectId);
+                SettingsManager.ActiveBoards.Remove(Project.Id);
                 ActiveBoard = null;
             } else {
-                SettingsManager.ActiveBoards[projectId] = board.Id;
+                SettingsManager.ActiveBoards[Project.Id] = board.Id;
                 ActiveBoard = board;
             }
 
@@ -202,13 +200,11 @@ namespace Equality.ViewModels
 
         private void LoadActiveBoard()
         {
-            string projectId = Project.Id.ToString();
-
-            if (SettingsManager.ActiveBoards.ContainsKey(projectId)) {
-                ActiveBoard = Boards.Where(board => board.Id == SettingsManager.ActiveBoards[projectId]).FirstOrDefault();
+            if (SettingsManager.ActiveBoards.ContainsKey(Project.Id)) {
+                ActiveBoard = Boards.Where(board => board.Id == SettingsManager.ActiveBoards[Project.Id]).FirstOrDefault();
 
                 if (ActiveBoard == null) {
-                    SettingsManager.ActiveBoards.Remove(projectId);
+                    SettingsManager.ActiveBoards.Remove(Project.Id);
                 }
             }
         }

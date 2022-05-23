@@ -4,7 +4,7 @@ namespace Equality.Data
 {
     internal static class SettingsManager
     {
-        public static Dictionary<string, ulong> ActiveBoards { get; set; } = new();
+        public static Dictionary<ulong, ulong> ActiveBoards { get; set; } = new();
 
         static SettingsManager()
         {
@@ -16,7 +16,7 @@ namespace Equality.Data
         private static void LoadSettings()
         {
             try {
-                var activeBoards = Json.Deserialize<Dictionary<string, ulong>>(Properties.Settings.Default.active_boards_id ?? "");
+                var activeBoards = Json.Deserialize<Dictionary<ulong, ulong>>(Properties.Settings.Default.active_boards_id ?? "");
                 if (activeBoards != null) {
                     ActiveBoards = activeBoards;
                 }

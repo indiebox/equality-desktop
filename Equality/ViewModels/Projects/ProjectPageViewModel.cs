@@ -91,18 +91,16 @@ namespace Equality.ViewModels
 
         private async Task<Board> LoadActiveBoard()
         {
-            string projectId = Project.Id.ToString();
-
-            if (!SettingsManager.ActiveBoards.ContainsKey(projectId)) {
+            if (!SettingsManager.ActiveBoards.ContainsKey(Project.Id)) {
                 return null;
             }
 
             try {
-                var response = await BoardService.GetBoardAsync(SettingsManager.ActiveBoards[projectId]);
+                var response = await BoardService.GetBoardAsync(SettingsManager.ActiveBoards[Project.Id]);
 
                 return response.Object;
             } catch (NotFoundHttpException) {
-                SettingsManager.ActiveBoards.Remove(projectId);
+                SettingsManager.ActiveBoards.Remove(Project.Id);
                 Properties.Settings.Default.Save();
             }
 
