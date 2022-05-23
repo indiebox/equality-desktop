@@ -25,6 +25,20 @@ namespace Equality.Services
         public Task<ApiResponseMessage<TTeamModel[]>> GetTeamsAsync(QueryParameters query = null);
 
         /// <summary>
+        /// Sends the get team request to the API.
+        /// </summary>
+        /// <param name="teamId">The team id.</param>
+        /// <param name="query">The query parameters.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets a token using <see cref="ITokenResolver.ResolveApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage<TTeamModel>> GetTeamAsync(ulong teamId, QueryParameters query = null);
+
+        /// <summary>
         /// Sends the create team request to the API.
         /// </summary>
         /// <param name="team">The team.</param>

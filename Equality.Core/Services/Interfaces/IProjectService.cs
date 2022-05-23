@@ -32,6 +32,20 @@ namespace Equality.Services
         public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ulong teamId, QueryParameters query = null);
 
         /// <summary>
+        /// Sends the get project request to the API.
+        /// </summary>
+        /// <param name="projectId">The project id.</param>
+        /// <param name="query">The query parameters.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets a token using <see cref="ITokenResolver.ResolveApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage<TProjectModel>> GetProjectAsync(ulong projectId, QueryParameters query = null);
+
+        /// <summary>
         /// Sends the get nominated users request to the API.
         /// </summary>
         /// <param name="project">The project.</param>
