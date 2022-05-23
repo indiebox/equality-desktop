@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
@@ -21,12 +20,12 @@ using Equality.Validation;
 
 namespace Equality.ViewModels
 {
-    /*
-     * NavigationContext: 
-     * open-active-board - open active board, if available
-     */
     public class BoardsPageViewModel : ViewModel
     {
+        protected IBoardService BoardService;
+
+        protected INavigationService NavigationService;
+
         #region DesignModeConstructor
 
         public BoardsPageViewModel()
@@ -43,10 +42,6 @@ namespace Equality.ViewModels
         }
 
         #endregion
-
-        IBoardService BoardService;
-
-        INavigationService NavigationService;
 
         public BoardsPageViewModel(IBoardService boardService, INavigationService navigationService)
         {
@@ -124,29 +119,15 @@ namespace Equality.ViewModels
 
         private void OnMarkAsActiveExecute(Board board)
         {
-            try {
-                var boardsIds = Json.Deserialize<Dictionary<string, ulong>>(Properties.Settings.Default.active_boards_id);
-                string projectId = Project.Id.ToString();
+            string projectId = Project.Id.ToString();
 
-                // Is currently active.
-                if (ActiveBoard == board) {
-                    boardsIds?.Remove(projectId);
-                    Properties.Settings.Default.active_boards_id = Json.Serialize(boardsIds);
-
-                    ActiveBoard = null;
-                } else {
-                    if (boardsIds != null) {
-                        boardsIds[projectId] = board.Id;
-                    } else {
-                        boardsIds = new() { { projectId, board.Id } };
-                    }
-
-                    Properties.Settings.Default.active_boards_id = Json.Serialize(boardsIds);
-
-                    ActiveBoard = board;
-                }
-            } catch {
-                Properties.Settings.Default.active_boards_id = string.Empty;
+            // Is currently active.
+            if (ActiveBoard == board) {
+                SettingsManager.ActiveBoards.Remove(projectId);
+                ActiveBoard = null;
+            } else {
+                SettingsManager.ActiveBoards[projectId] = board.Id;
+                ActiveBoard = board;
             }
 
             Properties.Settings.Default.Save();
@@ -204,27 +185,7 @@ namespace Equality.ViewModels
 
         #endregion
 
-        #region Methods
-
-        private void LoadActiveBoard()
-        {
-            try {
-                var boardsIds = Json.Deserialize<Dictionary<string, ulong>>(Properties.Settings.Default.active_boards_id);
-                if (boardsIds != null) {
-                    string projectId = Project.Id.ToString();
-                    if (boardsIds.ContainsKey(projectId)) {
-                        ActiveBoard = Boards.Where(board => board.Id == boardsIds[projectId]).FirstOrDefault();
-
-                        if (NavigationContext.Values.ContainsKey("open-active-board")) {
-                            OpenBoardPage.Execute(ActiveBoard);
-                        }
-                    }
-                }
-            } catch {
-                Properties.Settings.Default.active_boards_id = String.Empty;
-                Properties.Settings.Default.Save();
-            }
-        }
+        #region Methods 
 
         protected async void LoadBoardsAsync()
         {
@@ -236,6 +197,19 @@ namespace Equality.ViewModels
                 LoadActiveBoard();
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
+            }
+        }
+
+        private void LoadActiveBoard()
+        {
+            string projectId = Project.Id.ToString();
+
+            if (SettingsManager.ActiveBoards.ContainsKey(projectId)) {
+                ActiveBoard = Boards.Where(board => board.Id == SettingsManager.ActiveBoards[projectId]).FirstOrDefault();
+
+                if (ActiveBoard == null) {
+                    SettingsManager.ActiveBoards.Remove(projectId);
+                }
             }
         }
 
