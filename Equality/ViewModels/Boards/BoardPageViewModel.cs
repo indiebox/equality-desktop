@@ -74,6 +74,8 @@ namespace Equality.ViewModels
 
         public Project Project { get; set; } = StateManager.SelectedProject;
 
+        public Board Board { get; set; } = StateManager.SelectedBoard;
+
         public ObservableCollection<Column> Columns { get; set; } = new();
 
         public bool IsDragging => DragCard != null || DragColumn != null;
