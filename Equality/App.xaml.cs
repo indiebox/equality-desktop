@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows;
+using System.Windows.Media;
 
 using Catel.IoC;
 using Catel.Logging;
@@ -8,6 +9,8 @@ using Catel.MVVM;
 using Equality.Data;
 using Equality.Http;
 using Equality.Services;
+
+using MaterialDesignThemes.Wpf;
 
 using PusherClient;
 
@@ -132,6 +135,17 @@ namespace Equality
             Log.Info("Calling base.OnStartup");
 
             base.OnStartup(e);
+
+            //Add/Update brush when the theme changes
+            PaletteHelper helper = new PaletteHelper();
+            if (helper.GetThemeManager() is { } themeManager) {
+                themeManager.ThemeChanged += ThemeManager_ThemeChanged;
+            }
+        }
+
+        private void ThemeManager_ThemeChanged(object sender, ThemeChangedEventArgs e)
+        {
+            Resources["SecondaryBackgroundColor"] = new SolidColorBrush(e.NewTheme.SecondaryMid.Color);
         }
     }
 }

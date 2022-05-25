@@ -26,7 +26,7 @@
                    Opacity="0.5" />
 
         <DockPanel HorizontalAlignment="Stretch">
-            <StackPanel Background="WhiteSmoke"
+            <StackPanel Background="{DynamicResource SecondaryBackgroundColor}"
                         DockPanel.Dock="Top">
                 <StackPanel x:Name="FlipperWrapper"
                             HorizontalAlignment="Center"

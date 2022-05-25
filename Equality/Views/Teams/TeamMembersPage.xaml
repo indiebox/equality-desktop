@@ -9,14 +9,14 @@
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            FontSize="16"
-           d:Background="WhiteSmoke"
+           d:Background="{DynamicResource SecondaryBackgroundColor}"
            d:DesignHeight="600"
            d:DataContext="{d:DesignInstance Type=vm:TeamMembersPageViewModel}"
            d:DesignWidth="1000"
            mc:Ignorable="d">
     <DockPanel>
         <StackPanel Orientation="Vertical"
-                    Background="WhiteSmoke"
+                    Background="{DynamicResource SecondaryBackgroundColor}"
                     Width="Auto">
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                          BorderBrush="{StaticResource PrimaryHueMidBrush}"

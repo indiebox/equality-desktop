@@ -25,6 +25,9 @@
 
                 <ResourceDictionary Source="Notifications/Notifications.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="SecondaryBackground"
+                             Color="WhiteSmoke" />
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

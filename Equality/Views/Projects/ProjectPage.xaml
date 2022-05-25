@@ -19,7 +19,7 @@
         <controls:ProjectImage ImagePath="{Binding Project.Image}" />
 
         <DockPanel>
-            <DockPanel Background="{StaticResource MaterialDesignPaper}"
+            <DockPanel Background="{DynamicResource MaterialDesignPaper}"
                        DockPanel.Dock="Top">
                 <DockPanel DockPanel.Dock="Top"
                            LastChildFill="False">

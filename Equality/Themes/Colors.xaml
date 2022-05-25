@@ -9,6 +9,8 @@
                      Color="#5d2111" />
     <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush"
                      Color="White" />
+    <SolidColorBrush x:Key="SecondaryBackgroundColor"
+                     Color="WhiteSmoke" />
 
     <!-- Additional colors -->
     <SolidColorBrush x:Key="DeleteItemColor"

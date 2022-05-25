@@ -46,7 +46,7 @@
                  ItemsSource="{Binding FilteredInvites}">
             <ListBox.Resources>
                 <ControlTemplate x:Key="NoItemsTemplate">
-                    <TextBlock Background="WhiteSmoke"
+                    <TextBlock Background="{DynamicResource SecondaryBackgroundColor}"
                                Padding="15"
                                FontSize="18">Приглашений не найдено.</TextBlock>
                 </ControlTemplate>

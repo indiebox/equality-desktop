@@ -20,7 +20,7 @@
         <materialDesign:Card HorizontalAlignment="Stretch"
                              DockPanel.Dock="Bottom"
                              VerticalAlignment="Bottom"
-                             Background="WhiteSmoke"
+                             Background="{DynamicResource SecondaryBackgroundColor}"
                              Height="100px"
                              UseLayoutRounding="False">
             <StackPanel Orientation="Horizontal"

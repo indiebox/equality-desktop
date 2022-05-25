@@ -79,6 +79,7 @@ namespace Equality.ViewModels
                 case "Sync":
                     ActiveTheme = Themes.Sync;
                     Properties.Settings.Default.current_theme = "Sync";
+
                     break;
             }
             Properties.Settings.Default.Save();
