@@ -108,11 +108,17 @@ namespace Equality.ViewModels
         private void SelectedTeamChangedInStateManager()
         {
             RaisePropertyChanged(nameof(SelectedTeam));
+
+            Properties.Settings.Default.menu_selected_team = StateManager.SelectedTeam.Id;
+            Properties.Settings.Default.Save();
         }
 
         private void SelectedProjectChangedInStateManager()
         {
             RaisePropertyChanged(nameof(SelectedProject));
+
+            Properties.Settings.Default.menu_selected_project = StateManager.SelectedProject.Id;
+            Properties.Settings.Default.Save();
         }
 
         #endregion

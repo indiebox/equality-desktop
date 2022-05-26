@@ -40,6 +40,18 @@ namespace Equality.Services
             return new(teams, response);
         }
 
+        public async Task<ApiResponseMessage<TTeamModel>> GetTeamAsync(ulong teamId, QueryParameters query = null)
+        {
+            Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
+            query ??= new QueryParameters();
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"teams/{teamId}"));
+
+            var team = Json.Deserialize<TTeamModel>(response.Content["data"]);
+
+            return new(team, response);
+        }
+
         public async Task<ApiResponseMessage<TTeamModel>> CreateAsync(ITeam team, QueryParameters query = null)
         {
             Argument.IsNotNull(nameof(team), team);

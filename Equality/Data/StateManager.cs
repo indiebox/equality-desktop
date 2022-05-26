@@ -30,6 +30,11 @@ namespace Equality.Data
                 {
                     Name = "Equality",
                 };
+
+                SelectedBoard = new Board()
+                {
+                    Name = "Board 1",
+                };
             }
         }
 

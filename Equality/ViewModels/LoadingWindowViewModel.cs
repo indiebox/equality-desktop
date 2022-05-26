@@ -36,8 +36,7 @@ namespace Equality.ViewModels
                 bool result = await IsValidToken(apiToken);
 
                 if (result) {
-                    App.RegisterPusher();
-                    OpenMainPage();
+                    await LoadApplicationAsync();
                 } else {
                     OpenAuthorizationPage();
                 }
@@ -75,9 +74,38 @@ namespace Equality.ViewModels
             }
         }
 
-        protected void OpenMainPage()
+        protected async Task LoadApplicationAsync()
         {
-            UIVisualizerService.ShowAsync<ApplicationWindowViewModel>();
+            App.RegisterPusher();
+
+            await LoadSavedDataAsync();
+
+            _ = UIVisualizerService.ShowAsync<ApplicationWindowViewModel>();
+        }
+
+        protected async Task LoadSavedDataAsync()
+        {
+            if (Properties.Settings.Default.menu_selected_team != 0) {
+                try {
+                    var response = await ServiceLocator.Default.ResolveType<ITeamService>().GetTeamAsync(Properties.Settings.Default.menu_selected_team);
+
+                    StateManager.SelectedTeam = response.Object;
+                } catch (NotFoundHttpException) {
+                    Properties.Settings.Default.menu_selected_team = 0;
+                }
+            }
+
+            if (Properties.Settings.Default.menu_selected_project != 0) {
+                try {
+                    var response = await ServiceLocator.Default.ResolveType<IProjectService>().GetProjectAsync(Properties.Settings.Default.menu_selected_project);
+
+                    StateManager.SelectedProject = response.Object;
+                } catch (NotFoundHttpException) {
+                    Properties.Settings.Default.menu_selected_project = 0;
+                }
+            }
+
+            Properties.Settings.Default.Save();
         }
 
         protected void OpenAuthorizationPage()

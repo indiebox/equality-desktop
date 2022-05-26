@@ -5,7 +5,7 @@
     <Setting Name="api_token" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="active_boards_id" Type="System.String" Scope="User">
+    <Setting Name="favorite_boards" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="max_boards_count" Type="System.Int32" Scope="Application">
@@ -16,6 +16,12 @@
     </Setting>
     <Setting Name="max_cards_count" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="menu_selected_team" Type="System.UInt64" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="menu_selected_project" Type="System.UInt64" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -574,17 +574,24 @@
             </Grid.RowDefinitions>
 
             <DockPanel LastChildFill="False">
-                <Button Grid.Column="0"
-                        Command="{Binding ToBoards}"
-                        Style="{StaticResource MaterialDesignIconForegroundButton}"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Margin="10"
-                        Cursor="Hand"
-                        ToolTip="К доскам">
-                    <materialDesign:PackIcon Foreground="#FFF96840"
-                                             Kind="ArrowBack" />
-                </Button>
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Button Command="{Binding ToBoards}"
+                            Style="{StaticResource MaterialDesignIconForegroundButton}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Margin="10"
+                            Cursor="Hand"
+                            ToolTip="К доскам">
+                        <materialDesign:PackIcon Foreground="#FFF96840"
+                                                 Kind="ArrowBack" />
+                    </Button>
+                    <TextBlock VerticalAlignment="Center"
+                               Foreground="White"
+                               Text="{Binding Board.Name}"></TextBlock>
+                </StackPanel>
+
                 <Button Style="{StaticResource MaterialDesignFlatButton}"
                         DockPanel.Dock="Right"
                         Content="Модули"

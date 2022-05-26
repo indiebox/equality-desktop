@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Net.Http;
 
 using Catel.MVVM;
 using Catel.Services;
@@ -8,8 +9,7 @@ using Equality.MVVM;
 using Equality.Models;
 using Equality.Data;
 using Equality.Services;
-using System.Net.Http;
-using System.Diagnostics;
+using Equality.Http;
 
 namespace Equality.ViewModels
 {
@@ -18,6 +18,8 @@ namespace Equality.ViewModels
         protected INavigationService NavigationService;
 
         protected IProjectService ProjectService;
+
+        protected IBoardService BoardService;
 
         #region DesignModeConstructor
 
@@ -32,10 +34,11 @@ namespace Equality.ViewModels
 
         #endregion
 
-        public ProjectPageViewModel(INavigationService navigationService, IProjectService projectService)
+        public ProjectPageViewModel(INavigationService navigationService, IProjectService projectService, IBoardService boardService)
         {
             NavigationService = navigationService;
             ProjectService = projectService;
+            BoardService = boardService;
 
             Project = StateManager.SelectedProject;
         }
@@ -75,12 +78,41 @@ namespace Equality.ViewModels
 
         #region Methods
 
+        protected async void OpenBoardPageAsync()
+        {
+            var board = await LoadActiveBoardAsync();
+            if (board != null) {
+                StateManager.SelectedBoard = board;
+                NavigationService.Navigate<BoardPageViewModel, ProjectPageViewModel>();
+            } else {
+                NavigationService.Navigate<BoardsPageViewModel>(this);
+            }
+        }
+
+        private async Task<Board> LoadActiveBoardAsync()
+        {
+            if (!SettingsManager.FavoriteBoards.ContainsKey(Project.Id)) {
+                return null;
+            }
+
+            try {
+                var response = await BoardService.GetBoardAsync(SettingsManager.FavoriteBoards[Project.Id]);
+
+                return response.Object;
+            } catch (NotFoundHttpException) {
+                SettingsManager.FavoriteBoards.Remove(Project.Id);
+                Properties.Settings.Default.Save();
+            }
+
+            return null;
+        }
+
         private void OnActiveTabChanged()
         {
             switch (ActiveTab) {
                 case Tab.Board:
                 default:
-                    NavigationService.Navigate<BoardsPageViewModel>(this, new() { { "open-active-board", true} });
+                    OpenBoardPageAsync();
                     break;
                 case Tab.Leader:
                     NavigationService.Navigate<LeaderNominationPageViewModel>(this);

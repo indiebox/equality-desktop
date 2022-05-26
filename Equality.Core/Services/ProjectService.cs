@@ -42,6 +42,18 @@ namespace Equality.Services
             return new(projects, response);
         }
 
+        public async Task<ApiResponseMessage<TProjectModel>> GetProjectAsync(ulong projectId, QueryParameters query = null)
+        {
+            Argument.IsMinimal<ulong>(nameof(projectId), projectId, 1);
+            query ??= new QueryParameters();
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"projects/{projectId}"));
+
+            var project = Json.Deserialize<TProjectModel>(response.Content["data"]);
+
+            return new(project, response);
+        }
+
         public Task<ApiResponseMessage<TLeaderNominationModel[]>> GetNominatedUsersAsync(IProject project, QueryParameters query = null)
             => GetNominatedUsersAsync(project.Id, query);
 
