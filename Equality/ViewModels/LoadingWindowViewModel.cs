@@ -43,11 +43,7 @@ namespace Equality.ViewModels
                     break;
                 case "Sync":
                     Properties.Settings.Default.current_theme = "Sync";
-                    if (StateManager.GetColorTheme() == "Light") {
-                        baseTheme = new MaterialDesignLightTheme();
-                    } else {
-                        baseTheme = new MaterialDesignDarkTheme();
-                    }
+                    baseTheme = StateManager.GetColorTheme() == "Light" ? new MaterialDesignLightTheme() : new MaterialDesignDarkTheme();
                     break;
             }
             theme.SetBaseTheme(baseTheme);
