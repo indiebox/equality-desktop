@@ -100,7 +100,6 @@
                                             <TextBlock Grid.Column="1"
                                                        Margin="4,0,0,0"
                                                        FontSize="16"
-                                                       Foreground="Black"
                                                        TextTrimming="CharacterEllipsis"
                                                        Text="{Binding Name, Mode=OneTime}"
                                                        VerticalAlignment="Center" />

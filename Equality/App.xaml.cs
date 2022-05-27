@@ -151,7 +151,7 @@ namespace Equality
             if (e.NewTheme.GetBaseTheme().ToString() == "Light") {
                 Resources["SecondaryBackgroundColor"] = new SolidColorBrush(Colors.WhiteSmoke);
             } else {
-                Resources["SecondaryBackgroundColor"] = new SolidColorBrush(Colors.DimGray);
+                Resources["SecondaryBackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#222222"));
             }
         }
     }
