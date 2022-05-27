@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
@@ -11,6 +12,8 @@ using Equality.Http;
 using Equality.Services;
 
 using MaterialDesignThemes.Wpf;
+
+using Microsoft.Win32;
 
 using PusherClient;
 
@@ -145,7 +148,7 @@ namespace Equality
 
         private void ThemeManager_ThemeChanged(object sender, ThemeChangedEventArgs e)
         {
-            Resources["SecondaryBackgroundColor"] = new SolidColorBrush(Colors.Black);
+            //Resources["SecondaryBackgroundColor"] = new SolidColorBrush(Colors.Black);
         }
     }
 }

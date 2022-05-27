@@ -56,15 +56,13 @@ namespace Equality.ViewModels
         private void OnActiveThemeChanged(string newTheme)
         {
             ITheme theme = _paletteHelper.GetTheme();
-            IBaseTheme baseTheme;
+            IBaseTheme baseTheme = new MaterialDesignLightTheme();
             switch (newTheme) {
                 case "Light":
                     ActiveTheme = Themes.Light;
                     Properties.Settings.Default.current_theme = "Light";
 
                     baseTheme = new MaterialDesignLightTheme();
-                    theme.SetBaseTheme(baseTheme);
-                    _paletteHelper.SetTheme(theme);
 
                     break;
                 case "Dark":
@@ -72,16 +70,20 @@ namespace Equality.ViewModels
                     Properties.Settings.Default.current_theme = "Dark";
 
                     baseTheme = new MaterialDesignDarkTheme();
-                    theme.SetBaseTheme(baseTheme);
-                    _paletteHelper.SetTheme(theme);
 
                     break;
                 case "Sync":
                     ActiveTheme = Themes.Sync;
                     Properties.Settings.Default.current_theme = "Sync";
-
+                    if (StateManager.GetColorTheme() == "Light") {
+                        baseTheme = new MaterialDesignLightTheme();
+                    } else {
+                        baseTheme = new MaterialDesignDarkTheme();
+                    }
                     break;
             }
+            theme.SetBaseTheme(baseTheme);
+            _paletteHelper.SetTheme(theme);
             Properties.Settings.Default.Save();
         }
 

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
 
 using Catel;
 
 using Equality.Models;
+
+using Microsoft.Win32;
 
 namespace Equality.Data
 {
@@ -66,5 +69,15 @@ namespace Equality.Data
         }
 
         public static Board SelectedBoard { get; set; }
+
+
+        public static string GetColorTheme()
+        {
+            string RegistryKey = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes";
+            string theme;
+            theme = (string)Registry.GetValue(RegistryKey, "CurrentTheme", string.Empty);
+            theme = theme.Split('\\').Last().Split('.').First().ToString();
+            return theme;
+        }
     }
 }
