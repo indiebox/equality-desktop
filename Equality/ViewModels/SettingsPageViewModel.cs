@@ -55,7 +55,7 @@ namespace Equality.ViewModels
 
         private void OnActiveThemeChanged(string newTheme)
         {
-            ITheme theme = _paletteHelper.GetTheme();
+            var theme = _paletteHelper.GetTheme();
             IBaseTheme baseTheme = new MaterialDesignLightTheme();
             switch (newTheme) {
                 case "Light":
