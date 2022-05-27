@@ -70,14 +70,24 @@ namespace Equality.Data
 
         public static Board SelectedBoard { get; set; }
 
+        public enum Themes
+        {
+            Light,
+            Dark,
+            Sync,
+        }
 
-        public static string GetColorTheme()
+        public static int GetColorTheme()
         {
             string RegistryKey = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes";
             string theme;
             theme = (string)Registry.GetValue(RegistryKey, "CurrentTheme", string.Empty);
             theme = theme.Split('\\').Last().Split('.').First().ToString();
-            return theme;
+            if (theme == "Light") {
+                return (int)Themes.Light;
+            } else {
+                return (int)Themes.Dark;
+            }
         }
     }
 }

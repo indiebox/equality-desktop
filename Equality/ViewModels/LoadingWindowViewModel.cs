@@ -24,26 +24,33 @@ namespace Equality.ViewModels
 
         private readonly PaletteHelper _paletteHelper = new PaletteHelper();
 
+        public enum Themes
+        {
+            Light,
+            Dark,
+            Sync,
+        }
+
         public LoadingWindowViewModel(IUIVisualizerService uiVisualizerService, IUserService userService)
         {
             var theme = _paletteHelper.GetTheme();
             IBaseTheme baseTheme = new MaterialDesignLightTheme();
-            string currentThemeString = Properties.Settings.Default.current_theme;
+            int currentThemeString = Properties.Settings.Default.current_theme;
 
             switch (currentThemeString) {
-                case "Light":
-                    Properties.Settings.Default.current_theme = "Light";
+                case (int)Themes.Light:
+                    Properties.Settings.Default.current_theme = (int)Themes.Light;
                     baseTheme = new MaterialDesignLightTheme();
 
                     break;
-                case "Dark":
-                    Properties.Settings.Default.current_theme = "Dark";
+                case (int)Themes.Dark:
+                    Properties.Settings.Default.current_theme = (int)Themes.Dark;
                     baseTheme = new MaterialDesignDarkTheme();
 
                     break;
-                case "Sync":
-                    Properties.Settings.Default.current_theme = "Sync";
-                    baseTheme = StateManager.GetColorTheme() == "Light" ? new MaterialDesignLightTheme() : new MaterialDesignDarkTheme();
+                case (int)Themes.Sync:
+                    Properties.Settings.Default.current_theme = (int)Themes.Sync;
+                    baseTheme = StateManager.GetColorTheme() == (int)Themes.Light ? new MaterialDesignLightTheme() : new MaterialDesignDarkTheme();
                     break;
             }
             theme.SetBaseTheme(baseTheme);

@@ -23,32 +23,32 @@ namespace Equality.ViewModels
 
         #endregion
 
-        public SettingsPageViewModel(INavigationService navigationService)
-        {
-            string currentThemeString = Properties.Settings.Default.current_theme;
-            ChangeTheme = new Command<string>(OnChangeThemeExecute);
-
-            if (currentThemeString == null) {
-                currentThemeString = "Light";
-            }
-            switch (currentThemeString) {
-                case "Light":
-                    ActiveTheme = Themes.Light;
-                    break;
-                case "Dark":
-                    ActiveTheme = Themes.Dark;
-                    break;
-                case "Sync":
-                    ActiveTheme = Themes.Sync;
-                    break;
-            }
-        }
-
         public enum Themes
         {
             Light,
             Dark,
             Sync,
+        }
+
+        public SettingsPageViewModel(INavigationService navigationService)
+        {
+            int currentThemeString = Properties.Settings.Default.current_theme;
+            ChangeTheme = new Command<string>(OnChangeThemeExecute);
+
+            switch (currentThemeString) {
+                case (int)Themes.Light:
+                    ActiveTheme = Themes.Light;
+                    break;
+                case (int)Themes.Dark:
+                    ActiveTheme = Themes.Dark;
+                    break;
+                case (int)Themes.Sync:
+                    ActiveTheme = Themes.Sync;
+                    break;
+                default:
+                    currentThemeString = (int)Themes.Light;
+                    break;
+            }
         }
 
         #region Methods
@@ -60,22 +60,23 @@ namespace Equality.ViewModels
             switch (newTheme) {
                 case "Light":
                     ActiveTheme = Themes.Light;
-                    Properties.Settings.Default.current_theme = "Light";
+                    Properties.Settings.Default.current_theme = (int)Themes.Light;
 
                     baseTheme = new MaterialDesignLightTheme();
 
                     break;
                 case "Dark":
                     ActiveTheme = Themes.Dark;
-                    Properties.Settings.Default.current_theme = "Dark";
+                    Properties.Settings.Default.current_theme = (int)Themes.Dark;
 
                     baseTheme = new MaterialDesignDarkTheme();
 
                     break;
                 case "Sync":
                     ActiveTheme = Themes.Sync;
-                    Properties.Settings.Default.current_theme = "Sync";
-                    baseTheme = StateManager.GetColorTheme() == "Light" ? new MaterialDesignLightTheme() : new MaterialDesignDarkTheme();
+                    Properties.Settings.Default.current_theme = (int)Themes.Sync;
+                    //baseTheme = StateManager.GetColorTheme() == (int)Themes.Light ? new MaterialDesignLightTheme() : new MaterialDesignDarkTheme();
+                    baseTheme = StateManager.GetColorTheme() == (int)Themes.Light ? new MaterialDesignLightTheme() : new MaterialDesignDarkTheme();
                     break;
             }
             theme.SetBaseTheme(baseTheme);
