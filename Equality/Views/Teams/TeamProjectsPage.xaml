@@ -28,78 +28,94 @@
                    FontSize="24">Проекты</TextBlock>
         <ScrollViewer Grid.Row="1"
                       Margin="10,0">
-            <WrapPanel>
-                <ListBox Style="{StaticResource ListBoxWithoutScroll}"
-                         materialDesign:ListBoxItemAssist.ShowSelection="False">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel IsItemsHost="True" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-                    <!-- Templates for custom objects. -->
-                    <ListBox.Resources>
-                        <DataTemplate DataType="{x:Type models:Project}">
-                            <controls:ProjectCard Margin="5,0,5,10"
-                                                  Size="Big"
-                                                  Command="{Binding DataContext.OpenProjectPage, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
-                                                  CommandParameter="{Binding}"
-                                                  Project="{Binding}" />
-                        </DataTemplate>
+                <WrapPanel>
+                    <ListBox Style="{StaticResource ListBoxWithoutScroll}"
+                             materialDesign:ListBoxItemAssist.ShowSelection="False">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel IsItemsHost="True" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
 
-                        <DataTemplate DataType="{x:Type objects:DataObject}">
-                            <StackPanel Margin="10,0,10,20"
-                                        DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=mvvm:Page}}">
-                                <ContentControl Width="500"
-                                                Height="280"
-                                                d:Width="0"
-                                                d:Height="0"
-                                                Visibility="{Binding CreateProjectVm, Converter={catel:ReferenceToCollapsingVisibilityConverter}}"
-                                                Content="{Binding CreateProjectVm, Converter={catel:ViewModelToViewConverter}}" />
+                        <!-- Templates for custom objects. -->
+                        <ListBox.Resources>
+                            <DataTemplate DataType="{x:Type models:Project}">
+                                <controls:ProjectCard Margin="5,0,5,10"
+                                                      Size="Big"
+                                                      Command="{Binding DataContext.OpenProjectPage, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                      CommandParameter="{Binding}"
+                                                      Project="{Binding}" />
+                            </DataTemplate>
 
-                                <Button HorizontalAlignment="Left"
-                                        Width="500"
-                                        Height="280"
-                                        Style="{StaticResource BaseButton}"
-                                        Command="{Binding OpenCreateProjectWindow}"
-                                        Visibility="{Binding CreateProjectVm, Converter={catel:ReferenceToCollapsingVisibilityConverter}, ConverterParameter=True}">
-                                    <Grid>
-                                        <Grid.Style>
-                                            <Style TargetType="Grid">
-                                                <Setter Property="Background"
-                                                        Value="#FFCCCCCC" />
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsMouseOver"
-                                                             Value="True">
-                                                        <Setter Property="Background"
-                                                                Value="#FFB3B3B3" />
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Style>
+                            <DataTemplate DataType="{x:Type objects:DataObject}">
+                                <StackPanel Margin="10,0,10,20"
+                                            DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=mvvm:Page}}">
+                                    <ContentControl Width="500"
+                                                    Height="280"
+                                                    d:Width="0"
+                                                    d:Height="0"
+                                                    Visibility="{Binding CreateProjectVm, Converter={catel:ReferenceToCollapsingVisibilityConverter}}"
+                                                    Content="{Binding CreateProjectVm, Converter={catel:ViewModelToViewConverter}}" />
 
-                                        <TextBlock Width="200"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   Foreground="Black"
-                                                   TextAlignment="Center"
-                                                   FontSize="24">Создать проект</TextBlock>
-                                    </Grid>
-                                </Button>
-                            </StackPanel>
-                        </DataTemplate>
+                                    <Button HorizontalAlignment="Left"
+                                            Width="500"
+                                            Height="280"
+                                            Style="{StaticResource BaseButton}"
+                                            Command="{Binding OpenCreateProjectWindow}"
+                                            Visibility="{Binding CreateProjectVm, Converter={catel:ReferenceToCollapsingVisibilityConverter}, ConverterParameter=True}">
+                                        <Grid>
+                                            <Grid.Style>
+                                                <Style TargetType="Grid">
+                                                    <Setter Property="Background"
+                                                            Value="#FFCCCCCC" />
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver"
+                                                                 Value="True">
+                                                            <Setter Property="Background"
+                                                                    Value="#FFB3B3B3" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Grid.Style>
 
-                        <CollectionViewSource x:Key="ProjectsCollection"
-                                              Source="{Binding Projects}" />
-                    </ListBox.Resources>
-                    <ListBox.ItemsSource>
-                        <CompositeCollection>
-                            <CollectionContainer Collection="{Binding Source={StaticResource ProjectsCollection}}" />
-                            <objects:DataObject />
-                        </CompositeCollection>
-                    </ListBox.ItemsSource>
-                </ListBox>
-            </WrapPanel>
+                                            <TextBlock Width="200"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="Black"
+                                                       TextAlignment="Center"
+                                                       FontSize="24">Создать проект</TextBlock>
+                                        </Grid>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+
+                            <CollectionViewSource x:Key="ProjectsCollection"
+                                                  Source="{Binding Projects}" />
+                        </ListBox.Resources>
+                        <ListBox.ItemsSource>
+                            <CompositeCollection>
+                                <CollectionContainer Collection="{Binding Source={StaticResource ProjectsCollection}}" />
+                                <objects:DataObject />
+                            </CompositeCollection>
+                        </ListBox.ItemsSource>
+                    </ListBox>
+                </WrapPanel>
+
+                <Button Grid.Row="1"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}"
+                        Command="{Binding LoadMoreProjects}"
+                        Visibility="{Binding ProjectsPaginator.HasNextPage, FallbackValue=Collapsed, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
+                        d:Visibility="Visible"
+                        Margin="10,0,10,20"
+                        Cursor="Hand">Загрузить ещё...</Button>
+            </Grid>
         </ScrollViewer>
     </Grid>
 </mvvm:Page>

@@ -42,6 +42,7 @@ namespace Equality.ViewModels
 
             OpenProjectPage = new Command<Project>(OnOpenOpenProjectPageExecute);
             OpenCreateProjectWindow = new TaskCommand(OnOpenCreateProjectWindowExecuteAsync, () => CreateProjectVm is null);
+            LoadMoreProjects = new(OnLoadMoreProjectsExecuteAsync, () => ProjectsPaginator?.HasNextPage ?? false);
         }
 
         #region Properties
@@ -74,6 +75,18 @@ namespace Equality.ViewModels
             CreateProjectVm = null;
 
             return Task.CompletedTask;
+        }
+
+        public TaskCommand LoadMoreProjects { get; private set; }
+
+        private async Task OnLoadMoreProjectsExecuteAsync()
+        {
+            try {
+                ProjectsPaginator = await ProjectsPaginator.NextPageAsync();
+                Projects.AddRange(ProjectsPaginator.Object);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
         }
 
         #endregion
