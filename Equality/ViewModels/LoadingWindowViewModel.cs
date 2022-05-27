@@ -26,31 +26,32 @@ namespace Equality.ViewModels
 
         public LoadingWindowViewModel(IUIVisualizerService uiVisualizerService, IUserService userService)
         {
-            ITheme theme = _paletteHelper.GetTheme();
-            IBaseTheme baseTheme;
+            var theme = _paletteHelper.GetTheme();
+            IBaseTheme baseTheme = new MaterialDesignLightTheme();
             string currentThemeString = Properties.Settings.Default.current_theme;
 
             switch (currentThemeString) {
                 case "Light":
                     Properties.Settings.Default.current_theme = "Light";
-
                     baseTheme = new MaterialDesignLightTheme();
-                    theme.SetBaseTheme(baseTheme);
-                    _paletteHelper.SetTheme(theme);
 
                     break;
                 case "Dark":
                     Properties.Settings.Default.current_theme = "Dark";
-
                     baseTheme = new MaterialDesignDarkTheme();
-                    theme.SetBaseTheme(baseTheme);
-                    _paletteHelper.SetTheme(theme);
 
                     break;
                 case "Sync":
                     Properties.Settings.Default.current_theme = "Sync";
+                    if (StateManager.GetColorTheme() == "Light") {
+                        baseTheme = new MaterialDesignLightTheme();
+                    } else {
+                        baseTheme = new MaterialDesignDarkTheme();
+                    }
                     break;
             }
+            theme.SetBaseTheme(baseTheme);
+            _paletteHelper.SetTheme(theme);
 
             UIVisualizerService = uiVisualizerService;
             UserService = userService;
