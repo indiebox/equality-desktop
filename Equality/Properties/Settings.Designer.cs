@@ -8,29 +8,25 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Equality.Properties
-{
-
-
+namespace Equality.Properties {
+    
+    
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.1.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
-    {
-
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-
-        public static Settings Default
-        {
+        
+        public static Settings Default {
             get {
                 return defaultInstance;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string api_token
-        {
+        public string api_token {
             get {
                 return ((string)(this["api_token"]));
             }
@@ -38,12 +34,11 @@ namespace Equality.Properties
                 this["api_token"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string active_boards_id
-        {
+        public string active_boards_id {
             get {
                 return ((string)(this["active_boards_id"]));
             }
@@ -51,12 +46,11 @@ namespace Equality.Properties
                 this["active_boards_id"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int current_theme
-        {
+        public int current_theme {
             get {
                 return ((int)(this["current_theme"]));
             }

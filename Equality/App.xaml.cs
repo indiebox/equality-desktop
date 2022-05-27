@@ -148,7 +148,12 @@ namespace Equality
 
         private void ThemeManager_ThemeChanged(object sender, ThemeChangedEventArgs e)
         {
-            //Resources["SecondaryBackgroundColor"] = new SolidColorBrush(Colors.Black);
+            Debug.WriteLine(e.NewTheme.GetBaseTheme().ToString());
+            if (e.NewTheme.GetBaseTheme().ToString() == "Light") {
+                Resources["SecondaryBackgroundColor"] = new SolidColorBrush(Colors.WhiteSmoke);
+            } else {
+                Resources["SecondaryBackgroundColor"] = new SolidColorBrush(Colors.Black);
+            }
         }
     }
 }
