@@ -145,7 +145,7 @@ namespace Equality
 
         private void ThemeManager_ThemeChanged(object sender, ThemeChangedEventArgs e)
         {
-            Resources["SecondaryBackgroundColor"] = new SolidColorBrush(e.NewTheme.SecondaryMid.Color);
+            Resources["SecondaryBackgroundColor"] = new SolidColorBrush(Colors.Black);
         }
     }
 }
