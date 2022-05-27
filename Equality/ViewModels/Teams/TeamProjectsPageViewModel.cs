@@ -48,6 +48,8 @@ namespace Equality.ViewModels
 
         public ObservableCollection<Project> Projects { get; set; } = new();
 
+        public PaginatableApiResponse<Project> ProjectsPaginator { get; set; }
+
         public CreateProjectControlViewModel CreateProjectVm { get; set; }
 
         #endregion
@@ -91,7 +93,7 @@ namespace Equality.ViewModels
         protected async Task LoadProjectsAsync()
         {
             try {
-                var response = await ProjectService.GetProjectsAsync(StateManager.SelectedTeam, new()
+                ProjectsPaginator = await ProjectService.GetProjectsAsync(StateManager.SelectedTeam, new()
                 {
                     Fields = new[]
                     {
@@ -99,7 +101,7 @@ namespace Equality.ViewModels
                     }
                 });
 
-                Projects.AddRange(response.Object);
+                Projects.AddRange(ProjectsPaginator.Object);
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }

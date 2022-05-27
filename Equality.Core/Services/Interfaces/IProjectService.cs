@@ -24,12 +24,12 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ITeam team, QueryParameters query = null);
+        public Task<PaginatableApiResponse<TProjectModel>> GetProjectsAsync(ITeam team, QueryParameters query = null);
 
         /// <inheritdoc cref="GetProjectsAsync(ITeam, QueryParameters)"/>
         /// <param name="teamId">The team id.</param>
         /// <param name="query">The query parameters.</param>
-        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ulong teamId, QueryParameters query = null);
+        public Task<PaginatableApiResponse<TProjectModel>> GetProjectsAsync(ulong teamId, QueryParameters query = null);
 
         /// <summary>
         /// Sends the get project request to the API.
