@@ -13,6 +13,7 @@ using Equality.Data;
 using Catel.IoC;
 using Catel.Services;
 using Equality.Extensions;
+using Equality.Http;
 
 namespace Equality.ViewModels
 {
@@ -58,6 +59,7 @@ namespace Equality.ViewModels
         {
             InviteService = inviteService;
 
+            LoadMoreInvites = new(OnLoadMoreInvitesExecuteAsync, () => InvitesPaginator?.HasNextPage ?? false);
             AcceptInvite = new TaskCommand<Invite>(OnAcceptInviteExecuteAsync);
             DeclineInvite = new TaskCommand<Invite>(OnDeclineInviteExecuteAsync);
 
@@ -70,9 +72,23 @@ namespace Equality.ViewModels
 
         public ObservableCollection<Invite> Invites { get; set; } = new();
 
+        public PaginatableApiResponse<Invite> InvitesPaginator { get; set; }
+
         #endregion
 
         #region Commands
+
+        public TaskCommand LoadMoreInvites { get; private set; }
+
+        private async Task OnLoadMoreInvitesExecuteAsync()
+        {
+            try {
+                InvitesPaginator = await InvitesPaginator.NextPageAsync();
+                Invites.AddRange(InvitesPaginator.Object);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
 
         public TaskCommand<Invite> AcceptInvite { get; private set; }
 
@@ -107,9 +123,9 @@ namespace Equality.ViewModels
         protected async Task LoadInvitesAsync()
         {
             try {
-                var response = await InviteService.GetUserInvitesAsync();
+                InvitesPaginator = await InviteService.GetUserInvitesAsync();
 
-                Invites.AddRange(response.Object);
+                Invites.AddRange(InvitesPaginator.Object);
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }

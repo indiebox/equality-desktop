@@ -42,7 +42,7 @@ namespace Equality.Services
             return new(invites, response);
         }
 
-        public async Task<ApiResponseMessage<TInviteModel[]>> GetUserInvitesAsync(QueryParameters query = null)
+        public async Task<PaginatableApiResponse<TInviteModel>> GetUserInvitesAsync(QueryParameters query = null)
         {
             query ??= new QueryParameters();
 

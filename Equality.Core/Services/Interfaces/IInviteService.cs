@@ -40,7 +40,7 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TInviteModel[]>> GetUserInvitesAsync(QueryParameters query = null);
+        public Task<PaginatableApiResponse<TInviteModel>> GetUserInvitesAsync(QueryParameters query = null);
 
         /// <summary>
         /// Sends the invite user to the team request to the API.
