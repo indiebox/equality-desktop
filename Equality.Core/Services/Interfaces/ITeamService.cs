@@ -22,7 +22,7 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TTeamModel[]>> GetTeamsAsync(QueryParameters query = null);
+        public Task<PaginatableApiResponse<TTeamModel>> GetTeamsAsync(QueryParameters query = null);
 
         /// <summary>
         /// Sends the get team request to the API.

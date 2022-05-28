@@ -11,7 +11,6 @@ using Equality.Services;
 using Equality.Data;
 
 using System.Net.Http;
-using System.Diagnostics;
 using Equality.Http;
 
 namespace Equality.ViewModels
@@ -40,9 +39,9 @@ namespace Equality.ViewModels
         {
             ProjectService = projectService;
 
+            LoadMoreProjects = new(OnLoadMoreProjectsExecuteAsync, () => ProjectsPaginator?.HasNextPage ?? false);
             OpenProjectPage = new Command<Project>(OnOpenOpenProjectPageExecute);
             OpenCreateProjectWindow = new TaskCommand(OnOpenCreateProjectWindowExecuteAsync, () => CreateProjectVm is null);
-            LoadMoreProjects = new(OnLoadMoreProjectsExecuteAsync, () => ProjectsPaginator?.HasNextPage ?? false);
         }
 
         #region Properties
@@ -56,6 +55,18 @@ namespace Equality.ViewModels
         #endregion
 
         #region Commands
+
+        public TaskCommand LoadMoreProjects { get; private set; }
+
+        private async Task OnLoadMoreProjectsExecuteAsync()
+        {
+            try {
+                ProjectsPaginator = await ProjectsPaginator.NextPageAsync();
+                Projects.AddRange(ProjectsPaginator.Object);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
 
         public TaskCommand OpenCreateProjectWindow { get; private set; }
 
@@ -75,18 +86,6 @@ namespace Equality.ViewModels
             CreateProjectVm = null;
 
             return Task.CompletedTask;
-        }
-
-        public TaskCommand LoadMoreProjects { get; private set; }
-
-        private async Task OnLoadMoreProjectsExecuteAsync()
-        {
-            try {
-                ProjectsPaginator = await ProjectsPaginator.NextPageAsync();
-                Projects.AddRange(ProjectsPaginator.Object);
-            } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
-            }
         }
 
         #endregion

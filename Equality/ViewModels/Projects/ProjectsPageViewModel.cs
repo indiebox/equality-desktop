@@ -50,6 +50,7 @@ namespace Equality.ViewModels
             TeamService = teamService;
             ProjectService = projectService;
 
+            LoadMoreTeams = new(OnLoadMoreTeamsExecuteAsync, () => TeamsPaginator?.HasNextPage ?? false);
             OpenProjectPage = new Command<Project>(OnOpenOpenProjectPageExecute);
             OpenCreateTeamWindow = new TaskCommand(OnOpenCreateTeamWindowExecute, () => CreateTeamVm is null);
             OpenTeamPage = new Command<Team>(OnOpenTeamPageExecute);
@@ -64,6 +65,8 @@ namespace Equality.ViewModels
 
         public ObservableCollection<Team> FilteredTeams { get; set; } = new();
 
+        public PaginatableApiResponse<Team> TeamsPaginator { get; set; }
+
         public CreateTeamControlViewModel CreateTeamVm { get; set; }
 
         public CreateProjectControlViewModel CreateProjectVm { get; set; }
@@ -73,6 +76,24 @@ namespace Equality.ViewModels
         #endregion
 
         #region Commands
+
+        public TaskCommand LoadMoreTeams { get; private set; }
+
+        private async Task OnLoadMoreTeamsExecuteAsync()
+        {
+            try {
+                TeamsPaginator = await TeamsPaginator.NextPageAsync();
+                Teams.AddRange(TeamsPaginator.Object);
+
+                if (!IsFiltered) {
+                    FilteredTeams.AddRange(TeamsPaginator.Object);
+                }
+
+                LoadProjectForTeams(TeamsPaginator.Object);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
 
         public Command<Project> OpenProjectPage { get; private set; }
 
@@ -169,29 +190,38 @@ namespace Equality.ViewModels
         protected async void LoadTeamsAsync()
         {
             try {
-                var response = await TeamService.GetTeamsAsync(new()
+                TeamsPaginator = await TeamService.GetTeamsAsync(new()
                 {
                     Fields = new[]
-                {
-                    new Field("teams", "id", "name", "description", "url", "logo")
-                }
+                    {
+                        new Field("teams", "id", "name", "description", "url", "logo")
+                    }
                 });
-                Teams.AddRange(response.Object);
+                Teams.AddRange(TeamsPaginator.Object);
                 FilteredTeams.AddRange(Teams);
 
-                foreach (var team in response.Object) {
-                    var responseProjects = await ProjectService.GetProjectsAsync(team, new()
-                    {
-                        Fields = new[]
-                        {
-                        new Field("projects", "id", "name", "description", "image")
-                    }
-                    });
-
-                    team.Projects.AddRange(responseProjects.Object);
-                }
+                LoadProjectForTeams(TeamsPaginator.Object);
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
+            }
+        }
+
+        protected async void LoadProjectForTeams(Team[] teams)
+        {
+            foreach (var team in teams) {
+                var responseProjects = await ProjectService.GetProjectsAsync(team, new()
+                {
+                    Fields = new[]
+                    {
+                            new Field("projects", "id", "name", "description", "image")
+                        },
+                    PaginationData = new()
+                    {
+                        Count = 5,
+                    },
+                });
+
+                team.Projects.AddRange(responseProjects.Object);
             }
         }
 

@@ -109,6 +109,13 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
+
+                        <Button HorizontalAlignment="Left"
+                                Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}"
+                                Command="{Binding LoadMoreTeams}"
+                                Visibility="{Binding TeamsPaginator.HasNextPage, FallbackValue=Collapsed, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
+                                d:Visibility="Visible"
+                                Margin="0,5">Загрузить ещё...</Button>
                     </DockPanel>
                 </Grid>
             </Grid>

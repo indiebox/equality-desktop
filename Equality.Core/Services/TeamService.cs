@@ -29,7 +29,7 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
-        public async Task<ApiResponseMessage<TTeamModel[]>> GetTeamsAsync(QueryParameters query = null)
+        public async Task<PaginatableApiResponse<TTeamModel>> GetTeamsAsync(QueryParameters query = null)
         {
             query ??= new QueryParameters();
 
