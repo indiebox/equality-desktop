@@ -75,10 +75,11 @@ namespace Equality.ViewModels
 
                     break;
                 case "Sync":
+                    string keyPath = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
                     var currentUser = WindowsIdentity.GetCurrent();
-                    var query = new WqlEventQuery("SELECT * FROM RegistryTreeChangeEvent WHERE " +
-                                    "Hive = 'HKEY_USERS' " +
-                                     @"AND RootPath = '" + currentUser.User.Value + @"\\Software'");
+                    var query = new WqlEventQuery(string.Format(
+                    "SELECT * FROM RegistryValueChangeEvent WHERE Hive='HKEY_USERS' AND KeyPath='{0}\\\\{1}' AND ValueName='{2}'",
+                    currentUser.User.Value, keyPath.Replace("\\", "\\\\"), "AppsUseLightTheme"));
                     var _watcher = new ManagementEventWatcher(query);
                     _watcher.EventArrived += (sender, args) => LiveThemeChanging();
                     _watcher.Start();
