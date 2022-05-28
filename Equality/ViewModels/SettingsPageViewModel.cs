@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Management;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 using Catel.MVVM;
@@ -73,6 +75,14 @@ namespace Equality.ViewModels
 
                     break;
                 case "Sync":
+                    var currentUser = WindowsIdentity.GetCurrent();
+                    var query = new WqlEventQuery("SELECT * FROM RegistryTreeChangeEvent WHERE " +
+                                    "Hive = 'HKEY_USERS' " +
+                                     @"AND RootPath = '" + currentUser.User.Value + @"\\Software'");
+                    var _watcher = new ManagementEventWatcher(query);
+                    _watcher.EventArrived += (sender, args) => LiveThemeChanging();
+                    _watcher.Start();
+
                     ActiveTheme = Themes.Sync;
                     Properties.Settings.Default.current_theme = (int)Themes.Sync;
                     //baseTheme = StateManager.GetColorTheme() == (int)Themes.Light ? new MaterialDesignLightTheme() : new MaterialDesignDarkTheme();
@@ -84,7 +94,14 @@ namespace Equality.ViewModels
             Properties.Settings.Default.Save();
         }
 
+        private void LiveThemeChanging()
+        {
+            Debug.Write("Change");
+        }
+
         #endregion
+
+
 
         #region Properties
 
