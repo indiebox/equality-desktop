@@ -22,12 +22,12 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ITeam team, QueryParameters query = null);
+        public Task<PaginatableApiResponse<TInviteModel>> GetTeamInvitesAsync(ITeam team, QueryParameters query = null);
 
         /// <inheritdoc cref="GetTeamInvitesAsync(ITeam, QueryParameters)"/>
         /// <param name="teamId">The team id.</param>
         /// <param name="query">The query parameters.</param>
-        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ulong teamId, QueryParameters query = null);
+        public Task<PaginatableApiResponse<TInviteModel>> GetTeamInvitesAsync(ulong teamId, QueryParameters query = null);
 
         /// <summary>
         /// Sends the get user invites request to the API.

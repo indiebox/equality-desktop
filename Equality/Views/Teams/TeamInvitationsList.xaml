@@ -4,9 +4,12 @@
            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:equality="http://equality.indiebox.ru/schemas"
+           xmlns:models="clr-namespace:Equality.Models"
+           xmlns:objects="clr-namespace:Equality.Data.Wpf"
+           xmlns:vm="clr-namespace:Equality.ViewModels"
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-           xmlns:vm="clr-namespace:Equality.ViewModels"
+           xmlns:catel="http://schemas.catelproject.com"
            FontSize="16"
            d:DesignHeight="1080"
            d:DesignWidth="1920"
@@ -18,6 +21,10 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <Grid.Resources>
+            <objects:DataObject x:Key="LoadMoreInvitesButton" />
+        </Grid.Resources>
 
         <DockPanel Grid.Row="0"
                    Margin="0,20,0,10"
@@ -38,23 +45,15 @@
                               Content="Отклонённые" />
             </ComboBox>
             <Button DockPanel.Dock="Right"
-                    Command="{Binding OpenInviteUserDialog}"
+                    Command="{Binding InviteUser}"
                     VerticalAlignment="Center">Пригласить участника</Button>
         </DockPanel>
 
         <ListBox Grid.Row="1"
-                 Background="WhiteSmoke"
-                 ItemsSource="{Binding FilteredInvites}">
+                 Background="WhiteSmoke">
+            <!-- Templates for custom objects. -->
             <ListBox.Resources>
-                <ControlTemplate x:Key="NoItemsTemplate">
-                    <TextBlock Background="WhiteSmoke"
-                               Padding="15"
-                               FontSize="18">Приглашений не найдено.</TextBlock>
-                </ControlTemplate>
-            </ListBox.Resources>
-
-            <ListBox.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate DataType="{x:Type models:Invite}">
                     <DockPanel Margin="10">
                         <!-- Image -->
                         <Border CornerRadius="50"
@@ -319,7 +318,7 @@
                                                     <Setter Property="TextDecorations"
                                                             Value="Underline" />
                                                 </DataTrigger>
-                                                
+
                                                 <!-- Accepted invite -->
                                                 <DataTrigger Binding="{Binding Status}"
                                                              Value="Accepted">
@@ -392,7 +391,32 @@
                         </Button>
                     </DockPanel>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
+
+                <DataTemplate DataType="{x:Type objects:DataObject}">
+                    <Button HorizontalAlignment="Left"
+                            Style="{StaticResource MaterialDesignFlatSecondaryDarkBgButton}"
+                            Command="{Binding DataContext.LoadMoreInvites, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                            Visibility="{Binding DataContext.InvitesPaginator.HasNextPage, RelativeSource={RelativeSource AncestorType=mvvm:Page}, FallbackValue=Collapsed, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
+                            d:Visibility="Visible"
+                            Margin="15,5">Загрузить ещё...</Button>
+                </DataTemplate>
+
+                <CollectionViewSource x:Key="InvitesCollection"
+                                      Source="{Binding Invites}" />
+
+                <ControlTemplate x:Key="NoItemsTemplate">
+                    <TextBlock Background="WhiteSmoke"
+                               Padding="15"
+                               FontSize="18">Приглашений не найдено.</TextBlock>
+                </ControlTemplate>
+            </ListBox.Resources>
+
+            <ListBox.ItemsSource>
+                <CompositeCollection>
+                    <CollectionContainer Collection="{Binding Source={StaticResource InvitesCollection}}" />
+                    <StaticResource ResourceKey="LoadMoreInvitesButton" />
+                </CompositeCollection>
+            </ListBox.ItemsSource>
         </ListBox>
     </Grid>
 </mvvm:Page>

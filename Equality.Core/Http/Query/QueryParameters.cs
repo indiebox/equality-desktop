@@ -89,7 +89,7 @@ namespace Equality.Http
         protected void ParseFilters(Dictionary<string, string> result)
         {
             foreach (var filter in Filters) {
-                result.TryAdd($"filters[{filter.Name}]", string.Join(',', filter.Values));
+                result.TryAdd($"filter[{filter.Name}]", string.Join(',', filter.Values));
             }
         }
 

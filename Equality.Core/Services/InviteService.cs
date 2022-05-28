@@ -27,10 +27,10 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
-        public Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ITeam team, QueryParameters query = null)
+        public Task<PaginatableApiResponse<TInviteModel>> GetTeamInvitesAsync(ITeam team, QueryParameters query = null)
             => GetTeamInvitesAsync(team.Id, query);
 
-        public async Task<ApiResponseMessage<TInviteModel[]>> GetTeamInvitesAsync(ulong teamId, QueryParameters query = null)
+        public async Task<PaginatableApiResponse<TInviteModel>> GetTeamInvitesAsync(ulong teamId, QueryParameters query = null)
         {
             Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
             query ??= new QueryParameters();
