@@ -1,5 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -14,7 +14,7 @@ using Equality.Services;
 using Equality.Data;
 
 using MaterialDesignThemes.Wpf;
-using System;
+using Equality.Http;
 
 namespace Equality.ViewModels
 {
@@ -46,7 +46,8 @@ namespace Equality.ViewModels
         {
             TeamService = teamService;
 
-            ShowDialog = new TaskCommand(OnShowDialogExecute);
+            LoadMoreMembers = new(OnLoadMoreMembersExecuteAsync, () => MembersPaginator?.HasNextPage ?? false);
+            LeaveTeam = new TaskCommand(OnLeaveTeamExecute);
             InviteUser = new TaskCommand(OnInviteUserExecuteAsync);
         }
 
@@ -58,19 +59,46 @@ namespace Equality.ViewModels
 
         public ObservableCollection<TeamMember> FilteredMembers { get; set; } = new();
 
+        public PaginatableApiResponse<TeamMember> MembersPaginator { get; set; }
+
         #endregion
 
         #region Commands
 
-        public TaskCommand ShowDialog { get; private set; }
+        public TaskCommand LoadMoreMembers { get; private set; }
 
-        private async Task OnShowDialogExecute()
+        private async Task OnLoadMoreMembersExecuteAsync()
+        {
+            try {
+                MembersPaginator = await MembersPaginator.NextPageAsync();
+                Members.AddRange(MembersPaginator.Object);
+
+                FilterMembers();
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
+        public TaskCommand LeaveTeam { get; private set; }
+
+        private async Task OnLeaveTeamExecute()
         {
             var view = MvvmHelper.CreateViewWithViewModel<LeaveTeamDialogViewModel>(Members.Count == 1);
             bool result = (bool)await DialogHost.Show(view);
 
-            if (result) {
-                await LeaveTeam();
+            if (!result) {
+                return;
+            }
+
+            try {
+                await TeamService.LeaveTeamAsync(StateManager.SelectedTeam);
+
+                StateManager.SelectedTeam = null;
+
+                var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
+                vm.ActiveTab = ApplicationWindowViewModel.Tab.Main;
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
             }
         }
 
@@ -95,25 +123,11 @@ namespace Equality.ViewModels
         protected async Task LoadMembersAsync()
         {
             try {
-                var response = await TeamService.GetMembersAsync(StateManager.SelectedTeam);
+                MembersPaginator = await TeamService.GetMembersAsync(StateManager.SelectedTeam);
 
-                Members.AddRange(response.Object);
+                Members.AddRange(MembersPaginator.Object);
 
                 FilterMembers();
-            } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
-            }
-        }
-
-        protected async Task LeaveTeam()
-        {
-            try {
-                await TeamService.LeaveTeamAsync(StateManager.SelectedTeam);
-
-                StateManager.SelectedTeam = null;
-
-                var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
-                vm.ActiveTab = ApplicationWindowViewModel.Tab.Main;
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }

@@ -10,6 +10,8 @@
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            xmlns:controls="clr-namespace:Equality.Controls"
+           xmlns:models="clr-namespace:Equality.Models"
+           xmlns:objects="clr-namespace:Equality.Data.Wpf"
            FontSize="16"
            d:DesignHeight="1080"
            d:DesignWidth="1920"
@@ -22,7 +24,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Row="0"
+        <!--<DockPanel Grid.Row="0"
                    Margin="0,20,0,10"
                    Height="50"
                    LastChildFill="False">
@@ -39,82 +41,106 @@
             <Button DockPanel.Dock="Right"
                     Command="{Binding InviteUser}"
                     VerticalAlignment="Center">Пригласить участника</Button>
-        </DockPanel>
+        </DockPanel>-->
 
-        <ListBox Grid.Row="1"
-                 Background="WhiteSmoke"
-                 ItemsSource="{Binding FilteredMembers}">
-            <ListBox.Resources>
-                <ControlTemplate x:Key="NoItemsTemplate">
-                    <TextBlock Background="WhiteSmoke"
-                               Padding="15"
-                               TextWrapping="Wrap"
-                               FontSize="18">Не найдено участников по запросу: "<Run Text="{Binding ElementName=FilterText, Path=Text}"></Run>".</TextBlock>
-                </ControlTemplate>
-            </ListBox.Resources>
+        <DockPanel Grid.Row="1"
+                   LastChildFill="True"
+                   Margin="0,20,0,0">
+            <DockPanel.Resources>
+                <objects:DataObject x:Key="LoadMoreMembersButton" />
+            </DockPanel.Resources>
 
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <DockPanel Margin="10">
-                        <Border Width="50"
-                                Height="50"
-                                CornerRadius="50">
-                            <Border.Background>
-                                <ImageBrush Stretch="Fill"
-                                            ImageSource="/Resources/Images/TeamLogo.jpg" />
-                            </Border.Background>
-                        </Border>
+            <ListBox DockPanel.Dock="Top"
+                     Background="WhiteSmoke">
+                <ListBox.Resources>
+                    <!-- Templates for custom objects. -->
+                    <DataTemplate DataType="{x:Type models:User}">
+                        <DockPanel Margin="10">
+                            <Border Width="50"
+                                    Height="50"
+                                    CornerRadius="50">
+                                <Border.Background>
+                                    <ImageBrush Stretch="Fill"
+                                                ImageSource="/Resources/Images/TeamLogo.jpg" />
+                                </Border.Background>
+                            </Border>
 
-                        <StackPanel Margin="15,0"
-                                    VerticalAlignment="Center">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Name}"
-                                           VerticalAlignment="Center"
-                                           FontSize="18" />
+                            <StackPanel Margin="15,0"
+                                        VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}"
+                                               VerticalAlignment="Center"
+                                               FontSize="18" />
 
-                                <materialDesign:Chip Content="Вы"
-                                                     Margin="10,0"
-                                                     Focusable="False"
-                                                     Cursor="Arrow">
-                                    <materialDesign:Chip.Style>
-                                        <Style TargetType="materialDesign:Chip">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsCurrentUser}"
-                                                             Value="False">
-                                                    <Setter Property="Visibility"
-                                                            Value="Collapsed" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </materialDesign:Chip.Style>
-                                </materialDesign:Chip>
-                            </StackPanel>
+                                    <materialDesign:Chip Content="Вы"
+                                                         Margin="10,0"
+                                                         Focusable="False"
+                                                         Cursor="Arrow">
+                                        <materialDesign:Chip.Style>
+                                            <Style TargetType="materialDesign:Chip">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsCurrentUser}"
+                                                                 Value="False">
+                                                        <Setter Property="Visibility"
+                                                                Value="Collapsed" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </materialDesign:Chip.Style>
+                                    </materialDesign:Chip>
+                                </StackPanel>
 
-                            <TextBlock>
+                                <TextBlock>
                                         <Run>Дата вступления:</Run>
                                         <Run Text="{Binding JoinedAt, Converter={equality:UtcToLocalDateConverter}}" />
-                            </TextBlock>
-                        </StackPanel>
+                                </TextBlock>
+                            </StackPanel>
 
-                        <Button HorizontalAlignment="Right"
-                                Content="Покинуть команду"
-                                Command="{Binding DataContext.ShowDialog, RelativeSource={RelativeSource AncestorType=mvvm:Page}}">
-                            <Button.Style>
-                                <Style TargetType="Button"
-                                       BasedOn="{StaticResource MaterialDesignOutlinedButton}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsCurrentUser}"
-                                                     Value="False">
-                                            <Setter Property="Visibility"
-                                                    Value="Collapsed" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-                    </DockPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                            <Button HorizontalAlignment="Right"
+                                    Content="Покинуть команду"
+                                    Command="{Binding DataContext.LeaveTeam, RelativeSource={RelativeSource AncestorType=mvvm:Page}}">
+                                <Button.Style>
+                                    <Style TargetType="Button"
+                                           BasedOn="{StaticResource MaterialDesignOutlinedButton}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsCurrentUser}"
+                                                         Value="False">
+                                                <Setter Property="Visibility"
+                                                        Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </DockPanel>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type objects:DataObject}">
+                        <Button HorizontalAlignment="Left"
+                                Style="{StaticResource MaterialDesignFlatSecondaryDarkBgButton}"
+                                Command="{Binding DataContext.LoadMoreMembers, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                Visibility="{Binding DataContext.MembersPaginator.HasNextPage, RelativeSource={RelativeSource AncestorType=mvvm:Page}, FallbackValue=Collapsed, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
+                                d:Visibility="Visible"
+                                Margin="10,5">Загрузить ещё...</Button>
+                    </DataTemplate>
+
+                    <CollectionViewSource x:Key="MembersCollection"
+                                          Source="{Binding FilteredMembers}" />
+
+                    <ControlTemplate x:Key="NoItemsTemplate">
+                        <TextBlock Background="WhiteSmoke"
+                                   Padding="15"
+                                   TextWrapping="Wrap"
+                                   FontSize="18">Не найдено участников по запросу: "<Run Text="{Binding ElementName=FilterText, Path=Text}"></Run>".</TextBlock>
+                    </ControlTemplate>
+                </ListBox.Resources>
+
+                <ListBox.ItemsSource>
+                    <CompositeCollection>
+                        <CollectionContainer Collection="{Binding Source={StaticResource MembersCollection}}" />
+                        <StaticResource ResourceKey="LoadMoreMembersButton" />
+                    </CompositeCollection>
+                </ListBox.ItemsSource>
+            </ListBox>
+        </DockPanel>
     </Grid>
 </mvvm:Page>
