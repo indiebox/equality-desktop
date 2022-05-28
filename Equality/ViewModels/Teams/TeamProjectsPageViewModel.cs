@@ -12,6 +12,7 @@ using Equality.Data;
 
 using System.Net.Http;
 using Equality.Http;
+using System.Linq;
 
 namespace Equality.ViewModels
 {
@@ -41,7 +42,7 @@ namespace Equality.ViewModels
 
             LoadMoreProjects = new(OnLoadMoreProjectsExecuteAsync, () => ProjectsPaginator?.HasNextPage ?? false);
             OpenProjectPage = new Command<Project>(OnOpenOpenProjectPageExecute);
-            OpenCreateProjectWindow = new TaskCommand(OnOpenCreateProjectWindowExecuteAsync, () => CreateProjectVm is null);
+            CreateProject = new TaskCommand(OnCreateProjectExecuteAsync, () => CreateProjectVm is null);
         }
 
         #region Properties
@@ -68,9 +69,9 @@ namespace Equality.ViewModels
             }
         }
 
-        public TaskCommand OpenCreateProjectWindow { get; private set; }
+        public TaskCommand CreateProject { get; private set; }
 
-        private async Task OnOpenCreateProjectWindowExecuteAsync()
+        private async Task OnCreateProjectExecuteAsync()
         {
             CreateProjectVm = MvvmHelper.CreateViewModel<CreateProjectControlViewModel>();
             CreateProjectVm.ClosedAsync += CreateProjectVmClosedAsync;
@@ -79,7 +80,7 @@ namespace Equality.ViewModels
         private Task CreateProjectVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
             if (CreateProjectVm.Result) {
-                Projects.Add(CreateProjectVm.Project);
+                Projects.Insert(0, CreateProjectVm.Project);
             }
 
             CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;

@@ -129,7 +129,7 @@ namespace Equality.ViewModels
             if (result) {
                 if (SelectedFilter == InviteFilter.All
                     || SelectedFilter == InviteFilter.Pending) {
-                    Invites.Prepend(invite);
+                    Invites.Insert(0, invite);
                 }
             }
         }

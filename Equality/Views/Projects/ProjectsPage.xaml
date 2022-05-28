@@ -61,7 +61,7 @@
                                    VerticalAlignment="Center">Команды</TextBlock>
                         <Button DockPanel.Dock="Right"
                                 Style="{StaticResource MaterialDesignIconButton}"
-                                Command="{Binding OpenCreateTeamWindow}">
+                                Command="{Binding CreateTeam}">
                             <materialDesign:PackIcon Kind="Plus" />
                         </Button>
                     </DockPanel>
@@ -229,7 +229,7 @@
                                                     <Button HorizontalAlignment="Left"
                                                             Width="384"
                                                             Height="216"
-                                                            Command="{Binding OpenCreateProjectWindow}"
+                                                            Command="{Binding CreateProject}"
                                                             CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ListBox}}">
                                                         <Button.Style>
                                                             <Style TargetType="Button"
@@ -285,8 +285,8 @@
 
                                         <ListBox.ItemsSource>
                                             <CompositeCollection>
-                                                <CollectionContainer Collection="{Binding Source={StaticResource ProjectsCollection}}" />
                                                 <StaticResource ResourceKey="CreateProjectButton" />
+                                                <CollectionContainer Collection="{Binding Source={StaticResource ProjectsCollection}}" />
                                             </CompositeCollection>
                                         </ListBox.ItemsSource>
                                     </ListBox>

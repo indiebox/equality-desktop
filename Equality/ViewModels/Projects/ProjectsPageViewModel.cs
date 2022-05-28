@@ -52,11 +52,11 @@ namespace Equality.ViewModels
 
             LoadMoreTeams = new(OnLoadMoreTeamsExecuteAsync, () => TeamsPaginator?.HasNextPage ?? false);
             OpenProjectPage = new Command<Project>(OnOpenOpenProjectPageExecute);
-            OpenCreateTeamWindow = new TaskCommand(OnOpenCreateTeamWindowExecute, () => CreateTeamVm is null);
+            CreateTeam = new TaskCommand(OnCreateTeamExecute, () => CreateTeamVm is null);
             OpenTeamPage = new Command<Team>(OnOpenTeamPageExecute);
             FilterProjects = new Command<Team>(OnFilterProjectsExecute);
             ResetFilter = new Command(OnResetFilterExecute);
-            OpenCreateProjectWindow = new TaskCommand<Team>(OnOpenCreateProjectWindowExecuteAsync, (team) => TeamForNewProject == null || TeamForNewProject != team);
+            CreateProject = new TaskCommand<Team>(OnCreateProjectExecuteAsync, (team) => TeamForNewProject == null || TeamForNewProject != team);
         }
 
         #region Properties
@@ -105,9 +105,9 @@ namespace Equality.ViewModels
             vm.ActiveTab = ApplicationWindowViewModel.Tab.Project;
         }
 
-        public TaskCommand OpenCreateTeamWindow { get; private set; }
+        public TaskCommand CreateTeam { get; private set; }
 
-        private async Task OnOpenCreateTeamWindowExecute()
+        private async Task OnCreateTeamExecute()
         {
             CreateTeamVm = MvvmHelper.CreateViewModel<CreateTeamControlViewModel>();
             CreateTeamVm.ClosedAsync += CreateTeamVmClosedAsync;
@@ -116,10 +116,10 @@ namespace Equality.ViewModels
         private Task CreateTeamVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
             if (CreateTeamVm.Result) {
-                Teams.Add(CreateTeamVm.Team);
+                Teams.Insert(0, CreateTeamVm.Team);
 
                 if (!IsFiltered) {
-                    FilteredTeams.Add(CreateTeamVm.Team);
+                    FilteredTeams.Insert(0, CreateTeamVm.Team);
                 }
             }
 
@@ -129,9 +129,9 @@ namespace Equality.ViewModels
             return Task.CompletedTask;
         }
 
-        public TaskCommand<Team> OpenCreateProjectWindow { get; private set; }
+        public TaskCommand<Team> CreateProject { get; private set; }
 
-        private async Task OnOpenCreateProjectWindowExecuteAsync(Team team)
+        private async Task OnCreateProjectExecuteAsync(Team team)
         {
             if (CreateProjectVm != null) {
                 CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;
@@ -145,7 +145,7 @@ namespace Equality.ViewModels
         private Task CreateProjectVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
             if (CreateProjectVm.Result) {
-                TeamForNewProject.Projects.Add(CreateProjectVm.Project);
+                TeamForNewProject.Projects.Insert(0, CreateProjectVm.Project);
             }
 
             CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;

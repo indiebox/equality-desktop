@@ -67,7 +67,7 @@
                                             Width="500"
                                             Height="280"
                                             Style="{StaticResource BaseButton}"
-                                            Command="{Binding OpenCreateProjectWindow}"
+                                            Command="{Binding CreateProject}"
                                             Visibility="{Binding CreateProjectVm, Converter={catel:ReferenceToCollapsingVisibilityConverter}, ConverterParameter=True}">
                                         <Grid>
                                             <Grid.Style>
@@ -100,8 +100,8 @@
                         </ListBox.Resources>
                         <ListBox.ItemsSource>
                             <CompositeCollection>
-                                <CollectionContainer Collection="{Binding Source={StaticResource ProjectsCollection}}" />
                                 <objects:DataObject />
+                                <CollectionContainer Collection="{Binding Source={StaticResource ProjectsCollection}}" />
                             </CompositeCollection>
                         </ListBox.ItemsSource>
                     </ListBox>
