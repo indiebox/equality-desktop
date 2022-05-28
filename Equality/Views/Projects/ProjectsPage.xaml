@@ -69,15 +69,20 @@
                     <DockPanel Grid.Row="2"
                                LastChildFill="True"
                                VerticalAlignment="Top">
+                        <DockPanel.Resources>
+                            <objects:DataObject x:Key="LoadMoreTeamsButton" />
+                        </DockPanel.Resources>
+
                         <ContentControl DockPanel.Dock="Bottom"
                                         Margin="20,5,0,0"
                                         Focusable="False"
                                         Content="{Binding CreateTeamVm, Converter={catel:ViewModelToViewConverter}}" />
 
                         <ListBox DockPanel.Dock="Top"
-                                 ItemsSource="{Binding Teams}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
+                                 VirtualizingPanel.VirtualizationMode="Standard">
+                            <!-- Templates for custom objects. -->
+                            <ListBox.Resources>
+                                <DataTemplate DataType="{x:Type models:Team}">
                                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                                                  BorderBrush="{StaticResource PrimaryHueMidBrush}"
                                                  GroupName="FilterByTeams"
@@ -107,15 +112,27 @@
                                         </Grid>
                                     </RadioButton>
                                 </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
 
-                        <Button HorizontalAlignment="Left"
-                                Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}"
-                                Command="{Binding LoadMoreTeams}"
-                                Visibility="{Binding TeamsPaginator.HasNextPage, FallbackValue=Collapsed, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
-                                d:Visibility="Visible"
-                                Margin="0,5">Загрузить ещё...</Button>
+                                <DataTemplate DataType="{x:Type objects:DataObject}">
+                                    <Button HorizontalAlignment="Left"
+                                            Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}"
+                                            Command="{Binding DataContext.LoadMoreTeams, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                            Visibility="{Binding DataContext.TeamsPaginator.HasNextPage, RelativeSource={RelativeSource AncestorType=mvvm:Page}, FallbackValue=Collapsed, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
+                                            d:Visibility="Visible"
+                                            Margin="20,5">Загрузить ещё...</Button>
+                                </DataTemplate>
+
+                                <CollectionViewSource x:Key="TeamsCollection"
+                                                      Source="{Binding Teams}" />
+                            </ListBox.Resources>
+
+                            <ListBox.ItemsSource>
+                                <CompositeCollection>
+                                    <CollectionContainer Collection="{Binding Source={StaticResource TeamsCollection}}" />
+                                    <StaticResource ResourceKey="LoadMoreTeamsButton" />
+                                </CompositeCollection>
+                            </ListBox.ItemsSource>
+                        </ListBox>
                     </DockPanel>
                 </Grid>
             </Grid>
