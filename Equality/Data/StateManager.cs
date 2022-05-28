@@ -79,11 +79,10 @@ namespace Equality.Data
 
         public static int GetColorTheme()
         {
-            string RegistryKey = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes";
-            string theme;
-            theme = (string)Registry.GetValue(RegistryKey, "CurrentTheme", string.Empty);
-            theme = theme.Split('\\').Last().Split('.').First().ToString();
-            if (theme == "Light") {
+            string RegistryKey = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
+            int theme;
+            theme = (int)Registry.GetValue(RegistryKey, "AppsUseLightTheme", string.Empty);
+            if (theme == 1) {
                 return (int)Themes.Light;
             } else {
                 return (int)Themes.Dark;
