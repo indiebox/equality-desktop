@@ -83,7 +83,7 @@ namespace Equality.ViewModels
             var board = await LoadActiveBoardAsync();
             if (board != null) {
                 StateManager.SelectedBoard = board;
-                NavigationService.Navigate<BoardPageViewModel, ProjectPageViewModel>();
+                NavigationService.Navigate<BoardPageViewModel>(this);
             } else {
                 NavigationService.Navigate<BoardsPageViewModel>(this);
             }
