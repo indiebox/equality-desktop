@@ -12,6 +12,7 @@
            xmlns:controls="clr-namespace:Equality.Controls"
            xmlns:models="clr-namespace:Equality.Models"
            xmlns:objects="clr-namespace:Equality.Data.Wpf"
+           xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
            FontSize="16"
            d:DesignHeight="1080"
            d:DesignWidth="1920"
@@ -24,7 +25,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!--<DockPanel Grid.Row="0"
+        <DockPanel Grid.Row="0"
                    Margin="0,20,0,10"
                    Height="50"
                    LastChildFill="False">
@@ -37,15 +38,18 @@
                      VerticalAlignment="Center"
                      materialDesign:HintAssist.Hint="Поиск по имени"
                      Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Behaviors>
+                    <catel:DelayBindingUpdate PropertyName="Text"
+                                              UpdateDelay="500" />
+                </i:Interaction.Behaviors>
             </TextBox>
             <Button DockPanel.Dock="Right"
                     Command="{Binding InviteUser}"
                     VerticalAlignment="Center">Пригласить участника</Button>
-        </DockPanel>-->
+        </DockPanel>
 
         <DockPanel Grid.Row="1"
-                   LastChildFill="True"
-                   Margin="0,20,0,0">
+                   LastChildFill="True">
             <DockPanel.Resources>
                 <objects:DataObject x:Key="LoadMoreMembersButton" />
             </DockPanel.Resources>
@@ -124,7 +128,7 @@
                     </DataTemplate>
 
                     <CollectionViewSource x:Key="MembersCollection"
-                                          Source="{Binding FilteredMembers}" />
+                                          Source="{Binding Members}" />
 
                     <ControlTemplate x:Key="NoItemsTemplate">
                         <TextBlock Background="WhiteSmoke"

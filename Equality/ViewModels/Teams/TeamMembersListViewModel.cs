@@ -15,6 +15,7 @@ using Equality.Data;
 
 using MaterialDesignThemes.Wpf;
 using Equality.Http;
+using Catel.Fody;
 
 namespace Equality.ViewModels
 {
@@ -28,7 +29,7 @@ namespace Equality.ViewModels
         {
             HandleDesignMode(() =>
             {
-                FilteredMembers.AddRange(new TeamMember[]
+                Members.AddRange(new TeamMember[]
                 {
                     new TeamMember() { Name = "user1", JoinedAt = DateTime.Now.AddHours(-2) },
                     new TeamMember() { Name = "user2", JoinedAt = DateTime.Now.AddDays(-1).AddHours(-1) },
@@ -55,9 +56,10 @@ namespace Equality.ViewModels
 
         public string FilterText { get; set; }
 
-        public ObservableCollection<TeamMember> Members { get; set; } = new();
+        [NoWeaving]
+        public string CurrentFilter { get; set; }
 
-        public ObservableCollection<TeamMember> FilteredMembers { get; set; } = new();
+        public ObservableCollection<TeamMember> Members { get; set; } = new();
 
         public PaginatableApiResponse<TeamMember> MembersPaginator { get; set; }
 
@@ -72,8 +74,6 @@ namespace Equality.ViewModels
             try {
                 MembersPaginator = await MembersPaginator.NextPageAsync();
                 Members.AddRange(MembersPaginator.Object);
-
-                FilterMembers();
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }
@@ -115,33 +115,32 @@ namespace Equality.ViewModels
 
         #region Methods
 
-        private void OnFilterTextChanged()
+        private async void OnFilterTextChanged()
         {
-            FilterMembers();
+            var text = FilterText?.ToLower()?.Trim();
+            if (text == CurrentFilter) {
+                return;
+            }
+
+            CurrentFilter = text;
+            await LoadMembersAsync();
         }
 
         protected async Task LoadMembersAsync()
         {
+            var query = new QueryParameters();
+
+            if (!string.IsNullOrWhiteSpace(CurrentFilter)) {
+                query.Filters = new[] { new Filter("name", CurrentFilter) };
+            }
+
             try {
-                MembersPaginator = await TeamService.GetMembersAsync(StateManager.SelectedTeam);
+                MembersPaginator = await TeamService.GetMembersAsync(StateManager.SelectedTeam, query);
 
-                Members.AddRange(MembersPaginator.Object);
-
-                FilterMembers();
+                Members.ReplaceRange(MembersPaginator.Object);
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }
-        }
-
-        protected void FilterMembers()
-        {
-            if (string.IsNullOrEmpty(FilterText)) {
-                FilteredMembers.ReplaceRange(Members);
-
-                return;
-            }
-
-            FilteredMembers.ReplaceRange(Members.Where(user => user.Name.ToLower().Contains(FilterText.ToLower())));
         }
 
         #endregion
