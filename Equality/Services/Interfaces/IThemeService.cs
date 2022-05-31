@@ -6,5 +6,15 @@ namespace Equality.Services
 {
     public interface IThemeService
     {
+        public enum Theme
+        {
+            Light,
+            Dark,
+            Sync,
+        }
+
+        public Theme GetCurrentTheme();
+
+        public void SetTheme(Theme theme);
     }
 }

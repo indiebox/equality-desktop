@@ -95,10 +95,6 @@ namespace Equality.ViewModels
             Properties.Settings.Default.Save();
         }
 
-        private void LiveThemeChanging()
-        {
-            Debug.Write("Change");
-        }
 
         #endregion
 
@@ -107,8 +103,6 @@ namespace Equality.ViewModels
         #region Properties
 
         public Themes ActiveTheme { get; set; }
-
-        private readonly PaletteHelper _paletteHelper = new PaletteHelper();
 
         #endregion
 
