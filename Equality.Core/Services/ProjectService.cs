@@ -27,10 +27,10 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
-        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ITeam team, QueryParameters query = null)
+        public Task<PaginatableApiResponse<TProjectModel>> GetProjectsAsync(ITeam team, QueryParameters query = null)
             => GetProjectsAsync(team.Id, query);
 
-        public async Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ulong teamId, QueryParameters query = null)
+        public async Task<PaginatableApiResponse<TProjectModel>> GetProjectsAsync(ulong teamId, QueryParameters query = null)
         {
             Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
             query ??= new QueryParameters();

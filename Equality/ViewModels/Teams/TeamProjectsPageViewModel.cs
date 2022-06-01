@@ -11,8 +11,8 @@ using Equality.Services;
 using Equality.Data;
 
 using System.Net.Http;
-using System.Diagnostics;
 using Equality.Http;
+using System.Linq;
 
 namespace Equality.ViewModels
 {
@@ -40,13 +40,16 @@ namespace Equality.ViewModels
         {
             ProjectService = projectService;
 
+            LoadMoreProjects = new(OnLoadMoreProjectsExecuteAsync, () => ProjectsPaginator?.HasNextPage ?? false);
             OpenProjectPage = new Command<Project>(OnOpenOpenProjectPageExecute);
-            OpenCreateProjectWindow = new TaskCommand(OnOpenCreateProjectWindowExecuteAsync, () => CreateProjectVm is null);
+            CreateProject = new TaskCommand(OnCreateProjectExecuteAsync, () => CreateProjectVm is null);
         }
 
         #region Properties
 
         public ObservableCollection<Project> Projects { get; set; } = new();
+
+        public PaginatableApiResponse<Project> ProjectsPaginator { get; set; }
 
         public CreateProjectControlViewModel CreateProjectVm { get; set; }
 
@@ -54,9 +57,21 @@ namespace Equality.ViewModels
 
         #region Commands
 
-        public TaskCommand OpenCreateProjectWindow { get; private set; }
+        public TaskCommand LoadMoreProjects { get; private set; }
 
-        private async Task OnOpenCreateProjectWindowExecuteAsync()
+        private async Task OnLoadMoreProjectsExecuteAsync()
+        {
+            try {
+                ProjectsPaginator = await ProjectsPaginator.NextPageAsync();
+                Projects.AddRange(ProjectsPaginator.Object);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
+        public TaskCommand CreateProject { get; private set; }
+
+        private async Task OnCreateProjectExecuteAsync()
         {
             CreateProjectVm = MvvmHelper.CreateViewModel<CreateProjectControlViewModel>();
             CreateProjectVm.ClosedAsync += CreateProjectVmClosedAsync;
@@ -65,7 +80,7 @@ namespace Equality.ViewModels
         private Task CreateProjectVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
             if (CreateProjectVm.Result) {
-                Projects.Add(CreateProjectVm.Project);
+                Projects.Insert(0, CreateProjectVm.Project);
             }
 
             CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;
@@ -91,7 +106,7 @@ namespace Equality.ViewModels
         protected async Task LoadProjectsAsync()
         {
             try {
-                var response = await ProjectService.GetProjectsAsync(StateManager.SelectedTeam, new()
+                ProjectsPaginator = await ProjectService.GetProjectsAsync(StateManager.SelectedTeam, new()
                 {
                     Fields = new[]
                     {
@@ -99,7 +114,7 @@ namespace Equality.ViewModels
                     }
                 });
 
-                Projects.AddRange(response.Object);
+                Projects.AddRange(ProjectsPaginator.Object);
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }

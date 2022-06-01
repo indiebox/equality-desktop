@@ -61,7 +61,7 @@
                                    VerticalAlignment="Center">Команды</TextBlock>
                         <Button DockPanel.Dock="Right"
                                 Style="{StaticResource MaterialDesignIconButton}"
-                                Command="{Binding OpenCreateTeamWindow}">
+                                Command="{Binding CreateTeam}">
                             <materialDesign:PackIcon Kind="Plus" />
                         </Button>
                     </DockPanel>
@@ -69,15 +69,20 @@
                     <DockPanel Grid.Row="2"
                                LastChildFill="True"
                                VerticalAlignment="Top">
+                        <DockPanel.Resources>
+                            <objects:DataObject x:Key="LoadMoreTeamsButton" />
+                        </DockPanel.Resources>
+
                         <ContentControl DockPanel.Dock="Bottom"
                                         Margin="20,5,0,0"
                                         Focusable="False"
                                         Content="{Binding CreateTeamVm, Converter={catel:ViewModelToViewConverter}}" />
 
                         <ListBox DockPanel.Dock="Top"
-                                 ItemsSource="{Binding Teams}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
+                                 VirtualizingPanel.VirtualizationMode="Standard">
+                            <!-- Templates for custom objects. -->
+                            <ListBox.Resources>
+                                <DataTemplate DataType="{x:Type models:Team}">
                                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                                                  BorderBrush="{StaticResource PrimaryHueMidBrush}"
                                                  GroupName="FilterByTeams"
@@ -107,7 +112,26 @@
                                         </Grid>
                                     </RadioButton>
                                 </DataTemplate>
-                            </ListBox.ItemTemplate>
+
+                                <DataTemplate DataType="{x:Type objects:DataObject}">
+                                    <Button HorizontalAlignment="Left"
+                                            Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}"
+                                            Command="{Binding DataContext.LoadMoreTeams, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                            Visibility="{Binding DataContext.TeamsPaginator.HasNextPage, RelativeSource={RelativeSource AncestorType=mvvm:Page}, FallbackValue=Collapsed, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
+                                            d:Visibility="Visible"
+                                            Margin="20,5">Загрузить ещё...</Button>
+                                </DataTemplate>
+
+                                <CollectionViewSource x:Key="TeamsCollection"
+                                                      Source="{Binding Teams}" />
+                            </ListBox.Resources>
+
+                            <ListBox.ItemsSource>
+                                <CompositeCollection>
+                                    <CollectionContainer Collection="{Binding Source={StaticResource TeamsCollection}}" />
+                                    <StaticResource ResourceKey="LoadMoreTeamsButton" />
+                                </CompositeCollection>
+                            </ListBox.ItemsSource>
                         </ListBox>
                     </DockPanel>
                 </Grid>
@@ -205,7 +229,7 @@
                                                     <Button HorizontalAlignment="Left"
                                                             Width="384"
                                                             Height="216"
-                                                            Command="{Binding OpenCreateProjectWindow}"
+                                                            Command="{Binding CreateProject}"
                                                             CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ListBox}}">
                                                         <Button.Style>
                                                             <Style TargetType="Button"
@@ -261,8 +285,8 @@
 
                                         <ListBox.ItemsSource>
                                             <CompositeCollection>
-                                                <CollectionContainer Collection="{Binding Source={StaticResource ProjectsCollection}}" />
                                                 <StaticResource ResourceKey="CreateProjectButton" />
+                                                <CollectionContainer Collection="{Binding Source={StaticResource ProjectsCollection}}" />
                                             </CompositeCollection>
                                         </ListBox.ItemsSource>
                                     </ListBox>

@@ -29,7 +29,7 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
-        public async Task<ApiResponseMessage<TTeamModel[]>> GetTeamsAsync(QueryParameters query = null)
+        public async Task<PaginatableApiResponse<TTeamModel>> GetTeamsAsync(QueryParameters query = null)
         {
             query ??= new QueryParameters();
 
@@ -70,10 +70,10 @@ namespace Equality.Services
             return new(deserializedTeam, response);
         }
 
-        public Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(ITeam team, QueryParameters query = null)
+        public Task<PaginatableApiResponse<TTeamMemberModel>> GetMembersAsync(ITeam team, QueryParameters query = null)
             => GetMembersAsync(team.Id, query);
 
-        public async Task<ApiResponseMessage<TTeamMemberModel[]>> GetMembersAsync(ulong teamId, QueryParameters query = null)
+        public async Task<PaginatableApiResponse<TTeamMemberModel>> GetMembersAsync(ulong teamId, QueryParameters query = null)
         {
             Argument.IsMinimal<ulong>(nameof(teamId), teamId, 1);
             query ??= new QueryParameters();

@@ -1,5 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -14,7 +14,8 @@ using Equality.Services;
 using Equality.Data;
 
 using MaterialDesignThemes.Wpf;
-using System;
+using Equality.Http;
+using Catel.Fody;
 
 namespace Equality.ViewModels
 {
@@ -28,7 +29,7 @@ namespace Equality.ViewModels
         {
             HandleDesignMode(() =>
             {
-                FilteredMembers.AddRange(new TeamMember[]
+                Members.AddRange(new TeamMember[]
                 {
                     new TeamMember() { Name = "user1", JoinedAt = DateTime.Now.AddHours(-2) },
                     new TeamMember() { Name = "user2", JoinedAt = DateTime.Now.AddDays(-1).AddHours(-1) },
@@ -46,7 +47,8 @@ namespace Equality.ViewModels
         {
             TeamService = teamService;
 
-            ShowDialog = new TaskCommand(OnShowDialogExecute);
+            LoadMoreMembers = new(OnLoadMoreMembersExecuteAsync, () => MembersPaginator?.HasNextPage ?? false);
+            LeaveTeam = new TaskCommand(OnLeaveTeamExecute);
             InviteUser = new TaskCommand(OnInviteUserExecuteAsync);
         }
 
@@ -54,23 +56,49 @@ namespace Equality.ViewModels
 
         public string FilterText { get; set; }
 
+        [NoWeaving]
+        public string CurrentFilter { get; set; }
+
         public ObservableCollection<TeamMember> Members { get; set; } = new();
 
-        public ObservableCollection<TeamMember> FilteredMembers { get; set; } = new();
+        public PaginatableApiResponse<TeamMember> MembersPaginator { get; set; }
 
         #endregion
 
         #region Commands
 
-        public TaskCommand ShowDialog { get; private set; }
+        public TaskCommand LoadMoreMembers { get; private set; }
 
-        private async Task OnShowDialogExecute()
+        private async Task OnLoadMoreMembersExecuteAsync()
+        {
+            try {
+                MembersPaginator = await MembersPaginator.NextPageAsync();
+                Members.AddRange(MembersPaginator.Object);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
+        public TaskCommand LeaveTeam { get; private set; }
+
+        private async Task OnLeaveTeamExecute()
         {
             var view = MvvmHelper.CreateViewWithViewModel<LeaveTeamDialogViewModel>(Members.Count == 1);
             bool result = (bool)await DialogHost.Show(view);
 
-            if (result) {
-                await LeaveTeam();
+            if (!result) {
+                return;
+            }
+
+            try {
+                await TeamService.LeaveTeamAsync(StateManager.SelectedTeam);
+
+                StateManager.SelectedTeam = null;
+
+                var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
+                vm.ActiveTab = ApplicationWindowViewModel.Tab.Main;
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
             }
         }
 
@@ -87,47 +115,32 @@ namespace Equality.ViewModels
 
         #region Methods
 
-        private void OnFilterTextChanged()
+        private async void OnFilterTextChanged()
         {
-            FilterMembers();
+            var text = FilterText?.ToLower()?.Trim();
+            if (text == CurrentFilter) {
+                return;
+            }
+
+            CurrentFilter = text;
+            await LoadMembersAsync();
         }
 
         protected async Task LoadMembersAsync()
         {
+            var query = new QueryParameters();
+
+            if (!string.IsNullOrWhiteSpace(CurrentFilter)) {
+                query.Filters = new[] { new Filter("name", CurrentFilter) };
+            }
+
             try {
-                var response = await TeamService.GetMembersAsync(StateManager.SelectedTeam);
+                MembersPaginator = await TeamService.GetMembersAsync(StateManager.SelectedTeam, query);
 
-                Members.AddRange(response.Object);
-
-                FilterMembers();
+                Members.ReplaceRange(MembersPaginator.Object);
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }
-        }
-
-        protected async Task LeaveTeam()
-        {
-            try {
-                await TeamService.LeaveTeamAsync(StateManager.SelectedTeam);
-
-                StateManager.SelectedTeam = null;
-
-                var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
-                vm.ActiveTab = ApplicationWindowViewModel.Tab.Main;
-            } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
-            }
-        }
-
-        protected void FilterMembers()
-        {
-            if (string.IsNullOrEmpty(FilterText)) {
-                FilteredMembers.ReplaceRange(Members);
-
-                return;
-            }
-
-            FilteredMembers.ReplaceRange(Members.Where(user => user.Name.ToLower().Contains(FilterText.ToLower())));
         }
 
         #endregion
