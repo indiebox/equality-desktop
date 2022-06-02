@@ -56,6 +56,17 @@ namespace Equality.ViewModels
 
         public string FilterText { get; set; }
 
+        private async void OnFilterTextChanged()
+        {
+            var text = FilterText?.ToLower()?.Trim();
+            if (text == CurrentFilter) {
+                return;
+            }
+
+            CurrentFilter = text;
+            await LoadMembersAsync();
+        }
+
         [NoWeaving]
         public string CurrentFilter { get; set; }
 
@@ -114,17 +125,6 @@ namespace Equality.ViewModels
         #endregion
 
         #region Methods
-
-        private async void OnFilterTextChanged()
-        {
-            var text = FilterText?.ToLower()?.Trim();
-            if (text == CurrentFilter) {
-                return;
-            }
-
-            CurrentFilter = text;
-            await LoadMembersAsync();
-        }
 
         protected async Task LoadMembersAsync()
         {

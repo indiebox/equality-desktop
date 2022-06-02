@@ -30,7 +30,6 @@
                    Height="50"
                    LastChildFill="False">
             <TextBox Style="{StaticResource FilterTextBox}"
-                     x:Name="FilterText"
                      Width="250"
                      Padding="10"
                      DockPanel.Dock="Left"

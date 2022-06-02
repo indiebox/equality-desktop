@@ -1,18 +1,17 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 using Catel.Collections;
 using Catel.MVVM;
+using Catel.Fody;
 
 using Equality.Helpers;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
 using Equality.Data;
-
-using System.Net.Http;
 using Equality.Http;
-using System.Linq;
 
 namespace Equality.ViewModels
 {
@@ -46,6 +45,22 @@ namespace Equality.ViewModels
         }
 
         #region Properties
+
+        public string FilterText { get; set; }
+
+        private async void OnFilterTextChanged()
+        {
+            var text = FilterText?.ToLower()?.Trim();
+            if (text == CurrentFilter) {
+                return;
+            }
+
+            CurrentFilter = text;
+            await LoadProjectsAsync();
+        }
+
+        [NoWeaving]
+        public string CurrentFilter { get; set; }
 
         public ObservableCollection<Project> Projects { get; set; } = new();
 
@@ -105,16 +120,22 @@ namespace Equality.ViewModels
 
         protected async Task LoadProjectsAsync()
         {
-            try {
-                ProjectsPaginator = await ProjectService.GetProjectsAsync(StateManager.SelectedTeam, new()
+            var query = new QueryParameters()
+            {
+                Fields = new[]
                 {
-                    Fields = new[]
-                    {
-                        new Field("projects", "id", "name", "description", "image")
-                    }
-                });
+                    new Field("projects", "id", "name", "description", "image")
+                }
+            };
 
-                Projects.AddRange(ProjectsPaginator.Object);
+            if (!string.IsNullOrWhiteSpace(CurrentFilter)) {
+                query.Filters = new[] { new Filter("name", CurrentFilter) };
+            }
+
+            try {
+                ProjectsPaginator = await ProjectService.GetProjectsAsync(StateManager.SelectedTeam, query);
+
+                Projects.ReplaceRange(ProjectsPaginator.Object);
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }
