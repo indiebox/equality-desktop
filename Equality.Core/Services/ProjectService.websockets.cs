@@ -7,8 +7,9 @@ using Equality.Models;
 
 namespace Equality.Services
 {
-    public partial class ProjectServiceBase<TProjectModel, TLeaderNominationModel, TUserModel>
+    public partial class ProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel, TUserModel>
         where TProjectModel : class, IProject, new()
+        where TTeamModel : class, ITeam, new()
         where TLeaderNominationModel : class, ILeaderNomination, new()
         where TUserModel : class, IUser, new()
     {

@@ -12,8 +12,10 @@ using Equality.Models;
 
 namespace Equality.Services
 {
-    public partial class ProjectServiceBase<TProjectModel, TLeaderNominationModel, TUserModel> : IProjectServiceBase<TProjectModel, TLeaderNominationModel, TUserModel>
+    public partial class ProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel, TUserModel>
+        : IProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel, TUserModel>
         where TProjectModel : class, IProject, new()
+        where TTeamModel : class, ITeam, new()
         where TLeaderNominationModel : class, ILeaderNomination, new()
         where TUserModel : class, IUser, new()
     {
@@ -101,6 +103,21 @@ namespace Equality.Services
             var leader = Json.Deserialize<TUserModel>(response.Content["data"]);
 
             return new(leader, response);
+        }
+
+        public Task<ApiResponseMessage<TTeamModel>> GetTeamForProjectAsync(IProject project, QueryParameters query = null)
+            => GetTeamForProjectAsync(project.Id, query);
+
+        public async Task<ApiResponseMessage<TTeamModel>> GetTeamForProjectAsync(ulong projectId, QueryParameters query = null)
+        {
+            Argument.IsMinimal<ulong>(nameof(projectId), projectId, 1);
+            query ??= new QueryParameters();
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"projects/{projectId}/team"));
+
+            var team = Json.Deserialize<TTeamModel>(response.Content["data"]);
+
+            return new(team, response);
         }
 
         public Task<ApiResponseMessage<TProjectModel>> CreateProjectAsync(ITeam team, IProject project, QueryParameters query = null)
