@@ -218,24 +218,28 @@ namespace Equality.ViewModels
 
         protected async void LoadProjectForTeams(Team[] teams)
         {
-            foreach (var team in teams) {
-                var responseProjects = await ProjectService.GetProjectsAsync(team, new()
-                {
-                    Fields = new[]
+            try {
+                foreach (var team in teams) {
+                    var responseProjects = await ProjectService.GetProjectsAsync(team, new()
                     {
+                        Fields = new[]
+                        {
                             new Field("projects", "id", "name", "description", "image")
                         },
-                    PaginationData = new()
-                    {
-                        Count = 5,
-                    },
-                });
+                        PaginationData = new()
+                        {
+                            Count = 5,
+                        },
+                    });
 
-                if (IsClosed) {
-                    return;
+                    if (IsClosed) {
+                        return;
+                    }
+
+                    team.Projects.AddRange(responseProjects.Object);
                 }
-
-                team.Projects.AddRange(responseProjects.Object);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
             }
         }
 
