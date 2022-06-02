@@ -14,6 +14,19 @@ namespace Equality.Services
         where TUserModel : class, IUser, new()
     {
         /// <summary>
+        /// Sends the get current user projects request to the API.
+        /// </summary>
+        /// <param name="query">The query parameters.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets a token using <see cref="ITokenResolver.ResolveApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<PaginatableApiResponse<TProjectModel>> GetProjectsAsync(QueryParameters query = null);
+
+        /// <summary>
         /// Sends the get team projects request to the API.
         /// </summary>
         /// <param name="team">The team.</param>

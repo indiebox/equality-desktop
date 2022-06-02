@@ -29,6 +29,17 @@ namespace Equality.Services
             TokenResolver = tokenResolver;
         }
 
+        public async Task<PaginatableApiResponse<TProjectModel>> GetProjectsAsync(QueryParameters query = null)
+        {
+            query ??= new QueryParameters();
+
+            var response = await ApiClient.WithTokenOnce(TokenResolver.ResolveApiToken()).GetAsync(query.Parse($"/projects"));
+
+            var projects = Json.Deserialize<TProjectModel[]>(response.Content["data"]);
+
+            return new(projects, response);
+        }
+
         public Task<PaginatableApiResponse<TProjectModel>> GetProjectsAsync(ITeam team, QueryParameters query = null)
             => GetProjectsAsync(team.Id, query);
 
