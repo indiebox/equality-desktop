@@ -83,6 +83,11 @@ namespace Equality.ViewModels
         {
             try {
                 TeamsPaginator = await TeamsPaginator.NextPageAsync();
+
+                if (IsClosed) {
+                    return;
+                }
+
                 Teams.AddRange(TeamsPaginator.Object);
 
                 if (!IsFiltered) {
@@ -197,6 +202,11 @@ namespace Equality.ViewModels
                         new Field("teams", "id", "name", "description", "url", "logo")
                     }
                 });
+
+                if (IsClosed) {
+                    return;
+                }
+
                 Teams.AddRange(TeamsPaginator.Object);
                 FilteredTeams.AddRange(Teams);
 
@@ -220,6 +230,10 @@ namespace Equality.ViewModels
                         Count = 5,
                     },
                 });
+
+                if (IsClosed) {
+                    return;
+                }
 
                 team.Projects.AddRange(responseProjects.Object);
             }
