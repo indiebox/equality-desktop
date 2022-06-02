@@ -93,8 +93,6 @@ namespace Equality.Data
             _notificationService.ShowError("Ошибка запроса. Пожалуйста, свяжитесь с разработчиками.");
         }
 
-        #region Unauthorized
-
         private void HandleUnauthorizedException(UnauthorizedHttpException exception)
         {
             StateManager.ApiToken = null;
@@ -104,21 +102,19 @@ namespace Equality.Data
             Properties.Settings.Default.Save();
 
             var vm = MvvmHelper.CreateViewModel<AuthorizationWindowViewModel>();
-            vm.InitializedAsync += AuthorizationWindowVmInitializedAsync;
+            AsyncEventHandler<EventArgs> task = null;
+            task = (object sender, EventArgs e) =>
+            {
+                var vm = (AuthorizationWindowViewModel)sender;
+                vm.InitializedAsync -= task;
+
+                _notificationService.ShowError("Ошибка авторизации.\nПожалуйста, выполните повторный вход.", TimeSpan.FromSeconds(5));
+
+                return Task.CompletedTask;
+            };
+            vm.InitializedAsync += task;
             ServiceLocator.Default.ResolveType<IUIVisualizerService>().ShowAsync(vm);
         }
-
-        private Task AuthorizationWindowVmInitializedAsync(object sender, EventArgs e)
-        {
-            var vm = (AuthorizationWindowViewModel)sender;
-            vm.InitializedAsync -= AuthorizationWindowVmInitializedAsync;
-
-            _notificationService.ShowError("Ошибка авторизации.\nПожалуйста, выполните повторый вход.");
-
-            return Task.CompletedTask;
-        }
-
-        #endregion
 
         private void HandleForbiddenException(ForbiddenHttpException exception)
         {
@@ -148,7 +144,7 @@ namespace Equality.Data
 
         private void HandleServerErrorException(ServerErrorHttpException exception)
         {
-            _notificationService.ShowError("Ошибка сервера.\nПожалуйста, попробуйте позже.");
+            _notificationService.ShowError("Ошибка сервера.\nПожалуйста, попробуйте позже.", TimeSpan.FromSeconds(5));
         }
 
         private void HandleHttpRequestException(HttpRequestException exception)
@@ -164,7 +160,7 @@ namespace Equality.Data
         {
             Log.Warning(exception);
 
-            _notificationService.ShowWarning($"Ошибка подключения к Pusher: {exception.Message}");
+            _notificationService.ShowWarning($"Ошибка подключения к Pusher: {exception.Message}", TimeSpan.FromSeconds(5));
         }
 
         #endregion
