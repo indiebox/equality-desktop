@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
 
 namespace Equality.Http
 {
-    public class UnprocessableEntityHttpException : HttpRequestException
+    public class UnprocessableEntityHttpException : ApiException
     {
         public Dictionary<string, string[]> Errors { get; protected set; }
 

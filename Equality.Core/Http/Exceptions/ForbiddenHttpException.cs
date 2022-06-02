@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Net.Http;
 
 namespace Equality.Http
 {
-    public class ForbiddenHttpException : HttpRequestException
+    public class ForbiddenHttpException : ApiException
     {
         public ForbiddenHttpException() : base("This action is unauthorized.")
         {

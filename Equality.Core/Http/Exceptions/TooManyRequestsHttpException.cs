@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Net.Http;
 
 namespace Equality.Http
 {
-    public class TooManyRequestsHttpException : HttpRequestException
+    public class TooManyRequestsHttpException : ApiException
     {
         public TooManyRequestsHttpException()
         {
