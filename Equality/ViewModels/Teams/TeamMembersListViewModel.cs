@@ -59,16 +59,16 @@ namespace Equality.ViewModels
         private async void OnFilterTextChanged()
         {
             var text = FilterText?.ToLower()?.Trim();
-            if (text == CurrentFilter) {
+            if (text == CurrentFilterText) {
                 return;
             }
 
-            CurrentFilter = text;
+            CurrentFilterText = text;
             await LoadMembersAsync();
         }
 
         [NoWeaving]
-        public string CurrentFilter { get; set; }
+        public string CurrentFilterText { get; set; }
 
         public ObservableCollection<TeamMember> Members { get; set; } = new();
 
@@ -130,8 +130,8 @@ namespace Equality.ViewModels
         {
             var query = new QueryParameters();
 
-            if (!string.IsNullOrWhiteSpace(CurrentFilter)) {
-                query.Filters = new[] { new Filter("name", CurrentFilter) };
+            if (!string.IsNullOrWhiteSpace(CurrentFilterText)) {
+                query.Filters = new[] { new Filter("name", CurrentFilterText) };
             }
 
             try {

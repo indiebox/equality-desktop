@@ -51,16 +51,16 @@ namespace Equality.ViewModels
         private async void OnFilterTextChanged()
         {
             var text = FilterText?.ToLower()?.Trim();
-            if (text == CurrentFilter) {
+            if (text == CurrentFilterText) {
                 return;
             }
 
-            CurrentFilter = text;
+            CurrentFilterText = text;
             await LoadProjectsAsync();
         }
 
         [NoWeaving]
-        public string CurrentFilter { get; set; }
+        public string CurrentFilterText { get; set; }
 
         public ObservableCollection<Project> Projects { get; set; } = new();
 
@@ -128,8 +128,8 @@ namespace Equality.ViewModels
                 }
             };
 
-            if (!string.IsNullOrWhiteSpace(CurrentFilter)) {
-                query.Filters = new[] { new Filter("name", CurrentFilter) };
+            if (!string.IsNullOrWhiteSpace(CurrentFilterText)) {
+                query.Filters = new[] { new Filter("name", CurrentFilterText) };
             }
 
             try {

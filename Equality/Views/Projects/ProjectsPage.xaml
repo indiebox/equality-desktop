@@ -11,6 +11,7 @@
            xmlns:models="clr-namespace:Equality.Models"
            xmlns:objects="clr-namespace:Equality.Data.Wpf"
            xmlns:controls="clr-namespace:Equality.Controls"
+           xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
            FontSize="16"
            d:Height="600"
            d:Width="1000"
@@ -37,8 +38,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <RadioButton Grid.Row="0"
-                                 Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
                                  BorderBrush="{StaticResource PrimaryHueMidBrush}"
                                  Margin="4"
                                  IsChecked="True"
@@ -138,17 +138,38 @@
             </Grid>
 
             <Grid DockPanel.Dock="Right">
-                <ListBox ItemsSource="{Binding FilteredTeams}"
-                         ItemContainerStyle="{StaticResource ListBoxItemStyle}"
-                         Margin="-2,0,2,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBox Style="{StaticResource FilterTextBox}"
+                         Width="250"
+                         Height="50"
+                         Margin="30,30,0,30"
+                         Background="White"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         VerticalContentAlignment="Center"
+                         materialDesign:HintAssist.Hint="Поиск по команде"
+                         Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}">
+                    <i:Interaction.Behaviors>
+                        <catel:DelayBindingUpdate PropertyName="Text"
+                                                  UpdateDelay="500" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+
+                <ListBox Grid.Row="1"
+                         ItemsSource="{Binding FilteredTeams}"
+                         ItemContainerStyle="{StaticResource ListBoxItemStyle}">
                     <ListBox.Resources>
                         <ControlTemplate x:Key="NoItemsTemplate">
                             <StackPanel>
                                 <TextBlock Background="White"
                                            Padding="15"
-                                           Margin="30"
+                                           Margin="30,0,20,30"
                                            TextWrapping="Wrap"
-                                           FontSize="18">Вы не состоите ни в одной команде.</TextBlock>
+                                           FontSize="18">Команд не найдено.</TextBlock>
                             </StackPanel>
                         </ControlTemplate>
 
@@ -158,7 +179,7 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type models:Team}">
                             <StackPanel Background="White"
-                                        Margin="30,30,20,0">
+                                        Margin="30,0,20,30">
                                 <Button Style="{StaticResource BaseButton}"
                                         Command="{Binding DataContext.OpenTeamPage, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
                                         CommandParameter="{Binding}"

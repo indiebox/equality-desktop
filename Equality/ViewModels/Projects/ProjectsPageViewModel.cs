@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Catel.Collections;
 using Catel.MVVM;
 using Catel.Services;
+using Catel.Fody;
 
 using Equality.Helpers;
 using Equality.MVVM;
@@ -60,6 +61,22 @@ namespace Equality.ViewModels
         }
 
         #region Properties
+
+        public string FilterText { get; set; }
+
+        private async void OnFilterTextChanged()
+        {
+            var text = FilterText?.ToLower()?.Trim();
+            if (text == CurrentFilterText) {
+                return;
+            }
+
+            CurrentFilterText = text;
+            await LoadTeamsAsync();
+        }
+
+        [NoWeaving]
+        public string CurrentFilterText { get; set; }
 
         public ObservableCollection<Team> Teams { get; set; } = new();
 
@@ -187,18 +204,24 @@ namespace Equality.ViewModels
 
         #region Methods
 
-        protected async void LoadTeamsAsync()
+        protected async Task LoadTeamsAsync()
         {
-            try {
-                TeamsPaginator = await TeamService.GetTeamsAsync(new()
+            var query = new QueryParameters()
+            {
+                Fields = new[]
                 {
-                    Fields = new[]
-                    {
-                        new Field("teams", "id", "name", "description", "url", "logo")
-                    }
-                });
-                Teams.AddRange(TeamsPaginator.Object);
-                FilteredTeams.AddRange(Teams);
+                    new Field("teams", "id", "name", "description", "url", "logo")
+                }
+            };
+
+            if (!string.IsNullOrWhiteSpace(CurrentFilterText)) {
+                query.Filters = new[] { new Filter("name", CurrentFilterText) };
+            }
+
+            try {
+                TeamsPaginator = await TeamService.GetTeamsAsync(query);
+                Teams.ReplaceRange(TeamsPaginator.Object);
+                FilteredTeams.ReplaceRange(Teams);
 
                 LoadProjectForTeams(TeamsPaginator.Object);
             } catch (HttpRequestException e) {
@@ -213,8 +236,8 @@ namespace Equality.ViewModels
                 {
                     Fields = new[]
                     {
-                            new Field("projects", "id", "name", "description", "image")
-                        },
+                        new Field("projects", "id", "name", "description", "image")
+                    },
                     PaginationData = new()
                     {
                         Count = 5,
@@ -231,7 +254,7 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            LoadTeamsAsync();
+            await LoadTeamsAsync();
         }
 
         protected override async Task CloseAsync()

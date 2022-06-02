@@ -26,22 +26,21 @@
 
         <StackPanel Margin="20,20,0,20">
             <TextBlock FontSize="24">Проекты</TextBlock>
-            <DockPanel Height="50"
-                       Margin="0,10"
-                       LastChildFill="False">
-                <TextBox Style="{StaticResource FilterTextBox}"
-                         Width="250"
-                         Padding="10"
-                         Background="White"
-                         VerticalAlignment="Center"
-                         materialDesign:HintAssist.Hint="Поиск по названию"
-                         Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}">
-                    <i:Interaction.Behaviors>
-                        <catel:DelayBindingUpdate PropertyName="Text"
-                                                  UpdateDelay="500" />
-                    </i:Interaction.Behaviors>
-                </TextBox>
-            </DockPanel>
+            <TextBox Style="{StaticResource FilterTextBox}"
+                     Width="250"
+                     Height="50"
+                     Margin="0,10"
+                     Padding="10"
+                     Background="White"
+                     HorizontalAlignment="Left"
+                     VerticalContentAlignment="Center"
+                     materialDesign:HintAssist.Hint="Поиск по названию"
+                     Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Behaviors>
+                    <catel:DelayBindingUpdate PropertyName="Text"
+                                              UpdateDelay="500" />
+                </i:Interaction.Behaviors>
+            </TextBox>
         </StackPanel>
 
         <ScrollViewer Grid.Row="2"
