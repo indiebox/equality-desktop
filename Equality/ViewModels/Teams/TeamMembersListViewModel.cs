@@ -56,8 +56,19 @@ namespace Equality.ViewModels
 
         public string FilterText { get; set; }
 
+        private async void OnFilterTextChanged()
+        {
+            var text = FilterText?.ToLower()?.Trim();
+            if (text == CurrentFilterText) {
+                return;
+            }
+
+            CurrentFilterText = text;
+            await LoadMembersAsync();
+        }
+
         [NoWeaving]
-        public string CurrentFilter { get; set; }
+        public string CurrentFilterText { get; set; }
 
         public ObservableCollection<TeamMember> Members { get; set; } = new();
 
@@ -120,23 +131,12 @@ namespace Equality.ViewModels
 
         #region Methods
 
-        private async void OnFilterTextChanged()
-        {
-            var text = FilterText?.ToLower()?.Trim();
-            if (text == CurrentFilter) {
-                return;
-            }
-
-            CurrentFilter = text;
-            await LoadMembersAsync();
-        }
-
         protected async Task LoadMembersAsync()
         {
             var query = new QueryParameters();
 
-            if (!string.IsNullOrWhiteSpace(CurrentFilter)) {
-                query.Filters = new[] { new Filter("name", CurrentFilter) };
+            if (!string.IsNullOrWhiteSpace(CurrentFilterText)) {
+                query.Filters = new[] { new Filter("name", CurrentFilterText) };
             }
 
             try {

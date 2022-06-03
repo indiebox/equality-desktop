@@ -10,6 +10,7 @@ using Equality.Models;
 using Equality.Data;
 using Equality.Services;
 using Equality.Http;
+using Equality.Helpers;
 
 namespace Equality.ViewModels
 {
@@ -41,6 +42,8 @@ namespace Equality.ViewModels
             BoardService = boardService;
 
             Project = StateManager.SelectedProject;
+
+            OpenTeamPage = new TaskCommand(OnOpenTeamPageExecuteAsync, () => Project.Team != null);
         }
 
         public enum Tab
@@ -63,15 +66,14 @@ namespace Equality.ViewModels
 
         #region Commands
 
-        protected async Task LoadProjectLeaderAsync()
-        {
-            try {
-                var response = await ProjectService.GetProjectLeaderAsync(StateManager.SelectedProject);
+        public TaskCommand OpenTeamPage { get; private set; }
 
-                Leader = response.Object;
-            } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
-            }
+        private async Task OnOpenTeamPageExecuteAsync()
+        {
+            StateManager.SelectedTeam = Project.Team;
+
+            var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
+            vm.ActiveTab = ApplicationWindowViewModel.Tab.Team;
         }
 
         #endregion
@@ -107,6 +109,32 @@ namespace Equality.ViewModels
             return null;
         }
 
+        protected async Task LoadProjectLeaderAsync()
+        {
+            try {
+                var response = await ProjectService.GetProjectLeaderAsync(StateManager.SelectedProject);
+
+                Leader = response.Object;
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
+        protected async Task LoadProjectTeamAsync()
+        {
+            if (Project.Team != null) {
+                return;
+            }
+
+            try {
+                var response = await ProjectService.GetTeamForProjectAsync(StateManager.SelectedProject);
+
+                Project.Team = response.Object;
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
         private void OnActiveTabChanged()
         {
             switch (ActiveTab) {
@@ -130,6 +158,7 @@ namespace Equality.ViewModels
             await base.InitializeAsync();
 
             await LoadProjectLeaderAsync();
+            await LoadProjectTeamAsync();
 
             OnActiveTabChanged();
         }

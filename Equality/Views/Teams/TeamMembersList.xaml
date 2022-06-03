@@ -30,7 +30,6 @@
                    Height="50"
                    LastChildFill="False">
             <TextBox Style="{StaticResource FilterTextBox}"
-                     x:Name="FilterText"
                      Width="250"
                      Padding="10"
                      DockPanel.Dock="Left"
@@ -129,13 +128,6 @@
 
                     <CollectionViewSource x:Key="MembersCollection"
                                           Source="{Binding Members}" />
-
-                    <ControlTemplate x:Key="NoItemsTemplate">
-                        <TextBlock Background="WhiteSmoke"
-                                   Padding="15"
-                                   TextWrapping="Wrap"
-                                   FontSize="18">Не найдено участников по запросу: "<Run Text="{Binding ElementName=FilterText, Path=Text}"></Run>".</TextBlock>
-                    </ControlTemplate>
                 </ListBox.Resources>
 
                 <ListBox.ItemsSource>

@@ -18,27 +18,12 @@
            d:DataContext="{d:DesignInstance Type=vm:LeaderNominationPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
     <Grid>
-        <Border>
-            <Border.Background>
-                <ImageBrush Stretch="UniformToFill"
-                            ImageSource="/Resources/Images/BackgroundImage.jpg" />
-            </Border.Background>
-        </Border>
-        <Rectangle Fill="Black"
-                   Opacity="0.5" />
+        <controls:ProjectImage ImagePath="{Binding Project.Image}" />
+
         <ListBox Margin="0,10"
                  Grid.Row="1"
                  Background="{x:Null}"
                  ItemsSource="{Binding NominatedMembers}">
-            <ListBox.Resources>
-                <ControlTemplate x:Key="NoItemsTemplate">
-                    <TextBlock Background="WhiteSmoke"
-                               Padding="15"
-                               TextWrapping="Wrap"
-                               FontSize="18">Участников не найдено.</TextBlock>
-                </ControlTemplate>
-            </ListBox.Resources>
-
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Button Margin="20,10,20,10"
