@@ -73,6 +73,11 @@ namespace Equality.ViewModels
         {
             try {
                 MembersPaginator = await MembersPaginator.NextPageAsync();
+
+                if (IsClosed) {
+                    return;
+                }
+
                 Members.AddRange(MembersPaginator.Object);
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
@@ -136,6 +141,10 @@ namespace Equality.ViewModels
 
             try {
                 MembersPaginator = await TeamService.GetMembersAsync(StateManager.SelectedTeam, query);
+
+                if (IsClosed) {
+                    return;
+                }
 
                 Members.ReplaceRange(MembersPaginator.Object);
             } catch (HttpRequestException e) {

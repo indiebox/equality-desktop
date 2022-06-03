@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Net.Http;
 
 namespace Equality.Http
 {
-    public class NotFoundHttpException : HttpRequestException
+    public class NotFoundHttpException : ApiException
     {
         public NotFoundHttpException()
         {

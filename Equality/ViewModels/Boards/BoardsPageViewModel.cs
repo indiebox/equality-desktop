@@ -190,6 +190,10 @@ namespace Equality.ViewModels
             try {
                 var response = await BoardService.GetBoardsAsync(StateManager.SelectedProject);
 
+                if (IsClosed) {
+                    return;
+                }
+
                 Boards.AddRange(response.Object);
 
                 LoadActiveBoard();

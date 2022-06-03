@@ -1,8 +1,6 @@
-﻿using System.Net.Http;
-
-namespace Equality.Http
+﻿namespace Equality.Http
 {
-    public class BadRequestHttpException : HttpRequestException
+    public class BadRequestHttpException : ApiException
     {
         public BadRequestHttpException()
         {

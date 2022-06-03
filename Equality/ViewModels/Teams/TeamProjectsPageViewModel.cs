@@ -63,6 +63,11 @@ namespace Equality.ViewModels
         {
             try {
                 ProjectsPaginator = await ProjectsPaginator.NextPageAsync();
+
+                if (IsClosed) {
+                    return;
+                }
+
                 Projects.AddRange(ProjectsPaginator.Object);
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
@@ -113,6 +118,10 @@ namespace Equality.ViewModels
                         new Field("projects", "id", "name", "description", "image")
                     }
                 });
+
+                if (IsClosed) {
+                    return;
+                }
 
                 Projects.AddRange(ProjectsPaginator.Object);
             } catch (HttpRequestException e) {

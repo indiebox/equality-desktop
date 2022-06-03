@@ -83,6 +83,11 @@ namespace Equality.ViewModels
         {
             try {
                 TeamsPaginator = await TeamsPaginator.NextPageAsync();
+
+                if (IsClosed) {
+                    return;
+                }
+
                 Teams.AddRange(TeamsPaginator.Object);
 
                 if (!IsFiltered) {
@@ -197,6 +202,11 @@ namespace Equality.ViewModels
                         new Field("teams", "id", "name", "description", "url", "logo")
                     }
                 });
+
+                if (IsClosed) {
+                    return;
+                }
+
                 Teams.AddRange(TeamsPaginator.Object);
                 FilteredTeams.AddRange(Teams);
 
@@ -208,20 +218,28 @@ namespace Equality.ViewModels
 
         protected async void LoadProjectForTeams(Team[] teams)
         {
-            foreach (var team in teams) {
-                var responseProjects = await ProjectService.GetProjectsAsync(team, new()
-                {
-                    Fields = new[]
+            try {
+                foreach (var team in teams) {
+                    var responseProjects = await ProjectService.GetProjectsAsync(team, new()
                     {
+                        Fields = new[]
+                        {
                             new Field("projects", "id", "name", "description", "image")
                         },
-                    PaginationData = new()
-                    {
-                        Count = 5,
-                    },
-                });
+                        PaginationData = new()
+                        {
+                            Count = 5,
+                        },
+                    });
 
-                team.Projects.AddRange(responseProjects.Object);
+                    if (IsClosed) {
+                        return;
+                    }
+
+                    team.Projects.AddRange(responseProjects.Object);
+                }
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
             }
         }
 
