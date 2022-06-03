@@ -84,6 +84,11 @@ namespace Equality.ViewModels
         {
             try {
                 InvitesPaginator = await InvitesPaginator.NextPageAsync();
+
+                if (IsClosed) {
+                    return;
+                }
+
                 Invites.AddRange(InvitesPaginator.Object);
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
@@ -124,6 +129,10 @@ namespace Equality.ViewModels
         {
             try {
                 InvitesPaginator = await InviteService.GetUserInvitesAsync();
+
+                if (IsClosed) {
+                    return;
+                }
 
                 Invites.AddRange(InvitesPaginator.Object);
             } catch (HttpRequestException e) {

@@ -87,8 +87,7 @@ namespace Equality.ViewModels
                     Properties.Settings.Default.Save();
                 }
 
-                App.RegisterPusher();
-                await UIVisualizerService.ShowAsync<ApplicationWindowViewModel>();
+                await App.LoadAsync();
             } catch (UnprocessableEntityHttpException e) {
                 HandleApiErrors(e.Errors);
 

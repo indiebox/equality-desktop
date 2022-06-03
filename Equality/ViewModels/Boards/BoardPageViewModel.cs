@@ -117,10 +117,20 @@ namespace Equality.ViewModels
         {
             try {
                 var response = await ColumnService.GetColumnsAsync(StateManager.SelectedBoard);
+
+                if (IsClosed) {
+                    return;
+                }
+
                 Columns.AddRange(response.Object);
 
                 foreach (var column in Columns) {
                     var cards = (await CardService.GetCardsAsync(column)).Object;
+
+                    if (IsClosed) {
+                        return;
+                    }
+
                     column.Cards.AddRange(cards);
                 }
 

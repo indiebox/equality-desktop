@@ -1,9 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System.Threading.Tasks;
 using System.Windows;
 
 using Catel.IoC;
 using Catel.Logging;
 using Catel.MVVM;
+using Catel.Services;
 
 using Equality.Data;
 using Equality.Http;
@@ -20,7 +21,19 @@ namespace Equality
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-        public static void RegisterPusher()
+        /// <summary>
+        /// Load the main application for authorized user.
+        /// </summary>
+        public static async Task LoadAsync()
+        {
+            RegisterPusher();
+
+            await LoadSavedDataAsync();
+
+            _ = ServiceLocator.Default.ResolveType<IUIVisualizerService>().ShowAsync<ViewModels.ApplicationWindowViewModel>();
+        }
+
+        protected static void RegisterPusher()
         {
             var client = new Http.PusherClient("7c6a91460be1e040ce8c", new PusherOptions
             {
@@ -33,6 +46,33 @@ namespace Equality
             });
 
             ServiceLocator.Default.RegisterInstance<IWebsocketClient>(client);
+        }
+
+        protected static async Task LoadSavedDataAsync()
+        {
+            var settings = Equality.Properties.Settings.Default;
+
+            if (settings.menu_selected_team != 0) {
+                try {
+                    var response = await ServiceLocator.Default.ResolveType<ITeamService>().GetTeamAsync(settings.menu_selected_team);
+
+                    StateManager.SelectedTeam = response.Object;
+                } catch (ApiException) {
+                    settings.menu_selected_team = 0;
+                }
+            }
+
+            if (settings.menu_selected_project != 0) {
+                try {
+                    var response = await ServiceLocator.Default.ResolveType<IProjectService>().GetProjectAsync(settings.menu_selected_project);
+
+                    StateManager.SelectedProject = response.Object;
+                } catch (ApiException) {
+                    settings.menu_selected_project = 0;
+                }
+            }
+
+            settings.Save();
         }
 
         protected override void OnStartup(StartupEventArgs e)
