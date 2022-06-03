@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Management;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Catel.Services;
 
 using Equality.Data;
 using Equality.MVVM;
+using Equality.Services;
 
 using MaterialDesignThemes.Wpf;
 
@@ -32,73 +34,22 @@ namespace Equality.ViewModels
             Sync,
         }
 
-        public SettingsPageViewModel(INavigationService navigationService)
+        protected IThemeService ThemeService;
+
+        public SettingsPageViewModel(IThemeService themeService)
         {
             int currentThemeString = Properties.Settings.Default.current_theme;
-            ChangeTheme = new Command<string>(OnChangeThemeExecute);
 
-            switch (currentThemeString) {
-                case (int)Themes.Light:
-                    ActiveTheme = Themes.Light;
-                    break;
-                case (int)Themes.Dark:
-                    ActiveTheme = Themes.Dark;
-                    break;
-                case (int)Themes.Sync:
-                    ActiveTheme = Themes.Sync;
-                    break;
-                default:
-                    currentThemeString = (int)Themes.Light;
-                    break;
-            }
+            ThemeService = themeService;
+
+            ChangeTheme = new Command<string>(OnChangeThemeExecute);
+            var currentTheme = (IThemeService.Theme)currentThemeString;
+            ThemeService.SetTheme(currentTheme);
         }
 
         #region Methods
 
-        private void OnActiveThemeChanged(string newTheme)
-        {
-            var theme = _paletteHelper.GetTheme();
-            IBaseTheme baseTheme = new MaterialDesignLightTheme();
-            switch (newTheme) {
-                case "Light":
-                    ActiveTheme = Themes.Light;
-                    Properties.Settings.Default.current_theme = (int)Themes.Light;
-
-                    baseTheme = new MaterialDesignLightTheme();
-
-                    break;
-                case "Dark":
-                    ActiveTheme = Themes.Dark;
-                    Properties.Settings.Default.current_theme = (int)Themes.Dark;
-
-                    baseTheme = new MaterialDesignDarkTheme();
-
-                    break;
-                case "Sync":
-                    string keyPath = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
-                    var currentUser = WindowsIdentity.GetCurrent();
-                    var query = new WqlEventQuery(string.Format(
-                    "SELECT * FROM RegistryValueChangeEvent WHERE Hive='HKEY_USERS' AND KeyPath='{0}\\\\{1}' AND ValueName='{2}'",
-                    currentUser.User.Value, keyPath.Replace("\\", "\\\\"), "AppsUseLightTheme"));
-                    var _watcher = new ManagementEventWatcher(query);
-                    _watcher.EventArrived += (sender, args) => LiveThemeChanging();
-                    _watcher.Start();
-
-                    ActiveTheme = Themes.Sync;
-                    Properties.Settings.Default.current_theme = (int)Themes.Sync;
-                    //baseTheme = StateManager.GetColorTheme() == (int)Themes.Light ? new MaterialDesignLightTheme() : new MaterialDesignDarkTheme();
-                    baseTheme = StateManager.GetColorTheme() == (int)Themes.Light ? new MaterialDesignLightTheme() : new MaterialDesignDarkTheme();
-                    break;
-            }
-            theme.SetBaseTheme(baseTheme);
-            _paletteHelper.SetTheme(theme);
-            Properties.Settings.Default.Save();
-        }
-
-
         #endregion
-
-
 
         #region Properties
 
@@ -113,7 +64,15 @@ namespace Equality.ViewModels
 
         private void OnChangeThemeExecute(string theme)
         {
-            OnActiveThemeChanged(theme);
+            // TODO: change enum
+            var themeEnum = (IThemeService.Theme)Enum.Parse(typeof(IThemeService.Theme), theme);
+
+            // The foo.ToString().Contains(",") check is necessary for enumerations marked with an [Flags] attribute
+            if (!Enum.IsDefined(typeof(IThemeService.Theme), themeEnum) && !themeEnum.ToString().Contains(",")) {
+                throw new InvalidOperationException($"{theme} is not an underlying value of the YourEnum enumeration.");
+            }
+
+            ThemeService.SetTheme(themeEnum);
         }
 
         #endregion
