@@ -139,22 +139,6 @@ namespace Equality
             Log.Info("Calling base.OnStartup");
 
             base.OnStartup(e);
-
-            //Add/Update brush when the theme changes
-            // TODO: in constructor
-            PaletteHelper helper = new PaletteHelper();
-            if (helper.GetThemeManager() is { } themeManager) {
-                themeManager.ThemeChanged += ThemeManager_ThemeChanged;
-            }
-        }
-
-        private void ThemeManager_ThemeChanged(object sender, ThemeChangedEventArgs e)
-        {
-            if (e.NewTheme.GetBaseTheme() == BaseTheme.Light) {
-                Resources["SecondaryBackgroundColor"] = new SolidColorBrush(Colors.WhiteSmoke);
-            } else {
-                Resources["SecondaryBackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#222222"));
-            }
         }
     }
 }

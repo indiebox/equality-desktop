@@ -5,6 +5,10 @@ using System.Linq;
 using System.Management;
 using System.Security.Principal;
 using System.Text;
+using System.Windows;
+using System.Windows.Media;
+
+using Equality;
 
 using MaterialDesignThemes.Wpf;
 
@@ -24,6 +28,18 @@ namespace Equality.Services
 
         public ThemeService()
         {
+            var helper = new PaletteHelper();
+            if (helper.GetThemeManager() is { } themeManager) {
+                themeManager.ThemeChanged += (sender, e) =>
+                {
+                    if (e.NewTheme.GetBaseTheme() == BaseTheme.Light) {
+                        ((App)Application.Current).Resources["SecondaryBackgroundColor"] = new SolidColorBrush(Colors.WhiteSmoke);
+                    } else {
+                        ((App)Application.Current).Resources["SecondaryBackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#222222"));
+                    }
+                };
+            }
+
             string keyPath = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
             var query = new WqlEventQuery(string.Format(
             "SELECT * FROM RegistryValueChangeEvent WHERE Hive='HKEY_USERS' AND KeyPath='{0}\\\\{1}' AND ValueName='{2}'",
