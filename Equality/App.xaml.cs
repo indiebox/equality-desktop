@@ -93,7 +93,7 @@ namespace Equality
             serviceLocator.RegisterType<IBoardService, BoardService>();
             serviceLocator.RegisterType<IColumnService, ColumnService>();
             serviceLocator.RegisterType<ICardService, CardService>();
-            serviceLocator.RegisterType<IThemeService, ThemeService>();
+            serviceLocator.RegisterTypeAndInstantiate<IThemeService, ThemeService>();
 
             /*
             |--------------------------------------------------------------------------
@@ -141,6 +141,7 @@ namespace Equality
             base.OnStartup(e);
 
             //Add/Update brush when the theme changes
+            // TODO: in constructor
             PaletteHelper helper = new PaletteHelper();
             if (helper.GetThemeManager() is { } themeManager) {
                 themeManager.ThemeChanged += ThemeManager_ThemeChanged;
@@ -149,7 +150,7 @@ namespace Equality
 
         private void ThemeManager_ThemeChanged(object sender, ThemeChangedEventArgs e)
         {
-            if (e.NewTheme.GetBaseTheme().ToString() == "Light") {
+            if (e.NewTheme.GetBaseTheme() == BaseTheme.Light) {
                 Resources["SecondaryBackgroundColor"] = new SolidColorBrush(Colors.WhiteSmoke);
             } else {
                 Resources["SecondaryBackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#222222"));
