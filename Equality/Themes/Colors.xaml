@@ -13,6 +13,8 @@
                      Color="WhiteSmoke" />
     <SolidColorBrush x:Key="SecondaryBackground"
                      Color="WhiteSmoke" />
+    <SolidColorBrush x:Key="GrayColorOnHover"
+                     Color="#FFB3B3B3" />
 
     <!-- Additional colors -->
     <SolidColorBrush x:Key="DeleteItemColor"
