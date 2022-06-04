@@ -34,8 +34,13 @@ namespace Equality.Services
                 {
                     if (e.NewTheme.GetBaseTheme() == BaseTheme.Light) {
                         ((App)Application.Current).Resources["SecondaryBackgroundColor"] = new SolidColorBrush(Colors.WhiteSmoke);
+                        ((App)Application.Current).Resources["MaterialDesignPaper"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FAFAFA"));
+                        ((App)Application.Current).Resources["PrimaryHueMidForegroundBrush"] = new SolidColorBrush(Colors.Black);
+
                     } else {
-                        ((App)Application.Current).Resources["SecondaryBackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#222222"));
+                        ((App)Application.Current).Resources["SecondaryBackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#262626"));
+                        ((App)Application.Current).Resources["MaterialDesignPaper"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#212121"));
+                        ((App)Application.Current).Resources["PrimaryHueMidForegroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#858585"));
                     }
                 };
             }

@@ -25,7 +25,8 @@
 
         <TextBlock Grid.Row="0"
                    Margin="20,20,0,20"
-                   FontSize="24">Проекты</TextBlock>
+                   FontSize="24"
+                   Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">Проекты</TextBlock>
         <ScrollViewer Grid.Row="1"
                       Margin="10,0">
             <WrapPanel>
