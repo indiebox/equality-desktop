@@ -47,32 +47,25 @@ namespace Equality.Services
                 case IThemeService.Theme.Light:
                     Watcher.Stop();
                     Properties.Settings.Default.current_theme = (int)IThemeService.Theme.Light;
-
-                    currentTheme.SetBaseTheme(baseTheme);
-                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        _paletteHelper.SetTheme(currentTheme);
-                    });
-                    Properties.Settings.Default.Save();
                     break;
                 case IThemeService.Theme.Dark:
                     Watcher.Stop();
                     Properties.Settings.Default.current_theme = (int)IThemeService.Theme.Dark;
                     baseTheme = new MaterialDesignDarkTheme();
 
-                    currentTheme.SetBaseTheme(baseTheme);
-                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        _paletteHelper.SetTheme(currentTheme);
-                    });
                     Properties.Settings.Default.Save();
                     break;
                 case IThemeService.Theme.Sync:
                     Watcher.Start();
                     Properties.Settings.Default.current_theme = (int)IThemeService.Theme.Sync;
                     LiveThemeChanging();
-                    break;
+                    return;
             }
+            currentTheme.SetBaseTheme(baseTheme);
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                _paletteHelper.SetTheme(currentTheme);
+            });
         }
 
         private void LiveThemeChanging()
@@ -91,7 +84,6 @@ namespace Equality.Services
             {
                 _paletteHelper.SetTheme(currentTheme);
             });
-            //_paletteHelper.SetTheme(currentTheme);
         }
     }
 }
