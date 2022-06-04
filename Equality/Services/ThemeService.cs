@@ -41,14 +41,15 @@ namespace Equality.Services
 
         public void SetColorTheme(IThemeService.Theme theme)
         {
-            var currentTheme = _paletteHelper.GetTheme();
             IBaseTheme baseTheme = new MaterialDesignLightTheme();
             switch (theme) {
                 case IThemeService.Theme.Light:
+                    _currentTheme = IThemeService.Theme.Light;
                     Watcher.Stop();
                     Properties.Settings.Default.current_theme = (int)IThemeService.Theme.Light;
                     break;
                 case IThemeService.Theme.Dark:
+                    _currentTheme = IThemeService.Theme.Light;
                     Watcher.Stop();
                     Properties.Settings.Default.current_theme = (int)IThemeService.Theme.Dark;
                     baseTheme = new MaterialDesignDarkTheme();
@@ -56,11 +57,13 @@ namespace Equality.Services
                     Properties.Settings.Default.Save();
                     break;
                 case IThemeService.Theme.Sync:
+                    _currentTheme = IThemeService.Theme.Sync;
                     Watcher.Start();
                     Properties.Settings.Default.current_theme = (int)IThemeService.Theme.Sync;
                     LiveThemeChanging();
                     return;
             }
+            var currentTheme = _paletteHelper.GetTheme();
             currentTheme.SetBaseTheme(baseTheme);
             System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
