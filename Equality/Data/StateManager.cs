@@ -69,24 +69,5 @@ namespace Equality.Data
         }
 
         public static Board SelectedBoard { get; set; }
-
-        public enum Themes
-        {
-            Light,
-            Dark,
-            Sync,
-        }
-
-        public static int GetColorTheme()
-        {
-            string RegistryKey = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
-            int theme;
-            theme = (int)Registry.GetValue(RegistryKey, "AppsUseLightTheme", string.Empty);
-            if (theme == 1) {
-                return (int)Themes.Light;
-            } else {
-                return (int)Themes.Dark;
-            }
-        }
     }
 }

@@ -27,13 +27,6 @@ namespace Equality.ViewModels
 
         #endregion
 
-        public enum Themes
-        {
-            Light,
-            Dark,
-            Sync,
-        }
-
         protected IThemeService ThemeService;
 
         public SettingsPageViewModel(IThemeService themeService)
@@ -42,6 +35,7 @@ namespace Equality.ViewModels
 
             ThemeService = themeService;
 
+            ActiveTheme = ThemeService.GetCurrentTheme();
             ChangeTheme = new Command<string>(OnChangeThemeExecute);
             var currentTheme = (IThemeService.Theme)currentThemeString;
             ThemeService.SetColorTheme(currentTheme);
@@ -53,7 +47,7 @@ namespace Equality.ViewModels
 
         #region Properties
 
-        public Themes ActiveTheme { get; set; }
+        public IThemeService.Theme ActiveTheme { get; set; }
 
         #endregion
 

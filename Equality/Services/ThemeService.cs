@@ -32,6 +32,7 @@ namespace Equality.Services
             _watcher.EventArrived += (sender, args) => LiveThemeChanging();
             Watcher = _watcher;
 
+            _currentTheme = (IThemeService.Theme)Properties.Settings.Default.current_theme;
         }
 
         public IThemeService.Theme GetCurrentTheme()
@@ -45,24 +46,25 @@ namespace Equality.Services
             switch (theme) {
                 case IThemeService.Theme.Light:
                     _currentTheme = IThemeService.Theme.Light;
-                    Watcher.Stop();
                     Properties.Settings.Default.current_theme = (int)IThemeService.Theme.Light;
+                    Watcher.Stop();
+
                     break;
                 case IThemeService.Theme.Dark:
                     _currentTheme = IThemeService.Theme.Light;
-                    Watcher.Stop();
                     Properties.Settings.Default.current_theme = (int)IThemeService.Theme.Dark;
                     baseTheme = new MaterialDesignDarkTheme();
-
-                    Properties.Settings.Default.Save();
+                    Watcher.Stop();
                     break;
                 case IThemeService.Theme.Sync:
                     _currentTheme = IThemeService.Theme.Sync;
-                    Watcher.Start();
                     Properties.Settings.Default.current_theme = (int)IThemeService.Theme.Sync;
+                    Properties.Settings.Default.Save();
+                    Watcher.Start();
                     LiveThemeChanging();
                     return;
             }
+            Properties.Settings.Default.Save();
             var currentTheme = _paletteHelper.GetTheme();
             currentTheme.SetBaseTheme(baseTheme);
             System.Windows.Application.Current.Dispatcher.Invoke(() =>
@@ -77,7 +79,6 @@ namespace Equality.Services
             IBaseTheme baseTheme = new MaterialDesignLightTheme();
             string RegistryKey = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
             int theme = (int)Registry.GetValue(RegistryKey, "AppsUseLightTheme", string.Empty);
-            Debug.WriteLine(theme.ToString());
             if (theme == 0) {
                 baseTheme = new MaterialDesignDarkTheme();
             }
