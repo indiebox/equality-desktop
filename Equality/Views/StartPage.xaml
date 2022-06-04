@@ -25,6 +25,7 @@
                                              StaysOpen="True">
                         <materialDesign:PopupBox.ToggleContent>
                             <materialDesign:PackIcon Kind="Invite"
+                                                     Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                                      Width="24"
                                                      Height="24" />
                         </materialDesign:PopupBox.ToggleContent>
@@ -38,10 +39,12 @@
 
                             <TextBlock Grid.Row="0"
                                        FontSize="24"
+                                       Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                        HorizontalAlignment="Center"
                                        Margin="0,0,0,30">Приглашения</TextBlock>
 
                             <ListBox Grid.Row="1"
+                                     Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                      Background="{DynamicResource SecondaryBackgroundColor}"
                                      Margin="20,0"
                                      ItemsSource="{Binding Invites}">
@@ -49,6 +52,7 @@
                                     <ControlTemplate x:Key="NoItemsTemplate">
                                         <TextBlock Background="{DynamicResource SecondaryBackgroundColor}"
                                                    Padding="15"
+                                                   Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                                    TextWrapping="Wrap"
                                                    FontSize="18">Приглашений не найдено.</TextBlock>
                                     </ControlTemplate>
@@ -105,6 +109,7 @@
         </StackPanel>
 
         <TextBlock Grid.Row="0"
+                   Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                    Grid.Column="0"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
@@ -116,6 +121,7 @@
         </TextBlock>
 
         <TextBlock Grid.Row="0"
+                   Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                    Grid.Column="0"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
