@@ -44,7 +44,7 @@ namespace Equality.ViewModels
 
             ChangeTheme = new Command<string>(OnChangeThemeExecute);
             var currentTheme = (IThemeService.Theme)currentThemeString;
-            ThemeService.SetTheme(currentTheme);
+            ThemeService.SetColorTheme(currentTheme);
         }
 
         #region Methods
@@ -70,7 +70,7 @@ namespace Equality.ViewModels
                 throw new InvalidOperationException($"{theme} is not an underlying value of the YourEnum enumeration.");
             }
 
-            ThemeService.SetTheme(themeEnum);
+            ThemeService.SetColorTheme(themeEnum);
         }
 
         #endregion

@@ -20,6 +20,8 @@ namespace Equality.Services
 
         ManagementEventWatcher Watcher;
 
+        private readonly PaletteHelper _paletteHelper = new();
+
         public ThemeService()
         {
             string keyPath = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
@@ -32,17 +34,13 @@ namespace Equality.Services
 
         }
 
-
         public IThemeService.Theme GetCurrentTheme()
         {
             return _currentTheme;
         }
 
-        private readonly PaletteHelper _paletteHelper = new();
-
-        public void SetTheme(IThemeService.Theme theme)
+        public void SetColorTheme(IThemeService.Theme theme)
         {
-
             var currentTheme = _paletteHelper.GetTheme();
             IBaseTheme baseTheme = new MaterialDesignLightTheme();
             switch (theme) {
@@ -50,39 +48,50 @@ namespace Equality.Services
                     Watcher.Stop();
                     Properties.Settings.Default.current_theme = (int)IThemeService.Theme.Light;
 
-                    baseTheme = new MaterialDesignLightTheme();
-
+                    currentTheme.SetBaseTheme(baseTheme);
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        _paletteHelper.SetTheme(currentTheme);
+                    });
+                    Properties.Settings.Default.Save();
                     break;
                 case IThemeService.Theme.Dark:
                     Watcher.Stop();
                     Properties.Settings.Default.current_theme = (int)IThemeService.Theme.Dark;
-
                     baseTheme = new MaterialDesignDarkTheme();
 
+                    currentTheme.SetBaseTheme(baseTheme);
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        _paletteHelper.SetTheme(currentTheme);
+                    });
+                    Properties.Settings.Default.Save();
                     break;
                 case IThemeService.Theme.Sync:
                     Watcher.Start();
                     Properties.Settings.Default.current_theme = (int)IThemeService.Theme.Sync;
+                    LiveThemeChanging();
                     break;
             }
-            currentTheme.SetBaseTheme(baseTheme);
-            _paletteHelper.SetTheme(currentTheme);
-            Properties.Settings.Default.Save();
         }
 
         private void LiveThemeChanging()
         {
+            var currentTheme = _paletteHelper.GetTheme();
+            IBaseTheme baseTheme = new MaterialDesignLightTheme();
             string RegistryKey = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
             int theme = (int)Registry.GetValue(RegistryKey, "AppsUseLightTheme", string.Empty);
             Debug.WriteLine(theme.ToString());
-            if (theme == 1) {
-                SetTheme(IThemeService.Theme.Light);
-            } else {
-                SetTheme(IThemeService.Theme.Dark);
+            if (theme == 0) {
+                baseTheme = new MaterialDesignDarkTheme();
             }
+            currentTheme.SetBaseTheme(baseTheme);
 
-            //Debug.Write(_paletteHelper.GetTheme().ToString());
-            //Debug.Write("Change");
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                _paletteHelper.SetTheme(currentTheme);
+            });
+            //_paletteHelper.SetTheme(currentTheme);
         }
     }
 }

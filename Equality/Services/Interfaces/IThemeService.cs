@@ -15,6 +15,6 @@ namespace Equality.Services
 
         public Theme GetCurrentTheme();
 
-        public void SetTheme(Theme theme);
+        public void SetColorTheme(Theme theme);
     }
 }
