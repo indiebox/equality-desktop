@@ -232,12 +232,12 @@
                                                             <Grid.Style>
                                                                 <Style TargetType="Grid">
                                                                     <Setter Property="Background"
-                                                                            Value="#FFCCCCCC" />
+                                                                            Value="{DynamicResource SecondaryBackgroundColor}" />
                                                                     <Style.Triggers>
                                                                         <Trigger Property="IsMouseOver"
                                                                                  Value="True">
                                                                             <Setter Property="Background"
-                                                                                    Value="#FFB3B3B3" />
+                                                                                    Value="{DynamicResource GrayColorOnHover}" />
                                                                         </Trigger>
                                                                     </Style.Triggers>
                                                                 </Style>
@@ -246,7 +246,7 @@
                                                             <TextBlock Width="200"
                                                                        HorizontalAlignment="Center"
                                                                        VerticalAlignment="Center"
-                                                                       Foreground="Black"
+                                                                       Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                                                        TextAlignment="Center"
                                                                        FontSize="18">Создать проект</TextBlock>
                                                         </Grid>

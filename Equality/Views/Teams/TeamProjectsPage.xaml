@@ -73,7 +73,7 @@
                                                     <Trigger Property="IsMouseOver"
                                                              Value="True">
                                                         <Setter Property="Background"
-                                                                Value="#FFB3B3B3" />
+                                                                Value="{DynamicResource GrayColorOnHover}" />
                                                     </Trigger>
                                                 </Style.Triggers>
                                             </Style>
