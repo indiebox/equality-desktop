@@ -11,8 +11,11 @@
                      Color="White" />
     <SolidColorBrush x:Key="SecondaryBackgroundColor"
                      Color="WhiteSmoke" />
+    <SolidColorBrush x:Key="SecondaryBackground"
+                     Color="WhiteSmoke" />
 
     <!-- Additional colors -->
     <SolidColorBrush x:Key="DeleteItemColor"
                      Color="#FF3347" />
+
 </ResourceDictionary>

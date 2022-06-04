@@ -51,7 +51,7 @@ namespace Equality.Services
 
                     break;
                 case IThemeService.Theme.Dark:
-                    _currentTheme = IThemeService.Theme.Light;
+                    _currentTheme = IThemeService.Theme.Dark;
                     Properties.Settings.Default.current_theme = (int)IThemeService.Theme.Dark;
                     baseTheme = new MaterialDesignDarkTheme();
                     Watcher.Stop();
