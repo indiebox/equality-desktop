@@ -64,10 +64,8 @@ namespace Equality.ViewModels
 
         private void OnChangeThemeExecute(string theme)
         {
-            // TODO: change enum
             var themeEnum = (IThemeService.Theme)Enum.Parse(typeof(IThemeService.Theme), theme);
 
-            // The foo.ToString().Contains(",") check is necessary for enumerations marked with an [Flags] attribute
             if (!Enum.IsDefined(typeof(IThemeService.Theme), themeEnum) && !themeEnum.ToString().Contains(",")) {
                 throw new InvalidOperationException($"{theme} is not an underlying value of the YourEnum enumeration.");
             }
