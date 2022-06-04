@@ -31,6 +31,7 @@
                      Width="250"
                      Padding="10"
                      DockPanel.Dock="Left"
+                     Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                      Background="{StaticResource MaterialDesignPaper}"
                      VerticalAlignment="Center"
                      materialDesign:HintAssist.Hint="Поиск по имени"

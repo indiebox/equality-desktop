@@ -22,6 +22,7 @@
                 <StackPanel Background="{StaticResource MaterialDesignPaper}"
                             Margin="10,0">
                     <TextBlock Margin="10"
+                               Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                FontSize="24"
                                HorizontalAlignment="Left">Основное</TextBlock>
                     <Label Margin="10,0,10,10"
@@ -37,6 +38,7 @@
                                    LastChildFill="False"
                                    Canvas.Bottom="0">
                             <Button DockPanel.Dock='Top'
+                                    Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                     Style="{StaticResource MaterialDesignRaisedButton}"
                                     Margin="0,10,0,0"
                                     Content="Изменить"
@@ -51,6 +53,7 @@
 
                     <Label Margin="10,0">_Название команды</Label>
                     <TextBox Style="{StaticResource FilledTextBox}"
+                             Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                              Width="500"
                              materialDesign:HintAssist.Hint="Введите название команды"
                              Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}">
@@ -58,12 +61,14 @@
 
                     <Label Margin="10,0">_Описание команды</Label>
                     <TextBox Style="{StaticResource OutlinedTextBox}"
+                             Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                              Width="500"
                              materialDesign:HintAssist.Hint="Введите описание команды"
                              Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Margin="10,0">Ссылка</Label>
                     <TextBox Style="{StaticResource FilledTextBox}"
+                             Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                              Width="500"
                              materialDesign:HintAssist.Hint="Вставьте ссылку"
                              Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" />
