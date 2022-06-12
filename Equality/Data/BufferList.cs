@@ -26,8 +26,15 @@ namespace Equality.Data
             AddRange(collection);
         }
 
+        /// <summary>
+        /// The limit of the elements in the list.
+        /// </summary>
         public int Capacity { get; private set; }
 
+        /// <summary>
+        /// Adds the given object to the end of this list.
+        /// </summary>
+        /// <param name="item">The object.</param>
         public void Add(T item)
         {
             _collection.Add(item);
@@ -37,6 +44,10 @@ namespace Equality.Data
             }
         }
 
+        /// <summary>
+        /// Adds the elements of the specified collection to the end of the list.
+        /// </summary>
+        /// <param name="items">The collection.</param>
         public void AddRange(IEnumerable<T> items)
         {
             _collection.AddRange(items);
@@ -46,6 +57,22 @@ namespace Equality.Data
             }
         }
 
+        /// <summary>
+        /// Adds the given object to the end of this list.
+        /// Before adding element to the list it will be removed from the list using <see cref="List{T}.Remove(T)"/>.
+        /// </summary>
+        /// <param name="item">The object.</param>
+        public void AddOrReplace(T item)
+        {
+            _collection.Remove(item);
+
+            Add(item);
+        }
+
+        /// <summary>
+        /// Removes the first occurrence of a specified object from the list.
+        /// </summary>
+        /// <param name="item"></param>
         public void Remove(T item) => _collection.Remove(item);
 
         public IEnumerator<T> GetEnumerator() => ((IEnumerable<T>)_collection).GetEnumerator();

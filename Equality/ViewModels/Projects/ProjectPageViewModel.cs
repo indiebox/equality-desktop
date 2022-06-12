@@ -154,8 +154,7 @@ namespace Equality.ViewModels
 
         private void SaveRecentProject()
         {
-            SettingsManager.RecentProjects.Remove(Project.Id);
-            SettingsManager.RecentProjects.Add(Project.Id);
+            SettingsManager.RecentProjects.AddOrReplace(Project.Id);
             Properties.Settings.Default.Save();
         }
 
