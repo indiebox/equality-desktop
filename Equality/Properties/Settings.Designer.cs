@@ -97,5 +97,17 @@ namespace Equality.Properties {
                 this["menu_selected_project"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string recent_projects {
+            get {
+                return ((string)(this["recent_projects"]));
+            }
+            set {
+                this["recent_projects"] = value;
+            }
+        }
     }
 }
