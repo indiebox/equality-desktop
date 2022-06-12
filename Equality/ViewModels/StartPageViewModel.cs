@@ -11,6 +11,7 @@ using Equality.Services;
 using Equality.Data;
 using Equality.Http;
 using System.Linq;
+using Equality.Helpers;
 
 namespace Equality.ViewModels
 {
@@ -76,6 +77,7 @@ namespace Equality.ViewModels
             LoadMoreInvites = new(OnLoadMoreInvitesExecuteAsync, () => InvitesPaginator?.HasNextPage ?? false);
             AcceptInvite = new TaskCommand<Invite>(OnAcceptInviteExecuteAsync);
             DeclineInvite = new TaskCommand<Invite>(OnDeclineInviteExecuteAsync);
+            OpenProjectPage = new(OnOpenOpenProjectPageExecute);
 
             Name = StateManager.CurrentUser.Name;
         }
@@ -135,6 +137,16 @@ namespace Equality.ViewModels
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }
+        }
+
+        public Command<Project> OpenProjectPage { get; private set; }
+
+        private void OnOpenOpenProjectPageExecute(Project project)
+        {
+            StateManager.SelectedProject = project;
+
+            var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
+            vm.ActiveTab = ApplicationWindowViewModel.Tab.Project;
         }
 
         #endregion
