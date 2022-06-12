@@ -10,12 +10,15 @@ using Equality.Models;
 using Equality.Services;
 using Equality.Data;
 using Equality.Http;
+using System.Linq;
 
 namespace Equality.ViewModels
 {
     public class StartPageViewModel : ViewModel
     {
         protected IInviteService InviteService;
+
+        protected IProjectService ProjectService;
 
         #region DesignModeConstructor
 
@@ -46,14 +49,29 @@ namespace Equality.ViewModels
                         Inviter = new User() { Name = "User 2" },
                     },
                 });
+
+                RecentProjects.AddRange(new Project[]
+                {
+                    new Project()
+                    {
+                        Name = "Project 1",
+                    },
+                    new Project()
+                    {
+                        Name = "Project 2",
+                    },
+                });
+
+                Name = StateManager.CurrentUser.Name;
             });
         }
 
         #endregion
 
-        public StartPageViewModel(IInviteService inviteService)
+        public StartPageViewModel(IInviteService inviteService, IProjectService projectService)
         {
             InviteService = inviteService;
+            ProjectService = projectService;
 
             LoadMoreInvites = new(OnLoadMoreInvitesExecuteAsync, () => InvitesPaginator?.HasNextPage ?? false);
             AcceptInvite = new TaskCommand<Invite>(OnAcceptInviteExecuteAsync);
@@ -69,6 +87,8 @@ namespace Equality.ViewModels
         public ObservableCollection<Invite> Invites { get; set; } = new();
 
         public PaginatableApiResponse<Invite> InvitesPaginator { get; set; }
+
+        public ObservableCollection<Project> RecentProjects { get; set; } = new();
 
         #endregion
 
@@ -121,7 +141,7 @@ namespace Equality.ViewModels
 
         #region Methods
 
-        protected async Task LoadInvitesAsync()
+        protected async void LoadInvitesAsync()
         {
             try {
                 InvitesPaginator = await InviteService.GetUserInvitesAsync();
@@ -136,13 +156,38 @@ namespace Equality.ViewModels
             }
         }
 
+        protected async void LoadRecentProjectsAsync()
+        {
+            bool needSave = false;
+
+            try {
+                foreach (ulong projectId in SettingsManager.RecentProjects.Reverse()) {
+                    try {
+                        var response = await ProjectService.GetProjectAsync(projectId);
+
+                        RecentProjects.Add(response.Object);
+                    } catch (NotFoundHttpException) {
+                        needSave = true;
+                        SettingsManager.RecentProjects.Remove(projectId);
+                    }
+                }
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+
+            if (needSave) {
+                Properties.Settings.Default.Save();
+            }
+        }
+
         #endregion
 
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
 
-            await LoadInvitesAsync();
+            LoadInvitesAsync();
+            LoadRecentProjectsAsync();
         }
 
         protected override async Task CloseAsync()

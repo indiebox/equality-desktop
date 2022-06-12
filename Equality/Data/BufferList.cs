@@ -46,6 +46,8 @@ namespace Equality.Data
             }
         }
 
+        public void Remove(T item) => _collection.Remove(item);
+
         public IEnumerator<T> GetEnumerator() => ((IEnumerable<T>)_collection).GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_collection).GetEnumerator();

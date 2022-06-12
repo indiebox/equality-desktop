@@ -18,7 +18,13 @@
            d:DataContext="{d:DesignInstance Type=vm:StartPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
 
-    <StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
         <StackPanel HorizontalAlignment="Right">
             <materialDesign:Badged Badge="{Binding Invites.Count, Converter={equality:ZeroToEmptyStringConverter}}"
                                    Margin="20">
@@ -127,23 +133,58 @@
             </materialDesign:Badged>
         </StackPanel>
 
-        <TextBlock Grid.Row="0"
-                   Grid.Column="0"
+        <TextBlock Grid.Row="1"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    FontSize="24"
                    TextAlignment="Center">
-        <Run>Hello,</Run>
-        <Run Text="{Binding Name}" />
-        <Run>!</Run>
+            <Run>Добро пожаловать,</Run>
+            <Run Text="{Binding Name}" />
+            <Run>!</Run>
         </TextBlock>
 
-        <TextBlock Grid.Row="0"
-                   Grid.Column="0"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   TextAlignment="Center">
-        Последняя активность:
-        </TextBlock>
-    </StackPanel>
+        <Grid Grid.Row="2">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RecentProjects.Count}"
+                                     Value="0">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Margin="20,20,0,20"
+                       FontSize="24">Последние проекты</TextBlock>
+
+            <ListBox Grid.Row="1"
+                     Margin="10,0"
+                     ItemsSource="{Binding RecentProjects}"
+                     Style="{StaticResource ListBoxStyle}"
+                     materialDesign:ListBoxItemAssist.ShowSelection="False">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:Project}">
+                        <controls:ProjectCard Margin="5,0,5,10"
+                                              Size="Medium"
+                                              Command="{Binding DataContext.OpenProjectPage, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                              CommandParameter="{Binding}"
+                                              Project="{Binding}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
 </mvvm:Page>

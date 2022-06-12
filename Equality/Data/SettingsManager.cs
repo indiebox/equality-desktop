@@ -14,6 +14,9 @@ namespace Equality.Data
         /// </summary>
         public static Dictionary<ulong, ulong> FavoriteBoards { get; set; } = new();
 
+        /// <summary>
+        /// The recent projects ids.
+        /// </summary>
         public static BufferList<ulong> RecentProjects { get; set; } = new(5);
 
         static SettingsManager()
