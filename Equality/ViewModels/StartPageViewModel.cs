@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -10,9 +9,6 @@ using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
 using Equality.Data;
-using Catel.IoC;
-using Catel.Services;
-using Equality.Extensions;
 using Equality.Http;
 
 namespace Equality.ViewModels
