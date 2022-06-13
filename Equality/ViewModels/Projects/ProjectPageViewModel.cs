@@ -42,6 +42,7 @@ namespace Equality.ViewModels
             BoardService = boardService;
 
             Project = StateManager.SelectedProject;
+            SaveRecentProject();
 
             OpenTeamPage = new TaskCommand(OnOpenTeamPageExecuteAsync, () => Project.Team != null);
         }
@@ -56,6 +57,22 @@ namespace Equality.ViewModels
         #region Properties
 
         public Tab ActiveTab { get; set; }
+
+        private void OnActiveTabChanged()
+        {
+            switch (ActiveTab) {
+                case Tab.Board:
+                default:
+                    OpenBoardPageAsync();
+                    break;
+                case Tab.Leader:
+                    NavigationService.Navigate<LeaderNominationPageViewModel>(this);
+                    break;
+                case Tab.Settings:
+                    NavigationService.Navigate<ProjectSettingsPageViewModel>(this);
+                    break;
+            }
+        }
 
         [Model]
         public Project Project { get; set; }
@@ -109,7 +126,7 @@ namespace Equality.ViewModels
             return null;
         }
 
-        protected async Task LoadProjectLeaderAsync()
+        protected async void LoadProjectLeaderAsync()
         {
             try {
                 var response = await ProjectService.GetProjectLeaderAsync(StateManager.SelectedProject);
@@ -135,20 +152,10 @@ namespace Equality.ViewModels
             }
         }
 
-        private void OnActiveTabChanged()
+        private void SaveRecentProject()
         {
-            switch (ActiveTab) {
-                case Tab.Board:
-                default:
-                    OpenBoardPageAsync();
-                    break;
-                case Tab.Leader:
-                    NavigationService.Navigate<LeaderNominationPageViewModel>(this);
-                    break;
-                case Tab.Settings:
-                    NavigationService.Navigate<ProjectSettingsPageViewModel>(this);
-                    break;
-            }
+            SettingsManager.RecentProjects.AddOrReplace(Project.Id);
+            Properties.Settings.Default.Save();
         }
 
         #endregion
@@ -157,7 +164,7 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            await LoadProjectLeaderAsync();
+            LoadProjectLeaderAsync();
             await LoadProjectTeamAsync();
 
             OnActiveTabChanged();
