@@ -15,26 +15,6 @@
            d:Background="{StaticResource MaterialDesignPaper}"
            d:DataContext="{d:DesignInstance vm:TeamPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
-    <Page.Resources>
-        <Style BasedOn="{StaticResource MaterialDesignTabRadioButton}"
-               TargetType="{x:Type RadioButton}"
-               x:Key="MenuButtonTheme">
-            <Style.Triggers>
-                <Trigger Property="IsChecked"
-                         Value="False">
-                    <Setter Property="Foreground"
-                            Value="{DynamicResource PrimaryHueMidForegroundBrush}" />
-                </Trigger>
-                <Trigger Property="IsChecked"
-                         Value="True">
-                    <Setter Property="BorderBrush"
-                            Value="{DynamicResource PrimaryHueMidBrush}" />
-                    <Setter Property="Foreground"
-                            Value="{DynamicResource PrimaryHueMidBrush}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Page.Resources>
     <Grid>
         <Border>
             <Border.Background>
@@ -94,17 +74,6 @@
                 <StackPanel Grid.Row="0"
                             Orientation="Horizontal"
                             HorizontalAlignment="Center">
-                    <StackPanel.Resources>
-                        <Style TargetType="RadioButton"
-                               BasedOn="{StaticResource MaterialDesignTabRadioButton}">
-                            <Setter Property="BorderBrush"
-                                    Value="{StaticResource PrimaryHueMidBrush}" />
-                            <Setter Property="Margin"
-                                    Value="0" />
-                            <Setter Property="Cursor"
-                                    Value="Hand" />
-                        </Style>
-                    </StackPanel.Resources>
 
                     <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:TeamPageViewModel+Tab.Projects}}"
                                  Content="Проекты"

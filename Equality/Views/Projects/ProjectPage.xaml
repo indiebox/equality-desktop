@@ -15,26 +15,6 @@
            d:DesignWidth="1920"
            d:DesignHeight="1080"
            mc:Ignorable="d">
-    <Page.Resources>
-        <Style BasedOn="{StaticResource MaterialDesignTabRadioButton}"
-               TargetType="{x:Type RadioButton}"
-               x:Key="MenuButtonTheme">
-            <Style.Triggers>
-                <Trigger Property="IsChecked"
-                         Value="False">
-                    <Setter Property="Foreground"
-                            Value="{DynamicResource PrimaryHueMidForegroundBrush}" />
-                </Trigger>
-                <Trigger Property="IsChecked"
-                         Value="True">
-                    <Setter Property="BorderBrush"
-                            Value="{DynamicResource PrimaryHueMidBrush}" />
-                    <Setter Property="Foreground"
-                            Value="{DynamicResource PrimaryHueMidBrush}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Page.Resources>
     <Grid>
         <controls:ProjectImage ImagePath="{Binding Project.Image}" />
 
@@ -84,17 +64,6 @@
                 <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Top"
                             Margin="10,0">
-                    <StackPanel.Resources>
-                        <Style TargetType="RadioButton"
-                               BasedOn="{StaticResource MaterialDesignTabRadioButton}">
-                            <Setter Property="BorderBrush"
-                                    Value="{StaticResource PrimaryHueMidBrush}" />
-                            <Setter Property="Margin"
-                                    Value="0" />
-                            <Setter Property="Cursor"
-                                    Value="Hand" />
-                        </Style>
-                    </StackPanel.Resources>
                     <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:ProjectPageViewModel+Tab.Board}}"
                                  Content="Доска"
                                  Style="{StaticResource MenuButtonTheme}" />

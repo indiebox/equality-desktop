@@ -9,6 +9,8 @@ using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
 using Equality.Data;
+using Equality.Helpers;
+using MaterialDesignThemes.Wpf;
 
 namespace Equality.ViewModels
 {
@@ -87,8 +89,11 @@ namespace Equality.ViewModels
 
         private async Task OnOpenSettings()
         {
-            NavigationService.Navigate<SettingsPageViewModel>();
+
+            var view = MvvmHelper.CreateViewWithViewModel<SettingsWindowViewModel>();
+            await DialogHost.Show(view);
         }
+
         #endregion
 
         #region Methods

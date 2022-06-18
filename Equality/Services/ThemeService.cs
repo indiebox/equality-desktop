@@ -20,33 +20,49 @@ namespace Equality.Services
     {
         private IThemeService.Theme _currentTheme { get; set; }
 
-        delegate void SyncTheme();
-
         ManagementEventWatcher Watcher;
 
         private readonly PaletteHelper _paletteHelper = new();
 
         public ThemeService()
         {
+            SetTheme();
+        }
+        private void SetTheme()
+        {
             var helper = new PaletteHelper();
             if (helper.GetThemeManager() is { } themeManager) {
                 themeManager.ThemeChanged += (sender, e) =>
                 {
                     if (e.NewTheme.GetBaseTheme() == BaseTheme.Light) {
-                        ((App)Application.Current).Resources["SecondaryBackgroundColor"] = new SolidColorBrush(Colors.WhiteSmoke);
-                        ((App)Application.Current).Resources["MaterialDesignPaper"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FAFAFA"));
-                        ((App)Application.Current).Resources["PrimaryHueMidForegroundBrush"] = new SolidColorBrush(Colors.Black);
-                        ((App)Application.Current).Resources["GrayColorOnHover"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCCCCCC"));
-
+                        SetLightTheme();
                     } else {
-                        ((App)Application.Current).Resources["SecondaryBackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#262626"));
-                        ((App)Application.Current).Resources["MaterialDesignPaper"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#212121"));
-                        ((App)Application.Current).Resources["PrimaryHueMidForegroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#858585"));
-                        ((App)Application.Current).Resources["GrayColorOnHover"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#373737"));
+                        SetDarkTheme();
                     }
                 };
             }
 
+            CreateWatcher();
+        }
+
+        private void SetLightTheme()
+        {
+            ((App)Application.Current).Resources["SecondaryBackgroundColor"] = new SolidColorBrush(Colors.WhiteSmoke);
+            ((App)Application.Current).Resources["MaterialDesignPaper"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FAFAFA"));
+            ((App)Application.Current).Resources["PrimaryHueMidForegroundBrush"] = new SolidColorBrush(Colors.Black);
+            ((App)Application.Current).Resources["GrayColorOnHover"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCCCCCC"));
+        }
+
+        private void SetDarkTheme()
+        {
+            ((App)Application.Current).Resources["SecondaryBackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#262626"));
+            ((App)Application.Current).Resources["MaterialDesignPaper"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#212121"));
+            ((App)Application.Current).Resources["PrimaryHueMidForegroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#858585"));
+            ((App)Application.Current).Resources["GrayColorOnHover"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#373737"));
+        }
+
+        private void CreateWatcher()
+        {
             string keyPath = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
             var query = new WqlEventQuery(string.Format(
             "SELECT * FROM RegistryValueChangeEvent WHERE Hive='HKEY_USERS' AND KeyPath='{0}\\\\{1}' AND ValueName='{2}'",
@@ -54,8 +70,6 @@ namespace Equality.Services
             var _watcher = new ManagementEventWatcher(query);
             _watcher.EventArrived += (sender, args) => LiveThemeChanging();
             Watcher = _watcher;
-
-            _currentTheme = (IThemeService.Theme)Properties.Settings.Default.current_theme;
         }
 
         public IThemeService.Theme GetCurrentTheme()
@@ -65,28 +79,29 @@ namespace Equality.Services
 
         public void SetColorTheme(IThemeService.Theme theme)
         {
-            IBaseTheme baseTheme = new MaterialDesignLightTheme();
+            IBaseTheme baseTheme = theme switch
+            {
+                IThemeService.Theme.Dark => new MaterialDesignDarkTheme(),
+                _ => new MaterialDesignLightTheme()
+            };
             switch (theme) {
                 case IThemeService.Theme.Light:
                     _currentTheme = IThemeService.Theme.Light;
-                    Properties.Settings.Default.current_theme = (int)IThemeService.Theme.Light;
                     Watcher.Stop();
-
                     break;
                 case IThemeService.Theme.Dark:
                     _currentTheme = IThemeService.Theme.Dark;
-                    Properties.Settings.Default.current_theme = (int)IThemeService.Theme.Dark;
-                    baseTheme = new MaterialDesignDarkTheme();
                     Watcher.Stop();
                     break;
                 case IThemeService.Theme.Sync:
                     _currentTheme = IThemeService.Theme.Sync;
-                    Properties.Settings.Default.current_theme = (int)IThemeService.Theme.Sync;
+                    Properties.Settings.Default.current_theme = (int)_currentTheme;
                     Properties.Settings.Default.Save();
                     Watcher.Start();
                     LiveThemeChanging();
                     return;
             }
+            Properties.Settings.Default.current_theme = (int)_currentTheme;
             Properties.Settings.Default.Save();
             var currentTheme = _paletteHelper.GetTheme();
             currentTheme.SetBaseTheme(baseTheme);
@@ -100,9 +115,7 @@ namespace Equality.Services
         {
             var currentTheme = _paletteHelper.GetTheme();
             IBaseTheme baseTheme = new MaterialDesignLightTheme();
-            string RegistryKey = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
-            int theme = (int)Registry.GetValue(RegistryKey, "AppsUseLightTheme", string.Empty);
-            if (theme == 0) {
+            if (Theme.GetSystemTheme() == BaseTheme.Dark) {
                 baseTheme = new MaterialDesignDarkTheme();
             }
             currentTheme.SetBaseTheme(baseTheme);

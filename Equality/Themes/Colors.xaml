@@ -11,8 +11,6 @@
                      Color="White" />
     <SolidColorBrush x:Key="SecondaryBackgroundColor"
                      Color="WhiteSmoke" />
-    <SolidColorBrush x:Key="SecondaryBackground"
-                     Color="WhiteSmoke" />
     <SolidColorBrush x:Key="GrayColorOnHover"
                      Color="#FFCCCCCC" />
 

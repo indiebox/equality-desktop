@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Management;
 using System.Security.Principal;
@@ -31,14 +32,9 @@ namespace Equality.ViewModels
 
         public SettingsPageViewModel(IThemeService themeService)
         {
-            int currentThemeString = Properties.Settings.Default.current_theme;
-
             ThemeService = themeService;
 
-            ActiveTheme = ThemeService.GetCurrentTheme();
-            ChangeTheme = new Command<string>(OnChangeThemeExecute);
-            var currentTheme = (IThemeService.Theme)currentThemeString;
-            ThemeService.SetColorTheme(currentTheme);
+            _activeTheme = ThemeService.GetCurrentTheme();
         }
 
         #region Methods
@@ -47,25 +43,22 @@ namespace Equality.ViewModels
 
         #region Properties
 
-        public IThemeService.Theme ActiveTheme { get; set; }
+        private IThemeService.Theme _activeTheme;
+
+        public IThemeService.Theme ActiveTheme
+        {
+            get {
+                return _activeTheme;
+            }
+            set {
+                _activeTheme = value;
+                ThemeService.SetColorTheme(_activeTheme);
+            }
+        }
 
         #endregion
 
         #region Commands
-
-
-        public Command<string> ChangeTheme { get; private set; }
-
-        private void OnChangeThemeExecute(string theme)
-        {
-            var themeEnum = (IThemeService.Theme)Enum.Parse(typeof(IThemeService.Theme), theme);
-
-            if (!Enum.IsDefined(typeof(IThemeService.Theme), themeEnum) && !themeEnum.ToString().Contains(",")) {
-                throw new InvalidOperationException($"{theme} is not an underlying value of the YourEnum enumeration.");
-            }
-
-            ThemeService.SetColorTheme(themeEnum);
-        }
 
         #endregion
 

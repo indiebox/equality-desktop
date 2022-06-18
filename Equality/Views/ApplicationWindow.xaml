@@ -15,6 +15,8 @@
               CanCloseUsingEscape="False"
               Width="1920"
               Height="1080"
+              MinHeight="650"
+              MinWidth="1050"
               FontSize="16"
               d:DataContext="{d:DesignInstance Type=viewmodels:ApplicationWindowViewModel, IsDesignTimeCreatable=True}"
               mc:Ignorable="d">

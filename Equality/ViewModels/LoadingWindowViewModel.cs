@@ -24,15 +24,6 @@ namespace Equality.ViewModels
 
         protected IThemeService ThemeService;
 
-        private readonly PaletteHelper _paletteHelper = new PaletteHelper();
-
-        public enum Themes
-        {
-            Light,
-            Dark,
-            Sync,
-        }
-
         public LoadingWindowViewModel(IUIVisualizerService uiVisualizerService, IUserService userService, IThemeService themeService)
         {
             ThemeService = themeService;
@@ -40,7 +31,7 @@ namespace Equality.ViewModels
             UserService = userService;
 
 
-            ThemeService.SetColorTheme(ThemeService.GetCurrentTheme());
+            ThemeService.SetColorTheme((IThemeService.Theme)Properties.Settings.Default.current_theme);
         }
 
         public override string Title => "Equality";

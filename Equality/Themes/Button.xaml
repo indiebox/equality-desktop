@@ -32,4 +32,29 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="MenuButtonTheme"
+           BasedOn="{StaticResource MaterialDesignTabRadioButton}"
+           TargetType="{x:Type RadioButton}">
+        <Setter Property="BorderBrush"
+                Value="{StaticResource PrimaryHueMidBrush}" />
+        <Setter Property="Margin"
+                Value="0" />
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Style.Triggers>
+            <Trigger Property="IsChecked"
+                     Value="False">
+                <Setter Property="Foreground"
+                        Value="{DynamicResource PrimaryHueMidForegroundBrush}" />
+            </Trigger>
+            <Trigger Property="IsChecked"
+                     Value="True">
+                <Setter Property="BorderBrush"
+                        Value="{DynamicResource PrimaryHueMidBrush}" />
+                <Setter Property="Foreground"
+                        Value="{DynamicResource PrimaryHueMidBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>
