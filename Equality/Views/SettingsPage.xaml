@@ -1,4 +1,4 @@
-﻿<catel:UserControl x:Class="Equality.Views.SettingsWindow"
+﻿<catel:UserControl x:Class="Equality.Views.SettingsPage"
                    xmlns:mvvm="clr-namespace:Equality.MVVM"
                    xmlns:catel="http://schemas.catelproject.com"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -10,7 +10,7 @@
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:vm="clr-namespace:Equality.ViewModels"
                    xmlns:services="clr-namespace:Equality.Services"
-                   d:DataContext="{d:DesignInstance Type=vm:SettingsWindowViewModel}"
+                   d:DataContext="{d:DesignInstance Type=vm:SettingsPageViewModel}"
                    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                    Background="{DynamicResource MaterialDesignPaper}"
                    FontSize="16"
@@ -20,16 +20,15 @@
     <StackPanel Margin="20">
         <DockPanel LastChildFill="False">
             <TextBlock DockPanel.Dock="Left"
+                       VerticalAlignment="Center"
                        FontSize="24"
                        Margin="4,20,20,20">Настройки</TextBlock>
             <Button Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                     DockPanel.Dock="Right"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Width="25"
-                    Height="25"
                     Margin="20,20,4,20"
-                    Style="{StaticResource BaseButton}"
+                    Style="{StaticResource MaterialDesignIconButton}"
                     Cursor="Hand">
                 <materialDesign:PackIcon Kind="Close"
                                          Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"

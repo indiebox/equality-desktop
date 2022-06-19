@@ -90,7 +90,7 @@ namespace Equality.ViewModels
         private async Task OnOpenSettings()
         {
 
-            var view = MvvmHelper.CreateViewWithViewModel<SettingsWindowViewModel>();
+            var view = MvvmHelper.CreateViewWithViewModel<SettingsPageViewModel>();
             await DialogHost.Show(view);
         }
 
