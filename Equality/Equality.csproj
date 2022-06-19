@@ -33,6 +33,7 @@
         <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
         <PackageReference Include="Notification.Wpf" Version="6.1.0.4" />
         <PackageReference Include="Obsolete.Fody" Version="5.2.1" PrivateAssets="all" />
+        <PackageReference Include="System.Management" Version="6.0.0" />
         <PackageReference Include="WpfAnalyzers" Version="3.5.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

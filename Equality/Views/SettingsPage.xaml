@@ -1,0 +1,67 @@
+﻿<catel:UserControl x:Class="Equality.Views.SettingsPage"
+                   xmlns:mvvm="clr-namespace:Equality.MVVM"
+                   xmlns:catel="http://schemas.catelproject.com"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                   xmlns:equality="http://equality.indiebox.ru/schemas"
+                   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:vm="clr-namespace:Equality.ViewModels"
+                   xmlns:services="clr-namespace:Equality.Services"
+                   d:DataContext="{d:DesignInstance Type=vm:SettingsPageViewModel}"
+                   TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+                   Background="{DynamicResource MaterialDesignPaper}"
+                   FontSize="16"
+                   Height="600"
+                   Width="1000"
+                   mc:Ignorable="d">
+    <StackPanel Margin="20">
+        <DockPanel LastChildFill="False">
+            <TextBlock DockPanel.Dock="Left"
+                       VerticalAlignment="Center"
+                       FontSize="24"
+                       Margin="4,20,20,20">Настройки</TextBlock>
+            <Button Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    DockPanel.Dock="Right"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="20,20,4,20"
+                    Style="{StaticResource MaterialDesignIconButton}"
+                    Cursor="Hand">
+                <materialDesign:PackIcon Kind="Close"
+                                         Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                                         Width="25"
+                                         Height="25"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center" />
+            </Button>
+        </DockPanel>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Vertical"
+                        Margin="4">
+                <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonLeft}"
+                             BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                             Margin="4"
+                             IsChecked="True"
+                             HorizontalContentAlignment="Left">
+                    Внешний вид
+                </RadioButton>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left">
+                <Label FontSize="20"
+                       Margin="10,0">Тема</Label>
+                <RadioButton Margin="10"
+                             IsChecked="{Binding ActiveTheme, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static services:IThemeService+Theme.Light}}"
+                             Content="Светлая" />
+                <RadioButton Margin="10"
+                             IsChecked="{Binding ActiveTheme, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static services:IThemeService+Theme.Dark}}"
+                             Content="Тёмная" />
+                <RadioButton Margin="10"
+                             IsChecked="{Binding ActiveTheme, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static services:IThemeService+Theme.Sync}}"
+                             Content="Синхронизация с компьютером" />
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</catel:UserControl>

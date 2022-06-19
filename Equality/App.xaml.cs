@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
+using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 
 using Catel.IoC;
 using Catel.Logging;
@@ -9,6 +11,10 @@ using Catel.Services;
 using Equality.Data;
 using Equality.Http;
 using Equality.Services;
+
+using MaterialDesignThemes.Wpf;
+
+using Microsoft.Win32;
 
 using PusherClient;
 
@@ -52,22 +58,30 @@ namespace Equality
         {
             var settings = Equality.Properties.Settings.Default;
 
-            if (settings.menu_selected_team != 0) {
-                try {
+            if (settings.menu_selected_team != 0)
+            {
+                try
+                {
                     var response = await ServiceLocator.Default.ResolveType<ITeamService>().GetTeamAsync(settings.menu_selected_team);
 
                     StateManager.SelectedTeam = response.Object;
-                } catch (ApiException) {
+                }
+                catch (ApiException)
+                {
                     settings.menu_selected_team = 0;
                 }
             }
 
-            if (settings.menu_selected_project != 0) {
-                try {
+            if (settings.menu_selected_project != 0)
+            {
+                try
+                {
                     var response = await ServiceLocator.Default.ResolveType<IProjectService>().GetProjectAsync(settings.menu_selected_project);
 
                     StateManager.SelectedProject = response.Object;
-                } catch (ApiException) {
+                }
+                catch (ApiException)
+                {
                     settings.menu_selected_project = 0;
                 }
             }
@@ -129,6 +143,7 @@ namespace Equality
             serviceLocator.RegisterType<IBoardService, BoardService>();
             serviceLocator.RegisterType<IColumnService, ColumnService>();
             serviceLocator.RegisterType<ICardService, CardService>();
+            serviceLocator.RegisterTypeAndInstantiate<IThemeService, ThemeService>();
 
             /*
             |--------------------------------------------------------------------------

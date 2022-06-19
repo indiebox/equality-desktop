@@ -4,10 +4,13 @@ using Catel.Services;
 
 using Equality.MVVM;
 
+using MaterialDesignThemes.Wpf;
+
 namespace Equality.ViewModels
 {
     public class AuthorizationWindowViewModel : ViewModel
     {
+
         protected INavigationService NavigationService;
 
         public AuthorizationWindowViewModel(INavigationService navigationService)

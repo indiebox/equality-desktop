@@ -15,6 +15,8 @@
               CanCloseUsingEscape="False"
               Width="1920"
               Height="1080"
+              MinHeight="650"
+              MinWidth="1050"
               FontSize="16"
               d:DataContext="{d:DesignInstance Type=viewmodels:ApplicationWindowViewModel, IsDesignTimeCreatable=True}"
               mc:Ignorable="d">
@@ -40,6 +42,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
@@ -146,18 +149,43 @@
                              Height="80">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <catel:EventToCommand Command="{Binding OpenSettings}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+
+                        <TabItem.Header>
+                            <StackPanel>
+                                <StackPanel>
+                                    <materialDesign:PackIcon Kind="Settings"
+                                                             Width="24"
+                                                             Height="24"
+                                                             HorizontalAlignment="Center" />
+                                    <TextBlock Text="Настройки"
+                                               HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </StackPanel>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem Grid.Row="3"
+                             Style="{StaticResource MaterialDesignNavigationRailTabItem}"
+                             Width="80"
+                             Height="80">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                 <catel:EventToCommand Command="{Binding Logout}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
 
                         <TabItem.Header>
                             <StackPanel>
-                                <materialDesign:PackIcon Kind="Logout"
-                                                         Width="24"
-                                                         Height="24"
-                                                         HorizontalAlignment="Center" />
-                                <TextBlock Text="Выйти"
-                                           HorizontalAlignment="Center" />
+                                <StackPanel>
+                                    <materialDesign:PackIcon Kind="Logout"
+                                                             Width="24"
+                                                             Height="24"
+                                                             HorizontalAlignment="Center" />
+                                    <TextBlock Text="Выйти"
+                                               HorizontalAlignment="Center" />
+                                </StackPanel>
                             </StackPanel>
                         </TabItem.Header>
                     </TabItem>
