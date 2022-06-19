@@ -49,6 +49,8 @@ namespace Equality.ViewModels
 
         #region Properties
 
+        public Project Project => StateManager.SelectedProject;
+
         public ObservableCollection<LeaderNomination> NominatedMembers { get; set; } = new();
 
         #endregion

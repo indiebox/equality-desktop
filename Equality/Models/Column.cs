@@ -7,6 +7,11 @@ namespace Equality.Models
 {
     public class Column : ModelBase, IColumn<Board, ObservableCollection<Card>>
     {
+        public Column()
+        {
+            Cards.CollectionChanged += (s, e) => RaisePropertyChanged(nameof(IsCardsLimitReached));
+        }
+
         public ulong Id { get; set; }
 
         public string Name { get; set; }
@@ -20,6 +25,18 @@ namespace Equality.Models
         public Board Board { get; set; }
 
         public ObservableCollection<Card> Cards { get; set; } = new();
+
+        #endregion
+
+        #region Custom properties
+
+        public bool IsCardsLimitReached => Cards.Count >= Properties.Settings.Default.max_cards_count;
+
+        /// <summary>
+        /// The list of messages why we cant move current draggable card to this column.
+        /// This property setup when we start dragging card and clears when we stop dragging card.
+        /// </summary>
+        public ObservableCollection<string> CantMoveCardMessages { get; set; } = new();
 
         #endregion
     }

@@ -1,8 +1,6 @@
-﻿using System.Net.Http;
-
-namespace Equality.Http
+﻿namespace Equality.Http
 {
-    public class ServerErrorHttpException : HttpRequestException
+    public class ServerErrorHttpException : ApiException
     {
         public ServerErrorHttpException()
         {

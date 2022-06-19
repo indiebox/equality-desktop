@@ -9,6 +9,8 @@
            xmlns:vm="clr-namespace:Equality.ViewModels"
            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
            xmlns:equality="http://equality.indiebox.ru/schemas"
+           xmlns:models="clr-namespace:Equality.Models"
+           xmlns:objects="clr-namespace:Equality.Data.Wpf"
            FontSize="16"
            d:DesignHeight="600"
            d:DesignWidth="900"
@@ -16,7 +18,13 @@
            d:DataContext="{d:DesignInstance Type=vm:StartPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
 
-    <StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
         <StackPanel HorizontalAlignment="Right">
             <materialDesign:Badged Badge="{Binding Invites.Count, Converter={equality:ZeroToEmptyStringConverter}}"
                                    Margin="20">
@@ -37,6 +45,10 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
+                            <Grid.Resources>
+                                <objects:DataObject x:Key="LoadMoreInvitesButton" />
+                            </Grid.Resources>
+
                             <TextBlock Grid.Row="0"
                                        FontSize="24"
                                        Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
@@ -46,20 +58,10 @@
                             <ListBox Grid.Row="1"
                                      Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                      Background="{DynamicResource SecondaryBackgroundColor}"
-                                     Margin="20,0"
-                                     ItemsSource="{Binding Invites}">
+                                     Margin="20,0">
+                                <!-- Templates for custom objects. -->
                                 <ListBox.Resources>
-                                    <ControlTemplate x:Key="NoItemsTemplate">
-                                        <TextBlock Background="{DynamicResource SecondaryBackgroundColor}"
-                                                   Padding="15"
-                                                   Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                                                   TextWrapping="Wrap"
-                                                   FontSize="18">Приглашений не найдено.</TextBlock>
-                                    </ControlTemplate>
-                                </ListBox.Resources>
-
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
+                                    <DataTemplate DataType="{x:Type models:Invite}">
                                         <DockPanel Margin="10">
                                             <controls:TeamLogo CornerRadius="10"
                                                                Width="125"
@@ -100,7 +102,34 @@
                                             </StackPanel>
                                         </DockPanel>
                                     </DataTemplate>
-                                </ListBox.ItemTemplate>
+
+                                    <DataTemplate DataType="{x:Type objects:DataObject}">
+                                        <Button HorizontalAlignment="Left"
+                                                Style="{StaticResource MaterialDesignFlatSecondaryDarkBgButton}"
+                                                Command="{Binding DataContext.LoadMoreInvites, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                Visibility="{Binding DataContext.InvitesPaginator.HasNextPage, RelativeSource={RelativeSource AncestorType=mvvm:Page}, FallbackValue=Collapsed, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
+                                                d:Visibility="Visible"
+                                                Margin="20,0,0,20">Загрузить ещё...</Button>
+                                    </DataTemplate>
+
+                                    <CollectionViewSource x:Key="InvitesCollection"
+                                                          Source="{Binding Invites}" />
+
+                                    <ControlTemplate x:Key="NoItemsTemplate">
+                                        <TextBlock Padding="15"
+                                                   Background="{DynamicResource SecondaryBackgroundColor}"
+                                                   Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                                                   TextWrapping="Wrap"
+                                                   FontSize="18">Приглашений не найдено.</TextBlock>
+                                    </ControlTemplate>
+                                </ListBox.Resources>
+
+                                <ListBox.ItemsSource>
+                                    <CompositeCollection>
+                                        <CollectionContainer Collection="{Binding Source={StaticResource InvitesCollection}}" />
+                                        <StaticResource ResourceKey="LoadMoreInvitesButton" />
+                                    </CompositeCollection>
+                                </ListBox.ItemsSource>
                             </ListBox>
                         </Grid>
                     </materialDesign:PopupBox>
@@ -108,25 +137,60 @@
             </materialDesign:Badged>
         </StackPanel>
 
-        <TextBlock Grid.Row="0"
+        <TextBlock Grid.Row="1"
                    Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                   Grid.Column="0"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    FontSize="24"
                    TextAlignment="Center">
-        <Run>Hello,</Run>
-        <Run Text="{Binding Name}" />
-        <Run>!</Run>
+            <Run>Добро пожаловать,</Run>
+            <Run Text="{Binding Name}" />
+            <Run>!</Run>
         </TextBlock>
 
-        <TextBlock Grid.Row="0"
-                   Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                   Grid.Column="0"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   TextAlignment="Center">
-        Последняя активность:
-        </TextBlock>
-    </StackPanel>
+        <Grid Grid.Row="2">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RecentProjects.Count}"
+                                     Value="0">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Margin="20,20,0,20"
+                       Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                       FontSize="24">Последние просматриваемые проекты</TextBlock>
+
+            <ListBox Grid.Row="1"
+                     Margin="10,0"
+                     ItemsSource="{Binding RecentProjects}"
+                     Style="{StaticResource ListBoxStyle}"
+                     materialDesign:ListBoxItemAssist.ShowSelection="False">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:Project}">
+                        <controls:ProjectCard Margin="5,0,5,10"
+                                              Size="Medium"
+                                              Command="{Binding DataContext.OpenProjectPage, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                              CommandParameter="{Binding}"
+                                              Project="{Binding}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
 </mvvm:Page>

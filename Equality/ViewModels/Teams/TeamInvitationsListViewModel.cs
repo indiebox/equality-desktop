@@ -33,7 +33,7 @@ namespace Equality.ViewModels
         {
             HandleDesignMode(() =>
             {
-                FilteredInvites.AddRange(new Invite[]
+                Invites.AddRange(new Invite[]
                 {
                     new Invite()
                     {
@@ -76,7 +76,8 @@ namespace Equality.ViewModels
         {
             InviteService = inviteService;
 
-            OpenInviteUserDialog = new TaskCommand(OnOpenInviteUserDialogExecuteAsync);
+            LoadMoreInvites = new(OnLoadMoreInvitesExecuteAsync, () => InvitesPaginator?.HasNextPage ?? false);
+            InviteUser = new TaskCommand(OnOpenInviteUserDialogExecuteAsync);
             RevokeInvite = new TaskCommand<Invite>(OnRevokeInviteExecuteAsync);
         }
 
@@ -92,33 +93,37 @@ namespace Equality.ViewModels
 
         public ObservableCollection<Invite> Invites { get; set; } = new();
 
-        public ObservableCollection<Invite> FilteredInvites { get; set; } = new();
+        public PaginatableApiResponse<Invite> InvitesPaginator { get; set; }
 
         public InviteFilter SelectedFilter { get; set; }
-        private void OnSelectedFilterChanged()
+
+        private async void OnSelectedFilterChanged()
         {
-            switch (SelectedFilter) {
-                case InviteFilter.All:
-                default:
-                    FilteredInvites.ReplaceRange(Invites);
-                    break;
-                case InviteFilter.Pending:
-                    FilteredInvites.ReplaceRange(Invites.Where(invite => invite.Status == IInvite.InviteStatus.Pending));
-                    break;
-                case InviteFilter.Accepted:
-                    FilteredInvites.ReplaceRange(Invites.Where(invite => invite.Status == IInvite.InviteStatus.Accepted));
-                    break;
-                case InviteFilter.Declined:
-                    FilteredInvites.ReplaceRange(Invites.Where(invite => invite.Status == IInvite.InviteStatus.Declined));
-                    break;
-            }
+            await LoadInvitesAsync(SelectedFilter);
         }
 
         #endregion
 
         #region Commands
 
-        public TaskCommand OpenInviteUserDialog { get; private set; }
+        public TaskCommand LoadMoreInvites { get; private set; }
+
+        private async Task OnLoadMoreInvitesExecuteAsync()
+        {
+            try {
+                InvitesPaginator = await InvitesPaginator.NextPageAsync();
+
+                if (IsClosed) {
+                    return;
+                }
+
+                Invites.AddRange(InvitesPaginator.Object);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
+        public TaskCommand InviteUser { get; private set; }
 
         private async Task OnOpenInviteUserDialogExecuteAsync()
         {
@@ -127,11 +132,9 @@ namespace Equality.ViewModels
             bool result = (bool)await DialogHost.Show(view);
 
             if (result) {
-                Invites.Add(invite);
-
                 if (SelectedFilter == InviteFilter.All
                     || SelectedFilter == InviteFilter.Pending) {
-                    FilteredInvites.Add(invite);
+                    Invites.Insert(0, invite);
                 }
             }
         }
@@ -144,7 +147,6 @@ namespace Equality.ViewModels
                 await InviteService.RevokeInviteAsync(invite);
 
                 Invites.Remove(invite);
-                FilteredInvites.Remove(invite);
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }
@@ -157,22 +159,27 @@ namespace Equality.ViewModels
         protected override void OnNavigationCompleted()
         {
             if (NavigationContext.Values.ContainsKey("send-invite")) {
-                OpenInviteUserDialog.Execute();
+                InviteUser.Execute();
             }
         }
 
-        protected async Task LoadInvitesAsync()
+        protected async Task LoadInvitesAsync(InviteFilter filter = InviteFilter.Pending)
         {
             try {
-                var response = await InviteService.GetTeamInvitesAsync(StateManager.SelectedTeam, new()
+                InvitesPaginator = await InviteService.GetTeamInvitesAsync(StateManager.SelectedTeam, new()
                 {
                     Fields = new[]
                     {
                         new Field("invites", "id", "status", "accepted_at", "declined_at", "created_at")
-                    }
+                    },
+                    Filters = new[] { new Filter("status", filter.ToString().ToLower()) },
                 });
 
-                Invites.AddRange(response.Object);
+                if (IsClosed) {
+                    return;
+                }
+
+                Invites.ReplaceRange(InvitesPaginator.Object);
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }
@@ -183,8 +190,6 @@ namespace Equality.ViewModels
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-
-            await LoadInvitesAsync();
 
             SelectedFilter = InviteFilter.Pending;
         }

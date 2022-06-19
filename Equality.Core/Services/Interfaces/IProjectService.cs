@@ -7,11 +7,25 @@ using Equality.Data;
 
 namespace Equality.Services
 {
-    public partial interface IProjectServiceBase<TProjectModel, TLeaderNominationModel, TUserModel>
+    public partial interface IProjectServiceBase<TProjectModel, TTeamModel, TLeaderNominationModel, TUserModel>
         where TProjectModel : class, IProject, new()
+        where TTeamModel : class, ITeam, new()
         where TLeaderNominationModel : class, ILeaderNomination, new()
         where TUserModel : class, IUser, new()
     {
+        /// <summary>
+        /// Sends the get current user projects request to the API.
+        /// </summary>
+        /// <param name="query">The query parameters.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets a token using <see cref="ITokenResolver.ResolveApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<PaginatableApiResponse<TProjectModel>> GetProjectsAsync(QueryParameters query = null);
+
         /// <summary>
         /// Sends the get team projects request to the API.
         /// </summary>
@@ -24,12 +38,26 @@ namespace Equality.Services
         /// </remarks>
         /// 
         /// <exception cref="ArgumentException" />
-        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ITeam team, QueryParameters query = null);
+        public Task<PaginatableApiResponse<TProjectModel>> GetProjectsAsync(ITeam team, QueryParameters query = null);
 
         /// <inheritdoc cref="GetProjectsAsync(ITeam, QueryParameters)"/>
         /// <param name="teamId">The team id.</param>
         /// <param name="query">The query parameters.</param>
-        public Task<ApiResponseMessage<TProjectModel[]>> GetProjectsAsync(ulong teamId, QueryParameters query = null);
+        public Task<PaginatableApiResponse<TProjectModel>> GetProjectsAsync(ulong teamId, QueryParameters query = null);
+
+        /// <summary>
+        /// Sends the get project request to the API.
+        /// </summary>
+        /// <param name="projectId">The project id.</param>
+        /// <param name="query">The query parameters.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets a token using <see cref="ITokenResolver.ResolveApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage<TProjectModel>> GetProjectAsync(ulong projectId, QueryParameters query = null);
 
         /// <summary>
         /// Sends the get nominated users request to the API.
@@ -89,6 +117,25 @@ namespace Equality.Services
         /// <param name="projectId">The project id.</param>
         /// <param name="query">The query parameters.</param>
         public Task<ApiResponseMessage<TUserModel>> GetProjectLeaderAsync(ulong projectId, QueryParameters query = null);
+
+        /// <summary>
+        /// Sends the get project team request to the API.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="query">The query parameters.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets a token using <see cref="ITokenResolver.ResolveApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage<TTeamModel>> GetTeamForProjectAsync(IProject project, QueryParameters query = null);
+
+        /// <inheritdoc cref="GetTeamForProjectAsync(IProject, QueryParameters)"/>`
+        /// <param name="projectId">The project id.</param>
+        /// <param name="query">The query parameters.</param>
+        public Task<ApiResponseMessage<TTeamModel>> GetTeamForProjectAsync(ulong projectId, QueryParameters query = null);
 
         /// <summary>
         /// Sends the create project for team request to the API.

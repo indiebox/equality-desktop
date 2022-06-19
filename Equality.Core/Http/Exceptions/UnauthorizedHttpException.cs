@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Net.Http;
 
 namespace Equality.Http
 {
-    public class UnauthorizedHttpException : HttpRequestException
+    public class UnauthorizedHttpException : ApiException
     {
         public UnauthorizedHttpException() : base("Unauthenticated.")
         {

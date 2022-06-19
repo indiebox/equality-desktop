@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Catel.Collections;
 using Catel.MVVM;
 using Catel.Services;
+using Catel.Fody;
 
 using Equality.Helpers;
 using Equality.MVVM;
@@ -50,19 +51,38 @@ namespace Equality.ViewModels
             TeamService = teamService;
             ProjectService = projectService;
 
+            LoadMoreTeams = new(OnLoadMoreTeamsExecuteAsync, () => TeamsPaginator?.HasNextPage ?? false);
             OpenProjectPage = new Command<Project>(OnOpenOpenProjectPageExecute);
-            OpenCreateTeamWindow = new TaskCommand(OnOpenCreateTeamWindowExecute, () => CreateTeamVm is null);
+            CreateTeam = new TaskCommand(OnCreateTeamExecute, () => CreateTeamVm is null);
             OpenTeamPage = new Command<Team>(OnOpenTeamPageExecute);
             FilterProjects = new Command<Team>(OnFilterProjectsExecute);
             ResetFilter = new Command(OnResetFilterExecute);
-            OpenCreateProjectWindow = new TaskCommand<Team>(OnOpenCreateProjectWindowExecuteAsync, (team) => TeamForNewProject == null || TeamForNewProject != team);
+            CreateProject = new TaskCommand<Team>(OnCreateProjectExecuteAsync, (team) => TeamForNewProject == null || TeamForNewProject != team);
         }
 
         #region Properties
 
+        public string FilterText { get; set; }
+
+        private async void OnFilterTextChanged()
+        {
+            var text = FilterText?.ToLower()?.Trim();
+            if (text == CurrentFilterText) {
+                return;
+            }
+
+            CurrentFilterText = text;
+            await LoadTeamsAsync();
+        }
+
+        [NoWeaving]
+        public string CurrentFilterText { get; set; }
+
         public ObservableCollection<Team> Teams { get; set; } = new();
 
         public ObservableCollection<Team> FilteredTeams { get; set; } = new();
+
+        public PaginatableApiResponse<Team> TeamsPaginator { get; set; }
 
         public CreateTeamControlViewModel CreateTeamVm { get; set; }
 
@@ -74,6 +94,29 @@ namespace Equality.ViewModels
 
         #region Commands
 
+        public TaskCommand LoadMoreTeams { get; private set; }
+
+        private async Task OnLoadMoreTeamsExecuteAsync()
+        {
+            try {
+                TeamsPaginator = await TeamsPaginator.NextPageAsync();
+
+                if (IsClosed) {
+                    return;
+                }
+
+                Teams.AddRange(TeamsPaginator.Object);
+
+                if (!IsFiltered) {
+                    FilteredTeams.AddRange(TeamsPaginator.Object);
+                }
+
+                LoadProjectForTeams(TeamsPaginator.Object);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
         public Command<Project> OpenProjectPage { get; private set; }
 
         private void OnOpenOpenProjectPageExecute(Project project)
@@ -84,9 +127,9 @@ namespace Equality.ViewModels
             vm.ActiveTab = ApplicationWindowViewModel.Tab.Project;
         }
 
-        public TaskCommand OpenCreateTeamWindow { get; private set; }
+        public TaskCommand CreateTeam { get; private set; }
 
-        private async Task OnOpenCreateTeamWindowExecute()
+        private async Task OnCreateTeamExecute()
         {
             CreateTeamVm = MvvmHelper.CreateViewModel<CreateTeamControlViewModel>();
             CreateTeamVm.ClosedAsync += CreateTeamVmClosedAsync;
@@ -95,10 +138,10 @@ namespace Equality.ViewModels
         private Task CreateTeamVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
             if (CreateTeamVm.Result) {
-                Teams.Add(CreateTeamVm.Team);
+                Teams.Insert(0, CreateTeamVm.Team);
 
                 if (!IsFiltered) {
-                    FilteredTeams.Add(CreateTeamVm.Team);
+                    FilteredTeams.Insert(0, CreateTeamVm.Team);
                 }
             }
 
@@ -108,9 +151,9 @@ namespace Equality.ViewModels
             return Task.CompletedTask;
         }
 
-        public TaskCommand<Team> OpenCreateProjectWindow { get; private set; }
+        public TaskCommand<Team> CreateProject { get; private set; }
 
-        private async Task OnOpenCreateProjectWindowExecuteAsync(Team team)
+        private async Task OnCreateProjectExecuteAsync(Team team)
         {
             if (CreateProjectVm != null) {
                 CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;
@@ -124,7 +167,7 @@ namespace Equality.ViewModels
         private Task CreateProjectVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
             if (CreateProjectVm.Result) {
-                TeamForNewProject.Projects.Add(CreateProjectVm.Project);
+                TeamForNewProject.Projects.Insert(0, CreateProjectVm.Project);
             }
 
             CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;
@@ -166,27 +209,55 @@ namespace Equality.ViewModels
 
         #region Methods
 
-        protected async void LoadTeamsAsync()
+        protected async Task LoadTeamsAsync()
         {
-            try {
-                var response = await TeamService.GetTeamsAsync(new()
-                {
-                    Fields = new[]
+            var query = new QueryParameters()
+            {
+                Fields = new[]
                 {
                     new Field("teams", "id", "name", "description", "url", "logo")
                 }
-                });
-                Teams.AddRange(response.Object);
-                FilteredTeams.AddRange(Teams);
+            };
 
-                foreach (var team in response.Object) {
+            if (!string.IsNullOrWhiteSpace(CurrentFilterText)) {
+                query.Filters = new[] { new Filter("name", CurrentFilterText) };
+            }
+
+            try {
+                TeamsPaginator = await TeamService.GetTeamsAsync(query);
+                
+                if (IsClosed) {
+                    return;
+                }
+                
+                Teams.ReplaceRange(TeamsPaginator.Object);
+                FilteredTeams.ReplaceRange(Teams);
+
+                LoadProjectForTeams(TeamsPaginator.Object);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
+        protected async void LoadProjectForTeams(Team[] teams)
+        {
+            try {
+                foreach (var team in teams) {
                     var responseProjects = await ProjectService.GetProjectsAsync(team, new()
                     {
                         Fields = new[]
                         {
-                        new Field("projects", "id", "name", "description", "image")
-                    }
+                            new Field("projects", "id", "name", "description", "image")
+                        },
+                        PaginationData = new()
+                        {
+                            Count = 5,
+                        },
                     });
+
+                    if (IsClosed) {
+                        return;
+                    }
 
                     team.Projects.AddRange(responseProjects.Object);
                 }
@@ -201,7 +272,7 @@ namespace Equality.ViewModels
         {
             await base.InitializeAsync();
 
-            LoadTeamsAsync();
+            await LoadTeamsAsync();
         }
 
         protected override async Task CloseAsync()

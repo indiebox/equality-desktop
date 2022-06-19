@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
-using Catel.IoC;
 using Catel.Services;
 
 using Equality.Data;
 using Equality.Http;
 using Equality.MVVM;
 using Equality.Services;
-
-using MaterialDesignThemes.Wpf;
-
-using PusherClient;
 
 namespace Equality.ViewModels
 {
@@ -44,8 +38,7 @@ namespace Equality.ViewModels
                 bool result = await IsValidToken(apiToken);
 
                 if (result) {
-                    App.RegisterPusher();
-                    OpenMainPage();
+                    await App.LoadAsync();
                 } else {
                     OpenAuthorizationPage();
                 }
@@ -81,11 +74,6 @@ namespace Equality.ViewModels
 
                 throw;
             }
-        }
-
-        protected void OpenMainPage()
-        {
-            UIVisualizerService.ShowAsync<ApplicationWindowViewModel>();
         }
 
         protected void OpenAuthorizationPage()

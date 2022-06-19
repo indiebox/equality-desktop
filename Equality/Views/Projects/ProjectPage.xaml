@@ -23,12 +23,19 @@
                        DockPanel.Dock="Top">
                 <DockPanel DockPanel.Dock="Top"
                            LastChildFill="False">
+                    <Button Style="{StaticResource LinkButton}"
+                            Content="{Binding Project.Team.Name, FallbackValue=Загрузка...}"
+                            Command="{Binding OpenTeamPage}"
+                            FontSize="24"
+                            Margin="10"
+                            VerticalAlignment="Center" />
                     <TextBlock DockPanel.Dock="Left"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                               Margin="10"
-                               FontSize="24"
-                               Text="{Binding Project.Name}" />
+                               FontSize="24">
+                        <Run Text="/" />
+                        <Run Text="{Binding Project.Name}" />
+                    </TextBlock>
                     <StackPanel DockPanel.Dock="Right"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center">

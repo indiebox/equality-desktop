@@ -38,12 +38,75 @@ namespace Equality.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string active_boards_id {
+        public string favorite_boards {
             get {
-                return ((string)(this["active_boards_id"]));
+                return ((string)(this["favorite_boards"]));
             }
             set {
-                this["active_boards_id"] = value;
+                this["favorite_boards"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int max_boards_count {
+            get {
+                return ((int)(this["max_boards_count"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public int max_columns_count {
+            get {
+                return ((int)(this["max_columns_count"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int max_cards_count {
+            get {
+                return ((int)(this["max_cards_count"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public ulong menu_selected_team {
+            get {
+                return ((ulong)(this["menu_selected_team"]));
+            }
+            set {
+                this["menu_selected_team"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public ulong menu_selected_project {
+            get {
+                return ((ulong)(this["menu_selected_project"]));
+            }
+            set {
+                this["menu_selected_project"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string recent_projects {
+            get {
+                return ((string)(this["recent_projects"]));
+            }
+            set {
+                this["recent_projects"] = value;
             }
         }
         

@@ -1,17 +1,16 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 using Catel.Collections;
 using Catel.MVVM;
+using Catel.Fody;
 
 using Equality.Helpers;
 using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
 using Equality.Data;
-
-using System.Net.Http;
-using System.Diagnostics;
 using Equality.Http;
 
 namespace Equality.ViewModels
@@ -40,13 +39,32 @@ namespace Equality.ViewModels
         {
             ProjectService = projectService;
 
+            LoadMoreProjects = new(OnLoadMoreProjectsExecuteAsync, () => ProjectsPaginator?.HasNextPage ?? false);
             OpenProjectPage = new Command<Project>(OnOpenOpenProjectPageExecute);
-            OpenCreateProjectWindow = new TaskCommand(OnOpenCreateProjectWindowExecuteAsync, () => CreateProjectVm is null);
+            CreateProject = new TaskCommand(OnCreateProjectExecuteAsync, () => CreateProjectVm is null);
         }
 
         #region Properties
 
+        public string FilterText { get; set; }
+
+        private async void OnFilterTextChanged()
+        {
+            var text = FilterText?.ToLower()?.Trim();
+            if (text == CurrentFilterText) {
+                return;
+            }
+
+            CurrentFilterText = text;
+            await LoadProjectsAsync();
+        }
+
+        [NoWeaving]
+        public string CurrentFilterText { get; set; }
+
         public ObservableCollection<Project> Projects { get; set; } = new();
+
+        public PaginatableApiResponse<Project> ProjectsPaginator { get; set; }
 
         public CreateProjectControlViewModel CreateProjectVm { get; set; }
 
@@ -54,9 +72,26 @@ namespace Equality.ViewModels
 
         #region Commands
 
-        public TaskCommand OpenCreateProjectWindow { get; private set; }
+        public TaskCommand LoadMoreProjects { get; private set; }
 
-        private async Task OnOpenCreateProjectWindowExecuteAsync()
+        private async Task OnLoadMoreProjectsExecuteAsync()
+        {
+            try {
+                ProjectsPaginator = await ProjectsPaginator.NextPageAsync();
+
+                if (IsClosed) {
+                    return;
+                }
+
+                Projects.AddRange(ProjectsPaginator.Object);
+            } catch (HttpRequestException e) {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
+        public TaskCommand CreateProject { get; private set; }
+
+        private async Task OnCreateProjectExecuteAsync()
         {
             CreateProjectVm = MvvmHelper.CreateViewModel<CreateProjectControlViewModel>();
             CreateProjectVm.ClosedAsync += CreateProjectVmClosedAsync;
@@ -65,7 +100,7 @@ namespace Equality.ViewModels
         private Task CreateProjectVmClosedAsync(object sender, ViewModelClosedEventArgs e)
         {
             if (CreateProjectVm.Result) {
-                Projects.Add(CreateProjectVm.Project);
+                Projects.Insert(0, CreateProjectVm.Project);
             }
 
             CreateProjectVm.ClosedAsync -= CreateProjectVmClosedAsync;
@@ -90,16 +125,26 @@ namespace Equality.ViewModels
 
         protected async Task LoadProjectsAsync()
         {
-            try {
-                var response = await ProjectService.GetProjectsAsync(StateManager.SelectedTeam, new()
+            var query = new QueryParameters()
+            {
+                Fields = new[]
                 {
-                    Fields = new[]
-                    {
-                        new Field("projects", "id", "name", "description", "image")
-                    }
-                });
+                    new Field("projects", "id", "name", "description", "image")
+                }
+            };
 
-                Projects.AddRange(response.Object);
+            if (!string.IsNullOrWhiteSpace(CurrentFilterText)) {
+                query.Filters = new[] { new Filter("name", CurrentFilterText) };
+            }
+
+            try {
+                ProjectsPaginator = await ProjectService.GetProjectsAsync(StateManager.SelectedTeam, query);
+                
+                if (IsClosed) {
+                    return;
+                }
+                
+                Projects.ReplaceRange(ProjectsPaginator.Object);
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }

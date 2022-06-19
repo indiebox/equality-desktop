@@ -12,6 +12,7 @@
            xmlns:models="clr-namespace:Equality.Models"
            xmlns:objects="clr-namespace:Equality.Data.Wpf"
            xmlns:equality="http://equality.indiebox.ru/schemas"
+           xmlns:prop="clr-namespace:Equality.Properties"
            TextElement.Foreground="{DynamicResource MaterialDesignBody}"
            Background="{DynamicResource MaterialDesignPaper}"
            FontSize="16"
@@ -53,6 +54,7 @@
                         </Style>
                     </Grid.Style>
 
+                    <!-- Card itself -->
                     <StackPanel>
                         <Grid>
                             <Grid.Style>
@@ -254,6 +256,65 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Style.Triggers>
+                                    <DataTrigger Value="True">
+                                        <DataTrigger.Binding>
+                                            <MultiBinding Converter="{catel:AreEqualMultiValueConverter}">
+                                                <Binding Path="." />
+                                                <Binding Path="DataContext.DragColumn"
+                                                         RelativeSource="{RelativeSource AncestorType=mvvm:Page}" />
+                                            </MultiBinding>
+                                        </DataTrigger.Binding>
+                                        <Setter Property="Opacity"
+                                                Value="0.5" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <!-- Move card abilities and messages -->
+                        <Border Grid.RowSpan="2"
+                                Background="Black"
+                                Opacity="0.7"
+                                Panel.ZIndex="1">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Visibility"
+                                            Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CantMoveCardMessages.Count, Converter={equality:GreaterOrEqualConverter}, ConverterParameter=1}"
+                                                     Value="True">
+                                            <Setter Property="Visibility"
+                                                    Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <StackPanel Orientation="Vertical"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Margin="10">
+                                <materialDesign:PackIcon HorizontalAlignment="Center"
+                                                         Width="40"
+                                                         Height="40"
+                                                         Foreground="White"
+                                                         Kind="Lock" />
+                                <ListBox ItemsSource="{Binding CantMoveCardMessages}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Foreground="White"
+                                                       FontSize="14"
+                                                       TextWrapping="Wrap"
+                                                       TextAlignment="Center"
+                                                       Text="{Binding}" />
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </Border>
+
                         <!-- Column header -->
                         <DockPanel LastChildFill="True">
                             <DockPanel.Style>
@@ -280,8 +341,29 @@
                                         Orientation="Horizontal"
                                         VerticalAlignment="Top">
                                 <Button Command="{Binding DataContext.OpenCreateCardWindow, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
-                                        CommandParameter="{Binding}"
-                                        Style="{StaticResource MaterialDesignIconForegroundButton}">
+                                        CommandParameter="{Binding}">
+                                    <Button.Style>
+                                        <Style TargetType="Button"
+                                               BasedOn="{StaticResource MaterialDesignIconForegroundButton}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsCardsLimitReached}"
+                                                             Value="True">
+                                                    <Setter Property="IsEnabled"
+                                                            Value="False" />
+                                                    <Setter Property="ToolTip">
+                                                        <Setter.Value>
+                                                            <TextBlock>
+                                                                <Run>Достигнут лимит карточек для данной колонки: </Run>
+                                                                <Run Text="{Binding Source={x:Static prop:Settings.Default}, Path=max_cards_count, Mode=OneTime}" />
+                                                            </TextBlock>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter Property="ToolTipService.ShowOnDisabled"
+                                                            Value="True" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
                                     <materialDesign:PackIcon Kind="Plus"
                                                              Foreground="Gray" />
                                 </Button>
@@ -492,17 +574,24 @@
             </Grid.RowDefinitions>
 
             <DockPanel LastChildFill="False">
-                <Button Grid.Column="0"
-                        Command="{Binding ToBoards}"
-                        Style="{StaticResource MaterialDesignIconForegroundButton}"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Margin="10"
-                        Cursor="Hand"
-                        ToolTip="К доскам">
-                    <materialDesign:PackIcon Foreground="#FFF96840"
-                                             Kind="ArrowBack" />
-                </Button>
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Button Command="{Binding ToBoards}"
+                            Style="{StaticResource MaterialDesignIconForegroundButton}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Margin="10"
+                            Cursor="Hand"
+                            ToolTip="К доскам">
+                        <materialDesign:PackIcon Foreground="#FFF96840"
+                                                 Kind="ArrowBack" />
+                    </Button>
+                    <TextBlock VerticalAlignment="Center"
+                               Foreground="White"
+                               Text="{Binding Board.Name}"></TextBlock>
+                </StackPanel>
+
                 <Button Style="{StaticResource MaterialDesignFlatButton}"
                         DockPanel.Dock="Right"
                         Content="Модули"
@@ -602,6 +691,20 @@
                                                         <Setter Property="Background"
                                                                 Value="#33000029" />
                                                     </Trigger>
+
+                                                    <DataTrigger Binding="{Binding DataContext.IsColumnsLimitReached, RelativeSource={RelativeSource AncestorType=mvvm:Page}}"
+                                                                 Value="True">
+                                                        <Setter Property="ToolTip">
+                                                            <Setter.Value>
+                                                                <TextBlock>
+                                                                    <Run>Достигнут лимит колонок для данной доски: </Run>
+                                                                    <Run Text="{Binding Source={x:Static prop:Settings.Default}, Path=max_columns_count, Mode=OneTime}" />
+                                                                </TextBlock>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Setter Property="ToolTipService.ShowOnDisabled"
+                                                                Value="True" />
+                                                    </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Button.Style>

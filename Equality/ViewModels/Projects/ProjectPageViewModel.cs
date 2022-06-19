@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Net.Http;
 
 using Catel.MVVM;
 using Catel.Services;
@@ -8,8 +9,8 @@ using Equality.MVVM;
 using Equality.Models;
 using Equality.Data;
 using Equality.Services;
-using System.Net.Http;
-using System.Diagnostics;
+using Equality.Http;
+using Equality.Helpers;
 
 namespace Equality.ViewModels
 {
@@ -18,6 +19,8 @@ namespace Equality.ViewModels
         protected INavigationService NavigationService;
 
         protected IProjectService ProjectService;
+
+        protected IBoardService BoardService;
 
         #region DesignModeConstructor
 
@@ -32,12 +35,16 @@ namespace Equality.ViewModels
 
         #endregion
 
-        public ProjectPageViewModel(INavigationService navigationService, IProjectService projectService)
+        public ProjectPageViewModel(INavigationService navigationService, IProjectService projectService, IBoardService boardService)
         {
             NavigationService = navigationService;
             ProjectService = projectService;
+            BoardService = boardService;
 
             Project = StateManager.SelectedProject;
+            SaveRecentProject();
+
+            OpenTeamPage = new TaskCommand(OnOpenTeamPageExecuteAsync, () => Project.Team != null);
         }
 
         public enum Tab
@@ -51,36 +58,13 @@ namespace Equality.ViewModels
 
         public Tab ActiveTab { get; set; }
 
-        [Model]
-        public Project Project { get; set; }
-
-        public User Leader { get; set; }
-
-        #endregion
-
-        #region Commands
-
-        protected async Task LoadProjectLeaderAsync()
-        {
-            try {
-                var response = await ProjectService.GetProjectLeaderAsync(StateManager.SelectedProject);
-
-                Leader = response.Object;
-            } catch (HttpRequestException e) {
-                ExceptionHandler.Handle(e);
-            }
-        }
-
-        #endregion
-
-        #region Methods
-
         private void OnActiveTabChanged()
         {
-            switch (ActiveTab) {
+            switch (ActiveTab)
+            {
                 case Tab.Board:
                 default:
-                    NavigationService.Navigate<BoardsPageViewModel>(this, new() { { "open-active-board", true } });
+                    OpenBoardPageAsync();
                     break;
                 case Tab.Leader:
                     NavigationService.Navigate<LeaderNominationPageViewModel>(this);
@@ -91,13 +75,112 @@ namespace Equality.ViewModels
             }
         }
 
+        [Model]
+        public Project Project { get; set; }
+
+        public User Leader { get; set; }
+
+        #endregion
+
+        #region Commands
+
+        public TaskCommand OpenTeamPage { get; private set; }
+
+        private async Task OnOpenTeamPageExecuteAsync()
+        {
+            StateManager.SelectedTeam = Project.Team;
+
+            var vm = MvvmHelper.GetFirstInstanceOfViewModel<ApplicationWindowViewModel>();
+            vm.ActiveTab = ApplicationWindowViewModel.Tab.Team;
+        }
+
+        #endregion
+
+        #region Methods
+
+        protected async void OpenBoardPageAsync()
+        {
+            var board = await LoadActiveBoardAsync();
+            if (board != null)
+            {
+                StateManager.SelectedBoard = board;
+                NavigationService.Navigate<BoardPageViewModel>(this);
+            }
+            else
+            {
+                NavigationService.Navigate<BoardsPageViewModel>(this);
+            }
+        }
+
+        private async Task<Board> LoadActiveBoardAsync()
+        {
+            if (!SettingsManager.FavoriteBoards.ContainsKey(Project.Id))
+            {
+                return null;
+            }
+
+            try
+            {
+                var response = await BoardService.GetBoardAsync(SettingsManager.FavoriteBoards[Project.Id]);
+
+                return response.Object;
+            }
+            catch (NotFoundHttpException)
+            {
+                SettingsManager.FavoriteBoards.Remove(Project.Id);
+                Properties.Settings.Default.Save();
+            }
+
+            return null;
+        }
+
+        protected async void LoadProjectLeaderAsync()
+        {
+            try
+            {
+                var response = await ProjectService.GetProjectLeaderAsync(StateManager.SelectedProject);
+
+                Leader = response.Object;
+            }
+            catch (HttpRequestException e)
+            {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
+        protected async Task LoadProjectTeamAsync()
+        {
+            if (Project.Team != null)
+            {
+                return;
+            }
+
+            try
+            {
+                var response = await ProjectService.GetTeamForProjectAsync(StateManager.SelectedProject);
+
+                Project.Team = response.Object;
+            }
+            catch (HttpRequestException e)
+            {
+                ExceptionHandler.Handle(e);
+            }
+        }
+
+        private void SaveRecentProject()
+        {
+            SettingsManager.RecentProjects.AddOrReplace(Project.Id);
+            Properties.Settings.Default.Save();
+        }
+
         #endregion
 
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
 
-            await LoadProjectLeaderAsync();
+            LoadProjectLeaderAsync();
+            await LoadProjectTeamAsync();
 
             OnActiveTabChanged();
         }

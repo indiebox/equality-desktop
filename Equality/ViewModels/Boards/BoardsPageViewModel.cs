@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
@@ -21,12 +20,12 @@ using Equality.Validation;
 
 namespace Equality.ViewModels
 {
-    /*
-     * NavigationContext: 
-     * open-active-board - open active board, if available
-     */
     public class BoardsPageViewModel : ViewModel
     {
+        protected IBoardService BoardService;
+
+        protected INavigationService NavigationService;
+
         #region DesignModeConstructor
 
         public BoardsPageViewModel()
@@ -44,21 +43,26 @@ namespace Equality.ViewModels
 
         #endregion
 
-        IBoardService BoardService;
-
-        INavigationService NavigationService;
-
         public BoardsPageViewModel(IBoardService boardService, INavigationService navigationService)
         {
             BoardService = boardService;
             NavigationService = navigationService;
 
             OpenBoardPage = new Command<Board>(OnOpenOpenBoardPageExecute);
-            OpenCreateBoardWindow = new TaskCommand(OnOpenCreateBoardWindowExecuteAsync, () => CreateBoardVm is null);
+            OpenCreateBoardWindow = new TaskCommand(OnOpenCreateBoardWindowExecuteAsync, () => CreateBoardVm is null && !IsBoardsLimitReached);
             StartEditBoardName = new Command<Board>(OnStartEditBoardNameExecuteAsync);
             SaveNewBoardName = new TaskCommand(OnSaveNewBoardNameExecuteAsync, () => GetFieldErrors(nameof(NewBoardName)) == string.Empty);
             CancelEditBoardName = new Command(OnCancelEditBoardNameExecute);
             MarkAsActive = new Command<Board>(OnMarkAsActiveExecute);
+
+            Boards.CollectionChanged += (s, e) =>
+            {
+                RaisePropertyChanged(nameof(IsBoardsLimitReached));
+
+                if (IsBoardsLimitReached && CreateBoardVm != null) {
+                    CreateBoardVm.CloseCommand.Execute();
+                }
+            };
         }
 
         #region Properties
@@ -75,6 +79,8 @@ namespace Equality.ViewModels
 
         [Validatable]
         public string NewBoardName { get; set; }
+
+        public bool IsBoardsLimitReached => Boards.Count >= Properties.Settings.Default.max_boards_count;
 
         #endregion
 
@@ -113,29 +119,13 @@ namespace Equality.ViewModels
 
         private void OnMarkAsActiveExecute(Board board)
         {
-            try {
-                var boardsIds = Json.Deserialize<Dictionary<string, ulong>>(Properties.Settings.Default.active_boards_id);
-                string projectId = Project.Id.ToString();
-
-                // Is currently active.
-                if (ActiveBoard == board) {
-                    boardsIds?.Remove(projectId);
-                    Properties.Settings.Default.active_boards_id = Json.Serialize(boardsIds);
-
-                    ActiveBoard = null;
-                } else {
-                    if (boardsIds != null) {
-                        boardsIds[projectId] = board.Id;
-                    } else {
-                        boardsIds = new() { { projectId, board.Id } };
-                    }
-
-                    Properties.Settings.Default.active_boards_id = Json.Serialize(boardsIds);
-
-                    ActiveBoard = board;
-                }
-            } catch {
-                Properties.Settings.Default.active_boards_id = string.Empty;
+            // Is currently active.
+            if (ActiveBoard == board) {
+                SettingsManager.FavoriteBoards.Remove(Project.Id);
+                ActiveBoard = null;
+            } else {
+                SettingsManager.FavoriteBoards[Project.Id] = board.Id;
+                ActiveBoard = board;
             }
 
             Properties.Settings.Default.Save();
@@ -193,38 +183,33 @@ namespace Equality.ViewModels
 
         #endregion
 
-        #region Methods
-
-        private void LoadActiveBoard()
-        {
-            try {
-                var boardsIds = Json.Deserialize<Dictionary<string, ulong>>(Properties.Settings.Default.active_boards_id);
-                if (boardsIds != null) {
-                    string projectId = Project.Id.ToString();
-                    if (boardsIds.ContainsKey(projectId)) {
-                        ActiveBoard = Boards.Where(board => board.Id == boardsIds[projectId]).FirstOrDefault();
-
-                        if (NavigationContext.Values.ContainsKey("open-active-board")) {
-                            OpenBoardPage.Execute(ActiveBoard);
-                        }
-                    }
-                }
-            } catch {
-                Properties.Settings.Default.active_boards_id = String.Empty;
-                Properties.Settings.Default.Save();
-            }
-        }
+        #region Methods 
 
         protected async void LoadBoardsAsync()
         {
             try {
                 var response = await BoardService.GetBoardsAsync(StateManager.SelectedProject);
 
+                if (IsClosed) {
+                    return;
+                }
+
                 Boards.AddRange(response.Object);
 
                 LoadActiveBoard();
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
+            }
+        }
+
+        private void LoadActiveBoard()
+        {
+            if (SettingsManager.FavoriteBoards.ContainsKey(Project.Id)) {
+                ActiveBoard = Boards.Where(board => board.Id == SettingsManager.FavoriteBoards[Project.Id]).FirstOrDefault();
+
+                if (ActiveBoard == null) {
+                    SettingsManager.FavoriteBoards.Remove(Project.Id);
+                }
             }
         }
 

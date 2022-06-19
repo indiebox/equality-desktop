@@ -11,6 +11,7 @@
                     <Border Background="Transparent"
                             Cursor="Hand">
                         <TextBlock Style="{StaticResource LinkText}"
+                                   FontSize="{TemplateBinding FontSize}"
                                    Text="{TemplateBinding Content}" />
                     </Border>
                 </ControlTemplate>

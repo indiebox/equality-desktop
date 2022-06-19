@@ -32,6 +32,12 @@ namespace Equality.Data
                 SelectedProject = new Project()
                 {
                     Name = "Equality",
+                    Team = SelectedTeam,
+                };
+
+                SelectedBoard = new Board()
+                {
+                    Name = "Board 1",
                 };
             }
         }

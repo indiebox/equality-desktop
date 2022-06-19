@@ -29,6 +29,11 @@ namespace Equality.Http
         public Filter[] Filters { get; set; } = new Filter[] { };
 
         /// <summary>
+        /// The pagination data.
+        /// </summary>
+        public PaginationData PaginationData { get; set; } = new PaginationData();
+
+        /// <summary>
         /// List of additional query parameters.
         /// </summary>
         public Dictionary<string, string> Additional { get; set; }
@@ -47,6 +52,7 @@ namespace Equality.Http
             ParseIncludes(result);
             ParseSorts(result);
             ParseFilters(result);
+            ParsePaginationData(result);
 
             return this.GetDependencyResolver().Resolve<ApiClient>().BuildUri(uri, result);
         }
@@ -83,7 +89,18 @@ namespace Equality.Http
         protected void ParseFilters(Dictionary<string, string> result)
         {
             foreach (var filter in Filters) {
-                result.TryAdd($"filters[{filter.Name}]", string.Join(',', filter.Values));
+                result.TryAdd($"filter[{filter.Name}]", string.Join(',', filter.Values));
+            }
+        }
+
+        protected void ParsePaginationData(Dictionary<string, string> result)
+        {
+            if (PaginationData.Count > 0) {
+                result.TryAdd($"page[count]", PaginationData.Count.ToString());
+            }
+
+            if (!string.IsNullOrWhiteSpace(PaginationData.Cursor)) {
+                result.TryAdd($"cursor", PaginationData.Cursor);
             }
         }
     }

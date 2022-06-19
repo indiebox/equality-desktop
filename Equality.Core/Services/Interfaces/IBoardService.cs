@@ -30,6 +30,20 @@ namespace Equality.Services
         public Task<ApiResponseMessage<TBoardModel[]>> GetBoardsAsync(ulong projectId, QueryParameters query = null);
 
         /// <summary>
+        /// Sends the get board request to the API.
+        /// </summary>
+        /// <param name="boardId">The board id.</param>
+        /// <param name="query">The query parameters.</param>
+        /// <returns>Returns the API response.</returns>
+        /// 
+        /// <remarks>
+        /// Gets a token using <see cref="ITokenResolver.ResolveApiToken"></see>.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException" />
+        public Task<ApiResponseMessage<TBoardModel>> GetBoardAsync(ulong boardId, QueryParameters query = null);
+
+        /// <summary>
         /// Sends the create boards request to the API.
         /// </summary>
         /// <param name="project">The project.</param>
