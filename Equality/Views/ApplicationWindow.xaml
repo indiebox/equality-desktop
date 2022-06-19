@@ -160,7 +160,7 @@
                                                              Width="24"
                                                              Height="24"
                                                              HorizontalAlignment="Center" />
-                                    <TextBlock Text="Настройка"
+                                    <TextBlock Text="Настройки"
                                                HorizontalAlignment="Center" />
                                 </StackPanel>
                             </StackPanel>
