@@ -58,30 +58,22 @@ namespace Equality
         {
             var settings = Equality.Properties.Settings.Default;
 
-            if (settings.menu_selected_team != 0)
-            {
-                try
-                {
+            if (settings.menu_selected_team != 0) {
+                try {
                     var response = await ServiceLocator.Default.ResolveType<ITeamService>().GetTeamAsync(settings.menu_selected_team);
 
                     StateManager.SelectedTeam = response.Object;
-                }
-                catch (ApiException)
-                {
+                } catch (ApiException) {
                     settings.menu_selected_team = 0;
                 }
             }
 
-            if (settings.menu_selected_project != 0)
-            {
-                try
-                {
+            if (settings.menu_selected_project != 0) {
+                try {
                     var response = await ServiceLocator.Default.ResolveType<IProjectService>().GetProjectAsync(settings.menu_selected_project);
 
                     StateManager.SelectedProject = response.Object;
-                }
-                catch (ApiException)
-                {
+                } catch (ApiException) {
                     settings.menu_selected_project = 0;
                 }
             }

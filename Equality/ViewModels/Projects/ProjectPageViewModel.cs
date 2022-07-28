@@ -60,8 +60,7 @@ namespace Equality.ViewModels
 
         private void OnActiveTabChanged()
         {
-            switch (ActiveTab)
-            {
+            switch (ActiveTab) {
                 case Tab.Board:
                 default:
                     OpenBoardPageAsync();
@@ -101,32 +100,25 @@ namespace Equality.ViewModels
         protected async void OpenBoardPageAsync()
         {
             var board = await LoadActiveBoardAsync();
-            if (board != null)
-            {
+            if (board != null) {
                 StateManager.SelectedBoard = board;
                 NavigationService.Navigate<BoardPageViewModel>(this);
-            }
-            else
-            {
+            } else {
                 NavigationService.Navigate<BoardsPageViewModel>(this);
             }
         }
 
         private async Task<Board> LoadActiveBoardAsync()
         {
-            if (!SettingsManager.FavoriteBoards.ContainsKey(Project.Id))
-            {
+            if (!SettingsManager.FavoriteBoards.ContainsKey(Project.Id)) {
                 return null;
             }
 
-            try
-            {
+            try {
                 var response = await BoardService.GetBoardAsync(SettingsManager.FavoriteBoards[Project.Id]);
 
                 return response.Object;
-            }
-            catch (NotFoundHttpException)
-            {
+            } catch (NotFoundHttpException) {
                 SettingsManager.FavoriteBoards.Remove(Project.Id);
                 Properties.Settings.Default.Save();
             }
@@ -136,33 +128,26 @@ namespace Equality.ViewModels
 
         protected async void LoadProjectLeaderAsync()
         {
-            try
-            {
+            try {
                 var response = await ProjectService.GetProjectLeaderAsync(StateManager.SelectedProject);
 
                 Leader = response.Object;
-            }
-            catch (HttpRequestException e)
-            {
+            } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }
         }
 
         protected async Task LoadProjectTeamAsync()
         {
-            if (Project.Team != null)
-            {
+            if (Project.Team != null) {
                 return;
             }
 
-            try
-            {
+            try {
                 var response = await ProjectService.GetTeamForProjectAsync(StateManager.SelectedProject);
 
                 Project.Team = response.Object;
-            }
-            catch (HttpRequestException e)
-            {
+            } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }
         }
