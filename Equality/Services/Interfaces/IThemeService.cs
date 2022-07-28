@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Equality.Services
+﻿namespace Equality.Services
 {
     public interface IThemeService
     {
@@ -13,8 +9,15 @@ namespace Equality.Services
             Sync,
         }
 
+        /// <summary>
+        /// Get the current color theme.
+        /// </summary>
         public Theme GetCurrentTheme();
 
+        /// <summary>
+        /// Set the new color theme.
+        /// </summary>
+        /// <param name="theme">The new theme.</param>
         public void SetColorTheme(Theme theme);
     }
 }

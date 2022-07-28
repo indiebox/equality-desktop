@@ -24,7 +24,6 @@ namespace Equality.ViewModels
             UIVisualizerService = uiVisualizerService;
             UserService = userService;
 
-
             ThemeService.SetColorTheme((IThemeService.Theme)Properties.Settings.Default.current_theme);
         }
 

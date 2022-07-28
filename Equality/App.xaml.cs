@@ -1,7 +1,5 @@
 ﻿using System.Threading.Tasks;
-using System.Linq;
 using System.Windows;
-using System.Windows.Media;
 
 using Catel.IoC;
 using Catel.Logging;
@@ -11,10 +9,6 @@ using Catel.Services;
 using Equality.Data;
 using Equality.Http;
 using Equality.Services;
-
-using MaterialDesignThemes.Wpf;
-
-using Microsoft.Win32;
 
 using PusherClient;
 

@@ -4,8 +4,6 @@ using Catel.Services;
 
 using Equality.MVVM;
 
-using MaterialDesignThemes.Wpf;
-
 namespace Equality.ViewModels
 {
     public class AuthorizationWindowViewModel : ViewModel

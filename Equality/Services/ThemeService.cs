@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Management;
+﻿using System.Management;
 using System.Security.Principal;
-using System.Text;
 using System.Windows;
 using System.Windows.Media;
 
-using Equality;
-
 using MaterialDesignThemes.Wpf;
-
-using Microsoft.Win32;
 
 namespace Equality.Services
 {
@@ -47,18 +38,22 @@ namespace Equality.Services
 
         private void SetLightTheme()
         {
-            ((App)Application.Current).Resources["SecondaryBackgroundColor"] = new SolidColorBrush(Colors.WhiteSmoke);
-            ((App)Application.Current).Resources["MaterialDesignPaper"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FAFAFA"));
-            ((App)Application.Current).Resources["PrimaryHueMidForegroundBrush"] = new SolidColorBrush(Colors.Black);
-            ((App)Application.Current).Resources["GrayColorOnHover"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCCCCCC"));
+            var app = (App)Application.Current;
+
+            app.Resources["SecondaryBackgroundColor"] = new SolidColorBrush(Colors.WhiteSmoke);
+            app.Resources["MaterialDesignPaper"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FAFAFA"));
+            app.Resources["PrimaryHueMidForegroundBrush"] = new SolidColorBrush(Colors.Black);
+            app.Resources["GrayColorOnHover"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCCCCCC"));
         }
 
         private void SetDarkTheme()
         {
-            ((App)Application.Current).Resources["SecondaryBackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#262626"));
-            ((App)Application.Current).Resources["MaterialDesignPaper"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#212121"));
-            ((App)Application.Current).Resources["PrimaryHueMidForegroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#858585"));
-            ((App)Application.Current).Resources["GrayColorOnHover"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#373737"));
+            var app = (App)Application.Current;
+
+            app.Resources["SecondaryBackgroundColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#262626"));
+            app.Resources["MaterialDesignPaper"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#212121"));
+            app.Resources["PrimaryHueMidForegroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#858585"));
+            app.Resources["GrayColorOnHover"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#373737"));
         }
 
         private void CreateWatcher()
@@ -67,8 +62,10 @@ namespace Equality.Services
             var query = new WqlEventQuery(string.Format(
             "SELECT * FROM RegistryValueChangeEvent WHERE Hive='HKEY_USERS' AND KeyPath='{0}\\\\{1}' AND ValueName='{2}'",
             WindowsIdentity.GetCurrent().User.Value, keyPath.Replace("\\", "\\\\"), "AppsUseLightTheme"));
+
             var _watcher = new ManagementEventWatcher(query);
             _watcher.EventArrived += (sender, args) => LiveThemeChanging();
+
             Watcher = _watcher;
         }
 
@@ -84,28 +81,25 @@ namespace Equality.Services
                 IThemeService.Theme.Dark => new MaterialDesignDarkTheme(),
                 _ => new MaterialDesignLightTheme()
             };
-            switch (theme) {
-                case IThemeService.Theme.Light:
-                    _currentTheme = IThemeService.Theme.Light;
-                    Watcher.Stop();
-                    break;
-                case IThemeService.Theme.Dark:
-                    _currentTheme = IThemeService.Theme.Dark;
-                    Watcher.Stop();
-                    break;
-                case IThemeService.Theme.Sync:
-                    _currentTheme = IThemeService.Theme.Sync;
-                    Properties.Settings.Default.current_theme = (int)_currentTheme;
-                    Properties.Settings.Default.Save();
-                    Watcher.Start();
-                    LiveThemeChanging();
-                    return;
-            }
+
+            _currentTheme = theme;
             Properties.Settings.Default.current_theme = (int)_currentTheme;
             Properties.Settings.Default.Save();
+
+            if (_currentTheme == IThemeService.Theme.Sync) {
+                Watcher.Start();
+                LiveThemeChanging();
+            } else {
+                Watcher.Stop();
+                SetColorThemeInternal(baseTheme);
+            }
+        }
+
+        private void SetColorThemeInternal(IBaseTheme baseTheme)
+        {
             var currentTheme = _paletteHelper.GetTheme();
             currentTheme.SetBaseTheme(baseTheme);
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(() =>
             {
                 _paletteHelper.SetTheme(currentTheme);
             });
@@ -113,17 +107,12 @@ namespace Equality.Services
 
         private void LiveThemeChanging()
         {
-            var currentTheme = _paletteHelper.GetTheme();
-            IBaseTheme baseTheme = new MaterialDesignLightTheme();
-            if (Theme.GetSystemTheme() == BaseTheme.Dark) {
-                baseTheme = new MaterialDesignDarkTheme();
-            }
-            currentTheme.SetBaseTheme(baseTheme);
-
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            IBaseTheme baseTheme = Theme.GetSystemTheme() switch
             {
-                _paletteHelper.SetTheme(currentTheme);
-            });
+                BaseTheme.Dark => new MaterialDesignDarkTheme(),
+                _ => new MaterialDesignLightTheme()
+            };
+            SetColorThemeInternal(baseTheme);
         }
     }
 }

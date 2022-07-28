@@ -1,19 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Management;
-using System.Security.Principal;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-using Catel.MVVM;
-
-using Catel.Services;
-
-using Equality.Data;
 using Equality.MVVM;
 using Equality.Services;
-
-using MaterialDesignThemes.Wpf;
 
 namespace Equality.ViewModels
 {

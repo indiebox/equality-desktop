@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Linq;
 
 using Catel;
 
 using Equality.Models;
-
-using Microsoft.Win32;
 
 namespace Equality.Data
 {
