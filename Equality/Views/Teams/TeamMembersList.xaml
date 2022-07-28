@@ -16,7 +16,7 @@
            FontSize="16"
            d:DesignHeight="1080"
            d:DesignWidth="1920"
-           d:Background="{StaticResource MaterialDesignPaper}"
+           d:Background="{DynamicResource MaterialDesignPaper}"
            d:DataContext="{d:DesignInstance vm:TeamMembersListViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
     <Grid>
@@ -34,7 +34,7 @@
                      Padding="10"
                      DockPanel.Dock="Left"
                      Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                     Background="{StaticResource MaterialDesignPaper}"
+                     Background="{DynamicResource MaterialDesignPaper}"
                      VerticalAlignment="Center"
                      materialDesign:HintAssist.Hint="Поиск по имени"
                      Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}">

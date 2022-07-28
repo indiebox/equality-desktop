@@ -12,7 +12,7 @@
            FontSize="16"
            d:DesignHeight="1080"
            d:DesignWidth="1920"
-           d:Background="{StaticResource MaterialDesignPaper}"
+           d:Background="{DynamicResource MaterialDesignPaper}"
            d:DataContext="{d:DesignInstance vm:TeamPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
     <Grid>

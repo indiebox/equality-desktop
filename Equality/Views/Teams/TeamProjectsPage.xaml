@@ -12,13 +12,13 @@
            xmlns:controls="clr-namespace:Equality.Controls"
            xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
            FontSize="16"
-           d:Background="{StaticResource MaterialDesignPaper}"
+           d:Background="{DynamicResource MaterialDesignPaper}"
            d:DesignHeight="1080"
            d:DesignWidth="1100"
            d:DataContext="{d:DesignInstance vm:TeamProjectsPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
 
-    <Grid Background="{StaticResource MaterialDesignPaper}">
+    <Grid Background="{DynamicResource MaterialDesignPaper}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

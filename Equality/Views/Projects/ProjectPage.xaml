@@ -11,7 +11,7 @@
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            FontSize="16"
            d:DataContext="{d:DesignInstance vm:ProjectPageViewModel, IsDesignTimeCreatable=True}"
-           d:Background="{StaticResource MaterialDesignPaper}"
+           d:Background="{DynamicResource MaterialDesignPaper}"
            d:DesignWidth="1920"
            d:DesignHeight="1080"
            mc:Ignorable="d">

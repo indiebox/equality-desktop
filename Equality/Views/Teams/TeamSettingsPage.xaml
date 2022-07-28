@@ -17,9 +17,9 @@
     <StackPanel Orientation="Horizontal"
                 HorizontalAlignment="Center">
         <StackPanel Margin="20">
-            <StackPanel Background="{StaticResource MaterialDesignPaper}"
+            <StackPanel Background="{DynamicResource MaterialDesignPaper}"
                         HorizontalAlignment="Center">
-                <StackPanel Background="{StaticResource MaterialDesignPaper}"
+                <StackPanel Background="{DynamicResource MaterialDesignPaper}"
                             Margin="10,0">
                     <TextBlock Margin="10"
                                Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
@@ -44,7 +44,7 @@
                                     Content="Изменить"
                                     Command="{Binding UploadLogo}" />
                             <Button DockPanel.Dock='Top'
-                                    Style="{StaticResource MaterialDesignPaperButton}"
+                                    Style="{DynamicResource MaterialDesignPaperButton}"
                                     Margin="0,10,0,0"
                                     Content="Удалить"
                                     Command="{Binding DeleteLogo}" />

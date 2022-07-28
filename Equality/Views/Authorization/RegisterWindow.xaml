@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
 
         <Grid Panel.ZIndex="1"
-              Background="{StaticResource MaterialDesignPaper}"
+              Background="{DynamicResource MaterialDesignPaper}"
               Visibility="{Binding IsBrowserLoaded, Converter={StaticResource InverseBoolToVisConverter}}">
             <Grid Height="220"
                   VerticalAlignment="Center">
