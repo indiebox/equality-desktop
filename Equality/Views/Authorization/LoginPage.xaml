@@ -13,14 +13,14 @@
                FontSize="16"
                d:DesignHeight="600"
                d:DesignWidth="900"
-               d:Background="{StaticResource MaterialDesignPaper}"
+               d:Background="{DynamicResource MaterialDesignPaper}"
                d:DataContext="{d:DesignInstance vm:LoginPageViewModel, IsDesignTimeCreatable=True}"
                mc:Ignorable="d">
     <DockPanel>
         <materialDesign:Card HorizontalAlignment="Stretch"
                              DockPanel.Dock="Bottom"
                              VerticalAlignment="Bottom"
-                             Background="WhiteSmoke"
+                             Background="{DynamicResource SecondaryBackgroundColor}"
                              Height="100px"
                              UseLayoutRounding="False">
             <StackPanel Orientation="Horizontal"

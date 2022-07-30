@@ -16,10 +16,15 @@ namespace Equality.ViewModels
 
         protected IUserService UserService;
 
-        public LoadingWindowViewModel(IUIVisualizerService uiVisualizerService, IUserService userService)
+        protected IThemeService ThemeService;
+
+        public LoadingWindowViewModel(IUIVisualizerService uiVisualizerService, IUserService userService, IThemeService themeService)
         {
+            ThemeService = themeService;
             UIVisualizerService = uiVisualizerService;
             UserService = userService;
+
+            ThemeService.SetColorTheme((IThemeService.Theme)Properties.Settings.Default.current_theme);
         }
 
         public override string Title => "Equality";

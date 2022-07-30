@@ -1,5 +1,4 @@
 ﻿using CefSharp;
-using CefSharp.Handler;
 using CefSharp.Wpf;
 
 using Equality.ViewModels;

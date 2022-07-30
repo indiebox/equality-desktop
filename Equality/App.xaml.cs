@@ -129,6 +129,7 @@ namespace Equality
             serviceLocator.RegisterType<IBoardService, BoardService>();
             serviceLocator.RegisterType<IColumnService, ColumnService>();
             serviceLocator.RegisterType<ICardService, CardService>();
+            serviceLocator.RegisterTypeAndInstantiate<IThemeService, ThemeService>();
 
             /*
             |--------------------------------------------------------------------------

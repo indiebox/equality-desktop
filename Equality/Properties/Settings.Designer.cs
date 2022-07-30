@@ -109,5 +109,17 @@ namespace Equality.Properties {
                 this["recent_projects"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int current_theme {
+            get {
+                return ((int)(this["current_theme"]));
+            }
+            set {
+                this["current_theme"] = value;
+            }
+        }
     }
 }

@@ -14,7 +14,7 @@
            FontSize="16"
            d:DesignHeight="600"
            d:DesignWidth="900"
-           d:Background="{StaticResource MaterialDesignPaper}"
+           d:Background="{DynamicResource MaterialDesignPaper}"
            d:DataContext="{d:DesignInstance Type=vm:StartPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
 
@@ -33,6 +33,7 @@
                                              StaysOpen="True">
                         <materialDesign:PopupBox.ToggleContent>
                             <materialDesign:PackIcon Kind="Invite"
+                                                     Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                                      Width="24"
                                                      Height="24" />
                         </materialDesign:PopupBox.ToggleContent>
@@ -50,11 +51,13 @@
 
                             <TextBlock Grid.Row="0"
                                        FontSize="24"
+                                       Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                        HorizontalAlignment="Center"
                                        Margin="0,0,0,30">Приглашения</TextBlock>
 
                             <ListBox Grid.Row="1"
-                                     Background="WhiteSmoke"
+                                     Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                                     Background="{DynamicResource SecondaryBackgroundColor}"
                                      Margin="20,0">
                                 <!-- Templates for custom objects. -->
                                 <ListBox.Resources>
@@ -113,8 +116,9 @@
                                                           Source="{Binding Invites}" />
 
                                     <ControlTemplate x:Key="NoItemsTemplate">
-                                        <TextBlock Background="WhiteSmoke"
-                                                   Padding="15"
+                                        <TextBlock Padding="15"
+                                                   Background="{DynamicResource SecondaryBackgroundColor}"
+                                                   Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                                    TextWrapping="Wrap"
                                                    FontSize="18">Приглашений не найдено.</TextBlock>
                                     </ControlTemplate>
@@ -134,6 +138,7 @@
         </StackPanel>
 
         <TextBlock Grid.Row="1"
+                   Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    FontSize="24"
@@ -162,6 +167,7 @@
             </Grid.RowDefinitions>
 
             <TextBlock Margin="20,20,0,20"
+                       Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                        FontSize="24">Последние просматриваемые проекты</TextBlock>
 
             <ListBox Grid.Row="1"

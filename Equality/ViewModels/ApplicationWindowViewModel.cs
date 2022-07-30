@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 
 using Catel.MVVM;
@@ -9,6 +8,8 @@ using Equality.MVVM;
 using Equality.Models;
 using Equality.Services;
 using Equality.Data;
+using Equality.Helpers;
+using MaterialDesignThemes.Wpf;
 
 namespace Equality.ViewModels
 {
@@ -35,6 +36,7 @@ namespace Equality.ViewModels
             NavigationService = navigationService;
             UserService = userService;
 
+            OpenSettings = new TaskCommand(OnOpenSettings);
             Logout = new TaskCommand(OnLogoutExecute);
 
             StateManager.SelectedTeamChanged += SelectedTeamChangedInStateManager;
@@ -80,6 +82,14 @@ namespace Equality.ViewModels
             } catch (HttpRequestException e) {
                 ExceptionHandler.Handle(e);
             }
+        }
+
+        public TaskCommand OpenSettings { get; private set; }
+
+        private async Task OnOpenSettings()
+        {
+            var view = MvvmHelper.CreateViewWithViewModel<SettingsPageViewModel>();
+            await DialogHost.Show(view);
         }
 
         #endregion

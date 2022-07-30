@@ -9,7 +9,7 @@
                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                    FontSize="16"
                    mc:Ignorable="d"
-                   d:Background="{StaticResource MaterialDesignPaper}"
+                   d:Background="{DynamicResource MaterialDesignPaper}"
                    d:DataContext="{d:DesignInstance Type=vm:CreateColumnControlViewModel}">
     <Border CornerRadius="3"
             Width="350"

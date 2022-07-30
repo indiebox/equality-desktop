@@ -16,11 +16,12 @@
                mc:Ignorable="d">
     <DockPanel>
         <Grid>
-            <StackPanel Background="White"
+            <StackPanel Background="{DynamicResource MaterialDesignPaper}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
                         Margin="20">
                 <TextBlock FontSize="24"
+                           Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                            Margin="20">Основное</TextBlock>
                 <Grid Width="500"
                       Margin="20,0,20,30">
@@ -51,16 +52,20 @@
                 </Grid>
 
                 <StackPanel HorizontalAlignment="Center">
-                    <Label Margin="10,0">Название</Label>
+                    <Label Margin="10,0"
+                           Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">Название</Label>
                     <TextBox Style="{StaticResource FilledTextBox}"
                              Width="500"
+                             Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                              materialDesign:HintAssist.Hint="Вставьте название проекта"
                              Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Center">
-                    <Label Margin="10,0">Описание</Label>
+                    <Label Margin="10,0"
+                           Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">Описание</Label>
                     <TextBox Style="{StaticResource OutlinedTextBox}"
                              Width="500"
+                             Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                              materialDesign:HintAssist.Hint="Введите описание проекта"
                              Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>

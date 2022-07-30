@@ -8,6 +8,7 @@ namespace Equality.ViewModels
 {
     public class AuthorizationWindowViewModel : ViewModel
     {
+
         protected INavigationService NavigationService;
 
         public AuthorizationWindowViewModel(INavigationService navigationService)

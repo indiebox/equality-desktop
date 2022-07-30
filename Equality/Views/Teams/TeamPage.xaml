@@ -12,7 +12,7 @@
            FontSize="16"
            d:DesignHeight="1080"
            d:DesignWidth="1920"
-           d:Background="{StaticResource MaterialDesignPaper}"
+           d:Background="{DynamicResource MaterialDesignPaper}"
            d:DataContext="{d:DesignInstance vm:TeamPageViewModel, IsDesignTimeCreatable=True}"
            mc:Ignorable="d">
     <Grid>
@@ -26,7 +26,7 @@
                    Opacity="0.5" />
 
         <DockPanel HorizontalAlignment="Stretch">
-            <StackPanel Background="WhiteSmoke"
+            <StackPanel Background="{DynamicResource SecondaryBackgroundColor}"
                         DockPanel.Dock="Top">
                 <StackPanel x:Name="FlipperWrapper"
                             HorizontalAlignment="Center"
@@ -68,32 +68,26 @@
 
                 <TextBlock HorizontalAlignment="Center"
                            FontSize="27"
-                           Foreground="Black"
                            Margin="0,0,0,30"
+                           Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                            Text="{Binding Name}" />
                 <StackPanel Grid.Row="0"
                             Orientation="Horizontal"
                             HorizontalAlignment="Center">
-                    <StackPanel.Resources>
-                        <Style TargetType="RadioButton"
-                               BasedOn="{StaticResource MaterialDesignTabRadioButton}">
-                            <Setter Property="BorderBrush"
-                                    Value="{StaticResource PrimaryHueMidBrush}" />
-                            <Setter Property="Margin"
-                                    Value="0" />
-                            <Setter Property="Cursor"
-                                    Value="Hand" />
-                        </Style>
-                    </StackPanel.Resources>
 
                     <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:TeamPageViewModel+Tab.Projects}}"
-                                 Content="Проекты" />
+                                 Content="Проекты"
+                                 Style="{StaticResource MenuButtonTheme}" />
                     <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:TeamPageViewModel+Tab.Members}}"
-                                 Content="Участники" />
+                                 Content="Участники"
+                                 Cursor="Hand"
+                                 Style="{StaticResource MenuButtonTheme}" />
                     <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:TeamPageViewModel+Tab.Stats}}"
-                                 Content="Статистика" />
+                                 Content="Статистика"
+                                 Style="{StaticResource MenuButtonTheme}" />
                     <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:TeamPageViewModel+Tab.Settings}}"
-                                 Content="Настройки" />
+                                 Content="Настройки"
+                                 Style="{StaticResource MenuButtonTheme}" />
                 </StackPanel>
             </StackPanel>
 

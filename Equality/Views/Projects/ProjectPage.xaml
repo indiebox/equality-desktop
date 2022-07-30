@@ -11,7 +11,7 @@
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            FontSize="16"
            d:DataContext="{d:DesignInstance vm:ProjectPageViewModel, IsDesignTimeCreatable=True}"
-           d:Background="{StaticResource MaterialDesignPaper}"
+           d:Background="{DynamicResource MaterialDesignPaper}"
            d:DesignWidth="1920"
            d:DesignHeight="1080"
            mc:Ignorable="d">
@@ -19,7 +19,7 @@
         <controls:ProjectImage ImagePath="{Binding Project.Image}" />
 
         <DockPanel>
-            <DockPanel Background="White"
+            <DockPanel Background="{DynamicResource MaterialDesignPaper}"
                        DockPanel.Dock="Top">
                 <DockPanel DockPanel.Dock="Top"
                            LastChildFill="False">
@@ -31,6 +31,7 @@
                             VerticalAlignment="Center" />
                     <TextBlock DockPanel.Dock="Left"
                                VerticalAlignment="Center"
+                               Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                FontSize="24">
                         <Run Text="/" />
                         <Run Text="{Binding Project.Name}" />
@@ -70,23 +71,15 @@
                 <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Top"
                             Margin="10,0">
-                    <StackPanel.Resources>
-                        <Style TargetType="RadioButton"
-                               BasedOn="{StaticResource MaterialDesignTabRadioButton}">
-                            <Setter Property="BorderBrush"
-                                    Value="{StaticResource PrimaryHueMidBrush}" />
-                            <Setter Property="Margin"
-                                    Value="0" />
-                            <Setter Property="Cursor"
-                                    Value="Hand" />
-                        </Style>
-                    </StackPanel.Resources>
                     <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:ProjectPageViewModel+Tab.Board}}"
-                                 Content="Доска" />
+                                 Content="Доска"
+                                 Style="{StaticResource MenuButtonTheme}" />
                     <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:ProjectPageViewModel+Tab.Leader}}"
-                                 Content="Лидер" />
+                                 Content="Лидер"
+                                 Style="{StaticResource MenuButtonTheme}" />
                     <RadioButton IsChecked="{Binding ActiveTab, Converter={equality:BooleanToEnumConverter}, ConverterParameter={x:Static vm:ProjectPageViewModel+Tab.Settings}}"
-                                 Content="Настройки" />
+                                 Content="Настройки"
+                                 Style="{StaticResource MenuButtonTheme}" />
                 </StackPanel>
             </DockPanel>
 
