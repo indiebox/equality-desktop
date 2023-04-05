@@ -14,10 +14,10 @@ If errors occur, methods accessing the API will throws exceptions, which you can
 
 Sends a request to the API to log in to the account. Accepts two parameters as input:
 
-* <mark style="color:blue;">`string`</mark>` ``email` - user email
-* <mark style="color:blue;">`string`</mark>` ``password` - user password
+* <mark style="color:blue;">`string`</mark> `email` - user email
+* <mark style="color:blue;">`string`</mark> `password` - user password
 
-Returns an object of [`User`](../models/user.md) class and <mark style="color:blue;">`string`</mark>` ``token.`
+Returns an object of [`User`](../models/user.md) class and <mark style="color:blue;">`string`</mark> `token.`
 
 API Endpoint: https://equality.com/api/v1/login
 
@@ -32,7 +32,7 @@ private async Task OnLoginExecuteAsync()
 {
     string Email = "test@mail.ru";
     string Password = "123456";
-    
+
     try {
         var (user, token) = await UserService.LoginAsync(Email, Password);
         CurrentUser = user;
@@ -62,10 +62,10 @@ Usage example:
 private async void CheckAuthUser(string token)
 {
     StateManager.ApiToken = token;
-    
+
     try {
         await UserService.LoadAuthUserAsync();
-        
+
         // Users token is valid
     } catch (UnauthorizedHttpException) {
         // Users token is invalid
@@ -89,9 +89,9 @@ Usage example:
 
 ```csharp
 private async Task OnLogoutExecute() {
-    try { 
+    try {
         await UserService.LogoutAsync();
-        
+
         // User is logged out
     } catch (HttpRequestException e) {
         // Errors
