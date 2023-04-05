@@ -20,7 +20,7 @@ These are the 3 components:
 
 So developers can work separately from each other and do not need to know the subtleties of the **View** implementation to make logic in the **ViewModel**.
 
-![Interaction of the MVVM components](<../.gitbook/assets/mvvm_architecture.png>)
+![Interaction of the MVVM components](../.gitbook/assets/mvvm\_architecture.png)
 
 ### ViewModel
 
@@ -38,8 +38,8 @@ Often, the model implements the `INotifyPropertyChanged` or `INotifyCollectionCh
 
 In our application, all API responses containing entity data are deserialized in the model. You can find full list of models and model\`s properties in page below.
 
-{% content-ref url="../models/" %}
-[models](models/)
+{% content-ref url="broken-reference" %}
+[Broken link](broken-reference)
 {% endcontent-ref %}
 
 ### View
@@ -120,7 +120,7 @@ There are different types of binding:
 
 **Default** The default value. User-editable properties such as TextBox.Text, etc have **TwoWay** as their default mode value, otherwise **OneWay**.
 
-![Target - View, Source - ViewModel](../.gitbook/assets/mvvm_binding.png)
+![Target - View, Source - ViewModel](../.gitbook/assets/mvvm\_binding.png)
 
 ### UpdateSourceTrigger
 
