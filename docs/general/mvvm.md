@@ -38,8 +38,8 @@ Often, the model implements the `INotifyPropertyChanged` or `INotifyCollectionCh
 
 In our application, all API responses containing entity data are deserialized in the model. You can find full list of models and model\`s properties in page below.
 
-{% content-ref url="broken-reference" %}
-[Broken link](broken-reference)
+{% content-ref url="../models/user.md" %}
+[models.md](../models/user.md)
 {% endcontent-ref %}
 
 ### View

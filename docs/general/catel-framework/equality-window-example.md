@@ -18,10 +18,10 @@ We recommend that you visit the Сode snippets & Templates section.
 
 You can also start getting to know our own Core classes and Services.
 
-{% content-ref url="broken-reference" %}
-[Broken link](broken-reference)
+{% content-ref url="../../equality.core/viewmodel/" %}
+[equality.core.md](../../equality.core/viewmodel/)
 {% endcontent-ref %}
 
-{% content-ref url="broken-reference" %}
-[Broken link](broken-reference)
+{% content-ref url="../../services/userservice.md" %}
+[services.md](../../services/userservice.md)
 {% endcontent-ref %}
